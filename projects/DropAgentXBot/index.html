@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="stylesheet" href="../../assets/style.css">
 <link rel="stylesheet" href="../../assets/highlight.min.css">
 </head>
@@ -51,7 +52,7 @@
         <div class="cta-row">
           <a class="btn primary" href="https://github.com/KiaAgentX/portfolio/tree/main/projects/DropAgentXBot-main" target="_blank" rel="noopener">View source on GitHub</a>
           
-          
+          <a class="btn" href="#preview">Live preview</a>
         </div>
       </div>
       <div class="ov-card">
@@ -69,12 +70,12 @@
     </div>
   </section>
 
-  <section class="panel" id="panel-preview"><div class="no-preview">
-        <strong>Server-side project — no browser preview</strong>
-        This project runs as a backend service, bot or desktop workflow. Explore the full source code below, or run it locally with Docker.
-        <div class="cta-row" style="justify-content:center;margin-top:16px">
-          <a class="btn" href="https://github.com/KiaAgentX/portfolio/tree/main/projects/DropAgentXBot-main" target="_blank" rel="noopener">View on GitHub</a>
+  <section class="panel" id="panel-preview"><div class="preview-wrap">
+        <div class="preview-bar">
+          <span class="preview-url">previews/DropAgentXBot/index.html</span>
+          <a class="btn" href="../../previews/DropAgentXBot/index.html" target="_blank" rel="noopener">Open fullscreen</a>
         </div>
+        <iframe class="preview" data-defer="../../previews/DropAgentXBot/index.html" title="DropAgentX Bot live preview" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
       </div></section>
 
   <section class="panel" id="panel-source">
