@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+    <title>GQR Universe | مرکز فرماندهی کهکشانی</title>
+    <style>
+        /* ===== ROOT & RESET ===== */
+        :root {
+            --bg: #02010a;
+            --surface: rgba(17, 15, 28, 0.8);
+            --text: #f1f5f9;
+            --text2: #94a3b8;
+            --primary: #f59e0b;
+            --primary-glow: #fbbf24;
+            --accent1: #8b5cf6;
+            --accent2: #10b981;
+            --accent3: #ef4444;
+            --accent4: #3b82f6;
+            --border: rgba(255, 255, 255, 0.08);
+            --glass-blur: blur(24px);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+            --radius-sm: 12px;
+            --radius: 18px;
+            --radius-lg: 28px;
+            --font: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+            direction: rtl;
+            scroll-behavior: smooth;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: var(--font), Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 16px;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+        }
+        .galaxy {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 25% 15%, #1a1025 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 25%, #081422 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 80%, #100520 0%, transparent 55%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .shooting-star {
+            position: fixed;
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), transparent);
+            filter: blur(1px);
+            animation: shoot 1.4s ease-out forwards;
+            z-index: 2;
+            pointer-events: none;
+        }
+        @keyframes shoot {
+            0% {
+                transform: translate(0, 0) rotate(-30deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-400px, 300px) rotate(-30deg);
+                opacity: 0;
+            }
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1080px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: rgba(17, 15, 28, 0.65);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero h1 {
+            font-size: clamp(1.7rem, 5vw, 2.4rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-glow), var(--accent1), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+        @keyframes titleGlow {
+            0% {
+                filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.3));
+            }
+            100% {
+                filter: drop-shadow(0 0 35px rgba(139, 92, 246, 0.6));
+            }
+        }
+        .hero .date {
+            color: var(--text2);
+            font-size: 0.9rem;
+            margin-top: 6px;
+        }
+        .hero .motivation {
+            color: var(--primary);
+            margin-top: 12px;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+        .controls-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 14px;
+        }
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+        .speed-control input[type="range"] {
+            width: 100px;
+            accent-color: var(--accent4);
+        }
+        .reset-btn {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--accent3);
+            padding: 6px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .reset-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+            transform: scale(1.05);
+        }
+
+        /* ===== EXPORT / IMPORT ===== */
+        .io-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 6px;
+        }
+        .io-btn {
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            color: var(--accent4);
+            padding: 4px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .io-btn:hover {
+            background: rgba(59, 130, 246, 0.25);
+            transform: scale(1.05);
+        }
+        .io-btn.import-btn {
+            background: rgba(16, 185, 129, 0.12);
+            border-color: rgba(16, 185, 129, 0.25);
+            color: var(--accent2);
+        }
+        .io-btn.import-btn:hover {
+            background: rgba(16, 185, 129, 0.25);
+        }
+
+        /* ===== STATS GRID ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+        }
+        .stat-card {
+            background: var(--surface);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+        .stat-icon {
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin: 4px 0;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text2);
+        }
+        .stat-card.edu .stat-value {
+            color: var(--primary-glow);
+        }
+        .stat-card.streak .stat-value {
+            color: var(--accent2);
+        }
+        .stat-card.badge .stat-value {
+            font-size: 2rem;
+        }
+        .stat-card.sales .stat-value {
+            color: var(--accent2);
+        }
+        .stat-card.expense .stat-value {
+            color: var(--accent3);
+        }
+        .stat-card.balance .stat-value {
+            color: var(--primary-glow);
+        }
+        .stat-card.goal .stat-value {
+            color: var(--accent1);
+        }
+        .stat-card.goal .stat-value .goal-progress {
+            font-size: 0.9rem;
+            color: var(--text2);
+        }
+
+        /* ===== PROGRESS RING ===== */
+        .progress-section {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .progress-ring {
+            transform: rotate(-90deg);
+            width: 140px;
+            height: 140px;
+        }
+        .progress-ring .bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.08);
+            stroke-width: 10;
+        }
+        .progress-ring .fill {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 10;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.8s ease;
+        }
+        .progress-label {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary-glow);
+            margin-top: -80px;
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text2);
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .tab-btn.active {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* ===== NODES GRID ===== */
+        .section-title {
+            color: var(--primary-glow);
+            margin-bottom: 16px;
+            font-size: 1.2rem;
+        }
+        .nodes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+        .node {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            color: var(--text);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .node:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+            background: rgba(245, 158, 11, 0.1);
+        }
+        .node .n-num {
+            font-size: 0.7rem;
+            color: var(--text2);
+        }
+        .node .n-title {
+            font-weight: 700;
+            font-size: 0.82rem;
+            line-height: 1.2;
+        }
+        .node.done {
+            border-color: var(--accent2);
+            background: rgba(16, 185, 129, 0.08);
+        }
+        .node.done::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            left: 8px;
+            color: var(--accent2);
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        .node .complete-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: rgba(16, 185, 129, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent2);
+            font-weight: 700;
+        }
+        .node .complete-btn:hover {
+            background: rgba(16, 185, 129, 0.5);
+            transform: scale(1.2);
+        }
+        .node.done .complete-btn {
+            background: rgba(16, 185, 129, 0.4);
+        }
+        .node .notes-btn {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background: rgba(139, 92, 246, 0.15);
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent1);
+            font-weight: 700;
+        }
+        .node .notes-btn:hover {
+            background: rgba(139, 92, 246, 0.35);
+            transform: scale(1.2);
+        }
+        .node.has-notes .notes-btn {
+            background: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.3);
+        }
+
+        /* ===== CHARTS ===== */
+        .chart-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .chart-card {
+            background: var(--surface);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 16px;
+            box-shadow: var(--shadow);
+        }
+        .chart-card h3 {
+            color: var(--primary-glow);
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        .chart-card canvas {
+            width: 100%;
+            height: 180px;
+            display: block;
+        }
+
+        /* ===== APP GRID ===== */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        .app-card {
+            background: rgba(17, 15, 28, 0.45);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 18px 8px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        .app-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(245, 158, 11, 0.25);
+        }
+        .app-icon {
+            font-size: 1.8rem;
+        }
+        .app-name {
+            font-weight: 700;
+            font-size: 0.78rem;
+            margin-top: 6px;
+        }
+        .app-badge {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.18);
+            color: var(--primary-glow);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.68rem;
+            margin-top: 5px;
+            font-weight: 700;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-bar {
+            text-align: center;
+            color: #4b5563;
+            font-size: 0.78rem;
+            padding: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ===== TERM CARD ===== */
+        .term-card {
+            background: var(--surface);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+        }
+        .term-card .term-term {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--primary-glow);
+        }
+        .term-card .term-def {
+            color: var(--text2);
+            font-size: 0.95rem;
+            margin-top: 8px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .term-card .term-refresh {
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            color: var(--accent1);
+            padding: 6px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 12px;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .term-card .term-refresh:hover {
+            background: rgba(139, 92, 246, 0.25);
+            transform: scale(1.05);
+        }
+
+        /* ===== EQUATION BOX ===== */
+        .equation-box {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+        .equation-box .eq-item {
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 4px 10px;
+        }
+        .equation-box .eq-item.eq-asset {
+            color: var(--accent2);
+        }
+        .equation-box .eq-item.eq-liability {
+            color: var(--accent3);
+        }
+        .equation-box .eq-item.eq-equity {
+            color: var(--accent1);
+        }
+        .equation-box .eq-operator {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        /* ===== NOTES MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+        .modal-box h2 {
+            color: var(--primary-glow);
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+        .modal-box .modal-sub {
+            color: var(--text2);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+        .modal-box textarea {
+            width: 100%;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: inherit;
+            padding: 12px;
+            font-size: 0.9rem;
+            resize: vertical;
+            transition: 0.2s;
+        }
+        .modal-box textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.1);
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .modal-actions button {
+            padding: 8px 24px;
+            border-radius: 20px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .modal-actions .save-btn {
+            background: var(--primary);
+            color: #02010a;
+        }
+        .modal-actions .save-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.4);
+        }
+        .modal-actions .close-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text2);
+        }
+        .modal-actions .close-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .modal-actions .delete-btn {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent3);
+        }
+        .modal-actions .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+            .nodes-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 400px) {
+            .nodes-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+            .equation-box .eq-item {
+                font-size: 1rem;
+            }
+            .equation-box .eq-operator {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="galaxy"></div>
+    <div class="grid-bg"></div>
+
+    <div class="container">
+        <!-- ===== HERO ===== -->
+        <div class="hero">
+            <h1>🌌 GQR Universe</h1>
+            <p style="color:var(--text2);">مرکز فرماندهی کهکشانی — آموزش حسابداری و ابزارهای مدیریت کسب‌وکار</p>
+            <div class="date" id="currentDate"></div>
+            <div class="motivation" id="motivationText"></div>
+            <div class="controls-row">
+                <div class="speed-control">
+                    <span>⚡ سرعت مطالعه</span>
+                    <input type="range" id="speedRange" min="1" max="5" value="2" step="0.5" />
+                    <span id="speedLabel">۲ جلسه/روز</span>
+                </div>
+                <div class="speed-control" style="min-width:140px;">
+                    <span>🎯 هدف روزانه</span>
+                    <input type="number" id="dailyGoalInput" min="1" max="10" value="2" style="width:50px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:4px;font-family:inherit;text-align:center;" />
+                    <span id="dailyGoalLabel">جلسه</span>
+                </div>
+                <button class="reset-btn" id="resetProgressBtn">🔄 بازنشانی پیشرفت</button>
+            </div>
+            <div class="io-row">
+                <button class="io-btn" id="exportBtn">📤 خروجی پیشرفت</button>
+                <button class="io-btn import-btn" id="importBtn">📥 ورودی پیشرفت</button>
+                <input type="file" id="importFileInput" accept=".json" style="display:none;" />
+            </div>
+        </div>
+
+        <!-- ===== STATS ROW 1 ===== -->
+        <div class="stats-grid">
+            <div class="stat-card edu"><div class="stat-icon">📚</div><div class="stat-value" id="completedCount">۰</div><div class="stat-label">تکمیل‌شده</div></div>
+            <div class="stat-card edu"><div class="stat-icon">⏳</div><div class="stat-value" id="remainingCount">۲۴</div><div class="stat-label">باقی‌مانده</div></div>
+            <div class="stat-card streak"><div class="stat-icon">🔥</div><div class="stat-value" id="streakCount">۰</div><div class="stat-label">روز متوالی</div></div>
+            <div class="stat-card badge"><div class="stat-icon">🏆</div><div class="stat-value" id="achievementBadge">🥉</div><div class="stat-label">نشان افتخار</div></div>
+            <div class="stat-card edu"><div class="stat-icon">📅</div><div class="stat-value" id="finishDate">—</div><div class="stat-label">پایان تخمینی</div></div>
+            <div class="stat-card goal"><div class="stat-icon">🎯</div><div class="stat-value" id="dailyGoalProgress">۰ / ۲</div><div class="stat-label">پیشرفت هدف روزانه</div></div>
+        </div>
+
+        <!-- ===== PROGRESS RING ===== -->
+        <div class="progress-section">
+            <div class="section-title">📊 پیشرفت کلی دوره</div>
+            <svg class="progress-ring" viewBox="0 0 120 120">
+                <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#f59e0b"/>
+                        <stop offset="100%" stop-color="#10b981"/>
+                    </linearGradient>
+                </defs>
+                <circle class="bg" cx="60" cy="60" r="52"/>
+                <circle class="fill" id="progressCircle" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+            </svg>
+            <div class="progress-label" id="progressPercent">۰٪</div>
+        </div>
+
+        <!-- ===== TERM CARD + EQUATION ===== -->
+        <div class="term-card">
+            <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;align-items:center;">
+                <div style="flex:2;min-width:200px;">
+                    <div style="font-size:0.8rem;color:var(--text2);">📖 واژهٔ روز</div>
+                    <div class="term-term" id="termTerm">دارایی</div>
+                    <div class="term-def" id="termDef">منابع اقتصادی که توسط واحد تجاری کنترل می‌شود و از رویدادهای گذشته ناشی می‌شود.</div>
+                    <button class="term-refresh" id="termRefreshBtn">🌀 واژهٔ بعدی</button>
+                </div>
+                <div style="flex:3;min-width:220px;">
+                    <div style="font-size:0.8rem;color:var(--text2);">⚖️ معادله حسابداری</div>
+                    <div class="equation-box">
+                        <span class="eq-item eq-asset">دارایی‌ها</span>
+                        <span class="eq-operator">=</span>
+                        <span class="eq-item eq-liability">بدهی‌ها</span>
+                        <span class="eq-operator">+</span>
+                        <span class="eq-item eq-equity">حقوق صاحبان سهام</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== CHARTS ===== -->
+        <div class="tabs">
+            <button class="tab-btn active" id="tabWeekBtn">📈 پیشرفت هفتگی</button>
+            <button class="tab-btn" id="tabTrendBtn">💹 روند مالی</button>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-card" id="weekChartCard">
+                <h3>📈 نمودار پیشرفت هفتگی (جلسات تکمیل‌شده)</h3>
+                <canvas id="weekChart"></canvas>
+            </div>
+            <div class="chart-card" id="trendChartCard">
+                <h3>💹 روند مالی (۷ روز گذشته)</h3>
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+
+        <!-- ===== STATS ROW 2 ===== -->
+        <div class="stats-grid">
+            <div class="stat-card sales"><div class="stat-icon">💰</div><div class="stat-value" id="statSalesToday">۰</div><div class="stat-label">فروش امروز</div></div>
+            <div class="stat-card expense"><div class="stat-icon">💸</div><div class="stat-value" id="statExpToday">۰</div><div class="stat-label">هزینه امروز</div></div>
+            <div class="stat-card balance"><div class="stat-icon">🏦</div><div class="stat-value" id="statBalance">۰</div><div class="stat-label">موجودی کل</div></div>
+        </div>
+
+        <!-- ===== NODES GRID ===== -->
+        <div class="progress-section">
+            <div class="section-title">🌌 مسیر کهکشانی جلسات (۲۴ روز)</div>
+            <div class="nodes-grid" id="nodesGrid"></div>
+        </div>
+
+        <!-- ===== TOOLS ===== -->
+        <div class="progress-section">
+            <div class="section-title">📚 ابزارهای آموزشی</div>
+            <div class="app-grid">
+                <a href="./Tools/Calculator_Hub.html" class="app-card"><div class="app-icon">🧮</div><div class="app-name">ماشین‌حساب‌ها</div></a>
+                <a href="./Tools/Glossary.html" class="app-card"><div class="app-icon">📖</div><div class="app-name">واژه‌نامه</div></a>
+                <a href="./Tools/career_roadmap.html" class="app-card"><div class="app-icon">🗺️</div><div class="app-name">نقشه شغلی</div></a>
+                <a href="./Tools/full_book_printable.html" class="app-card"><div class="app-icon">📕</div><div class="app-name">کتاب چاپی</div></a>
+                <a href="./Tools/night_exam.html" class="app-card"><div class="app-icon">🌙</div><div class="app-name">شب امتحان</div></a>
+                <a href="./Tests/Quiz_1-6.html" class="app-card"><div class="app-icon">📝</div><div class="app-name">آزمون‌ها</div></a>
+                <a href="./how_to_start.html" class="app-card"><div class="app-icon">📘</div><div class="app-name">راهنما</div></a>
+            </div>
+        </div>
+
+        <!-- ===== NEXUS SUITE ===== -->
+        <div class="progress-section">
+            <div class="section-title">🧰 ابزارهای مدیریت کسب‌وکار (Nexus Suite)</div>
+            <div class="app-grid">
+                <a href="./Hesabak/index.html" class="app-card">
+                    <div class="app-icon">🧮</div><div class="app-name">حسابک</div>
+                    <span class="app-badge" id="badgeHesabak">۰</span>
+                </a>
+                <a href="./Daftar/index.html" class="app-card">
+                    <div class="app-icon">📒</div><div class="app-name">دفتر</div>
+                    <span class="app-badge" id="badgeDaftar">۰</span>
+                </a>
+                <a href="./Anbarak/index.html" class="app-card">
+                    <div class="app-icon">📦</div><div class="app-name">انبارک</div>
+                    <span class="app-badge" id="badgeAnbarak">۰</span>
+                </a>
+                <a href="./Faktorsaz/index.html" class="app-card">
+                    <div class="app-icon">🧾</div><div class="app-name">فاکتورساز</div>
+                    <span class="app-badge" id="badgeFaktorsaz">۰</span>
+                </a>
+                <a href="./Hoqouqsaz/index.html" class="app-card">
+                    <div class="app-icon">💰</div><div class="app-name">حقوق‌ساز</div>
+                    <span class="app-badge" id="badgeHoqouqsaz">۰</span>
+                </a>
+                <a href="./Budjeban/index.html" class="app-card">
+                    <div class="app-icon">📊</div><div class="app-name">بودجه‌بان</div>
+                    <span class="app-badge" id="badgeBudjeban">۰</span>
+                </a>
+                <a href="./Customer_Profiles/index.html" class="app-card">
+                    <div class="app-icon">👥</div><div class="app-name">پروفایل مشتریان</div>
+                    <span class="app-badge" id="badgeProfiles">۰</span>
+                </a>
+                <a href="./Gifts/index.html" class="app-card">
+                    <div class="app-icon">🎁</div><div class="app-name">هدایا</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-bar">
+            ✍️ کیانوش کریمی | GQR Universe &nbsp;|&nbsp;
+            <a href="./How_To_Use.html" style="color:var(--primary);">راهنمای جامع</a>
+        </div>
+    </div>
+
+    <!-- ===== NOTES MODAL ===== -->
+    <div class="modal-overlay" id="notesModal">
+        <div class="modal-box">
+            <h2 id="modalNotesTitle">📝 یادداشت جلسه</h2>
+            <div class="modal-sub" id="modalNotesSub">روز ۱ — اصول اولیه</div>
+            <textarea id="modalNotesText" placeholder="یادداشت‌های خود را درباره این جلسه بنویسید..."></textarea>
+            <div class="modal-actions">
+                <button class="save-btn" id="modalSaveBtn">💾 ذخیره</button>
+                <button class="delete-btn" id="modalDeleteBtn">🗑️ حذف یادداشت</button>
+                <button class="close-btn" id="modalCloseBtn">بستن</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // ==================== CONSTANTS ====================
+            const TOTAL_DAYS = 24;
+            const STORAGE_KEYS = {
+                completedDays: 'gqrCompletedDays',
+                completionLog: 'gqrCompletionLog',
+                speed: 'gqrSpeed',
+                dailyGoal: 'gqrDailyGoal',
+                sessionNotes: 'gqrSessionNotes',
+                hesabak: 'hesabak_tx',
+                daftar: 'daftar_customers',
+                anbarak: 'anbarak_products_v2_final',
+                faktorsaz: 'faktorsaz_invoices_final',
+                hoquq: 'hoquq_v3',
+                budjeban: 'budjeban_tx_v3',
+                profiles: 'gifts_profiles_customers'
+            };
+            const SESSION_TITLES = [
+                'اصول اولیه', 'دفتر روزنامه', 'دفتر کل', 'تراز آزمایشی', 'سود و زیان', 'ترازنامه',
+                'جریان وجوه نقد', 'نقدی و تعهدی', 'ثبت‌های تعدیلی', 'بستن حساب‌ها', 'موجودی کالا', 'استهلاک دارایی',
+                'ذخیره مطالبات', 'حقوق و دستمزد', 'تلفیقی', 'تحلیل صورت‌ها', 'حسابداری صنعتی', 'سفارش کار',
+                'نقطه سربه‌سر', 'بودجه‌بندی', 'حسابداری مالیاتی', 'پیمانکاری', 'IFRS', 'پروژه نهایی'
+            ];
+
+            // ==================== DOM REFS ====================
+            const els = {
+                currentDate: document.getElementById('currentDate'),
+                motivationText: document.getElementById('motivationText'),
+                completedCount: document.getElementById('completedCount'),
+                remainingCount: document.getElementById('remainingCount'),
+                streakCount: document.getElementById('streakCount'),
+                achievementBadge: document.getElementById('achievementBadge'),
+                finishDate: document.getElementById('finishDate'),
+                progressPercent: document.getElementById('progressPercent'),
+                progressCircle: document.getElementById('progressCircle'),
+                speedRange: document.getElementById('speedRange'),
+                speedLabel: document.getElementById('speedLabel'),
+                dailyGoalInput: document.getElementById('dailyGoalInput'),
+                dailyGoalLabel: document.getElementById('dailyGoalLabel'),
+                dailyGoalProgress: document.getElementById('dailyGoalProgress'),
+                nodesGrid: document.getElementById('nodesGrid'),
+                weekChart: document.getElementById('weekChart'),
+                trendChart: document.getElementById('trendChart'),
+                weekChartCard: document.getElementById('weekChartCard'),
+                trendChartCard: document.getElementById('trendChartCard'),
+                tabWeekBtn: document.getElementById('tabWeekBtn'),
+                tabTrendBtn: document.getElementById('tabTrendBtn'),
+                statSalesToday: document.getElementById('statSalesToday'),
+                statExpToday: document.getElementById('statExpToday'),
+                statBalance: document.getElementById('statBalance'),
+                badgeHesabak: document.getElementById('badgeHesabak'),
+                badgeDaftar: document.getElementById('badgeDaftar'),
+                badgeAnbarak: document.getElementById('badgeAnbarak'),
+                badgeFaktorsaz: document.getElementById('badgeFaktorsaz'),
+                badgeHoqouqsaz: document.getElementById('badgeHoqouqsaz'),
+                badgeBudjeban: document.getElementById('badgeBudjeban'),
+                badgeProfiles: document.getElementById('badgeProfiles'),
+                termTerm: document.getElementById('termTerm'),
+                termDef: document.getElementById('termDef'),
+                termRefreshBtn: document.getElementById('termRefreshBtn'),
+                resetProgressBtn: document.getElementById('resetProgressBtn'),
+                exportBtn: document.getElementById('exportBtn'),
+                importBtn: document.getElementById('importBtn'),
+                importFileInput: document.getElementById('importFileInput'),
+                // modal
+                notesModal: document.getElementById('notesModal'),
+                modalNotesTitle: document.getElementById('modalNotesTitle'),
+                modalNotesSub: document.getElementById('modalNotesSub'),
+                modalNotesText: document.getElementById('modalNotesText'),
+                modalSaveBtn: document.getElementById('modalSaveBtn'),
+                modalDeleteBtn: document.getElementById('modalDeleteBtn'),
+                modalCloseBtn: document.getElementById('modalCloseBtn')
+            };
+
+            // ==================== UTILITY ====================
+            function safeGet(key, fallback) {
+                if (fallback === undefined) fallback = '[]';
+                try {
+                    const v = localStorage.getItem(key);
+                    if (v === null) return JSON.parse(fallback);
+                    return JSON.parse(v);
+                } catch (e) {
+                    return JSON.parse(fallback);
+                }
+            }
+
+            function safeSet(key, value) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(value));
+                } catch (e) {}
+            }
+
+            function fmt(n) {
+                if (n === undefined || n === null) return '۰';
+                return Number(n).toLocaleString('fa-IR');
+            }
+
+            function todayStr() {
+                return new Date().toLocaleDateString('fa-IR');
+            }
+
+            function todayISO() {
+                return new Date().toISOString().split('T')[0];
+            }
+
+            function launchStar() {
+                const star = document.createElement('div');
+                star.className = 'shooting-star';
+                star.style.top = (Math.random() * 50 + 10) + '%';
+                star.style.left = (Math.random() * 70 + 10) + '%';
+                star.style.animationDuration = (1.2 + Math.random() * 0.8) + 's';
+                document.body.appendChild(star);
+                setTimeout(() => star.remove(), 1800);
+            }
+
+            // ==================== ACCOUNTING TERMS ====================
+            const ACCOUNTING_TERMS = [
+                { term: 'دارایی', def: 'منابع اقتصادی که توسط واحد تجاری کنترل می‌شود و از رویدادهای گذشته ناشی می‌شود.' },
+                { term: 'بدهی', def: 'تعهدات فعلی واحد تجاری که از رویدادهای گذشته ناشی می‌شود و انتظار می‌رود با خروج منابع اقتصادی تسویه شود.' },
+                { term: 'حقوق صاحبان سهام', def: 'سهم باقیمانده در دارایی‌های واحد تجاری پس از کسر بدهی‌ها.' },
+                { term: 'درآمد', def: 'افزایش در منافع اقتصادی در طول دوره حسابداری به صورت ورود یا افزایش دارایی‌ها.' },
+                { term: 'هزینه', def: 'کاهش در منافع اقتصادی در طول دوره حسابداری به صورت خروج یا کاهش دارایی‌ها.' },
+                { term: 'سود', def: 'مازاد درآمد بر هزینه‌ها در یک دوره مالی.' },
+                { term: 'زیان', def: 'مازاد هزینه‌ها بر درآمدها در یک دوره مالی.' },
+                { term: 'دفتر روزنامه', def: 'اولین دفتر حسابداری که رویدادهای مالی به ترتیب تاریخ در آن ثبت می‌شود.' },
+                { term: 'دفتر کل', def: 'دفتری که حساب‌های مختلف در آن به تفکیک نگهداری می‌شود.' },
+                { term: 'تراز آزمایشی', def: 'فهرستی از تمام حساب‌ها و مانده‌های آن‌ها در یک تاریخ خاص.' },
+                { term: 'استهلاک', def: 'تخصیص بهای تمام شده دارایی ثابت به طی عمر مفید آن.' },
+                { term: 'موجودی کالا', def: 'کالاهای نگهداری شده برای فروش در جریان عادی کسب‌وکار.' }
+            ];
+
+            function showRandomTerm() {
+                const idx = Math.floor(Math.random() * ACCOUNTING_TERMS.length);
+                const t = ACCOUNTING_TERMS[idx];
+                if (els.termTerm) els.termTerm.textContent = t.term;
+                if (els.termDef) els.termDef.textContent = t.def;
+            }
+
+            // ==================== PROGRESS ====================
+            function getCompletedDays() {
+                return safeGet(STORAGE_KEYS.completedDays);
+            }
+
+            function getCompletionLog() {
+                return safeGet(STORAGE_KEYS.completionLog, '{}');
+            }
+
+            function getSpeed() {
+                return parseFloat(localStorage.getItem(STORAGE_KEYS.speed) || '2');
+            }
+
+            function getDailyGoal() {
+                return parseInt(localStorage.getItem(STORAGE_KEYS.dailyGoal) || '2');
+            }
+
+            function setDailyGoal(v) {
+                localStorage.setItem(STORAGE_KEYS.dailyGoal, String(v));
+            }
+
+            function getSessionNotes() {
+                return safeGet(STORAGE_KEYS.sessionNotes, '{}');
+            }
+
+            function setSessionNotes(notes) {
+                safeSet(STORAGE_KEYS.sessionNotes, notes);
+            }
+
+            function calcStreak() {
+                const log = getCompletionLog();
+                let streak = 0;
+                const d = new Date();
+                d.setHours(0, 0, 0, 0);
+                while (true) {
+                    const key = d.toISOString().split('T')[0];
+                    if (log[key] && log[key] > 0) {
+                        streak++;
+                        d.setDate(d.getDate() - 1);
+                    } else {
+                        break;
+                    }
+                }
+                return streak;
+            }
+
+            function calcTodayCompleted() {
+                const log = getCompletionLog();
+                const t = todayISO();
+                return log[t] || 0;
+            }
+
+            function updateEduDashboard() {
+                const completedDays = getCompletedDays();
+                const completed = completedDays.length;
+                const remaining = TOTAL_DAYS - completed;
+                const speed = getSpeed();
+                const dailyGoal = getDailyGoal();
+                const todayDone = calcTodayCompleted();
+
+                els.completedCount.textContent = completed;
+                els.remainingCount.textContent = remaining;
+                els.streakCount.textContent = calcStreak();
+                els.dailyGoalProgress.textContent = todayDone + ' / ' + dailyGoal;
+
+                const pct = Math.min(100, Math.round((completed / TOTAL_DAYS) * 100));
+                els.progressPercent.textContent = pct + '٪';
+                const circumference = 326.7;
+                els.progressCircle.style.strokeDashoffset = circumference - (pct / 100) * circumference;
+
+                // --- enhanced achievements ---
+                let badge = '🥉';
+                if (completed >= 22) badge = '💎';
+                else if (completed >= 18) badge = '🥇';
+                else if (completed >= 12) badge = '🥈';
+                else if (completed >= 6) badge = '🥉';
+                else if (completed >= 3) badge = '⭐';
+                els.achievementBadge.textContent = badge;
+
+                if (remaining > 0) {
+                    const est = new Date();
+                    est.setDate(est.getDate() + Math.ceil(remaining / speed));
+                    els.finishDate.textContent = est.toLocaleDateString('fa-IR');
+                } else {
+                    els.finishDate.textContent = 'امروز! 🎉';
+                }
+
+                els.speedRange.value = speed;
+                els.speedLabel.textContent = speed + ' جلسه/روز';
+                els.dailyGoalInput.value = dailyGoal;
+
+                // update node done states
+                document.querySelectorAll('.node').forEach(node => {
+                    const day = node.dataset.day;
+                    if (!day) return;
+                    node.classList.toggle('done', completedDays.includes(day));
+                    // notes indicator
+                    const notes = getSessionNotes();
+                    node.classList.toggle('has-notes', !!notes[day] && notes[day].trim().length > 0);
+                });
+
+                drawWeekChart();
+            }
+
+            // ==================== NODES ====================
+            function buildNodes() {
+                els.nodesGrid.innerHTML = '';
+                for (let i = 1; i <= TOTAL_DAYS; i++) {
+                    const day = 'Day' + i;
+                    const div = document.createElement('div');
+                    div.className = 'node';
+                    div.dataset.day = day;
+                    div.innerHTML = `
+                        <div class="n-num">روز ${i}</div>
+                        <div class="n-title">${SESSION_TITLES[i-1]}</div>
+                        <button class="complete-btn" data-day="${day}" title="علامت تکمیل">✓</button>
+                        <button class="notes-btn" data-day="${day}" title="یادداشت">📝</button>
+                    `;
+                    // click on node (except buttons) -> navigate
+                    div.addEventListener('click', function(e) {
+                        if (e.target.classList.contains('complete-btn') || e.target.classList.contains('notes-btn'))
+                            return;
+                        window.open(`./Session/Day${i}.html`, '_blank');
+                    });
+                    // complete button
+                    const btn = div.querySelector('.complete-btn');
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const d = this.dataset.day;
+                        const completedDays = getCompletedDays();
+                        if (!completedDays.includes(d)) {
+                            completedDays.push(d);
+                            safeSet(STORAGE_KEYS.completedDays, completedDays);
+                            const log = getCompletionLog();
+                            const t = todayISO();
+                            log[t] = (log[t] || 0) + 1;
+                            safeSet(STORAGE_KEYS.completionLog, log);
+                            launchStar();
+                            updateEduDashboard();
+                        } else {
+                            if (confirm('این جلسه قبلاً تکمیل شده است. آیا می‌خواهید علامت را بردارید؟')) {
+                                const idx = completedDays.indexOf(d);
+                                if (idx > -1) {
+                                    completedDays.splice(idx, 1);
+                                    safeSet(STORAGE_KEYS.completedDays, completedDays);
+                                    const log = getCompletionLog();
+                                    const t = todayISO();
+                                    log[t] = Math.max(0, (log[t] || 0) - 1);
+                                    if (log[t] === 0) delete log[t];
+                                    safeSet(STORAGE_KEYS.completionLog, log);
+                                    updateEduDashboard();
+                                }
+                            }
+                        }
+                    });
+                    // notes button
+                    const notesBtn = div.querySelector('.notes-btn');
+                    notesBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const d = this.dataset.day;
+                        openNotesModal(d);
+                    });
+                    els.nodesGrid.appendChild(div);
+                }
+            }
+
+            // ==================== NOTES MODAL ====================
+            let currentNotesDay = null;
+
+            function openNotesModal(day) {
+                currentNotesDay = day;
+                const idx = parseInt(day.replace('Day', ''));
+                const title = SESSION_TITLES[idx - 1] || '';
+                els.modalNotesTitle.textContent = '📝 یادداشت جلسه';
+                els.modalNotesSub.textContent = 'روز ' + idx + ' — ' + title;
+                const notes = getSessionNotes();
+                els.modalNotesText.value = notes[day] || '';
+                els.notesModal.classList.add('active');
+                els.modalNotesText.focus();
+            }
+
+            function closeNotesModal() {
+                els.notesModal.classList.remove('active');
+                currentNotesDay = null;
+            }
+
+            function saveNotes() {
+                if (!currentNotesDay) return;
+                const text = els.modalNotesText.value.trim();
+                const notes = getSessionNotes();
+                if (text) {
+                    notes[currentNotesDay] = text;
+                } else {
+                    delete notes[currentNotesDay];
+                }
+                setSessionNotes(notes);
+                updateEduDashboard();
+                launchStar();
+                closeNotesModal();
+            }
+
+            function deleteNotes() {
+                if (!currentNotesDay) return;
+                if (!confirm('آیا مطمئن هستید که می‌خواهید یادداشت این جلسه را حذف کنید؟')) return;
+                const notes = getSessionNotes();
+                delete notes[currentNotesDay];
+                setSessionNotes(notes);
+                updateEduDashboard();
+                closeNotesModal();
+            }
+
+            // ==================== CHARTS ====================
+            function drawWeekChart() {
+                const canvas = els.weekChart;
+                if (!canvas || canvas.offsetParent === null) return;
+                const rect = canvas.parentElement.getBoundingClientRect();
+                const w = rect.width - 20;
+                canvas.width = w;
+                canvas.height = 180;
+                const ctx = canvas.getContext('2d');
+
+                const log = getCompletionLog();
+                const now = new Date();
+                const weeks = [0, 0, 0, 0];
+                Object.entries(log).forEach(([date, count]) => {
+                    const diff = Math.floor((now - new Date(date)) / 86400000);
+                    if (diff >= 0 && diff < 28) {
+                        const idx = Math.floor(diff / 7);
+                        if (idx < 4) weeks[idx] += count;
+                    }
+                });
+                const data = [...weeks].reverse();
+                const maxVal = Math.max(...data, 1);
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const pad = { top: 15, bottom: 30, left: 10, right: 10 };
+                const drawW = canvas.width - pad.left - pad.right;
+                const drawH = canvas.height - pad.top - pad.bottom;
+                const stepX = drawW / (data.length > 1 ? data.length - 1 : 1);
+
+                // grid
+                for (let i = 0; i <= 4; i++) {
+                    const y = pad.top + (i / 4) * drawH;
+                    ctx.beginPath();
+                    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+                    ctx.lineWidth = 1;
+                    ctx.moveTo(pad.left, y);
+                    ctx.lineTo(pad.left + drawW, y);
+                    ctx.stroke();
+                }
+
+                // line
+                ctx.beginPath();
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 3;
+                data.forEach((val, i) => {
+                    const x = pad.left + i * stepX;
+                    const y = pad.top + drawH - (val / maxVal) * drawH;
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+
+                // points & labels
+                data.forEach((val, i) => {
+                    const x = pad.left + i * stepX;
+                    const y = pad.top + drawH - (val / maxVal) * drawH;
+                    ctx.fillStyle = '#10b981';
+                    ctx.beginPath();
+                    ctx.arc(x, y, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '11px Vazirmatn, Tahoma';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('هفته ' + (4 - i), x, canvas.height - 6);
+                    ctx.fillStyle = '#f1f5f9';
+                    ctx.font = '10px Vazirmatn, Tahoma';
+                    ctx.fillText(val, x, y - 10);
+                });
+            }
+
+            function drawTrendChart(hesabakData) {
+                const canvas = els.trendChart;
+                if (!canvas || canvas.offsetParent === null) return;
+                const rect = canvas.parentElement.getBoundingClientRect();
+                const w = rect.width - 20;
+                canvas.width = w;
+                canvas.height = 180;
+                const ctx = canvas.getContext('2d');
+
+                const dates = [],
+                    values = [];
+                for (let i = 6; i >= 0; i--) {
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    const key = d.toLocaleDateString('fa-IR');
+                    dates.push(key);
+                    const dayTx = hesabakData.filter(tx => tx.date === key);
+                    const net = dayTx.reduce((s, tx) => s + (tx.type === 'sale' ? (tx.amount || 0) : -(tx.amount || 0)), 0);
+                    values.push(net);
+                }
+                const maxVal = Math.max(...values.map(Math.abs), 1);
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const pad = { top: 15, bottom: 30, left: 10, right: 10 };
+                const drawW = canvas.width - pad.left - pad.right;
+                const drawH = canvas.height - pad.top - pad.bottom;
+                const stepX = drawW / (values.length > 1 ? values.length - 1 : 1);
+
+                // zero line
+                const zeroY = pad.top + drawH / 2;
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4, 4]);
+                ctx.moveTo(pad.left, zeroY);
+                ctx.lineTo(pad.left + drawW, zeroY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // grid
+                for (let i = 0; i <= 4; i++) {
+                    const y = pad.top + (i / 4) * drawH;
+                    ctx.beginPath();
+                    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+                    ctx.lineWidth = 1;
+                    ctx.moveTo(pad.left, y);
+                    ctx.lineTo(pad.left + drawW, y);
+                    ctx.stroke();
+                }
+
+                // line
+                ctx.beginPath();
+                ctx.strokeStyle = '#10b981';
+                ctx.lineWidth = 3;
+                values.forEach((val, i) => {
+                    const x = pad.left + i * stepX;
+                    const y = pad.top + drawH - ((val + maxVal) / (maxVal * 2)) * drawH;
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+
+                // points & labels
+                values.forEach((val, i) => {
+                    const x = pad.left + i * stepX;
+                    const y = pad.top + drawH - ((val + maxVal) / (maxVal * 2)) * drawH;
+                    ctx.fillStyle = val >= 0 ? '#10b981' : '#ef4444';
+                    ctx.beginPath();
+                    ctx.arc(x, y, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '9px Vazirmatn, Tahoma';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(dates[i].slice(0, 3), x, canvas.height - 6);
+                });
+            }
+
+            // ==================== BUSINESS DATA ====================
+            function loadData(key) {
+                return safeGet(key);
+            }
+
+            function refreshBusiness() {
+                const hesabakData = loadData(STORAGE_KEYS.hesabak);
+                const daftarData = loadData(STORAGE_KEYS.daftar);
+                const anbarakData = loadData(STORAGE_KEYS.anbarak);
+                const faktorsazData = loadData(STORAGE_KEYS.faktorsaz);
+                const hoquqData = loadData(STORAGE_KEYS.hoquq);
+                const budjebanData = loadData(STORAGE_KEYS.budjeban);
+                const profilesData = loadData(STORAGE_KEYS.profiles);
+
+                const tStr = todayStr();
+                const todayTx = hesabakData.filter(tx => tx.date === tStr);
+                const salesToday = todayTx.filter(tx => tx.type === 'sale').reduce((s, tx) => s + (tx.amount || 0), 0);
+                const expToday = todayTx.filter(tx => tx.type === 'expense').reduce((s, tx) => s + (tx.amount || 0), 0);
+                els.statSalesToday.textContent = fmt(salesToday);
+                els.statExpToday.textContent = fmt(expToday);
+                const totalBalance = hesabakData.reduce((s, tx) => {
+                    if (tx.type === 'sale') return s + (tx.amount || 0);
+                    if (tx.type === 'expense') return s - (tx.amount || 0);
+                    return s;
+                }, 0);
+                els.statBalance.textContent = fmt(totalBalance);
+
+                els.badgeHesabak.textContent = hesabakData.length;
+                els.badgeDaftar.textContent = daftarData.length;
+                els.badgeAnbarak.textContent = anbarakData.length;
+                els.badgeFaktorsaz.textContent = faktorsazData.length;
+                els.badgeHoqouqsaz.textContent = hoquqData.length;
+                els.badgeBudjeban.textContent = budjebanData.length;
+                els.badgeProfiles.textContent = profilesData.length;
+
+                drawTrendChart(hesabakData);
+            }
+
+            // ==================== TAB SWITCHING ====================
+            function switchChartTab(tab) {
+                const isWeek = tab === 'week';
+                els.weekChartCard.style.display = isWeek ? '' : 'none';
+                els.trendChartCard.style.display = isWeek ? 'none' : '';
+                els.tabWeekBtn.classList.toggle('active', isWeek);
+                els.tabTrendBtn.classList.toggle('active', !isWeek);
+                if (isWeek) {
+                    drawWeekChart();
+                } else {
+                    refreshBusiness();
+                }
+            }
+
+            // ==================== EXPORT / IMPORT ====================
+            function exportProgress() {
+                const data = {
+                    completedDays: getCompletedDays(),
+                    completionLog: getCompletionLog(),
+                    speed: getSpeed(),
+                    dailyGoal: getDailyGoal(),
+                    sessionNotes: getSessionNotes(),
+                    exportedAt: new Date().toISOString(),
+                    version: '2.0'
+                };
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'gqr_progress_backup.json';
+                a.click();
+                URL.revokeObjectURL(url);
+                launchStar();
+            }
+
+            function importProgress(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        if (data.completedDays !== undefined) safeSet(STORAGE_KEYS.completedDays, data.completedDays);
+                        if (data.completionLog !== undefined) safeSet(STORAGE_KEYS.completionLog, data.completionLog);
+                        if (data.speed !== undefined) localStorage.setItem(STORAGE_KEYS.speed, String(data.speed));
+                        if (data.dailyGoal !== undefined) localStorage.setItem(STORAGE_KEYS.dailyGoal, String(data
+                        .dailyGoal));
+                        if (data.sessionNotes !== undefined) safeSet(STORAGE_KEYS.sessionNotes, data.sessionNotes);
+                        updateEduDashboard();
+                        refreshBusiness();
+                        launchStar();
+                        alert('✅ پیشرفت با موفقیت بازیابی شد!');
+                    } catch (err) {
+                        alert('❌ خطا در خواندن فایل: ' + err.message);
+                    }
+                };
+                reader.readAsText(file);
+            }
+
+            // ==================== RESET ====================
+            function resetProgress() {
+                if (!confirm('⚠️ آیا مطمئن هستید که می‌خواهید تمام پیشرفت دوره را بازنشانی کنید؟ این عمل قابل بازگشت نیست.'))
+                    return;
+                localStorage.removeItem(STORAGE_KEYS.completedDays);
+                localStorage.removeItem(STORAGE_KEYS.completionLog);
+                localStorage.removeItem(STORAGE_KEYS.sessionNotes);
+                updateEduDashboard();
+                launchStar();
+            }
+
+            // ==================== INIT ====================
+            function init() {
+                // date
+                els.currentDate.textContent = new Date().toLocaleDateString('fa-IR', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                // motivation
+                const quotes = [
+                    '«هر جلسه یک قدم به تسلط نزدیک‌تر» 🌟',
+                    '«موفقیت مجموع تلاش‌های کوچک روزانه است» 💪',
+                    '«حسابداران برتر، رهبران مالی فردا هستند» 🌌',
+                    '«امروز را بساز، فردا تحلیل کن» 🔥',
+                    '«یادگیری حسابداری، کلید درک دنیای اقتصاد است» 📊'
+                ];
+                els.motivationText.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+
+                // build nodes & update
+                buildNodes();
+                updateEduDashboard();
+                refreshBusiness();
+                showRandomTerm();
+
+                // --- events ---
+                els.speedRange.addEventListener('input', function() {
+                    localStorage.setItem(STORAGE_KEYS.speed, this.value);
+                    updateEduDashboard();
+                });
+
+                els.dailyGoalInput.addEventListener('change', function() {
+                    const v = parseInt(this.value) || 2;
+                    setDailyGoal(Math.max(1, Math.min(10, v)));
+                    this.value = getDailyGoal();
+                    updateEduDashboard();
+                });
+
+                els.tabWeekBtn.addEventListener('click', function() { switchChartTab('week'); });
+                els.tabTrendBtn.addEventListener('click', function() { switchChartTab('trend'); });
+
+                els.termRefreshBtn.addEventListener('click', function() {
+                    showRandomTerm();
+                    launchStar();
+                });
+
+                els.resetProgressBtn.addEventListener('click', resetProgress);
+
+                // export
+                els.exportBtn.addEventListener('click', exportProgress);
+                els.importBtn.addEventListener('click', function() {
+                    els.importFileInput.click();
+                });
+                els.importFileInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        importProgress(this.files[0]);
+                    }
+                    this.value = '';
+                });
+
+                // modal
+                els.modalSaveBtn.addEventListener('click', saveNotes);
+                els.modalDeleteBtn.addEventListener('click', deleteNotes);
+                els.modalCloseBtn.addEventListener('click', closeNotesModal);
+                els.notesModal.addEventListener('click', function(e) {
+                    if (e.target === this) closeNotesModal();
+                });
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') closeNotesModal();
+                    if (e.key === 'Enter' && e.ctrlKey && els.notesModal.classList.contains('active')) saveNotes();
+                });
+
+                // auto refresh business
+                setInterval(refreshBusiness, 30000);
+
+                // resize handler
+                let resizeTimer;
+                window.addEventListener('resize', function() {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(() => {
+                        if (els.weekChartCard.style.display !== 'none') drawWeekChart();
+                        if (els.trendChartCard.style.display !== 'none') refreshBusiness();
+                    }, 300);
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+    </script>
+</body>
+</html>

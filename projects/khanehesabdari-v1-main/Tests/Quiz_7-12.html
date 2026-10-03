@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>آزمون تستی جلسات ۷ تا ۱۲ | کیانوش کریمی</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: rgba(24,24,24,0.75);
+            --surface2: rgba(40,40,40,0.5);
+            --text: #f0f0f0;
+            --text2: #c0c0c0;
+            --primary: #fbbf24;
+            --accent: #2dd4bf;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --border: rgba(255,255,255,0.1);
+            --shadow: 0 4px 20px rgba(0,0,0,0.5);
+            --radius: 16px;
+            --radius-sm: 10px;
+            direction: rtl;
+            font-size: 15px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Vazirmatn','B Nazanin','Tahoma',sans-serif;
+            background: #0a0a0a; color: var(--text); line-height: 1.8;
+            min-height: 100vh; padding: 12px; display: flex; justify-content: center;
+            -webkit-tap-highlight-color: transparent; position: relative; overflow-x: hidden;
+        }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0.55; }
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1.4); opacity: 0; }
+        }
+        .container { position: relative; z-index: 1; max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 14px; }
+        .header {
+            background: rgba(24,24,24,0.7); backdrop-filter: blur(22px);
+            border: 1px solid var(--border); border-radius: 24px;
+            padding: 20px 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .header::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #fbbf24, #22c55e, #fbbf24);
+            background-size: 200% 100%; animation: headerBar 3s linear infinite;
+        }
+        @keyframes headerBar { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+        .glow-text {
+            font-size: 1.6rem; font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #22c55e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .card {
+            background: rgba(24,24,24,0.65); backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius);
+            padding: 18px 16px; box-shadow: var(--shadow);
+        }
+        .quiz-block { margin: 10px 0; padding: 14px; background: rgba(40,40,40,0.4); border-radius: var(--radius-sm); }
+        .quiz-block strong { display: block; margin-bottom: 8px; }
+        .quiz-opt {
+            display: block; width: 100%; text-align: right; padding: 10px 14px; margin: 5px 0;
+            background: rgba(20,20,20,0.6); border: 2px solid rgba(255,255,255,0.1); border-radius: 8px;
+            cursor: pointer; font-family: inherit; font-size: 0.9rem; transition: 0.2s; color: #e0e0e0;
+        }
+        .quiz-opt.correct { background: rgba(34,197,94,0.2); border-color: #22c55e; color: #22c55e; font-weight: 700; }
+        .quiz-opt.wrong { background: rgba(239,68,68,0.2); border-color: #ef4444; color: #ef4444; }
+        .quiz-opt:disabled { pointer-events: none; opacity: 0.85; }
+        .progress-bar { height: 6px; background: rgba(40,40,40,0.6); border-radius: 6px; overflow: hidden; margin: 4px 0 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #fbbf24, #22c55e); width: 0%; transition: width 0.4s; }
+        .btn { display: inline-block; padding: 10px 22px; border-radius: 25px; border: none; font-family: inherit; font-weight: 700; cursor: pointer; font-size: 0.9rem; background: #fbbf24; color: #000; }
+        .footer { text-align: center; font-size: 0.75rem; color: #666; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div class="particles" id="pc"></div>
+    <div class="container">
+        <div class="header">
+            <h1 class="glow-text">📝 آزمون تستی: جلسات ۷ تا ۱۲</h1>
+            <p style="color:#c0c0c0;">۲۵ سوال — جریان نقد، نقدی/تعهدی، تعدیلات، بستن حساب‌ها، موجودی کالا، استهلاک</p>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
+        <div id="quizContainer"></div>
+        <div id="quizScore" style="text-align:center;font-weight:700;margin-top:8px;font-size:1.2rem;"></div>
+        <div style="text-align:center;margin:15px 0;"><button class="btn" id="resetBtn">🔄 شروع دوباره</button></div>
+        <div class="footer">✍️ کیانوش کریمی | 📅 ۱۴۰۴</div>
+    </div>
+    <script>
+        const pc=document.getElementById('pc');
+        for(let i=0;i<50;i++){
+            const p=document.createElement('div');p.classList.add('particle');
+            const s=Math.random()*5+2;
+            p.style.width=s+'px';p.style.height=s+'px';
+            p.style.left=Math.random()*100+'%';
+            p.style.animationDuration=Math.random()*18+10+'s';
+            p.style.animationDelay=Math.random()*12+'s';
+            const colors=['#fbbf24','#22c55e','#ef4444','#2dd4bf','#f59e0b'];
+            p.style.background=colors[Math.floor(Math.random()*colors.length)];
+            p.style.boxShadow=`0 0 ${s+3}px ${p.style.background}`;
+            pc.appendChild(p);
+        }
+        const quizData=[
+            {q:'صورت جریان وجوه نقد چه چیزی را نشان می‌دهد؟',opts:['سود خالص','ورود و خروج واقعی پول','دارایی‌های ثابت','بدهی‌ها'],ans:1},
+            {q:'کدام یک جزو فعالیت‌های عملیاتی نیست؟',opts:['دریافت از مشتریان','پرداخت حقوق','خرید ساختمان','پرداخت به تأمین‌کنندگان'],ans:2},
+            {q:'دریافت وام بانکی در کدام بخش گزارش می‌شود؟',opts:['عملیاتی','سرمایه‌گذاری','تأمین مالی','هیچکدام'],ans:2},
+            {q:'در مبنای نقدی، درآمد چه زمانی شناسایی می‌شود؟',opts:['هنگام فروش','هنگام دریافت پول','پایان سال','هنگام ثبت سند'],ans:1},
+            {q:'کدام مبنا برای گزارشگری رسمی الزامی است؟',opts:['نقدی','تعهدی','هر دو','هیچکدام'],ans:1},
+            {q:'افزایش حساب‌های دریافتنی چه اثری بر سود تعهدی دارد؟',opts:['کاهش','افزایش','بی‌تأثیر','بستگی دارد'],ans:1},
+            {q:'هدف اصلی ثبت‌های تعدیلی چیست؟',opts:['افزایش فروش','تطبیق حساب‌ها با واقعیت','محاسبه مالیات','تهیه تراز آزمایشی'],ans:1},
+            {q:'در ثبت تعدیلی پیش‌پرداخت، کدام حساب بدهکار می‌شود؟',opts:['پیش‌پرداخت','هزینه','بانک','بدهی'],ans:1},
+            {q:'استهلاک انباشته چه نوع حسابی است؟',opts:['بدهی','هزینه','دارایی کاهنده','سرمایه'],ans:2},
+            {q:'حقوق معوق پایان سال در کدام دسته قرار می‌گیرد؟',opts:['پیش‌پرداخت','استهلاک','هزینه معوق','درآمد معوق'],ans:2},
+            {q:'کدام حساب در پایان سال بسته نمی‌شود؟',opts:['درآمد فروش','هزینه حقوق','بانک','خلاصه سود و زیان'],ans:2},
+            {q:'اولین گام بستن حساب‌ها چیست؟',opts:['بستن هزینه‌ها','بستن درآمدها','بستن برداشت','بستن دارایی‌ها'],ans:1},
+            {q:'اگر درآمد ۲۰۰ و هزینه ۲۵۰ باشد، در گام سوم چه اتفاقی می‌افتد؟',opts:['سود انباشته بدهکار می‌شود','سود انباشته بستانکار می‌شود','ثبت نمی‌شود','هیچکدام'],ans:0},
+            {q:'در شرایط تورمی، کدام روش سود بیشتری نشان می‌دهد؟',opts:['FIFO','LIFO','میانگین','تفاوتی ندارد'],ans:0},
+            {q:'کدام روش ارزیابی موجودی در ایران مجاز نیست؟',opts:['FIFO','LIFO','میانگین','همه مجازند'],ans:1},
+            {q:'در سیستم ادواری، COGS چه زمانی محاسبه می‌شود؟',opts:['هر روز','هر هفته','پایان دوره','هنگام هر فروش'],ans:2},
+            {q:'کدام دارایی استهلاک ندارد؟',opts:['ساختمان','ماشین‌آلات','زمین','وسایل نقلیه'],ans:2},
+            {q:'در روش خط مستقیم، هزینه استهلاک چگونه است؟',opts:['افزایشی','کاهشی','ثابت','متغیر'],ans:2},
+            {q:'کدام روش بیشترین هزینه را در سال اول نشان می‌دهد؟',opts:['خط مستقیم','نزولی','مجموع سنوات','همه برابرند'],ans:1},
+            {q:'استهلاک چه نوع هزینه‌ای است؟',opts:['نقدی','غیرنقدی','عملیاتی','مالی'],ans:1},
+            {q:'ذخیره مطالبات مشکوک‌الوصول چه نوع حسابی است؟',opts:['بدهی','هزینه','دارایی کاهنده','سرمایه'],ans:2},
+            {q:'در روش درصدی از فروش، مبنای محاسبه کدام است؟',opts:['دریافتنی پایان دوره','فروش نسیه','کل دارایی','سود خالص'],ans:1},
+            {q:'اگر ذخیره قبلی ۵ و مورد نیاز ۸ باشد، هزینه تعدیلی چقدر است؟',opts:['۵','۸','۳','۱۳'],ans:2},
+            {q:'کدام اصل حسابداری توجیه‌کننده ایجاد ذخیره است؟',opts:['تطابق','محافظه‌کاری','بهای تمام‌شده','افشای کامل'],ans:1},
+            {q:'در روش درصدی از دریافتنی، تمرکز بر کدام صورت مالی است؟',opts:['سود و زیان','ترازنامه','جریان نقد','یادداشت‌ها'],ans:1},
+        ];
+        const qc=document.getElementById('quizContainer');
+        let qa=0,qco=0,qf=false;
+        quizData.forEach((q,idx)=>{
+            const block=document.createElement('div');block.className='quiz-block';
+            block.innerHTML=`<strong>${idx+1}. ${q.q}</strong>`;
+            q.opts.forEach((opt,optIdx)=>{
+                const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;
+                btn.addEventListener('click',()=>{
+                    if(btn.disabled)return;
+                    const all=block.querySelectorAll('.quiz-opt');all.forEach(b=>b.disabled=true);
+                    if(optIdx===q.ans){btn.classList.add('correct');qco++;}
+                    else{btn.classList.add('wrong');all[q.ans].classList.add('correct');}
+                    qa++;
+                    document.getElementById('pf').style.width=Math.round((qa/quizData.length)*100)+'%';
+                    if(qa===quizData.length&&!qf){
+                        qf=true;
+                        document.getElementById('quizScore').innerHTML=`🎯 نتیجه: ${qco} از ${quizData.length} — ${qco>=20?'عالی!':qco>=15?'خوب':'بیشتر تمرین کن'}`;
+                    }
+                });
+                block.appendChild(btn);
+            });
+            qc.appendChild(block);
+        });
+        document.getElementById('resetBtn').addEventListener('click',()=>{
+            document.querySelectorAll('.quiz-opt').forEach(o=>{o.classList.remove('correct','wrong');o.disabled=false;});
+            document.getElementById('quizScore').innerHTML='';
+            document.getElementById('pf').style.width='0%';
+            qa=0;qco=0;qf=false;
+            window.scrollTo({top:0,behavior:'smooth'});
+        });
+    </script>
+</body>
+</html>

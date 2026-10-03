@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حسابداری آقای دارابی - صورت‌های مالی</title>
+    <style>
+        /* ===== استایل پایه ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Tahoma, 'Vazirmatn', sans-serif;
+            background: #f2f5f9;
+            color: #1a1e2a;
+            padding: 20px;
+            direction: rtl;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            padding: 24px 28px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ===== عنوان ===== */
+        .header {
+            text-align: center;
+            padding-bottom: 18px;
+            border-bottom: 2px solid #eaeef4;
+            margin-bottom: 24px;
+        }
+        .header .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1a5f8a;
+        }
+        .header .logo span {
+            color: #c9952b;
+        }
+        .header h1 {
+            font-size: 1.6rem;
+            margin-top: 4px;
+            color: #1a2a3a;
+        }
+        .header .sub {
+            color: #6a7b8c;
+            background: #eef2f6;
+            display: inline-block;
+            padding: 2px 24px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        /* ===== دکمه‌های برگه ===== */
+        .tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            background: #f7f9fc;
+            padding: 6px;
+            border-radius: 14px;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 80px;
+            padding: 10px 6px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #4a5a6a;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .tab-btn:hover {
+            background: rgba(26, 95, 138, 0.08);
+            color: #1a5f8a;
+        }
+        .tab-btn.active {
+            background: #1a5f8a;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(26, 95, 138, 0.3);
+        }
+
+        /* ===== محتوای برگه‌ها ===== */
+        .tab-content {
+            display: none;
+            padding: 8px 0;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a2a3a;
+            margin-bottom: 14px;
+        }
+        .section-title .badge {
+            background: #c9952b;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .desc-box {
+            background: #f7f9fc;
+            padding: 12px 18px;
+            border-radius: 12px;
+            border-right: 4px solid #1a5f8a;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+            color: #3a4a5a;
+        }
+
+        /* ===== جدول ===== */
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid #e8edf3;
+            border-radius: 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 500px;
+        }
+        th {
+            background: #1a2a3a;
+            color: #fff;
+            padding: 12px 10px;
+            font-weight: 600;
+            text-align: center;
+        }
+        td {
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 1px solid #eef3f8;
+        }
+        .debit {
+            color: #1a5f8a;
+            font-weight: 700;
+        }
+        .credit {
+            color: #b04040;
+            font-weight: 700;
+        }
+        .balance-pos {
+            color: #1a5f8a;
+            font-weight: 700;
+        }
+        .balance-neg {
+            color: #b04040;
+            font-weight: 700;
+        }
+
+        /* ===== کارت‌های دفتر کل ===== */
+        .ledger-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .ledger-card {
+            border: 1px solid #e0e8f0;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #fafcfe;
+        }
+        .ledger-card .l-title {
+            background: #1a2a3a;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .ledger-card table {
+            font-size: 0.8rem;
+            min-width: unset;
+        }
+        .ledger-card th {
+            background: #2c3d55;
+            padding: 6px 4px;
+            font-size: 0.7rem;
+        }
+        .ledger-card td {
+            padding: 6px 4px;
+        }
+        .balance-row {
+            background: #e8f0f8;
+            font-weight: 700;
+        }
+        .balance-row td {
+            border-top: 2px solid #1a5f8a;
+        }
+
+        /* ===== خلاصه تراز ===== */
+        .tb-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: space-around;
+            margin-top: 18px;
+            padding: 16px 20px;
+            background: #f7f9fc;
+            border-radius: 14px;
+            border: 1px solid #e8edf3;
+        }
+        .tb-summary .item {
+            text-align: center;
+        }
+        .tb-summary .label {
+            font-size: 0.8rem;
+            color: #6a7b8c;
+        }
+        .tb-summary .value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        .tb-summary .green {
+            color: #1a5f8a;
+        }
+        .tb-summary .red {
+            color: #b04040;
+        }
+
+        /* ===== استایل اختصاصی صورت‌های مالی ===== */
+        .financial-statement {
+            background: #fafcfe;
+            border: 1px solid #e8edf3;
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-top: 6px;
+        }
+        .financial-statement .fs-title {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #1a2a3a;
+            margin-bottom: 4px;
+        }
+        .financial-statement .fs-sub {
+            text-align: center;
+            color: #6a7b8c;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e8edf3;
+            padding-bottom: 10px;
+        }
+        .fs-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 8px;
+            border-bottom: 1px solid #f0f4f9;
+            font-size: 0.95rem;
+        }
+        .fs-row .label {
+            text-align: right;
+            font-weight: 500;
+        }
+        .fs-row .value {
+            text-align: left;
+            font-weight: 600;
+            color: #1a2a3a;
+        }
+        .fs-row.total {
+            border-top: 2px solid #1a5f8a;
+            border-bottom: none;
+            padding-top: 10px;
+            margin-top: 4px;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+        .fs-row.total .value {
+            color: #1a5f8a;
+        }
+        .fs-row .indent {
+            padding-right: 20px;
+            color: #4a5a6a;
+        }
+        .fs-row .indent2 {
+            padding-right: 40px;
+            color: #6a7b8c;
+            font-size: 0.9rem;
+        }
+        .fs-row .highlight {
+            color: #1a5f8a;
+            font-weight: 700;
+        }
+        .fs-row .highlight-red {
+            color: #b04040;
+            font-weight: 700;
+        }
+        .fs-section {
+            margin: 12px 0;
+        }
+        .fs-section .section-label {
+            font-weight: 700;
+            color: #1a2a3a;
+            background: #eef2f6;
+            padding: 4px 12px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        .fs-row.total-grand {
+            border-top: 3px double #1a5f8a;
+            padding-top: 10px;
+            margin-top: 6px;
+            font-size: 1.1rem;
+        }
+
+        /* ===== پانویس ===== */
+        .footer {
+            margin-top: 30px;
+            padding-top: 18px;
+            border-top: 2px solid #e8edf3;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #6a7b8c;
+        }
+        .footer .creator {
+            font-weight: 700;
+            color: #1a5f8a;
+        }
+
+        /* ===== واکنشگرا ===== */
+        @media (max-width: 600px) {
+            .container {
+                padding: 14px;
+            }
+            .tabs .tab-btn {
+                font-size: 0.7rem;
+                padding: 6px 3px;
+                min-width: 55px;
+            }
+            .section-title {
+                font-size: 1.1rem;
+            }
+            .ledger-grid {
+                grid-template-columns: 1fr;
+            }
+            .financial-statement {
+                padding: 14px 16px;
+            }
+            .financial-statement .fs-title {
+                font-size: 1.1rem;
+            }
+            .fs-row {
+                font-size: 0.85rem;
+                padding: 4px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== سربرگ ===== -->
+        <div class="header">
+            <div class="logo">🏠 <span>خانه حسابداری</span></div>
+            <h1>📒 شرکت خدماتی آقای دارابی</h1>
+            <div class="sub">آذر ۱۳۹۵ — صورت‌های مالی کامل</div>
+        </div>
+
+        <!-- ===== دکمه‌های برگه ===== -->
+        <div class="tabs">
+            <button class="tab-btn active" data-target="tab-problem">📋 صورت مسئله</button>
+            <button class="tab-btn" data-target="tab-journal">📖 دفتر روزنامه</button>
+            <button class="tab-btn" data-target="tab-ledger">📁 دفتر کل</button>
+            <button class="tab-btn" data-target="tab-trial">⚖️ تراز آزمایشی</button>
+            <button class="tab-btn" data-target="tab-pl">📊 سود و زیان</button>
+            <button class="tab-btn" data-target="tab-equity">💰 صورت سرمایه</button>
+            <button class="tab-btn" data-target="tab-bs">🏛️ ترازنامه</button>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- برگه ۱: صورت مسئله -->
+        <!-- ========================================================== -->
+        <div id="tab-problem" class="tab-content active">
+            <div class="section-title">📋 رویدادهای مالی <span class="badge">آذر ۱۳۹۵</span></div>
+            <div class="desc-box">
+                <strong>آقای دارابی</strong> شرکت خدماتی خود را در تاریخ ۱ آذر ۱۳۹۵ تاسیس کرد. رویدادهای زیر در طول ماه انجام شد. مطلوب است ثبت در دفتر روزنامه، دفتر کل و تراز آزمایشی و تهیه صورت‌های مالی در تاریخ ۳۰ آذر.
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>#</th><th style="text-align:right;">تاریخ</th><th style="text-align:right;">شرح رویداد</th><th>مبلغ (میلیون)</th></tr>
+                    </thead>
+                    <tbody id="problemData">
+                        <!-- توسط JS پر می‌شود -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- برگه ۲: دفتر روزنامه -->
+        <!-- ========================================================== -->
+        <div id="tab-journal" class="tab-content">
+            <div class="section-title">📖 دفتر روزنامه <span class="badge">ثبت دوطرفه</span></div>
+            <div class="desc-box">ثبت هر رویداد به صورت بدهکار و بستانکار در دفتر روزنامه.</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>ردیف</th><th style="text-align:right;">شرح</th><th>بدهکار (میلیون)</th><th>بستانکار (میلیون)</th></tr>
+                    </thead>
+                    <tbody id="journalBody">
+                        <!-- توسط JS پر می‌شود -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- برگه ۳: دفتر کل -->
+        <!-- ========================================================== -->
+        <div id="tab-ledger" class="tab-content">
+            <div class="section-title">📁 دفتر کل <span class="badge">انتقال از روزنامه</span></div>
+            <div class="desc-box">هر حساب به صورت جداگانه با مانده نهایی.</div>
+            <div class="ledger-grid" id="ledgerGrid">
+                <!-- توسط JS پر می‌شود -->
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- برگه ۴: تراز آزمایشی -->
+        <!-- ========================================================== -->
+        <div id="tab-trial" class="tab-content">
+            <div class="section-title">⚖️ تراز آزمایشی <span class="badge">۳۰ آذر</span></div>
+            <div class="desc-box">فهرست مانده حساب‌ها در پایان دوره. مجموع بدهکار و بستانکار باید برابر باشد.</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th style="text-align:right;">نام حساب</th><th>بدهکار (میلیون)</th><th>بستانکار (میلیون)</th></tr>
+                    </thead>
+                    <tbody id="trialBody">
+                        <!-- توسط JS پر می‌شود -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="tb-summary" id="trialSummary">
+                <!-- توسط JS پر می‌شود -->
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- برگه ۵: صورت سود و زیان -->
+        <!-- ========================================================== -->
+        <div id="tab-pl" class="tab-content">
+            <div class="section-title">📊 صورت سود و زیان <span class="badge">ماه آذر ۱۳۹۵</span></div>
+            <div class="desc-box">درآمدها و هزینه‌های شرکت در طول ماه. سود خالص به حساب سرمایه منتقل می‌شود.</div>
+            <div class="financial-statement" id="plStatement">
+                <!-- توسط JS پر می‌شود -->
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- برگه ۶: صورت حساب سرمایه -->
+        <!-- ========================================================== -->
+        <div id="tab-equity" class="tab-content">
+            <div class="section-title">💰 صورت حساب سرمایه <span class="badge">۳۰ آذر ۱۳۹۵</span></div>
+            <div class="desc-box">تغییرات سرمایه صاحب شرکت از ابتدا تا پایان دوره.</div>
+            <div class="financial-statement" id="equityStatement">
+                <!-- توسط JS پر می‌شود -->
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- برگه ۷: ترازنامه -->
+        <!-- ========================================================== -->
+        <div id="tab-bs" class="tab-content">
+            <div class="section-title">🏛️ ترازنامه <span class="badge">۳۰ آذر ۱۳۹۵</span></div>
+            <div class="desc-box">وضعیت دارایی‌ها، بدهی‌ها و حقوق صاحب شرکت در پایان دوره.</div>
+            <div class="financial-statement" id="bsStatement">
+                <!-- توسط JS پر می‌شود -->
+            </div>
+        </div>
+
+        <!-- ===== پانویس ===== -->
+        <div class="footer">
+            <div class="creator">🏠 خانه حسابداری</div>
+            <div>پروژه کلاسی حسابداری مقدماتی — شرکت آقای دارابی</div>
+        </div>
+
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- ===== جاوااسکریپت ===== -->
+    <!-- ========================================================== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ===== داده‌های رویدادها (میلیون ریال) =====
+            const transactions = [
+                { date: '۱ آذر', desc: 'سرمایه‌گذاری وجه نقد', debit: 'وجه نقد', credit: 'سرمایه', amount: 200 },
+                { date: '۲ آذر', desc: 'پرداخت اجاره دفتر', debit: 'هزینه اجاره', credit: 'وجه نقد', amount: 10 },
+                { date: '۳ آذر', desc: 'خرید تجهیزات (۱۰۰ نقد + ۱۵۰ سفته)', debit: 'تجهیزات', credit: 'وجه نقد', amount: 100 },
+                { date: '۳ آذر', desc: 'خرید تجهیزات (باقی سفته)', debit: 'تجهیزات', credit: 'سفته پرداختنی', amount: 150 },
+                { date: '۴ آذر', desc: 'پرداخت بیمه یکسال حوادث', debit: 'بیمه پرداختنی (پیش‌پرداخت)', credit: 'وجه نقد',
+                amount: 12 },
+                { date: '۱۰ آذر', desc: 'صورت حساب تبلیغات (روزنامه)', debit: 'هزینه تبلیغات', credit: 'بدهی تبلیغات',
+                    amount: 2 },
+                { date: '۲۰ آذر', desc: 'برداشت وجه برای مصارف شخصی', debit: 'برداشت صاحب', credit: 'وجه نقد', amount: 7 },
+                { date: '۳۰ آذر', desc: 'دریافت وجه نقد بابت خدمات', debit: 'وجه نقد', credit: 'درآمد خدمات', amount: 62 }
+            ];
+
+            // ===== تبدیل عدد به فرمت فارسی =====
+            function fmt(n) {
+                return Number(n).toLocaleString('fa-IR');
+            }
+
+            // ==========================================================
+            // ۱. نمایش صورت مسئله
+            // ==========================================================
+            function renderProblem() {
+                const tbody = document.getElementById('problemData');
+                if (!tbody) return;
+                let html = '';
+                transactions.forEach((tx, i) => {
+                    html += `<tr>
+                        <td>${i+1}</td>
+                        <td style="text-align:right;">${tx.date}</td>
+                        <td style="text-align:right;">${tx.desc}</td>
+                        <td class="debit">${fmt(tx.amount)}</td>
+                    </tr>`;
+                });
+                tbody.innerHTML = html;
+            }
+
+            // ==========================================================
+            // ۲. دفتر روزنامه
+            // ==========================================================
+            function renderJournal() {
+                const tbody = document.getElementById('journalBody');
+                if (!tbody) return;
+                let html = '';
+                let rowNum = 1;
+                transactions.forEach((tx, idx) => {
+                    // بدهکار
+                    html += `<tr>
+                        <td>${rowNum}</td>
+                        <td style="text-align:right;"><strong>${tx.debit}</strong> — ${tx.desc}</td>
+                        <td class="debit">${fmt(tx.amount)}</td>
+                        <td></td>
+                    </tr>`;
+                    // بستانکار
+                    html += `<tr>
+                        <td></td>
+                        <td style="text-align:right; padding-right:30px;">${tx.credit}</td>
+                        <td></td>
+                        <td class="credit">${fmt(tx.amount)}</td>
+                    </tr>`;
+                    rowNum++;
+                    if (idx < transactions.length - 1) {
+                        html += `<tr style="background:#f0f6fe;"><td colspan="4" style="padding:2px;"></td></tr>`;
+                    }
+                });
+                tbody.innerHTML = html;
+            }
+
+            // ==========================================================
+            // ۳. دفتر کل
+            // ==========================================================
+            function renderLedger() {
+                const entries = [];
+                transactions.forEach(tx => {
+                    entries.push({ account: tx.debit, amount: tx.amount, side: 'debit', desc: tx.desc });
+                    entries.push({ account: tx.credit, amount: tx.amount, side: 'credit', desc: tx.desc });
+                });
+
+                const groups = {};
+                entries.forEach(e => {
+                    if (!groups[e.account]) groups[e.account] = [];
+                    groups[e.account].push(e);
+                });
+
+                const order = [
+                    'وجه نقد', 'تجهیزات', 'بیمه پرداختنی (پیش‌پرداخت)',
+                    'سرمایه', 'برداشت صاحب',
+                    'درآمد خدمات',
+                    'هزینه اجاره', 'هزینه تبلیغات',
+                    'سفته پرداختنی', 'بدهی تبلیغات'
+                ];
+
+                const grid = document.getElementById('ledgerGrid');
+                if (!grid) return;
+                let html = '';
+
+                order.forEach(acc => {
+                    const items = groups[acc] || [];
+                    if (items.length === 0) return;
+                    let dr = 0,
+                        cr = 0;
+                    let rows = '';
+                    items.forEach(e => {
+                        if (e.side === 'debit') dr += e.amount;
+                        else cr += e.amount;
+                        rows += `<tr>
+                            <td style="font-size:0.7rem; color:#6a7b8c;">—</td>
+                            <td style="text-align:right; font-size:0.75rem;">${e.desc}</td>
+                            <td class="${e.side === 'debit' ? 'debit' : ''}">${e.side === 'debit' ? fmt(e.amount) : ''}</td>
+                            <td class="${e.side === 'credit' ? 'credit' : ''}">${e.side === 'credit' ? fmt(e.amount) : ''}</td>
+                        </tr>`;
+                    });
+                    const bal = dr - cr;
+                    const balStr = bal > 0 ? fmt(bal) : (bal < 0 ? fmt(-bal) : '۰');
+                    const balClass = bal > 0 ? 'balance-pos' : (bal < 0 ? 'balance-neg' : '');
+
+                    html += `<div class="ledger-card">
+                        <div class="l-title">${acc}</div>
+                        <table>
+                            <thead><tr><th>تاریخ</th><th>شرح</th><th>بدهکار</th><th>بستانکار</th></tr></thead>
+                            <tbody>
+                                ${rows}
+                                <tr class="balance-row">
+                                    <td colspan="2"><strong>مانده</strong></td>
+                                    <td class="${balClass}">${bal > 0 ? balStr : ''}</td>
+                                    <td class="${balClass}">${bal < 0 ? balStr : ''}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>`;
+                });
+
+                grid.innerHTML = html;
+            }
+
+            // ==========================================================
+            // ۴. تراز آزمایشی
+            // ==========================================================
+            function renderTrial() {
+                const entries = [];
+                transactions.forEach(tx => {
+                    entries.push({ account: tx.debit, amount: tx.amount, side: 'debit' });
+                    entries.push({ account: tx.credit, amount: tx.amount, side: 'credit' });
+                });
+
+                const groups = {};
+                entries.forEach(e => {
+                    if (!groups[e.account]) groups[e.account] = { dr: 0, cr: 0 };
+                    if (e.side === 'debit') groups[e.account].dr += e.amount;
+                    else groups[e.account].cr += e.amount;
+                });
+
+                const order = [
+                    'وجه نقد', 'تجهیزات', 'بیمه پرداختنی (پیش‌پرداخت)',
+                    'سرمایه', 'برداشت صاحب',
+                    'درآمد خدمات',
+                    'هزینه اجاره', 'هزینه تبلیغات',
+                    'سفته پرداختنی', 'بدهی تبلیغات'
+                ];
+
+                const tbody = document.getElementById('trialBody');
+                if (!tbody) return;
+                let html = '';
+                let totalDr = 0,
+                    totalCr = 0;
+
+                order.forEach(acc => {
+                    const g = groups[acc];
+                    if (!g) return;
+                    const net = g.dr - g.cr;
+                    let drCol = '',
+                        crCol = '';
+                    if (net > 0) { drCol = fmt(net);
+                        totalDr += net; } else if (net < 0) { crCol = fmt(-net);
+                        totalCr += -net; } else { drCol = '۰';
+                        crCol = '۰'; }
+                    html += `<tr>
+                        <td style="text-align:right; font-weight:600;">${acc}</td>
+                        <td class="debit">${drCol}</td>
+                        <td class="credit">${crCol}</td>
+                    </tr>`;
+                });
+
+                html += `<tr style="background:#e8f0f8; font-weight:700; border-top:2px solid #1a5f8a;">
+                    <td style="text-align:right;">جمع کل</td>
+                    <td class="debit">${fmt(totalDr)}</td>
+                    <td class="credit">${fmt(totalCr)}</td>
+                </tr>`;
+                tbody.innerHTML = html;
+
+                const summary = document.getElementById('trialSummary');
+                if (summary) {
+                    const equal = totalDr === totalCr;
+                    const status = equal ? '✅ متوازن (تراز)' : '⚠️ عدم توازن';
+                    const color = equal ? '#1a8e4a' : '#b04040';
+                    summary.innerHTML = `
+                        <div class="item"><div class="label">مجموع بدهکارها</div><div class="value green">${fmt(totalDr)} میلیون</div></div>
+                        <div class="item"><div class="label">مجموع بستانکارها</div><div class="value red">${fmt(totalCr)} میلیون</div></div>
+                        <div class="item"><div class="label">وضعیت</div><div class="value" style="color:${color};">${status}</div></div>
+                    `;
+                }
+            }
+
+            // ==========================================================
+            // ۵. صورت سود و زیان
+            // ==========================================================
+            function renderPL() {
+                const container = document.getElementById('plStatement');
+                if (!container) return;
+
+                // محاسبه
+                const revenue = 62;
+                const rentExpense = 10;
+                const adExpense = 2;
+                const totalExpenses = rentExpense + adExpense;
+                const netIncome = revenue - totalExpenses;
+
+                let html = `
+                    <div class="fs-title">📊 صورت سود و زیان</div>
+                    <div class="fs-sub">شرکت خدماتی آقای دارابی — برای ماه آذر ۱۳۹۵</div>
+
+                    <div class="fs-section">
+                        <div class="section-label">درآمدها</div>
+                        <div class="fs-row">
+                            <span class="label">درآمد خدمات</span>
+                            <span class="value">${fmt(revenue)} میلیون</span>
+                        </div>
+                    </div>
+
+                    <div class="fs-section">
+                        <div class="section-label">هزینه‌ها</div>
+                        <div class="fs-row">
+                            <span class="label indent">هزینه اجاره</span>
+                            <span class="value">${fmt(rentExpense)} میلیون</span>
+                        </div>
+                        <div class="fs-row">
+                            <span class="label indent">هزینه تبلیغات</span>
+                            <span class="value">${fmt(adExpense)} میلیون</span>
+                        </div>
+                        <div class="fs-row total">
+                            <span class="label">جمع هزینه‌ها</span>
+                            <span class="value">${fmt(totalExpenses)} میلیون</span>
+                        </div>
+                    </div>
+
+                    <div class="fs-row total total-grand" style="margin-top:12px;">
+                        <span class="label" style="font-size:1.1rem;">سود خالص</span>
+                        <span class="value highlight" style="font-size:1.2rem;">${fmt(netIncome)} میلیون</span>
+                    </div>
+                `;
+
+                container.innerHTML = html;
+            }
+
+            // ==========================================================
+            // ۶. صورت حساب سرمایه
+            // ==========================================================
+            function renderEquity() {
+                const container = document.getElementById('equityStatement');
+                if (!container) return;
+
+                const capital = 200;
+                const netIncome = 62 - 10 - 2; // 50
+                const drawings = 7;
+                const endingCapital = capital + netIncome - drawings;
+
+                let html = `
+                    <div class="fs-title">💰 صورت حساب سرمایه</div>
+                    <div class="fs-sub">شرکت خدماتی آقای دارابی — برای ماه آذر ۱۳۹۵</div>
+
+                    <div class="fs-row">
+                        <span class="label">سرمایه — ۱ آذر ۱۳۹۵</span>
+                        <span class="value">${fmt(capital)} میلیون</span>
+                    </div>
+                    <div class="fs-row">
+                        <span class="label indent highlight">➕ سود خالص</span>
+                        <span class="value highlight">${fmt(netIncome)} میلیون</span>
+                    </div>
+                    <div class="fs-row">
+                        <span class="label indent highlight-red">➖ برداشت صاحب</span>
+                        <span class="value highlight-red">${fmt(drawings)} میلیون</span>
+                    </div>
+                    <div class="fs-row total total-grand">
+                        <span class="label" style="font-size:1.1rem;">سرمایه — ۳۰ آذر ۱۳۹۵</span>
+                        <span class="value highlight" style="font-size:1.2rem;">${fmt(endingCapital)} میلیون</span>
+                    </div>
+                `;
+
+                container.innerHTML = html;
+            }
+
+            // ==========================================================
+            // ۷. ترازنامه
+            // ==========================================================
+            function renderBS() {
+                const container = document.getElementById('bsStatement');
+                if (!container) return;
+
+                // دارایی‌ها
+                const cash = 133;
+                const equipment = 250;
+                const prepaidInsurance = 12;
+                const totalAssets = cash + equipment + prepaidInsurance;
+
+                // بدهی‌ها
+                const notesPayable = 150;
+                const adPayable = 2;
+                const totalLiabilities = notesPayable + adPayable;
+
+                // حقوق صاحب
+                const capital = 200;
+                const netIncome = 50;
+                const drawings = 7;
+                const endingCapital = capital + netIncome - drawings;
+                const totalEquity = endingCapital;
+
+                const totalLiabilitiesEquity = totalLiabilities + totalEquity;
+
+                let html = `
+                    <div class="fs-title">🏛️ ترازنامه</div>
+                    <div class="fs-sub">شرکت خدماتی آقای دارابی — در تاریخ ۳۰ آذر ۱۳۹۵</div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                        <div>
+                            <div class="section-label" style="text-align:center; width:100%; display:block;">دارایی‌ها</div>
+                            <div class="fs-row">
+                                <span class="label indent">وجه نقد</span>
+                                <span class="value">${fmt(cash)} میلیون</span>
+                            </div>
+                            <div class="fs-row">
+                                <span class="label indent">تجهیزات</span>
+                                <span class="value">${fmt(equipment)} میلیون</span>
+                            </div>
+                            <div class="fs-row">
+                                <span class="label indent">بیمه پرداختنی (پیش‌پرداخت)</span>
+                                <span class="value">${fmt(prepaidInsurance)} میلیون</span>
+                            </div>
+                            <div class="fs-row total">
+                                <span class="label">جمع دارایی‌ها</span>
+                                <span class="value highlight">${fmt(totalAssets)} میلیون</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="section-label" style="text-align:center; width:100%; display:block;">بدهی‌ها و حقوق صاحب</div>
+                            <div style="margin-bottom:8px;">
+                                <div style="font-weight:700; color:#1a2a3a; background:#eef2f6; padding:2px 12px; border-radius:8px; display:inline-block; font-size:0.85rem;">بدهی‌ها</div>
+                                <div class="fs-row">
+                                    <span class="label indent2">سفته پرداختنی</span>
+                                    <span class="value">${fmt(notesPayable)} میلیون</span>
+                                </div>
+                                <div class="fs-row">
+                                    <span class="label indent2">بدهی تبلیغات</span>
+                                    <span class="value">${fmt(adPayable)} میلیون</span>
+                                </div>
+                                <div class="fs-row" style="border-bottom:1px solid #d0d8e0;">
+                                    <span class="label indent">جمع بدهی‌ها</span>
+                                    <span class="value">${fmt(totalLiabilities)} میلیون</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-weight:700; color:#1a2a3a; background:#eef2f6; padding:2px 12px; border-radius:8px; display:inline-block; font-size:0.85rem;">حقوق صاحب</div>
+                                <div class="fs-row">
+                                    <span class="label indent2">سرمایه (پایان دوره)</span>
+                                    <span class="value highlight">${fmt(endingCapital)} میلیون</span>
+                                </div>
+                                <div class="fs-row total">
+                                    <span class="label">جمع بدهی‌ها و حقوق صاحب</span>
+                                    <span class="value highlight">${fmt(totalLiabilitiesEquity)} میلیون</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:16px; padding-top:12px; border-top:2px solid #e8edf3; text-align:center; font-size:0.85rem; color:#6a7b8c;">
+                        <strong>تساوی دارایی‌ها = بدهی‌ها + حقوق صاحب</strong> &nbsp;|&nbsp;
+                        ${fmt(totalAssets)} = ${fmt(totalLiabilities)} + ${fmt(totalEquity)} &nbsp;✅
+                    </div>
+                `;
+
+                container.innerHTML = html;
+            }
+
+            // ==========================================================
+            // ۸. مدیریت برگه‌ها (تب)
+            // ==========================================================
+            function initTabs() {
+                const buttons = document.querySelectorAll('.tab-btn');
+                const contents = document.querySelectorAll('.tab-content');
+
+                buttons.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        buttons.forEach(b => b.classList.remove('active'));
+                        contents.forEach(c => c.classList.remove('active'));
+
+                        this.classList.add('active');
+                        const targetId = this.dataset.target;
+                        const target = document.getElementById(targetId);
+                        if (target) {
+                            target.classList.add('active');
+                        }
+
+                        // رندر محتوای مربوطه
+                        switch (targetId) {
+                            case 'tab-journal':
+                                renderJournal();
+                                break;
+                            case 'tab-ledger':
+                                renderLedger();
+                                break;
+                            case 'tab-trial':
+                                renderTrial();
+                                break;
+                            case 'tab-pl':
+                                renderPL();
+                                break;
+                            case 'tab-equity':
+                                renderEquity();
+                                break;
+                            case 'tab-bs':
+                                renderBS();
+                                break;
+                        }
+                    });
+                });
+            }
+
+            // ==========================================================
+            // ۹. راه‌اندازی اولیه
+            // ==========================================================
+            function init() {
+                renderProblem();
+                renderJournal();
+                renderLedger();
+                renderTrial();
+                renderPL();
+                renderEquity();
+                renderBS();
+                initTabs();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+fastapi==0.115.0
+uvicorn==0.30.6
+MetaTrader5==5.0.4424
+requests>=2.31
+# NOTE: MetaTrader5 is Windows-only; on Linux/macOS the server runs in demo mode

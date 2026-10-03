@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>راهنمای جامع دوره | GQR Accounting Pro</title>
+    <style>
+        :root {
+            --bg: #030303;
+            --surface: rgba(20,20,24,0.85);
+            --text: #f4f4f5;
+            --text2: #a1a1aa;
+            --primary: #f59e0b;
+            --accent: #10b981;
+            --border: rgba(255,255,255,0.08);
+            --shadow: 0 20px 50px rgba(0,0,0,0.8);
+            --radius: 18px;
+            direction: rtl;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Vazirmatn', system-ui, sans-serif;
+            background: radial-gradient(ellipse at 30% 10%, #1a1408 0%, #030303 70%);
+            color: var(--text); line-height: 1.9;
+            display: flex; justify-content: center; padding: 20px; overflow-x: hidden;
+        }
+        .container { max-width: 1000px; width: 100%; display: flex; flex-direction: column; gap: 20px; }
+        .hero {
+            background: rgba(15,15,18,0.7); backdrop-filter: blur(25px);
+            border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius);
+            padding: 45px 30px; text-align: center; box-shadow: 0 0 70px rgba(245,158,11,0.15);
+        }
+        .hero h1 { font-size: 2.5rem; font-weight: 900; color: var(--primary); }
+        .hero p { color: var(--text2); margin-top: 10px; }
+        .card {
+            background: var(--surface); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 25px; box-shadow: var(--shadow);
+        }
+        .card h2 { font-size: 1.4rem; color: var(--primary); margin-bottom: 15px; }
+        .card h3 { color: var(--accent); margin: 15px 0 8px; font-size: 1.05rem; }
+        .tree { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 18px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 2.1; }
+        .tree .dir { color: #f59e0b; font-weight: 700; }
+        .tree .fil { color: #10b981; margin-right: 18px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.85rem; }
+        th { background: #1a1a1a; color: var(--primary); padding: 10px 6px; border: 1px solid #333; text-align: center; }
+        td { padding: 9px 6px; border: 1px solid #222; text-align: center; }
+        .btn {
+            display: inline-block; padding: 8px 16px; border-radius: 20px;
+            background: var(--primary); color: #000; font-weight: 700;
+            text-decoration: none; font-size: 0.8rem; transition: 0.2s;
+        }
+        .btn:hover { background: #d97706; }
+        .tip { background: rgba(245,158,11,0.06); border-right: 3px solid #f59e0b; padding: 14px; border-radius: 6px; margin: 12px 0; }
+        .footer { text-align: center; color: #555; font-size: 0.8rem; padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>📘 راهنمای جامع دوره</h1>
+            <p>هر آنچه برای تسلط بر این بسته نیاز دارید</p>
+        </div>
+
+        <div class="card">
+            <h2>📁 ساختار پوشه‌ها</h2>
+            <div class="tree">
+                <div class="dir">📂 پوشهٔ اصلی</div>
+                <div class="fil">├── 📂 <strong>Session</strong> ← ۲۴ جلسه (Day1.html تا Day24.html)</div>
+                <div class="fil">├── 📂 <strong>Tests</strong> ← آزمون‌ها</div>
+                <div class="fil">├── 📂 <strong>Tools</strong> ← ابزارها</div>
+                <div class="fil">├── 📄 index.html</div>
+                <div class="fil">├── 📄 how_to_start.html</div>
+                <div class="fil">└── 📄 License.html | Thanks.html</div>
+            </div>
+            <p style="margin-top:15px;">💡 لینک‌ها بر اساس نام‌های جدید Day1.html, Day2.html تنظیم شده‌اند.</p>
+        </div>
+
+        <div class="card">
+            <h2>🪜 روش گام‌به‌گام</h2>
+            <ol style="padding-right:20px;">
+                <li><strong>شروع:</strong> فایل <a href="index.html" class="btn">index.html</a> را باز کنید.</li>
+                <li><strong>مطالعه:</strong> از طریق داشبورد یا پوشهٔ Session، هر روز یک جلسه بخوانید.</li>
+                <li><strong>تمرین:</strong> شبیه‌سازها را اجرا و آزمونک هر روز را پاسخ دهید.</li>
+                <li><strong>مرور:</strong> بعد از هر ۶ روز، فایل‌های درون پوشهٔ Tests را باز کنید.</li>
+                <li><strong>ابزارها:</strong> از پوشهٔ Tools برای محاسبات و شب امتحان استفاده کنید.</li>
+            </ol>
+            <div class="tip">تمامی فایل‌ها کاملاً آفلاین هستند. اینترنت نیاز ندارید.</div>
+        </div>
+
+        <div class="card">
+            <h2>📅 فهرست روزهای آموزشی</h2>
+            <table>
+                <thead><tr><th>#</th><th>عنوان</th><th>لینک</th></tr></thead>
+                <tbody id="sessionsTable"></tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>🚀 برنامهٔ ۵ ماهه</h2>
+            <div style="position:relative; padding-right:35px;">
+                <div style="position:absolute; right:12px; top:0; bottom:0; width:3px; background:linear-gradient(180deg, #f59e0b, #10b981);"></div>
+                <div style="margin-bottom:20px; position:relative;"><div style="position:absolute; right:-28px; top:5px; width:16px; height:16px; background:#f59e0b; border-radius:50%;"></div><strong>ماه ۱:</strong> روزهای ۱-۸</div>
+                <div style="margin-bottom:20px; position:relative;"><div style="position:absolute; right:-28px; top:5px; width:16px; height:16px; background:#f59e0b; border-radius:50%;"></div><strong>ماه ۲:</strong> روزهای ۹-۱۶</div>
+                <div style="margin-bottom:20px; position:relative;"><div style="position:absolute; right:-28px; top:5px; width:16px; height:16px; background:#f59e0b; border-radius:50%;"></div><strong>ماه ۳:</strong> روزهای ۱۷-۲۴</div>
+                <div style="margin-bottom:20px; position:relative;"><div style="position:absolute; right:-28px; top:5px; width:16px; height:16px; background:#10b981; border-radius:50%;"></div><strong>ماه ۴:</strong> آزمون‌ها + رزومه</div>
+                <div style="position:relative;"><div style="position:absolute; right:-28px; top:5px; width:16px; height:16px; background:#10b981; border-radius:50%;"></div><strong>ماه ۵:</strong> بازار کار</div>
+            </div>
+        </div>
+
+        <div class="footer">✍️ کیانوش کریمی</div>
+    </div>
+
+    <script>
+        const titles = [
+            'اصول اولیه حسابداری', 'دفتر روزنامه و ثبت رویدادها', 'دفتر کل و انتقال حساب‌ها', 'تراز آزمایشی و کشف خطاها',
+            'صورت سود و زیان', 'ترازنامه طبقه‌بندی‌شده', 'صورت جریان وجوه نقد', 'حسابداری نقدی و تعهدی',
+            'اصلاح حساب‌ها و ثبت‌های تعدیلی', 'بستن حساب‌های موقت', 'موجودی کالا و روش‌های ارزیابی', 'استهلاک دارایی‌های ثابت',
+            'ذخیره مطالبات مشکوک‌الوصول', 'حسابداری حقوق و دستمزد', 'صورت‌های مالی تلفیقی', 'تجزیه و تحلیل صورت‌های مالی',
+            'حسابداری صنعتی (مقدماتی)', 'هزینه‌یابی سفارش کار', 'نقطه سربه‌سر و تحلیل CVP', 'بودجه‌بندی و کنترل بودجه',
+            'حسابداری مالیاتی (ایران)', 'حسابداری پیمانکاری', 'گزارشگری مالی بین‌المللی (IFRS)', 'پروژهٔ نهایی و مرور کلی'
+        ];
+        const tbody = document.getElementById('sessionsTable');
+        for (let i = 1; i <= 24; i++) {
+            const tr = document.createElement('tr');
+            // لینک جدید: Session/Day1.html, Day2.html, ...
+            tr.innerHTML = `
+                <td>${i}</td>
+                <td>${titles[i-1]}</td>
+                <td><a href="Session/Day${i}.html" class="btn">باز کردن</a></td>
+            `;
+            tbody.appendChild(tr);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>راهنمای جامع | Nexus Suite</title>
+    <style>
+        :root {
+            --bg: #02010a;
+            --surface: rgba(17, 15, 28, 0.8);
+            --surface2: rgba(30, 25, 50, 0.6);
+            --text: #f1f5f9;
+            --text2: #94a3b8;
+            --primary: #f59e0b;
+            --primary-glow: #fbbf24;
+            --accent: #8b5cf6;
+            --accent2: #10b981;
+            --accent3: #ef4444;
+            --border: rgba(255, 255, 255, 0.08);
+            --glass-blur: blur(22px);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow: 0 8px 32px rgba(0,0,0,0.5);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.6);
+            --radius-sm: 12px;
+            --radius: 18px;
+            --radius-lg: 24px;
+            --font: 'Vazirmatn', system-ui, sans-serif;
+            direction: rtl;
+            scroll-behavior: smooth;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font);
+            background: #02010a;
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 18px;
+            overflow-x: hidden;
+        }
+        .galaxy { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at 35% 20%, #1a1025 0%, transparent 55%), radial-gradient(ellipse at 70% 75%, #0a1a20 0%, transparent 50%); z-index: 0; pointer-events: none; }
+        .stars-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .container { position: relative; z-index: 1; max-width: 880px; width: 100%; display: flex; flex-direction: column; gap: 20px; }
+
+        .hero {
+            background: rgba(17,15,28,0.65); backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 30px 24px; text-align: center; box-shadow: var(--shadow-lg);
+        }
+        .hero h1 { font-size: 2rem; font-weight: 900; background: linear-gradient(135deg, var(--primary-glow), var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .card {
+            background: rgba(17,15,28,0.55); backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 22px 20px; box-shadow: var(--shadow);
+        }
+        .card h2 { color: var(--primary-glow); font-size: 1.5rem; margin-bottom: 14px; border-bottom: 2px solid rgba(245,158,11,0.2); padding-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .card h3 { color: var(--accent); margin: 16px 0 8px; font-size: 1.1rem; }
+
+        .file-tree {
+            background: rgba(0,0,0,0.4); border-radius: var(--radius-sm);
+            padding: 18px 20px; font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem; line-height: 2.2; overflow-x: auto;
+        }
+        .file-tree .dir { color: #f59e0b; font-weight: 700; }
+        .file-tree .file { color: #10b981; margin-right: 18px; }
+
+        .app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 15px 0; }
+        .app-card {
+            background: var(--surface2); backdrop-filter: blur(10px);
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            padding: 16px; text-align: center; transition: 0.2s;
+        }
+        .app-card:hover { border-color: var(--primary); }
+        .app-card .icon { font-size: 2rem; }
+        .app-card .name { font-weight: 700; margin-top: 6px; color: var(--primary-glow); }
+        .app-card .desc { font-size: 0.8rem; color: var(--text2); margin-top: 4px; }
+
+        .tip-box {
+            background: rgba(245,158,11,0.06); border-right: 4px solid var(--primary);
+            padding: 14px 18px; border-radius: var(--radius-sm); margin: 12px 0;
+        }
+        details { margin: 10px 0; }
+        summary { font-weight: 700; cursor: pointer; padding: 10px; background: var(--surface2); border-radius: var(--radius-sm); color: var(--primary-glow); }
+        .btn { display: inline-block; padding: 10px 20px; border-radius: 25px; background: var(--primary); color: #000; font-weight: 700; text-decoration: none; margin-top: 10px; }
+        .footer { text-align: center; color: #666; font-size: 0.8rem; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div class="galaxy"></div>
+    <canvas class="stars-canvas" id="starsCanvas"></canvas>
+    <div class="container">
+        <div class="hero">
+            <h1>📘 راهنمای جامع Nexus Suite</h1>
+            <p style="color:var(--text2);">هر آنچه برای کار با ۸ ابزار حرفه‌ای نیاز دارید</p>
+        </div>
+
+        <div class="card">
+            <h2>📁 ساختار پوشه‌ها</h2>
+            <div class="file-tree">
+                <div class="dir">📂 Nexus_Suite/</div>
+                <div class="file">├── 📄 index.html</div>
+                <div class="file">├── 📄 How_To_Use.html</div>
+                <div class="file">├── 📂 Hesabak/</div>
+                <div class="file">├── 📂 Daftar/</div>
+                <div class="file">├── 📂 Anbarak/</div>
+                <div class="file">├── 📂 Faktorsaz/</div>
+                <div class="file">├── 📂 Hoqouqsaz/</div>
+                <div class="file">├── 📂 Budjeban/</div>
+                <div class="file">├── 📂 Customer_Profiles/</div>
+                <div class="file">└── 📂 Gifts/</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🧰 معرفی ۸ ابزار</h2>
+            <div class="app-grid">
+                <div class="app-card"><div class="icon">🧮</div><div class="name">حسابک</div><div class="desc">حسابداری شخصی، ثبت فروش و هزینه</div></div>
+                <div class="app-card"><div class="icon">📒</div><div class="name">دفتر</div><div class="desc">مدیریت بدهی و طلب مشتریان</div></div>
+                <div class="app-card"><div class="icon">📦</div><div class="name">انبارک</div><div class="desc">مدیریت موجودی و هشدار کمبود</div></div>
+                <div class="app-card"><div class="icon">🧾</div><div class="name">فاکتورساز</div><div class="desc">صدور فاکتور رسمی با VAT</div></div>
+                <div class="app-card"><div class="icon">💰</div><div class="name">حقوق‌ساز</div><div class="desc">محاسبه حقوق و فیش حقوقی</div></div>
+                <div class="app-card"><div class="icon">📊</div><div class="name">بودجه‌بان</div><div class="desc">تحلیل درآمد/هزینه و بودجه</div></div>
+                <div class="app-card"><div class="icon">👥</div><div class="name">پروفایل مشتریان</div><div class="desc">پروفایل غنی با تاریخچه خرید</div></div>
+                <div class="app-card"><div class="icon">🎁</div><div class="name">هدایا</div><div class="desc">پشتیبان‌گیری، تقویم، گزارش</div></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🪜 شروع سریع</h2>
+            <ol style="padding-right: 20px;">
+                <li>فایل <strong>index.html</strong> را باز کنید.</li>
+                <li>از داشبورد روی هر ابزار کلیک کنید.</li>
+                <li>داده‌های خود را وارد کنید — همه چیز به‌طور خودکار ذخیره می‌شود.</li>
+                <li>برای بازگشت، دکمهٔ «بازگشت به داشبورد» را بزنید.</li>
+            </ol>
+            <div class="tip-box">💡 <strong>نکته:</strong> تمام فایل‌ها <strong>کاملاً آفلاین</strong> کار می‌کنند. اینترنت لازم ندارید. کافی است روی هر فایل HTML دابل‌کلیک کنید.</div>
+        </div>
+
+        <div class="card">
+            <h2>❓ سوالات متداول</h2>
+            <details><summary>آیا داده‌ها با بستن مرورگر پاک می‌شوند؟</summary><p style="padding:8px;">خیر. تمام داده‌ها در localStorage مرورگر شما ذخیره می‌شوند و تا پاک‌سازی دستی باقی می‌مانند.</p></details>
+            <details><summary>چطور از داده‌ها پشتیبان بگیرم؟</summary><p style="padding:8px;">از بخش <strong>هدایا</strong> ← پشتیبان‌گیری کامل، یک فایل JSON بگیرید و ذخیره کنید.</p></details>
+            <details><summary>آیا روی گوشی هم اجرا می‌شود؟</summary><p style="padding:8px;">بله. تمام صفحات کاملاً واکنش‌گرا و لمسی طراحی شده‌اند.</p></details>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="index.html" class="btn">🏠 بازگشت به داشبورد</a>
+        </div>
+        <div class="footer">NexusDigitalArtShop © ۱۴۰۴</div>
+    </div>
+    <script>
+        const sc = document.getElementById('starsCanvas'), ctx = sc.getContext('2d');
+        sc.width = window.innerWidth; sc.height = window.innerHeight;
+        const stars = Array.from({ length: 200 }, () => ({ x: Math.random() * sc.width, y: Math.random() * sc.height, r: Math.random() * 1.6 + 0.3, a: Math.random(), sp: Math.random() * 0.016 + 0.004 }));
+        (function d() { ctx.clearRect(0, 0, sc.width, sc.height); stars.forEach(s => { s.a += s.sp; if (s.a > 1 || s.a < 0.07) s.sp *= -1; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(255,255,255,${Math.abs(s.a)})`; ctx.fill(); }); requestAnimationFrame(d); })();
+    </script>
+</body>
+</html>

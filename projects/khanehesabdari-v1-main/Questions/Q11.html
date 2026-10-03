@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>ثبت خرید با تخفیف – روش ادواری (خریدار و فروشنده)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;800;900&display=swap');
+
+        :root {
+            --neon-yellow: #f7d44a;
+            --neon-yellow-dim: rgba(247, 212, 74, 0.10);
+            --neon-yellow-glow: rgba(247, 212, 74, 0.18);
+            --neon-orange: #ff8a4a;
+            --neon-blue: #4fc3f7;
+            --neon-blue-dim: rgba(79, 195, 247, 0.08);
+            --neon-white: #e8e8f0;
+            --dark-bg: #0a0a14;
+            --card-bg: rgba(16, 16, 28, 0.80);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-border-strong: rgba(247, 212, 74, 0.15);
+            --radius: 14px;
+            --radius-sm: 10px;
+            --radius-xs: 7px;
+            --font: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+            --transition: 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--dark-bg);
+            color: var(--neon-white);
+            min-height: 100vh;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ===== CANVAS BG ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .app-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* ===== HEADER ===== */
+        .app-header {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 1.2rem 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .app-header .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 900;
+            font-size: 1.3rem;
+            color: var(--neon-yellow);
+        }
+        .app-header .logo .sub {
+            font-weight: 300;
+            color: rgba(232, 232, 240, 0.45);
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        .app-header .badge {
+            background: var(--neon-blue-dim);
+            border: 1px solid rgba(79, 195, 247, 0.12);
+            color: var(--neon-blue);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* ===== CARDS ===== */
+        .section-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+            overflow-x: auto;
+        }
+
+        .section-card h2 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--neon-yellow);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .section-card h2 .subtitle {
+            font-weight: 400;
+            color: rgba(232, 232, 240, 0.3);
+            font-size: 0.75rem;
+        }
+
+        .section-card .meta-info {
+            background: rgba(247, 212, 74, 0.04);
+            border-right: 3px solid var(--neon-yellow);
+            padding: 0.6rem 1rem;
+            border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+            font-size: 0.8rem;
+            color: rgba(232, 232, 240, 0.6);
+            margin-bottom: 1.2rem;
+        }
+        .section-card .meta-info strong {
+            color: var(--neon-white);
+        }
+
+        /* ===== TABLES ===== */
+        .accounting-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 500px;
+        }
+
+        .accounting-table th {
+            background: rgba(247, 212, 74, 0.06);
+            color: var(--neon-yellow);
+            font-weight: 700;
+            padding: 0.7rem 0.8rem;
+            text-align: center;
+            border-bottom: 2px solid var(--glass-border-strong);
+            font-size: 0.8rem;
+        }
+        .accounting-table td {
+            padding: 0.6rem 0.8rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: rgba(232, 232, 240, 0.75);
+            vertical-align: middle;
+        }
+
+        .accounting-table .amount {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: var(--neon-white);
+            direction: ltr;
+        }
+        .accounting-table .debit {
+            color: #4fc3f7;
+        }
+        .accounting-table .credit {
+            color: #ff8a4a;
+        }
+        .accounting-table .total-row td {
+            background: rgba(247, 212, 74, 0.06);
+            border-top: 2px solid var(--neon-yellow-glow);
+            font-weight: 800;
+            color: var(--neon-yellow);
+        }
+
+        /* ===== TWO COLUMN LAYOUT ===== */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .note-box {
+            background: rgba(247, 212, 74, 0.04);
+            border-right: 3px solid var(--neon-yellow);
+            padding: 0.8rem 1.2rem;
+            border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+            font-size: 0.8rem;
+            color: rgba(232, 232, 240, 0.6);
+            margin-top: 1rem;
+        }
+        .note-box strong {
+            color: var(--neon-white);
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(18, 18, 30, 0.95);
+            border: 1px solid var(--glass-border-strong);
+            border-radius: 25px;
+            padding: 0.6rem 1.6rem;
+            backdrop-filter: blur(16px);
+            color: var(--neon-white);
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 99999;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.success {
+            border-color: var(--neon-yellow);
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(247, 212, 74, 0.2);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="app-wrapper">
+
+        <header class="app-header">
+            <div class="logo">
+                📒 <span>ثبت رویدادهای مالی</span>
+                <span class="sub">| روش ادواری (دوره‌ای)</span>
+            </div>
+            <span class="badge">شرایط: ۳٪ تخفیف – ۱۰ روز – ۴۰ روز نسیه</span>
+        </header>
+
+        <!-- ===== اطلاعات عمومی ===== -->
+        <section class="section-card">
+            <h2>📌 اطلاعات معامله</h2>
+            <div class="meta-info">
+                <strong>تاریخ خرید:</strong> ۰۵/۰۷/۱۳۸۰ &nbsp;|&nbsp; <strong>مبلغ کالا:</strong> ۴۰٫۰۰۰٫۰۰۰ ریال &nbsp;|&nbsp; 
+                <strong>شرایط:</strong> ۳٪ تخفیف نقدی در صورت پرداخت ظرف ۱۰ روز (۳/۱۰، n/۴۰) &nbsp;|&nbsp; 
+                <strong>تاریخ پرداخت:</strong> ۱۳/۰۷/۱۳۸۰ (در دوره تخفیف)
+            </div>
+            <div style="font-size:0.85rem; color:rgba(232,232,240,0.5);">
+                ✅ خریدار در تاریخ ۱۳/۰۷/۱۳۸۰ بدهی خود را پرداخت و از تخفیف ۳٪ بهره‌مند شده است.
+            </div>
+            <div style="font-size:0.85rem; color:rgba(232,232,240,0.5); margin-top:0.4rem;">
+                <span style="background:var(--neon-yellow-dim); padding:0.1rem 0.6rem; border-radius:12px; font-weight:600;">🔁 روش ادواری (دوره‌ای) – عدم ثبت موجودی کالا در خرید و فروش</span>
+            </div>
+        </section>
+
+        <!-- ===== دو ستون: خریدار و فروشنده ===== -->
+        <div class="two-col">
+
+            <!-- ===== خریدار ===== -->
+            <section class="section-card">
+                <h2>📋 خریدار (شرکت خریدار)</h2>
+                <div style="overflow-x:auto;">
+                    <table class="accounting-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align:right;min-width:150px;">شرح</th>
+                                <th class="col-amount">بدهکار (ریال)</th>
+                                <th class="col-amount">بستانکار (ریال)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align:right; font-weight:600;">۱) خرید کالا (۰۵/۰۷/۱۳۸۰)</td>
+                                <td class="amount debit">۴۰٫۰۰۰٫۰۰۰</td>
+                                <td class="amount credit">—</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right; padding-right:1.5rem;">&nbsp;&nbsp;&nbsp;&nbsp;حسابهای پرداختنی</td>
+                                <td class="amount debit">—</td>
+                                <td class="amount credit">۴۰٫۰۰۰٫۰۰۰</td>
+                            </tr>
+                            <tr style="border-top:1px solid var(--glass-border-strong);">
+                                <td style="text-align:right; font-weight:600;">۲) پرداخت بدهی (۱۳/۰۷/۱۳۸۰)</td>
+                                <td class="amount debit">۴۰٫۰۰۰٫۰۰۰</td>
+                                <td class="amount credit">—</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right; padding-right:1.5rem;">&nbsp;&nbsp;&nbsp;&nbsp;بانک (پرداخت نقدی)</td>
+                                <td class="amount debit">—</td>
+                                <td class="amount credit">۳۸٫۸۰۰٫۰۰۰</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right; padding-right:1.5rem;">&nbsp;&nbsp;&nbsp;&nbsp;تخفیف خرید (۳٪)</td>
+                                <td class="amount debit">—</td>
+                                <td class="amount credit">۱٫۲۰۰٫۰۰۰</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td style="text-align:left;">جمع</td>
+                                <td class="amount debit">۸۰٫۰۰۰٫۰۰۰</td>
+                                <td class="amount credit">۸۰٫۰۰۰٫۰۰۰</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="note-box">
+                    <strong>📌 توضیح (روش ادواری):</strong> 
+                    مبلغ تخفیف = ۳٪ × ۴۰٫۰۰۰٫۰۰۰ = ۱٫۲۰۰٫۰۰۰ ریال. 
+                    پرداخت نقدی = ۳۸٫۸۰۰٫۰۰۰ ریال. 
+                    در روش ادواری، حساب «خرید» بدهکار و «حسابهای پرداختنی» بستانکار می‌شود. 
+                    تخفیف خرید به عنوان کاهش بهای خرید ثبت می‌گردد.
+                </div>
+            </section>
+
+            <!-- ===== فروشنده ===== -->
+            <section class="section-card">
+                <h2>📋 فروشنده (شرکت فروشنده)</h2>
+                <div style="overflow-x:auto;">
+                    <table class="accounting-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align:right;min-width:150px;">شرح</th>
+                                <th class="col-amount">بدهکار (ریال)</th>
+                                <th class="col-amount">بستانکار (ریال)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align:right; font-weight:600;">۱) فروش کالا (۰۵/۰۷/۱۳۸۰)</td>
+                                <td class="amount debit">۴۰٫۰۰۰٫۰۰۰</td>
+                                <td class="amount credit">—</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right; padding-right:1.5rem;">&nbsp;&nbsp;&nbsp;&nbsp;فروش</td>
+                                <td class="amount debit">—</td>
+                                <td class="amount credit">۴۰٫۰۰۰٫۰۰۰</td>
+                            </tr>
+                            <tr style="border-top:1px solid var(--glass-border-strong);">
+                                <td style="text-align:right; font-weight:600;">۲) وصول وجه (۱۳/۰۷/۱۳۸۰)</td>
+                                <td class="amount debit">۳۸٫۸۰۰٫۰۰۰</td>
+                                <td class="amount credit">—</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right; padding-right:1.5rem;">&nbsp;&nbsp;&nbsp;&nbsp;تخفیف فروش (۳٪)</td>
+                                <td class="amount debit">۱٫۲۰۰٫۰۰۰</td>
+                                <td class="amount credit">—</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right; padding-right:1.5rem;">&nbsp;&nbsp;&nbsp;&nbsp;حسابهای دریافتنی</td>
+                                <td class="amount debit">—</td>
+                                <td class="amount credit">۴۰٫۰۰۰٫۰۰۰</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td style="text-align:left;">جمع</td>
+                                <td class="amount debit">۸۰٫۰۰۰٫۰۰۰</td>
+                                <td class="amount credit">۸۰٫۰۰۰٫۰۰۰</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="note-box">
+                    <strong>📌 توضیح (روش ادواری):</strong> 
+                    فروشنده تخفیف فروش را به عنوان هزینه (کاهش درآمد) ثبت می‌کند. 
+                    مبلغ وصولی = ۳۸٫۸۰۰٫۰۰۰ ریال. 
+                    در روش ادواری، حساب «فروش» به جای «کالا» بستانکار می‌شود و از بهای تمام شده صرف‌نظر می‌گردد.
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ===== یادداشت تکمیلی ===== -->
+        <section class="section-card" style="border-color:var(--glass-border-strong);">
+            <h2>📎 نکات تکمیلی – روش ادواری (دوره‌ای)</h2>
+            <ul style="list-style:none; padding:0; font-size:0.9rem; color:rgba(232,232,240,0.65); line-height:1.8;">
+                <li>✅ <strong>شرایط تجاری:</strong> (۱۰، ۳٪ - ۴۰ - ن) به معنی ۳٪ تخفیف نقدی برای پرداخت ظرف ۱۰ روز، و حداکثر ۴۰ روز نسیه (بدون تخفیف).</li>
+                <li>✅ <strong>تاریخ‌ها:</strong> خرید در ۰۵/۰۷/۱۳۸۰ و پرداخت در ۱۳/۰۷/۱۳۸۰ (۸ روز پس از خرید) – بنابراین مشمول تخفیف ۳٪ شده است.</li>
+                <li>✅ <strong>روش ادواری (دوره‌ای):</strong> در این روش، هنگام خرید، حساب «خرید» بدهکار و هنگام فروش، حساب «فروش» بستانکار می‌شود. حساب «کالا» فقط در پایان دوره تعدیل می‌گردد.</li>
+                <li>✅ <strong>تخفیف خرید:</strong> خریدار تخفیف را به عنوان کاهش بهای خرید ثبت می‌کند (حساب «تخفیف خرید»).</li>
+                <li>✅ <strong>تخفیف فروش:</strong> فروشنده تخفیف را به عنوان کاهش درآمد فروش ثبت می‌کند (حساب «تخفیف فروش»).</li>
+                <li>✅ <strong>مبلغ تخفیف:</strong> ۳٪ × ۴۰٫۰۰۰٫۰۰۰ = ۱٫۲۰۰٫۰۰۰ ریال. مبلغ پرداختی/وصولی = ۳۸٫۸۰۰٫۰۰۰ ریال.</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ============ PARTICLES ============
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H, particles = [];
+            const PARTICLE_COUNT = 60;
+            const COLORS = ['rgba(247,212,74,', 'rgba(79,195,247,', 'rgba(232,232,240,'];
+
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H;
+                    this.size = Math.random() * 2 + 0.3;
+                    this.speedX = (Math.random() - 0.5) * 0.3;
+                    this.speedY = (Math.random() - 0.5) * 0.3;
+                    this.opacity = Math.random() * 0.3 + 0.05;
+                    this.colorIdx = Math.floor(Math.random() * COLORS.length);
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = 0.005 + Math.random() * 0.01;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < 0 || this.x > W) { this.speedX *= -1;
+                        this.x = Math.max(0, Math.min(W, this.x)); }
+                    if (this.y < 0 || this.y > H) { this.speedY *= -1;
+                        this.y = Math.max(0, Math.min(H, this.y)); }
+                    this.currentOpacity = this.opacity * (0.5 + 0.5 * Math.sin(this.pulse));
+                }
+                draw() {
+                    const alpha = Math.max(0.02, Math.min(0.6, this.currentOpacity));
+                    const color = COLORS[this.colorIdx] + alpha + ')';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 4;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+            }
+
+            function resizeCanvas() { W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight; }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, W, H);
+                const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
+                grad.addColorStop(0, '#0c0c18');
+                grad.addColorStop(1, '#04040a');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, W, H);
+                particles.forEach(p => { p.update();
+                    p.draw(); });
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = 100;
+                        if (dist < maxDist) {
+                            const alpha = (1 - dist / maxDist) * 0.08;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = COLORS[0] + alpha + ')';
+                            ctx.lineWidth = 0.3;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            function setupParticles() {
+                resizeCanvas();
+                initParticles();
+                drawParticles();
+            }
+            window.addEventListener('resize', () => { resizeCanvas();
+                particles.forEach(p => { p.x = Math.min(p.x, W);
+                    p.y = Math.min(p.y, H); }); });
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupParticles);
+            else setupParticles();
+
+            // ============ TOAST ============
+            function showToast(msg) {
+                const toast = document.getElementById('toast');
+                toast.textContent = msg;
+                toast.className = 'toast success';
+                toast.classList.add('show');
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => toast.classList.remove('show'), 2200);
+            }
+
+            window.showToast = showToast;
+
+            // ============ INIT ============
+            function init() {
+                console.log('📒 ثبت خرید با تخفیف – روش ادواری (دوره‌ای)');
+            }
+
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+            else init();
+
+        })();
+    </script>
+
+</body>
+</html>
