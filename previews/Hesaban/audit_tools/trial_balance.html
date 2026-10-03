@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تراز آزمایشی | حسابداران</title>
+    <style>
+        /* ============================================================
+                   RESET & BASE – همانند داشبورد
+                   ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-red: #ff2255;
+            --neon-white: #f0f0ff;
+            --dark-bg: #0a0a12;
+            --card-bg: rgba(18, 18, 30, 0.88);
+            --glass-border: rgba(0, 255, 136, 0.12);
+            --shadow-green: 0 0 40px rgba(0, 255, 136, 0.08);
+            --shadow-red: 0 0 40px rgba(255, 34, 85, 0.08);
+            --radius: 18px;
+            --font: 'Vazirmatn', Tahoma, sans-serif;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--dark-bg);
+            color: var(--neon-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 0 1rem 3rem 1rem;
+            position: relative;
+        }
+
+        /* ============================================================
+                   CANVAS – ذرات معلق (زنده)
+                   ============================================================ */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ============================================================
+                   WRAPPER اصلی
+                   ============================================================ */
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.2rem 0 0 0;
+        }
+
+        /* ============================================================
+                   HEADER – لوگو + نویگیشن
+                   ============================================================ */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.9rem 1.8rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(16px);
+            margin-bottom: 2.2rem;
+            box-shadow: var(--shadow-green), inset 0 0 60px rgba(0, 255, 136, 0.02);
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-red), transparent);
+            opacity: 0.3;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--neon-white);
+            font-weight: 300;
+            font-size: 1.2rem;
+        }
+
+        .logo .badge {
+            background: var(--neon-red);
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.3);
+            margin-right: 0.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.4rem 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(240, 240, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-white);
+            border-color: rgba(0, 255, 136, 0.15);
+            background: rgba(0, 255, 136, 0.03);
+        }
+
+        .nav-links a.active {
+            color: var(--neon-green);
+            border-color: rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .nav-links .sep {
+            color: rgba(240, 240, 255, 0.1);
+            font-size: 1.2rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .header-actions a {
+            color: var(--neon-white);
+            text-decoration: none;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid rgba(240, 240, 255, 0.06);
+            font-size: 0.75rem;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+        }
+
+        .header-actions a:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.08);
+        }
+
+        /* ============================================================
+                   HERO – معرفی تراز آزمایشی
+                   ============================================================ */
+        .hero {
+            text-align: center;
+            padding: 2.8rem 2rem 2.4rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(14px);
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-green), inset 0 0 80px rgba(0, 255, 136, 0.01);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(circle at 20% 40%, rgba(0, 255, 136, 0.04), transparent 70%);
+            animation: heroGlow 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes heroGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(8%, 10%) scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        .hero .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .green {
+            color: var(--neon-green);
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .hero h1 .red {
+            color: var(--neon-red);
+            text-shadow: 0 0 40px rgba(255, 34, 85, 0.15);
+        }
+
+        .hero h1 .white {
+            color: var(--neon-white);
+        }
+
+        .hero .subtitle {
+            font-size: 1rem;
+            color: rgba(240, 240, 255, 0.6);
+            max-width: 700px;
+            margin: 0.6rem auto 1rem auto;
+            line-height: 1.8;
+        }
+
+        .hero .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 2rem 3rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .hero .stat-item {
+            text-align: center;
+        }
+
+        .hero .stat-item .num {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            display: block;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .hero .stat-item .label {
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.35);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.1rem;
+        }
+
+        .hero .stat-item .num.red {
+            color: var(--neon-red);
+            text-shadow: 0 0 20px rgba(255, 34, 85, 0.1);
+        }
+
+        /* ============================================================
+                   جدول تراز آزمایشی
+                   ============================================================ */
+        .table-container {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.5rem 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+            overflow-x: auto;
+        }
+
+        .table-container .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .table-container .table-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .table-container .table-header h2 .green {
+            color: var(--neon-green);
+        }
+
+        .table-container .table-header .actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .table-container .table-header .actions button {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            color: var(--neon-white);
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-family: var(--font);
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+        }
+
+        .table-container .table-header .actions button:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.08);
+        }
+
+        .table-container .table-header .actions button.danger:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        table th {
+            background: rgba(0, 255, 136, 0.04);
+            border-bottom: 2px solid rgba(0, 255, 136, 0.08);
+            padding: 0.8rem 0.5rem;
+            text-align: center;
+            color: var(--neon-white);
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        table td {
+            padding: 0.4rem 0.3rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: middle;
+        }
+
+        table td input {
+            width: 100%;
+            padding: 0.5rem 0.4rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            color: var(--neon-white);
+            font-family: var(--font);
+            font-size: 0.85rem;
+            transition: 0.3s;
+            min-width: 60px;
+        }
+
+        table td input:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.05);
+            background: rgba(0, 255, 136, 0.02);
+        }
+
+        table td input[type="number"] {
+            text-align: center;
+        }
+
+        table td .del-btn {
+            background: none;
+            border: none;
+            color: var(--neon-red);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+        }
+
+        table td .del-btn:hover {
+            background: rgba(255, 34, 85, 0.08);
+            transform: scale(1.1);
+        }
+
+        table td .row-num {
+            color: rgba(240, 240, 255, 0.2);
+            font-size: 0.75rem;
+        }
+
+        /* ============================================================
+                   نتیجه تراز
+                   ============================================================ */
+        .result-box {
+            margin-top: 1.5rem;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .result-box .totals {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .result-box .totals .total-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .result-box .totals .total-item .label {
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-box .totals .total-item .value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--neon-white);
+        }
+
+        .result-box .totals .total-item .value.green {
+            color: var(--neon-green);
+        }
+
+        .result-box .totals .total-item .value.red {
+            color: var(--neon-red);
+        }
+
+        .result-box .status-msg {
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .result-box .status-msg.success {
+            background: rgba(0, 255, 136, 0.06);
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            color: var(--neon-green);
+        }
+
+        .result-box .status-msg.danger {
+            background: rgba(255, 34, 85, 0.06);
+            border: 1px solid rgba(255, 34, 85, 0.15);
+            color: var(--neon-red);
+        }
+
+        .result-box .status-msg.info {
+            background: rgba(240, 240, 255, 0.03);
+            border: 1px solid rgba(240, 240, 255, 0.06);
+            color: rgba(240, 240, 255, 0.4);
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 1rem 0.5rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 1rem;
+        }
+
+        .footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+        }
+
+        .footer .links a {
+            color: rgba(240, 240, 255, 0.25);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .footer .links a:hover {
+            color: var(--neon-green);
+        }
+
+        .footer .copyright {
+            color: rgba(240, 240, 255, 0.12);
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer .copyright .green {
+            color: rgba(0, 255, 136, 0.2);
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero .stats-row {
+                gap: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0 0.6rem 2rem 0.6rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 0.8rem 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .hero {
+                padding: 2rem 1.2rem;
+            }
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+            .hero .subtitle {
+                font-size: 0.85rem;
+            }
+            .hero .stats-row {
+                gap: 0.8rem 1.5rem;
+            }
+            .hero .stat-item .num {
+                font-size: 1.2rem;
+            }
+            .table-container {
+                padding: 1rem;
+            }
+            .table-container .table-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .table-container .table-header .actions {
+                justify-content: center;
+            }
+            .result-box {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .result-box .totals {
+                justify-content: center;
+            }
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer .links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.1rem;
+            }
+            table {
+                font-size: 0.75rem;
+            }
+            table td input {
+                font-size: 0.7rem;
+                padding: 0.3rem;
+            }
+        }
+
+        /* ============================================================
+                   UTILS & ANIMATIONS
+                   ============================================================ */
+        .text-green {
+            color: var(--neon-green);
+        }
+        .text-red {
+            color: var(--neon-red);
+        }
+        .text-white {
+            color: var(--neon-white);
+        }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+        .fw-700 {
+            font-weight: 700;
+        }
+        .fs-small {
+            font-size: 0.75rem;
+        }
+        .op-5 {
+            opacity: 0.5;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #10101a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00cc6a;
+        }
+
+        .hero,
+        .table-container,
+        .result-box {
+            animation: fadeUp 0.7s ease-out both;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glow-text {
+            animation: glowPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.05);
+            }
+            100% {
+                text-shadow: 0 0 50px rgba(0, 255, 136, 0.15), 0 0 80px rgba(0, 255, 136, 0.05);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    CANVAS – ذرات معلق
+    ============================================================ -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ============================================================
+    WRAPPER
+    ============================================================ -->
+    <div class="main-wrapper">
+
+        <!-- ========== HEADER ========== -->
+        <header class="header">
+            <a href="index.html" class="logo">
+                🧾 حسابداران
+                <span>|</span>
+                <span style="font-weight:300;font-size:1rem;color:rgba(240,240,255,0.6);">تراز آزمایشی</span>
+                <span class="badge">v2.0</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="#" class="active">📊 تراز</a>
+                <a href="ratios.html">📈 نسبت‌ها</a>
+                <a href="report.html" style="color:var(--neon-red);border-color:rgba(255,34,85,0.1);">📝 گزارش</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" onclick="document.getElementById('checkBtn').click();">🔄 بروزرسانی</a>
+                <a href="index.html">🚀 بازگشت</a>
+            </div>
+        </header>
+
+        <!-- ========== HERO ========== -->
+        <section class="hero">
+            <div class="content">
+                <h1>
+                    <span class="green glow-text">📊</span>
+                    <span class="white">تراز آزمایشی</span>
+                    <span class="green glow-text">·</span>
+                    <span class="red glow-text">مغایرت‌گیری خودکار</span>
+                </h1>
+                <p class="subtitle">
+                    حساب‌ها را وارد کنید، ابزار به‌طور خودکار موازنه را بررسی می‌کند و
+                    جمع بدهکار و بستانکار را نمایش می‌دهد. مناسب برای حسابرسان و حسابداران.
+                </p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="num">∞</span>
+                        <span class="label">ردیف نامحدود</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num red">⚡</span>
+                        <span class="label">بررسی لحظه‌ای</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num green">✅</span>
+                        <span class="label">تراز خودکار</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== TABLE ========== -->
+        <div class="table-container">
+            <div class="table-header">
+                <h2>
+                    <span>📋</span>
+                    <span class="green">جدول حساب‌ها</span>
+                </h2>
+                <div class="actions">
+                    <button onclick="addRow()">➕ افزودن ردیف</button>
+                    <button onclick="clearAll()" class="danger">🗑️ پاک کردن همه</button>
+                    <button id="checkBtn" onclick="checkBalance()" style="border-color:var(--neon-green);color:var(--neon-green);">✅ کنترل تراز</button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:50px;">#</th>
+                        <th style="text-align:right;">نام حساب</th>
+                        <th>بدهکار (ریال)</th>
+                        <th>بستانکار (ریال)</th>
+                        <th style="width:50px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="tbBody">
+                    <!-- ردیف‌ها توسط JS تولید می‌شوند -->
+                </tbody>
+            </table>
+
+            <!-- ========== RESULT BOX ========== -->
+            <div class="result-box" id="resultBox">
+                <div class="totals">
+                    <div class="total-item">
+                        <span class="label">جمع بدهکار</span>
+                        <span class="value green" id="totalDr">۰</span>
+                    </div>
+                    <div class="total-item">
+                        <span class="label">جمع بستانکار</span>
+                        <span class="value red" id="totalCr">۰</span>
+                    </div>
+                    <div class="total-item">
+                        <span class="label">اختلاف</span>
+                        <span class="value" id="diffVal">۰</span>
+                    </div>
+                </div>
+                <div class="status-msg info" id="statusMsg">
+                    ⏳ داده‌ای وارد نشده
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="#" onclick="alert('تمام ابزارها رایگان و بدون نیاز به اینترنت هستند');">🔒 حریم خصوصی</a>
+                <a href="#" onclick="alert('برای گزارش مشکل یا پیشنهاد، از طریق Issues اقدام کنید.');">🐛 گزارش مشکل</a>
+                <a href="#" onclick="alert('نسخه ۲.۰ – کاملاً متن‌باز و رایگان');">📌 نسخه ۲.۰</a>
+            </div>
+            <div class="copyright">
+                <span class="green">حسابداران</span> · تراز آزمایشی · ۱۴۰۴
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    SCRIPT – ذرات معلق + منطق تراز
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // ۱. ذرات معلق – canvas
+            // ============================================================
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let W, H;
+            let particles = [];
+            const PARTICLE_COUNT = 80;
+
+            const COLORS = [
+                'rgba(0, 255, 136, ',
+                'rgba(255, 34, 85, ',
+                'rgba(240, 240, 255, ',
+            ];
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H;
+                    this.size = Math.random() * 2.0 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    this.speedY = (Math.random() - 0.5) * 0.5;
+                    this.opacity = Math.random() * 0.4 + 0.1;
+                    this.colorIdx = Math.floor(Math.random() * COLORS.length);
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = 0.006 + Math.random() * 0.012;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < 0 || this.x > W) { this.speedX *= -1;
+                        this.x = Math.max(0, Math.min(W, this.x)); }
+                    if (this.y < 0 || this.y > H) { this.speedY *= -1;
+                        this.y = Math.max(0, Math.min(H, this.y)); }
+                    this.currentOpacity = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                }
+                draw() {
+                    const alpha = Math.max(0.03, Math.min(0.8, this.currentOpacity));
+                    const color = COLORS[this.colorIdx] + alpha + ')';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 8;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function resizeCanvas() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, W, H);
+                const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
+                grad.addColorStop(0, '#0d0d18');
+                grad.addColorStop(1, '#05050a');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, W, H);
+
+                particles.forEach(p => { p.update();
+                    p.draw(); });
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = 130;
+                        if (dist < maxDist) {
+                            const alpha = (1 - dist / maxDist) * 0.12;
+                            const color = COLORS[0] + alpha + ')';
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = color;
+                            ctx.lineWidth = 0.4;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            function setupParticles() {
+                resizeCanvas();
+                initParticles();
+                drawParticles();
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                particles.forEach(p => {
+                    p.x = Math.min(p.x, W);
+                    p.y = Math.min(p.y, H);
+                });
+            });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupParticles);
+            } else {
+                setupParticles();
+            }
+
+            // ============================================================
+            // ۲. منطق تراز آزمایشی
+            // ============================================================
+            const tbody = document.getElementById('tbBody');
+            const totalDrEl = document.getElementById('totalDr');
+            const totalCrEl = document.getElementById('totalCr');
+            const diffValEl = document.getElementById('diffVal');
+            const statusMsg = document.getElementById('statusMsg');
+
+            // تابع افزودن ردیف
+            function addRow() {
+                const row = tbody.insertRow();
+                const num = tbody.rows.length;
+                row.innerHTML = `
+                    <td><span class="row-num">${num}</span></td>
+                    <td><input type="text" placeholder="نام حساب" class="account-name" style="width:100%;"></td>
+                    <td><input type="number" class="dr" value="0" style="width:100%;" oninput="checkBalance()"></td>
+                    <td><input type="number" class="cr" value="0" style="width:100%;" oninput="checkBalance()"></td>
+                    <td><button class="del-btn" onclick="deleteRow(this)">✕</button></td>
+                `;
+                // بعد از افزودن، بررسی تراز
+                checkBalance();
+            }
+
+            // تابع حذف ردیف
+            window.deleteRow = function(btn) {
+                const row = btn.closest('tr');
+                row.remove();
+                // شماره‌گذاری مجدد
+                const rows = tbody.querySelectorAll('tr');
+                rows.forEach((r, idx) => {
+                    const numSpan = r.querySelector('.row-num');
+                    if (numSpan) numSpan.textContent = idx + 1;
+                });
+                checkBalance();
+            };
+
+            // تابع پاک کردن همه
+            window.clearAll = function() {
+                if (tbody.rows.length === 0) return;
+                if (!confirm('آیا از پاک کردن همه ردیف‌ها اطمینان دارید؟')) return;
+                tbody.innerHTML = '';
+                // ۳ ردیف پیش‌فرض اضافه می‌کنیم
+                for (let i = 0; i < 3; i++) addRow();
+                checkBalance();
+            };
+
+            // تابع اصلی بررسی تراز
+            window.checkBalance = function() {
+                const drInputs = tbody.querySelectorAll('.dr');
+                const crInputs = tbody.querySelectorAll('.cr');
+
+                let totalDr = 0;
+                let totalCr = 0;
+
+                drInputs.forEach(inp => {
+                    totalDr += parseFloat(inp.value) || 0;
+                });
+                crInputs.forEach(inp => {
+                    totalCr += parseFloat(inp.value) || 0;
+                });
+
+                const diff = Math.abs(totalDr - totalCr);
+
+                // نمایش جمع‌ها
+                totalDrEl.textContent = totalDr.toLocaleString();
+                totalCrEl.textContent = totalCr.toLocaleString();
+                diffValEl.textContent = diff.toLocaleString();
+
+                // وضعیت
+                const hasData = totalDr !== 0 || totalCr !== 0;
+                if (!hasData) {
+                    statusMsg.className = 'status-msg info';
+                    statusMsg.textContent = '⏳ داده‌ای وارد نشده';
+                } else if (diff === 0) {
+                    statusMsg.className = 'status-msg success';
+                    statusMsg.textContent = `✅ تراز است. جمع بدهکار = جمع بستانکار = ${totalDr.toLocaleString()}`;
+                } else {
+                    statusMsg.className = 'status-msg danger';
+                    statusMsg.textContent = `❌ تراز نیست. اختلاف: ${diff.toLocaleString()}`;
+                }
+            };
+
+            // مقداردهی اولیه: ۵ ردیف پیش‌فرض
+            (function initRows() {
+                for (let i = 0; i < 5; i++) {
+                    addRow();
+                }
+                // تنظیم نام‌های پیش‌فرض برای نمونه
+                const names = ['صندوق', 'بانک', 'حساب دریافتنی', 'موجودی کالا', 'دارایی ثابت'];
+                const rows = tbody.querySelectorAll('tr');
+                rows.forEach((r, idx) => {
+                    const nameInput = r.querySelector('.account-name');
+                    if (nameInput && idx < names.length) {
+                        nameInput.value = names[idx];
+                    }
+                });
+                checkBalance();
+            })();
+
+            // اضافه کردن متدهای global برای استفاده در onclick
+            window.addRow = addRow;
+
+            // ============================================================
+            // ۳. کپی نمونه گزارش در فوتر (اختیاری)
+            // ============================================================
+            const footer = document.querySelector('.footer .copyright');
+            if (footer) {
+                const copyBtn = document.createElement('span');
+                copyBtn.textContent = '📋 کپی نمونه گزارش';
+                copyBtn.style.cssText = `
+                    display: inline-block;
+                    margin-top: 0.4rem;
+                    padding: 0.2rem 1rem;
+                    border: 1px solid rgba(0,255,136,0.08);
+                    border-radius: 30px;
+                    color: rgba(240,240,255,0.2);
+                    font-size: 0.6rem;
+                    cursor: pointer;
+                    transition: 0.3s;
+                    background: rgba(0,255,136,0.01);
+                `;
+                copyBtn.addEventListener('mouseenter', () => {
+                    copyBtn.style.color = 'var(--neon-green)';
+                    copyBtn.style.borderColor = 'rgba(0,255,136,0.2)';
+                });
+                copyBtn.addEventListener('mouseleave', () => {
+                    copyBtn.style.color = 'rgba(240,240,255,0.2)';
+                    copyBtn.style.borderColor = 'rgba(0,255,136,0.08)';
+                });
+                copyBtn.addEventListener('click', () => {
+                    const reportSample = `
+        گزارش حسابرس مستقل
+        ———————————————
+        به مجمع عمومی صاحبان سهام
+        شرکت نمونه
+
+        ما صورت‌های مالی شرکت را حسابرسی کرده‌ایم.
+        به نظر ما، صورت‌های مالی وضعیت مالی و نتایج عملکرد را
+        به‌طور مطلوب و طبق استانداردهای حسابداری نشان می‌دهند.
+
+        تاریخ: ۱۴۰۴/۰۲/۲۰
+        حسابرس: امیرحسین
+        `;
+                    navigator.clipboard.writeText(reportSample).then(() => {
+                        const orig = copyBtn.textContent;
+                        copyBtn.textContent = '✅ کپی شد!';
+                        copyBtn.style.color = 'var(--neon-green)';
+                        setTimeout(() => {
+                            copyBtn.textContent = orig;
+                            copyBtn.style.color = 'rgba(240,240,255,0.2)';
+                        }, 2200);
+                    }).catch(() => {
+                        alert('مشکل در کپی کردن متن');
+                    });
+                });
+                footer.appendChild(document.createElement('br'));
+                footer.appendChild(copyBtn);
+            }
+
+            console.log('📊 تراز آزمایشی · بارگذاری کامل شد');
+        })();
+    </script>
+
+</body>
+</html>

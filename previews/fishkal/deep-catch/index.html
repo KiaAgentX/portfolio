@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+<title>FISHKAL — Deep Catch</title>
+<meta name="description" content="An interactive cinematic fishing journey from the Dubai coast into deep water. Descend, wait for the fish, strike at the right moment." />
+<meta name="theme-color" content="#04161d" />
+
+<!-- Canonical -->
+<link rel="canonical" href="https://fishkal.ae/deep-catch/" />
+<link rel="alternate" hreflang="en" href="https://fishkal.ae/deep-catch/" />
+<link rel="alternate" hreflang="ar" href="https://fishkal.ae/ar/deep-catch/" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="FISHKAL — Deep Catch" />
+<meta property="og:description" content="Leave the Dubai coast. Descend. Drop the hook. Time the strike." />
+<meta property="og:image" content="https://fishkal.ae/assets/img/og-deep-catch.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://fishkal.ae/deep-catch/" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="FISHKAL — Deep Catch" />
+<meta name="twitter:description" content="A cinematic fishing journey from the Dubai coast into deep water." />
+<meta name="twitter:image" content="https://fishkal.ae/assets/img/og-deep-catch.jpg" />
+
+<!-- Favicon -->
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/assets/img/icon-192.png" />
+
+<!-- Manifest -->
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<!-- Preload hero image -->
+<link rel="preload" as="image" href="/assets/img/hero.avif" type="image/avif" fetchpriority="high" />
+<link rel="preload" as="image" href="/assets/img/hero.webp" type="image/webp" fetchpriority="high" />
+
+<!-- Preconnect -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+
+<!-- Stylesheet -->
+<link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+<body>
+
+<div id="stage">
+  <canvas id="world" aria-hidden="true"></canvas>
+
+  <svg id="ov" aria-hidden="true">
+    <defs>
+      <linearGradient id="gBrass" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#f6e2b4"/>
+        <stop offset=".45" stop-color="#d9a45c"/>
+        <stop offset="1" stop-color="#7d5d2b"/>
+      </linearGradient>
+      <linearGradient id="gLine" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="rgba(239,230,214,0)"/>
+        <stop offset=".35" stop-color="rgba(239,230,214,.30)"/>
+        <stop offset="1" stop-color="rgba(239,230,214,.62)"/>
+      </linearGradient>
+    </defs>
+
+    <!-- SONAR — approach feedback only -->
+    <g id="gSonar" opacity="0">
+      <circle class="sr1" r="52" fill="none" stroke="rgba(99,216,210,.30)" stroke-width="1"/>
+      <circle class="sr2" r="92" fill="none" stroke="rgba(99,216,210,.17)" stroke-width="1"/>
+      <circle class="sr3" r="140" fill="none" stroke="rgba(99,216,210,.09)" stroke-width="1"/>
+    </g>
+
+    <!-- STRIKE HALO -->
+    <g id="gHalo" opacity="0">
+      <circle id="halo1" r="34" fill="none" stroke="rgba(217,164,92,.85)" stroke-width="1.4"/>
+      <circle id="halo2" r="34" fill="none" stroke="rgba(99,216,210,.45)" stroke-width="3"/>
+    </g>
+
+    <!-- HOOK — one element, one identity, boat to seabed -->
+    <g id="gHook" opacity="0">
+      <path id="hookLine" fill="none" stroke="url(#gLine)" stroke-width="1"/>
+      <g id="hookBody">
+        <g id="hookGlow" opacity=".22">
+          <path d="M30 4 L30 68 C30 92 14 100 14 84 C14 72 24 68 30 72"
+                fill="none" stroke="#f6e2b4" stroke-width="9" stroke-linecap="round"/>
+        </g>
+        <circle cx="30" cy="5" r="4.6" fill="none" stroke="url(#gBrass)" stroke-width="2.4"/>
+        <path d="M30 10 L30 68 C30 92 14 100 14 84 C14 72 24 68 30 72"
+              fill="none" stroke="url(#gBrass)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M30 72 L36 60" fill="none" stroke="url(#gBrass)" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="30" cy="22" r="3.1" fill="url(#gBrass)" opacity=".92"/>
+      </g>
+    </g>
+
+    <!-- HUD — three hairlines, present only underwater -->
+    <g id="gHud" opacity="0" stroke="rgba(99,216,210,.34)" stroke-width="1" fill="none">
+      <path id="hudTL"/><path id="hudBR"/><path id="hudCenter"/>
+    </g>
+  </svg>
+
+  <div class="scrim top"></div>
+  <div class="scrim bot"></div>
+
+  <div id="ui">
+    <div id="hero">
+      <div class="mark wordmark">Fishkal</div>
+      <div class="sub">Deep Catch</div>
+      <div class="meta label">Dubai</div>
+    </div>
+
+    <div id="caption"><div class="big"></div><div class="small label"></div></div>
+
+    <div id="cue">Tap the moment the line pulls</div>
+
+    <div id="result" role="status" aria-live="polite">
+      <svg class="frame" viewBox="0 0 360 260" preserveAspectRatio="none" aria-hidden="true">
+        <rect x="1" y="1" width="358" height="258" fill="rgba(3,20,27,.60)" stroke="rgba(239,230,214,.14)"/>
+        <path d="M1 26 L1 1 L26 1" fill="none" stroke="rgba(217,164,92,.85)" stroke-width="1.6"/>
+        <path d="M334 1 L359 1 L359 26" fill="none" stroke="rgba(217,164,92,.85)" stroke-width="1.6"/>
+        <path d="M359 234 L359 259 L334 259" fill="none" stroke="rgba(217,164,92,.85)" stroke-width="1.6"/>
+        <path d="M26 259 L1 259 L1 234" fill="none" stroke="rgba(217,164,92,.85)" stroke-width="1.6"/>
+      </svg>
+      <div class="kicker"></div>
+      <div class="name"></div>
+      <div class="latin"></div>
+      <div class="line"></div>
+      <div class="sig"><i></i><span>Fishkal</span><i></i></div>
+    </div>
+
+    <div id="brand">
+      <div class="mark wordmark">Fishkal</div>
+      <div class="tag">The sea gives up one fish at a time. We bring it in the same way.</div>
+      <div id="cdChip"></div>
+      <a id="waCta" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a9 9 0 00-7.8 13.5L3 21l4.6-1.2A9 9 0 1012 3z"/>
+          <path d="M9 9.5c.5 3 2.5 5 5.5 5.5l1-2-2.2-1.1-1 .8c-1-.5-1.7-1.2-2.2-2.2l.8-1L9.8 8.5z"/>
+        </svg>
+        <span id="waTxt">Join the waitlist</span>
+      </a>
+      <div id="contactLine"></div>
+      <button id="cta" type="button">Discover the catch</button>
+    </div>
+
+    <div id="hint">Scroll to leave the coast<i class="chev"></i></div>
+    <div id="continue">Keep scrolling<i class="chev"></i></div>
+
+    <button id="sound" type="button" aria-pressed="false" aria-label="Turn sound on">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 9.5h3.2L13 5.5v13L8.2 14.5H5z"/>
+        <g class="w"><path d="M16.4 9.2a4 4 0 0 1 0 5.6"/><path d="M18.9 6.8a7.5 7.5 0 0 1 0 10.4"/></g>
+        <g class="x"><path d="M16.6 9.6l4.8 4.8"/><path d="M21.4 9.6l-4.8 4.8"/></g>
+      </svg>
+    </button>
+
+    <div id="langDrop">
+      <button id="langBtn" aria-haspopup="true">
+        <span class="lf" id="langFlag">🇦🇪</span>
+        <span id="langName">AR</span>
+      </button>
+      <div id="langMenu" role="menu"></div>
+    </div>
+
+    <button id="strike" type="button">Strike</button>
+  </div>
+</div>
+
+<div id="spacer" aria-hidden="true"></div>
+
+<p class="sr" id="a11yNote">
+  FISHKAL is a scroll-driven cinematic journey from the coast of Dubai out to open sea.
+  When the hook settles underwater, press Enter or Space at the moment the fish strikes.
+</p>
+
+<!-- =========================================================
+     JavaScript modules — load order matters.
+     Each file is self-contained and attaches to window.*
+     ========================================================= -->
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/motion.js"></script>
+<script src="/assets/js/i18n.js"></script>
+<script src="/assets/js/stage.js"></script>
+<script src="/assets/js/hero.js"></script>
+<script src="/assets/js/underwater.js"></script>
+<script src="/assets/js/fish.js"></script>
+<script src="/assets/js/audio.js"></script>
+<script src="/assets/js/hook.js"></script>
+<script src="/assets/js/game.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/assets/js/main.js" defer></script>
+
+</body>
+</html>

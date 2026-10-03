@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>آزمون‌های محتوا | حسابداران</title>
+    <style>
+        /* ============================================================
+                   RESET & BASE – همانند داشبورد
+                   ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-red: #ff2255;
+            --neon-white: #f0f0ff;
+            --dark-bg: #0a0a12;
+            --card-bg: rgba(18, 18, 30, 0.88);
+            --glass-border: rgba(0, 255, 136, 0.12);
+            --shadow-green: 0 0 40px rgba(0, 255, 136, 0.08);
+            --shadow-red: 0 0 40px rgba(255, 34, 85, 0.08);
+            --radius: 18px;
+            --font: 'Vazirmatn', Tahoma, sans-serif;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--dark-bg);
+            color: var(--neon-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 0 1rem 3rem 1rem;
+            position: relative;
+        }
+
+        /* ============================================================
+                   CANVAS – ذرات معلق (زنده)
+                   ============================================================ */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ============================================================
+                   WRAPPER اصلی
+                   ============================================================ */
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.2rem 0 0 0;
+        }
+
+        /* ============================================================
+                   HEADER – لوگو + نویگیشن
+                   ============================================================ */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.9rem 1.8rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(16px);
+            margin-bottom: 2.2rem;
+            box-shadow: var(--shadow-green), inset 0 0 60px rgba(0, 255, 136, 0.02);
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-red), transparent);
+            opacity: 0.3;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--neon-white);
+            font-weight: 300;
+            font-size: 1.2rem;
+        }
+
+        .logo .badge {
+            background: var(--neon-red);
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.3);
+            margin-right: 0.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.4rem 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(240, 240, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-white);
+            border-color: rgba(0, 255, 136, 0.15);
+            background: rgba(0, 255, 136, 0.03);
+        }
+
+        .nav-links a.active {
+            color: var(--neon-green);
+            border-color: rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .nav-links .sep {
+            color: rgba(240, 240, 255, 0.1);
+            font-size: 1.2rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .header-actions a {
+            color: var(--neon-white);
+            text-decoration: none;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid rgba(240, 240, 255, 0.06);
+            font-size: 0.75rem;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+        }
+
+        .header-actions a:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.08);
+        }
+
+        /* ============================================================
+                   HERO – معرفی آزمون‌های محتوا
+                   ============================================================ */
+        .hero {
+            text-align: center;
+            padding: 2.8rem 2rem 2.4rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(14px);
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-green), inset 0 0 80px rgba(0, 255, 136, 0.01);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(circle at 20% 40%, rgba(0, 255, 136, 0.04), transparent 70%);
+            animation: heroGlow 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes heroGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(8%, 10%) scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        .hero .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .green {
+            color: var(--neon-green);
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .hero h1 .red {
+            color: var(--neon-red);
+            text-shadow: 0 0 40px rgba(255, 34, 85, 0.15);
+        }
+
+        .hero h1 .white {
+            color: var(--neon-white);
+        }
+
+        .hero .subtitle {
+            font-size: 1rem;
+            color: rgba(240, 240, 255, 0.6);
+            max-width: 700px;
+            margin: 0.6rem auto 1rem auto;
+            line-height: 1.8;
+        }
+
+        .hero .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 2rem 3rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .hero .stat-item {
+            text-align: center;
+        }
+
+        .hero .stat-item .num {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            display: block;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .hero .stat-item .label {
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.35);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.1rem;
+        }
+
+        .hero .stat-item .num.red {
+            color: var(--neon-red);
+            text-shadow: 0 0 20px rgba(255, 34, 85, 0.1);
+        }
+
+        /* ============================================================
+                   بخش : دسته‌بندی آزمون‌ها
+                   ============================================================ */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 2.2rem 0 1.5rem 0;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.06);
+        }
+
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section-header h2 .green {
+            color: var(--neon-green);
+        }
+
+        .section-header h2 .red {
+            color: var(--neon-red);
+        }
+
+        .section-header .sub {
+            color: rgba(240, 240, 255, 0.3);
+            font-size: 0.8rem;
+            font-weight: 300;
+        }
+
+        .section-header .badge-count {
+            background: rgba(0, 255, 136, 0.06);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: var(--neon-green);
+        }
+
+        /* ============================================================
+                   GRID – کارت‌های آزمون‌های محتوا
+                   ============================================================ */
+        .substantive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .substantive-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sub-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 1.5rem 1.8rem 1.5rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sub-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-red), var(--neon-green));
+            opacity: 0.3;
+            transition: 0.4s;
+        }
+
+        .sub-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(0, 255, 136, 0.25);
+            box-shadow: 0 12px 50px rgba(0, 255, 136, 0.08), 0 0 80px rgba(255, 34, 85, 0.03);
+        }
+
+        .sub-card:hover::before {
+            opacity: 1;
+            height: 3px;
+        }
+
+        .sub-card .icon-wrap {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .sub-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--neon-white);
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .sub-card h3 .tag {
+            font-weight: 300;
+            font-size: 0.6rem;
+            color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.06);
+            padding: 0.1rem 0.7rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.08);
+        }
+
+        .sub-card .desc {
+            color: rgba(240, 240, 255, 0.55);
+            font-size: 0.85rem;
+            line-height: 1.7;
+            margin: 0.4rem 0 0.6rem 0;
+        }
+
+        .sub-card .procedure-list {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0 0;
+        }
+
+        .sub-card .procedure-list li {
+            padding: 0.3rem 0 0.3rem 1.5rem;
+            position: relative;
+            font-size: 0.8rem;
+            color: rgba(240, 240, 255, 0.65);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            line-height: 1.5;
+        }
+
+        .sub-card .procedure-list li:last-child {
+            border-bottom: none;
+        }
+
+        .sub-card .procedure-list li::before {
+            content: '▸';
+            position: absolute;
+            right: 0;
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .sub-card .procedure-list li .status-badge {
+            display: inline-block;
+            padding: 0.05rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            margin-right: 0.4rem;
+        }
+
+        .sub-card .procedure-list li .status-badge.done {
+            background: rgba(0, 255, 136, 0.08);
+            color: var(--neon-green);
+            border: 1px solid rgba(0, 255, 136, 0.08);
+        }
+
+        .sub-card .procedure-list li .status-badge.pending {
+            background: rgba(255, 34, 85, 0.06);
+            color: var(--neon-red);
+            border: 1px solid rgba(255, 34, 85, 0.06);
+        }
+
+        .sub-card .procedure-list li .status-badge.inprogress {
+            background: rgba(255, 215, 0, 0.06);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.06);
+        }
+
+        .sub-card .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.8rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.75rem;
+            color: rgba(240, 240, 255, 0.2);
+        }
+
+        .sub-card .card-footer .progress {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+                   بخش : چک‌لیست جامع آزمون‌های محتوا
+                   ============================================================ */
+        .checklist-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.5rem 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+        }
+
+        .checklist-section .checklist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .checklist-section .checklist-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .checklist-section .checklist-header .badge {
+            background: rgba(255, 215, 0, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            color: #ffd700;
+        }
+
+        .checklist-section .checklist-header .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .checklist-section .checklist-header .actions button {
+            background: rgba(0, 255, 136, 0.04);
+            border: 1px solid var(--glass-border);
+            color: var(--neon-white);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 0.7rem;
+            transition: 0.3s;
+        }
+
+        .checklist-section .checklist-header .actions button:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        .checklist-section .checklist-header .actions button.danger:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+        }
+
+        .checklist-grid-full {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .checklist-grid-full {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .checklist-item-full {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .checklist-item-full:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(0, 255, 136, 0.05);
+        }
+
+        .checklist-item-full input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--neon-green);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checklist-item-full .item-text {
+            font-size: 0.82rem;
+            color: rgba(240, 240, 255, 0.7);
+            flex: 1;
+        }
+
+        .checklist-item-full .item-text .highlight {
+            color: var(--neon-green);
+        }
+
+        .checklist-item-full .item-text .highlight.red {
+            color: var(--neon-red);
+        }
+
+        .checklist-item-full .status-icon {
+            font-size: 1rem;
+            opacity: 0.3;
+            transition: 0.3s;
+        }
+
+        .checklist-item-full.checked .status-icon {
+            opacity: 1;
+            color: var(--neon-green);
+        }
+
+        .checklist-summary {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.2rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .checklist-summary .stat {
+            font-size: 0.8rem;
+            color: rgba(240, 240, 255, 0.3);
+        }
+
+        .checklist-summary .stat .num {
+            font-weight: 700;
+            color: var(--neon-green);
+        }
+
+        .checklist-summary .stat .num.red {
+            color: var(--neon-red);
+        }
+
+        /* ============================================================
+                   بخش : نمونه‌گیری و آمار
+                   ============================================================ */
+        .sampling-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 992px) {
+            .sampling-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sampling-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 1.5rem 1.8rem 1.5rem;
+            box-shadow: var(--shadow-green);
+            transition: var(--transition);
+        }
+
+        .sampling-card:hover {
+            border-color: rgba(0, 255, 136, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .sampling-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sampling-card h4 .green {
+            color: var(--neon-green);
+        }
+
+        .sampling-card h4 .red {
+            color: var(--neon-red);
+        }
+
+        .sampling-card .form-group {
+            margin-bottom: 0.8rem;
+        }
+
+        .sampling-card .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: rgba(240, 240, 255, 0.5);
+            margin-bottom: 0.2rem;
+        }
+
+        .sampling-card .form-group input,
+        .sampling-card .form-group select {
+            width: 100%;
+            padding: 0.4rem 0.6rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            color: var(--neon-white);
+            font-family: var(--font);
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+
+        .sampling-card .form-group input:focus,
+        .sampling-card .form-group select:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.05);
+        }
+
+        .sampling-card .btn-sm {
+            padding: 0.4rem 1.2rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--neon-white);
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 0.8rem;
+            transition: 0.3s;
+            margin-top: 0.3rem;
+        }
+
+        .sampling-card .btn-sm:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        .sampling-card .btn-sm.red:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+        }
+
+        .sampling-card .sample-result {
+            margin-top: 0.8rem;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.8rem;
+            color: rgba(240, 240, 255, 0.6);
+            min-height: 40px;
+        }
+
+        .sampling-card .sample-result .highlight {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+                   بخش : مستندات و کارپوشه
+                   ============================================================ */
+        .workpaper-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.5rem 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+        }
+
+        .workpaper-section h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .workpaper-section h3 .green {
+            color: var(--neon-green);
+        }
+
+        .workpaper-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .workpaper-item {
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .workpaper-item:hover {
+            border-color: rgba(0, 255, 136, 0.1);
+            background: rgba(0, 255, 136, 0.02);
+        }
+
+        .workpaper-item .wp-icon {
+            font-size: 1.6rem;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .workpaper-item .wp-title {
+            font-size: 0.8rem;
+            color: rgba(240, 240, 255, 0.6);
+        }
+
+        .workpaper-item .wp-ref {
+            font-size: 0.6rem;
+            color: rgba(240, 240, 255, 0.2);
+            margin-top: 0.2rem;
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 1rem 0.5rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 1rem;
+        }
+
+        .footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+        }
+
+        .footer .links a {
+            color: rgba(240, 240, 255, 0.25);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .footer .links a:hover {
+            color: var(--neon-green);
+        }
+
+        .footer .copyright {
+            color: rgba(240, 240, 255, 0.12);
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer .copyright .green {
+            color: rgba(0, 255, 136, 0.2);
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero .stats-row {
+                gap: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0 0.6rem 2rem 0.6rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 0.8rem 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .hero {
+                padding: 2rem 1.2rem;
+            }
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+            .hero .subtitle {
+                font-size: 0.85rem;
+            }
+            .hero .stats-row {
+                gap: 0.8rem 1.5rem;
+            }
+            .hero .stat-item .num {
+                font-size: 1.2rem;
+            }
+            .substantive-grid {
+                grid-template-columns: 1fr;
+            }
+            .sampling-section {
+                grid-template-columns: 1fr;
+            }
+            .checklist-grid-full {
+                grid-template-columns: 1fr;
+            }
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer .links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.1rem;
+            }
+            .sub-card {
+                padding: 1rem;
+            }
+            .checklist-section {
+                padding: 1rem;
+            }
+            .workpaper-section {
+                padding: 1rem;
+            }
+            .sampling-card {
+                padding: 1rem;
+            }
+        }
+
+        /* ============================================================
+                   UTILS & ANIMATIONS
+                   ============================================================ */
+        .text-green {
+            color: var(--neon-green);
+        }
+        .text-red {
+            color: var(--neon-red);
+        }
+        .text-white {
+            color: var(--neon-white);
+        }
+        .text-gold {
+            color: #ffd700;
+        }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+        .fw-700 {
+            font-weight: 700;
+        }
+        .fs-small {
+            font-size: 0.75rem;
+        }
+        .op-5 {
+            opacity: 0.5;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #10101a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00cc6a;
+        }
+
+        .hero,
+        .sub-card,
+        .checklist-section,
+        .sampling-card,
+        .workpaper-section {
+            animation: fadeUp 0.7s ease-out both;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glow-text {
+            animation: glowPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.05);
+            }
+            100% {
+                text-shadow: 0 0 50px rgba(0, 255, 136, 0.15), 0 0 80px rgba(0, 255, 136, 0.05);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    CANVAS – ذرات معلق
+    ============================================================ -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ============================================================
+    WRAPPER
+    ============================================================ -->
+    <div class="main-wrapper">
+
+        <!-- ========== HEADER ========== -->
+        <header class="header">
+            <a href="index.html" class="logo">
+                🧾 حسابداران
+                <span>|</span>
+                <span style="font-weight:300;font-size:1rem;color:rgba(240,240,255,0.6);">آزمون‌های محتوا</span>
+                <span class="badge">v2.0</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="trial_balance.html">📊 تراز</a>
+                <a href="tax.html">💰 مالیات</a>
+                <a href="#" class="active">📋 آزمون</a>
+                <a href="report.html" style="color:var(--neon-red);border-color:rgba(255,34,85,0.1);">📝 گزارش</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" onclick="document.getElementById('checkAllBtn').click();">✅ همه</a>
+                <a href="index.html">🚀 بازگشت</a>
+            </div>
+        </header>
+
+        <!-- ========== HERO ========== -->
+        <section class="hero">
+            <div class="content">
+                <h1>
+                    <span class="green glow-text">📋</span>
+                    <span class="white">آزمون‌های محتوا</span>
+                    <span class="green glow-text">·</span>
+                    <span class="red glow-text">حسابرسی عملیاتی</span>
+                </h1>
+                <p class="subtitle">
+                    چک‌لیست کامل و ساختارمند برای آزمون‌های محتوا در حسابرسی.
+                    شامل صندوق، بانک، دریافتنی، موجودی کالا، دارایی ثابت، فروش و خرید.
+                </p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="num">۷</span>
+                        <span class="label">حوزه اصلی</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num red">۳۲</span>
+                        <span class="label">آزمون مشخص</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num green">۱۰۰٪</span>
+                        <span class="label">قابل اجرا</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SECTION HEADER ========== -->
+        <div class="section-header">
+            <h2>
+                <span>🧩</span>
+                <span class="green">حوزه‌های آزمون محتوا</span>
+                <span class="sub">— هر حوزه شامل رویه‌های مشخص</span>
+            </h2>
+            <span class="badge-count">۷ حوزه</span>
+        </div>
+
+        <!-- ========== SUBSTANTIVE GRID ========== -->
+        <div class="substantive-grid">
+
+            <!-- 1. صندوق -->
+            <div class="sub-card">
+                <span class="icon-wrap">💵</span>
+                <h3>صندوق <span class="tag">وجوه نقد</span></h3>
+                <div class="desc">آزمون‌های مربوط به موجودی صندوق و مغایرت‌گیری</div>
+                <ul class="procedure-list">
+                    <li><span class="status-badge done">✓</span> صورت‌جلسه صندوق و شمارش فیزیکی</li>
+                    <li><span class="status-badge done">✓</span> مغایرت صندوق با دفتر روزنامه</li>
+                    <li><span class="status-badge pending">⏳</span> تصویب مخارج و تایید کنندگان</li>
+                    <li><span class="status-badge inprogress">⟳</span> بررسی فیش‌های فروش و هزینه</li>
+                    <li><span class="status-badge done">✓</span> تفکیک وجوه نقد و اسناد</li>
+                </ul>
+                <div class="card-footer">
+                    <span>وضعیت: <span class="progress">۳/۵</span></span>
+                    <span>WP: C-1</span>
+                </div>
+            </div>
+
+            <!-- 2. بانک -->
+            <div class="sub-card">
+                <span class="icon-wrap">🏦</span>
+                <h3>بانک <span class="tag">حساب‌های جاری</span></h3>
+                <div class="desc">آزمون‌های مربوط به موجودی بانک و صورتحساب‌ها</div>
+                <ul class="procedure-list">
+                    <li><span class="status-badge done">✓</span> صورت مغایرت بانکی (ریکونسیلیشن)</li>
+                    <li><span class="status-badge done">✓</span> تاییدیه مستقیم از بانک</li>
+                    <li><span class="status-badge pending">⏳</span> بررسی چک‌های صادر و دریافتی</li>
+                    <li><span class="status-badge inprogress">⟳</span> محاسبه سود و کارمزد بانکی</li>
+                    <li><span class="status-badge done">✓</span> تطبیق فیش‌های واریز با دفتر</li>
+                </ul>
+                <div class="card-footer">
+                    <span>وضعیت: <span class="progress">۳/۵</span></span>
+                    <span>WP: B-2</span>
+                </div>
+            </div>
+
+            <!-- 3. دریافتنی -->
+            <div class="sub-card">
+                <span class="icon-wrap">📨</span>
+                <h3>حساب‌های دریافتنی <span class="tag">بدهکاران</span></h3>
+                <div class="desc">آزمون‌های مربوط به دریافتنی‌ها و استحقاق</div>
+                <ul class="procedure-list">
+                    <li><span class="status-badge done">✓</span> سن‌بندی حساب‌های دریافتنی</li>
+                    <li><span class="status-badge inprogress">⟳</span> استعلام مثبت از بدهکاران</li>
+                    <li><span class="status-badge pending">⏳</span> ارزیابی ذخیره مطالبات مشکوک</li>
+                    <li><span class="status-badge done">✓</span> تطبیق فاکتورهای فروش با دفتر</li>
+                    <li><span class="status-badge done">✓</span> بررسی پیمان‌ها و قراردادها</li>
+                </ul>
+                <div class="card-footer">
+                    <span>وضعیت: <span class="progress">۳/۵</span></span>
+                    <span>WP: A/R-3</span>
+                </div>
+            </div>
+
+            <!-- 4. موجودی کالا -->
+            <div class="sub-card">
+                <span class="icon-wrap">📦</span>
+                <h3>موجودی کالا <span class="tag">انبار</span></h3>
+                <div class="desc">آزمون‌های مربوط به موجودی و ارزشگذاری</div>
+                <ul class="procedure-list">
+                    <li><span class="status-badge done">✓</span> حضور در انبارگردانی</li>
+                    <li><span class="status-badge done">✓</span> ارزیابی کالای راکد و غیرقابل فروش</li>
+                    <li><span class="status-badge pending">⏳</span> آزمون قیمت‌گذاری (FIFO/Weighted)</li>
+                    <li><span class="status-badge inprogress">⟳</span> تطبیق حواله‌های انبار با دفتر</li>
+                    <li><span class="status-badge done">✓</span> محاسبه گردش موجودی و استهلاک</li>
+                </ul>
+                <div class="card-footer">
+                    <span>وضعیت: <span class="progress">۳/۵</span></span>
+                    <span>WP: INV-4</span>
+                </div>
+            </div>
+
+            <!-- 5. دارایی ثابت -->
+            <div class="sub-card">
+                <span class="icon-wrap">🏗️</span>
+                <h3>دارایی ثابت <span class="tag">املاک و تجهیزات</span></h3>
+                <div class="desc">آزمون‌های مربوط به دارایی‌های ثابت و استهلاک</div>
+                <ul class="procedure-list">
+                    <li><span class="status-badge done">✓</span> محاسبات استهلاک دارایی ثابت</li>
+                    <li><span class="status-badge inprogress">⟳</span> بازدید فیزیکی از دارایی‌ها</li>
+                    <li><span class="status-badge pending">⏳</span> بررسی اسناد و تامین مالی</li>
+                    <li><span class="status-badge done">✓</span> ارزیابی کاهش ارزش (Impairment)</li>
+                    <li><span class="status-badge done">✓</span> دارایی‌های اجاره‌ای و لیزینگ</li>
+                </ul>
+                <div class="card-footer">
+                    <span>وضعیت: <span class="progress">۳/۵</span></span>
+                    <span>WP: FA-5</span>
+                </div>
+            </div>
+
+            <!-- 6. فروش -->
+            <div class="sub-card">
+                <span class="icon-wrap">🛒</span>
+                <h3>فروش <span class="tag">درآمد</span></h3>
+                <div class="desc">آزمون‌های مربوط به درآمد فروش و تجمیع</div>
+                <ul class="procedure-list">
+                    <li><span class="status-badge done">✓</span> تطبیق فاکتورهای فروش با دفتر</li>
+                    <li><span class="status-badge done">✓</span> آزمون وقوع و کامل بودن</li>
+                    <li><span class="status-badge pending">⏳</span> بررسی بازگشت از فروش و تخفیف</li>
+                    <li><span class="status-badge inprogress">⟳</span> تطبیق با صورتحساب مشتری</li>
+                    <li><span class="status-badge done">✓</span> فروش به اشخاص مرتبط</li>
+                </ul>
+                <div class="card-footer">
+                    <span>وضعیت: <span class="progress">۳/۵</span></span>
+                    <span>WP: REV-6</span>
+                </div>
+            </div>
+
+            <!-- 7. خرید -->
+            <div class="sub-card">
+                <span class="icon-wrap">📥</span>
+                <h3>خرید <span class="tag">هزینه‌ها</span></h3>
+                <div class="desc">آزمون‌های مربوط به خرید و هزینه‌های عملیاتی</div>
+                <ul class="procedure-list">
+                    <li><span class="status-badge done">✓</span> تطبیق فاکتورهای خرید با حواله انبار</li>
+                    <li><span class="status-badge done">✓</span> آزمون کامل بودن و وقوع خرید</li>
+                    <li><span class="status-badge pending">⏳</span> بررسی تاییدیه مدیریت</li>
+                    <li><span class="status-badge inprogress">⟳</span> تطبیق با قراردادها و سفارشات</li>
+                    <li><span class="status-badge done">✓</span> هزینه‌های پیش پرداخت</li>
+                </ul>
+                <div class="card-footer">
+                    <span>وضعیت: <span class="progress">۳/۵</span></span>
+                    <span>WP: PUR-7</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========== SECTION HEADER – چک‌لیست ========== -->
+        <div class="section-header">
+            <h2>
+                <span>✅</span>
+                <span class="green">چک‌لیست جامع آزمون‌ها</span>
+                <span class="sub">— ۳۲ مورد قابل ردیابی</span>
+            </h2>
+            <span class="badge-count">۳۲ آیتم</span>
+        </div>
+
+        <!-- ========== CHECKLIST SECTION ========== -->
+        <div class="checklist-section">
+            <div class="checklist-header">
+                <h3>
+                    <span>📋</span>
+                    <span class="green">کل آزمون‌های محتوا</span>
+                    <span class="badge">جهت تکمیل</span>
+                </h3>
+                <div class="actions">
+                    <button id="checkAllBtn" onclick="checkAllSub(true)">✅ انتخاب همه</button>
+                    <button class="danger" onclick="checkAllSub(false)">❌ پاک کردن</button>
+                </div>
+            </div>
+            <div class="checklist-grid-full" id="subChecklist">
+                <!-- توسط JS تولید می‌شود -->
+            </div>
+            <div class="checklist-summary">
+                <span class="stat">تعداد انجام شده: <span class="num" id="subDoneCount">۰</span> از <span class="num" id="subTotalCount">۳۲</span></span>
+                <span class="stat">پیشرفت: <span class="num" id="subProgress">۰٪</span></span>
+                <span class="stat">وضعیت: <span id="subStatus" style="color:rgba(240,240,255,0.3);">شروع نشده</span></span>
+            </div>
+        </div>
+
+        <!-- ========== SAMPLING SECTION ========== -->
+        <div class="section-header">
+            <h2>
+                <span>🎲</span>
+                <span class="green">نمونه‌گیری و آمار</span>
+                <span class="sub">— تعیین حجم نمونه و انتخاب</span>
+            </h2>
+            <span class="badge-count">MUS</span>
+        </div>
+
+        <div class="sampling-section">
+
+            <!-- کارت نمونه‌گیری -->
+            <div class="sampling-card">
+                <h4>
+                    <span>🎲</span>
+                    <span class="green">نمونه‌گیری تصادفی</span>
+                </h4>
+                <div class="form-group">
+                    <label>اندازه جامعه (N)</label>
+                    <input type="number" id="popSize" value="1000" min="1" />
+                </div>
+                <div class="form-group">
+                    <label>حجم نمونه (n)</label>
+                    <input type="number" id="sampleSize" value="30" min="1" max="1000" />
+                </div>
+                <div class="form-group">
+                    <label>روش نمونه‌گیری</label>
+                    <select id="samplingMethod">
+                        <option value="random" selected>تصادفی ساده</option>
+                        <option value="systematic">سیستماتیک</option>
+                        <option value="stratified">طبقه‌بندی شده</option>
+                        <option value="mus">MUS (واحد پولی)</option>
+                    </select>
+                </div>
+                <button class="btn-sm" onclick="generateSample()">🎯 تولید نمونه</button>
+                <div class="sample-result" id="sampleResult">
+                    <span style="color:rgba(240,240,255,0.2);">برای تولید نمونه کلیک کنید</span>
+                </div>
+            </div>
+
+            <!-- کارت حجم نمونه -->
+            <div class="sampling-card">
+                <h4>
+                    <span>📊</span>
+                    <span class="red">تعیین حجم نمونه</span>
+                </h4>
+                <div class="form-group">
+                    <label>ریسک قابل تحمل (%)</label>
+                    <input type="number" id="riskLevel" value="5" step="0.5" min="1" max="20" />
+                </div>
+                <div class="form-group">
+                    <label>انحراف معیار تخمینی</label>
+                    <input type="number" id="stdDev" value="0.1" step="0.01" min="0.01" max="0.5" />
+                </div>
+                <div class="form-group">
+                    <label>دقت مورد نیاز</label>
+                    <input type="number" id="precision" value="0.05" step="0.005" min="0.01" max="0.2" />
+                </div>
+                <button class="btn-sm red" onclick="calcSampleSize()">🧮 محاسبه حجم</button>
+                <div class="sample-result" id="sampleSizeResult">
+                    <span style="color:rgba(240,240,255,0.2);">حجم نمونه محاسبه نشده</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========== WORKPAPER SECTION ========== -->
+        <div class="section-header">
+            <h2>
+                <span>📁</span>
+                <span class="green">مستندات و کارپوشه</span>
+                <span class="sub">— ارجاعات و شماره‌گذاری</span>
+            </h2>
+            <span class="badge-count">WP Ref</span>
+        </div>
+
+        <div class="workpaper-section">
+            <h3>
+                <span>📁</span>
+                <span class="green">کارپوشه آزمون‌های محتوا</span>
+                <span style="font-size:0.8rem;font-weight:300;color:rgba(240,240,255,0.3);">— هر بخش دارای ارجاع استاندارد</span>
+            </h3>
+            <div class="workpaper-grid">
+                <div class="workpaper-item">
+                    <span class="wp-icon">💵</span>
+                    <div class="wp-title">صندوق</div>
+                    <div class="wp-ref">WP C-1</div>
+                </div>
+                <div class="workpaper-item">
+                    <span class="wp-icon">🏦</span>
+                    <div class="wp-title">بانک</div>
+                    <div class="wp-ref">WP B-2</div>
+                </div>
+                <div class="workpaper-item">
+                    <span class="wp-icon">📨</span>
+                    <div class="wp-title">دریافتنی</div>
+                    <div class="wp-ref">WP A/R-3</div>
+                </div>
+                <div class="workpaper-item">
+                    <span class="wp-icon">📦</span>
+                    <div class="wp-title">موجودی کالا</div>
+                    <div class="wp-ref">WP INV-4</div>
+                </div>
+                <div class="workpaper-item">
+                    <span class="wp-icon">🏗️</span>
+                    <div class="wp-title">دارایی ثابت</div>
+                    <div class="wp-ref">WP FA-5</div>
+                </div>
+                <div class="workpaper-item">
+                    <span class="wp-icon">🛒</span>
+                    <div class="wp-title">فروش</div>
+                    <div class="wp-ref">WP REV-6</div>
+                </div>
+                <div class="workpaper-item">
+                    <span class="wp-icon">📥</span>
+                    <div class="wp-title">خرید</div>
+                    <div class="wp-ref">WP PUR-7</div>
+                </div>
+                <div class="workpaper-item">
+                    <span class="wp-icon">📊</span>
+                    <div class="wp-title">خلاصه و جمع‌بندی</div>
+                    <div class="wp-ref">WP SUM-8</div>
+                </div>
+            </div>
+            <div style="margin-top:1rem;font-size:0.7rem;color:rgba(240,240,255,0.15);text-align:center;">
+                هر بخش دارای ارجاع استاندارد کارپوشه است · طبق استانداردهای حسابرسی
+            </div>
+        </div>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="#" onclick="alert('تمام ابزارها رایگان و بدون نیاز به اینترنت هستند');">🔒 حریم خصوصی</a>
+                <a href="#" onclick="alert('برای گزارش مشکل یا پیشنهاد، از طریق Issues اقدام کنید.');">🐛 گزارش مشکل</a>
+                <a href="#" onclick="alert('نسخه ۲.۰ – کاملاً متن‌باز و رایگان');">📌 نسخه ۲.۰</a>
+            </div>
+            <div class="copyright">
+                <span class="green">حسابداران</span> · آزمون‌های محتوا · ۱۴۰۴
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    SCRIPT – ذرات معلق + منطق آزمون‌های محتوا
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // ۱. ذرات معلق – canvas
+            // ============================================================
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let W, H;
+            let particles = [];
+            const PARTICLE_COUNT = 80;
+
+            const COLORS = [
+                'rgba(0, 255, 136, ',
+                'rgba(255, 34, 85, ',
+                'rgba(240, 240, 255, ',
+            ];
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H;
+                    this.size = Math.random() * 2.0 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    this.speedY = (Math.random() - 0.5) * 0.5;
+                    this.opacity = Math.random() * 0.4 + 0.1;
+                    this.colorIdx = Math.floor(Math.random() * COLORS.length);
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = 0.006 + Math.random() * 0.012;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < 0 || this.x > W) { this.speedX *= -1;
+                        this.x = Math.max(0, Math.min(W, this.x)); }
+                    if (this.y < 0 || this.y > H) { this.speedY *= -1;
+                        this.y = Math.max(0, Math.min(H, this.y)); }
+                    this.currentOpacity = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                }
+                draw() {
+                    const alpha = Math.max(0.03, Math.min(0.8, this.currentOpacity));
+                    const color = COLORS[this.colorIdx] + alpha + ')';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 8;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function resizeCanvas() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, W, H);
+                const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
+                grad.addColorStop(0, '#0d0d18');
+                grad.addColorStop(1, '#05050a');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, W, H);
+
+                particles.forEach(p => { p.update();
+                    p.draw(); });
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = 130;
+                        if (dist < maxDist) {
+                            const alpha = (1 - dist / maxDist) * 0.12;
+                            const color = COLORS[0] + alpha + ')';
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = color;
+                            ctx.lineWidth = 0.4;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            function setupParticles() {
+                resizeCanvas();
+                initParticles();
+                drawParticles();
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                particles.forEach(p => {
+                    p.x = Math.min(p.x, W);
+                    p.y = Math.min(p.y, H);
+                });
+            });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupParticles);
+            } else {
+                setupParticles();
+            }
+
+            // ============================================================
+            // ۲. چک‌لیست جامع ۳۲ موردی
+            // ============================================================
+            const subItems = [
+                // صندوق
+                'صورت‌جلسه صندوق و شمارش فیزیکی',
+                'مغایرت صندوق با دفتر روزنامه',
+                'تصویب مخارج و تایید کنندگان',
+                'بررسی فیش‌های فروش و هزینه',
+                'تفکیک وجوه نقد و اسناد',
+                // بانک
+                'صورت مغایرت بانکی (ریکونسیلیشن)',
+                'تاییدیه مستقیم از بانک',
+                'بررسی چک‌های صادر و دریافتی',
+                'محاسبه سود و کارمزد بانکی',
+                'تطبیق فیش‌های واریز با دفتر',
+                // دریافتنی
+                'سن‌بندی حساب‌های دریافتنی',
+                'استعلام مثبت از بدهکاران',
+                'ارزیابی ذخیره مطالبات مشکوک',
+                'تطبیق فاکتورهای فروش با دفتر',
+                'بررسی پیمان‌ها و قراردادها',
+                // موجودی کالا
+                'حضور در انبارگردانی',
+                'ارزیابی کالای راکد و غیرقابل فروش',
+                'آزمون قیمت‌گذاری (FIFO/Weighted)',
+                'تطبیق حواله‌های انبار با دفتر',
+                'محاسبه گردش موجودی و استهلاک',
+                // دارایی ثابت
+                'محاسبات استهلاک دارایی ثابت',
+                'بازدید فیزیکی از دارایی‌ها',
+                'بررسی اسناد و تامین مالی',
+                'ارزیابی کاهش ارزش (Impairment)',
+                'دارایی‌های اجاره‌ای و لیزینگ',
+                // فروش
+                'تطبیق فاکتورهای فروش با دفتر',
+                'آزمون وقوع و کامل بودن',
+                'بررسی بازگشت از فروش و تخفیف',
+                'تطبیق با صورتحساب مشتری',
+                'فروش به اشخاص مرتبط',
+                // خرید
+                'تطبیق فاکتورهای خرید با حواله انبار',
+                'آزمون کامل بودن و وقوع خرید'
+            ];
+
+            const checklistContainer = document.getElementById('subChecklist');
+            if (checklistContainer) {
+                checklistContainer.innerHTML = subItems.map((item, index) => `
+                    <div class="checklist-item-full" data-index="${index}" onclick="toggleSubItem(this)">
+                        <input type="checkbox" id="sub_${index}" />
+                        <span class="item-text">${item}</span>
+                        <span class="status-icon">✓</span>
+                    </div>
+                `).join('');
+                updateSubStats();
+            }
+
+            window.toggleSubItem = function(el) {
+                const checkbox = el.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                el.classList.toggle('checked', checkbox.checked);
+                updateSubStats();
+            };
+
+            window.checkAllSub = function(checked) {
+                const items = document.querySelectorAll('.checklist-item-full');
+                items.forEach((el) => {
+                    const cb = el.querySelector('input[type="checkbox"]');
+                    cb.checked = checked;
+                    el.classList.toggle('checked', checked);
+                });
+                updateSubStats();
+            };
+
+            function updateSubStats() {
+                const total = document.querySelectorAll('.checklist-item-full').length;
+                const done = document.querySelectorAll('.checklist-item-full.checked').length;
+                document.getElementById('subDoneCount').textContent = done;
+                document.getElementById('subTotalCount').textContent = total;
+                const pct = total ? Math.round((done / total) * 100) : 0;
+                document.getElementById('subProgress').textContent = pct + '%';
+                const statusEl = document.getElementById('subStatus');
+                if (done === total && total > 0) {
+                    statusEl.textContent = '✅ تکمیل شده';
+                    statusEl.style.color = 'var(--neon-green)';
+                } else if (done > total * 0.6) {
+                    statusEl.textContent = '🟡 پیشرفت مناسب';
+                    statusEl.style.color = '#ffd700';
+                } else if (done === 0) {
+                    statusEl.textContent = '⏳ شروع نشده';
+                    statusEl.style.color = 'rgba(240,240,255,0.3)';
+                } else {
+                    statusEl.textContent = '🔄 در حال تکمیل';
+                    statusEl.style.color = 'rgba(240,240,255,0.5)';
+                }
+            }
+
+            // ============================================================
+            // ۳. نمونه‌گیری
+            // ============================================================
+            window.generateSample = function() {
+                const N = parseInt(document.getElementById('popSize').value) || 1000;
+                const n = parseInt(document.getElementById('sampleSize').value) || 30;
+                const method = document.getElementById('samplingMethod').value;
+
+                if (n > N) {
+                    alert('حجم نمونه نباید از جامعه بیشتر باشد');
+                    return;
+                }
+
+                let sample = [];
+                const arr = Array.from({ length: N }, (_, i) => i + 1);
+
+                if (method === 'random') {
+                    // تصادفی ساده
+                    const shuffled = [...arr];
+                    for (let i = shuffled.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                    }
+                    sample = shuffled.slice(0, n).sort((a, b) => a - b);
+                } else if (method === 'systematic') {
+                    // سیستماتیک
+                    const interval = Math.floor(N / n);
+                    const start = Math.floor(Math.random() * interval) + 1;
+                    for (let i = 0; i < n; i++) {
+                        const val = start + i * interval;
+                        if (val <= N) sample.push(val);
+                    }
+                } else if (method === 'stratified') {
+                    // طبقه‌بندی (فرض ۵ طبقه)
+                    const strata = 5;
+                    const perStrata = Math.floor(n / strata);
+                    const remainder = n % strata;
+                    let idx = 0;
+                    for (let s = 0; s < strata; s++) {
+                        const size = s < remainder ? perStrata + 1 : perStrata;
+                        const startIdx = Math.floor((s / strata) * N);
+                        const endIdx = Math.floor(((s + 1) / strata) * N);
+                        const pool = arr.slice(startIdx, endIdx);
+                        const shuffled = [...pool];
+                        for (let i = shuffled.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                        }
+                        const selected = shuffled.slice(0, size);
+                        sample.push(...selected);
+                    }
+                    sample.sort((a, b) => a - b);
+                } else if (method === 'mus') {
+                    // MUS – نمونه‌گیری واحد پولی (شبیه‌سازی)
+                    // فرض مبالغ تصادفی بین ۱ تا ۱۰۰
+                    const amounts = arr.map(() => Math.floor(Math.random() * 100) + 1);
+                    const total = amounts.reduce((s, v) => s + v, 0);
+                    const interval = Math.floor(total / n);
+                    let cumulative = 0;
+                    let selected = [];
+                    let idx = 0;
+                    for (let i = 0; i < n && idx < N; i++) {
+                        const target = i * interval + Math.floor(Math.random() * interval);
+                        while (cumulative + amounts[idx] <= target && idx < N - 1) {
+                            cumulative += amounts[idx];
+                            idx++;
+                        }
+                        selected.push(idx + 1);
+                        idx++;
+                        if (idx >= N) break;
+                    }
+                    sample = [...new Set(selected)].sort((a, b) => a - b);
+                    if (sample.length === 0) sample = [1];
+                }
+
+                const resultDiv = document.getElementById('sampleResult');
+                resultDiv.innerHTML = `
+                    <span style="color:rgba(240,240,255,0.3);">روش: ${method}</span><br>
+                    <span class="highlight">تعداد انتخاب شده: ${sample.length}</span><br>
+                    <span style="color:rgba(240,240,255,0.5);font-size:0.75rem;">شماره‌ها: ${sample.join('، ')}</span>
+                `;
+            };
+
+            window.calcSampleSize = function() {
+                const risk = parseFloat(document.getElementById('riskLevel').value) || 5;
+                const std = parseFloat(document.getElementById('stdDev').value) || 0.1;
+                const prec = parseFloat(document.getElementById('precision').value) || 0.05;
+
+                // فرمول ساده: n = (Z^2 * σ^2) / d^2
+                const z = 1.96; // 95% اطمینان
+                const numerator = Math.pow(z, 2) * Math.pow(std, 2);
+                const denominator = Math.pow(prec, 2);
+                let n = Math.ceil(numerator / denominator);
+                if (n < 2) n = 2;
+                if (n > 1000) n = 1000;
+
+                document.getElementById('sampleSizeResult').innerHTML = `
+                    <span class="highlight">حجم نمونه پیشنهادی: ${n}</span><br>
+                    <span style="color:rgba(240,240,255,0.3);font-size:0.75rem;">ریسک: ${risk}% · اطمینان ۹۵٪</span>
+                `;
+            };
+
+            // ============================================================
+            // ۴. کپی نمونه گزارش در فوتر
+            // ============================================================
+            const footer = document.querySelector('.footer .copyright');
+            if (footer) {
+                const copyBtn = document.createElement('span');
+                copyBtn.textContent = '📋 کپی نمونه گزارش';
+                copyBtn.style.cssText = `
+                    display: inline-block;
+                    margin-top: 0.4rem;
+                    padding: 0.2rem 1rem;
+                    border: 1px solid rgba(0,255,136,0.08);
+                    border-radius: 30px;
+                    color: rgba(240,240,255,0.2);
+                    font-size: 0.6rem;
+                    cursor: pointer;
+                    transition: 0.3s;
+                    background: rgba(0,255,136,0.01);
+                `;
+                copyBtn.addEventListener('mouseenter', () => {
+                    copyBtn.style.color = 'var(--neon-green)';
+                    copyBtn.style.borderColor = 'rgba(0,255,136,0.2)';
+                });
+                copyBtn.addEventListener('mouseleave', () => {
+                    copyBtn.style.color = 'rgba(240,240,255,0.2)';
+                    copyBtn.style.borderColor = 'rgba(0,255,136,0.08)';
+                });
+                copyBtn.addEventListener('click', () => {
+                    const reportSample = `
+        گزارش حسابرس مستقل
+        ———————————————
+        به مجمع عمومی صاحبان سهام
+        شرکت نمونه
+
+        ما صورت‌های مالی شرکت را حسابرسی کرده‌ایم.
+        به نظر ما، صورت‌های مالی وضعیت مالی و نتایج عملکرد را
+        به‌طور مطلوب و طبق استانداردهای حسابداری نشان می‌دهند.
+
+        تاریخ: ۱۴۰۴/۰۲/۲۰
+        حسابرس: امیرحسین
+        `;
+                    navigator.clipboard.writeText(reportSample).then(() => {
+                        const orig = copyBtn.textContent;
+                        copyBtn.textContent = '✅ کپی شد!';
+                        copyBtn.style.color = 'var(--neon-green)';
+                        setTimeout(() => {
+                            copyBtn.textContent = orig;
+                            copyBtn.style.color = 'rgba(240,240,255,0.2)';
+                        }, 2200);
+                    }).catch(() => {
+                        alert('مشکل در کپی کردن متن');
+                    });
+                });
+                footer.appendChild(document.createElement('br'));
+                footer.appendChild(copyBtn);
+            }
+
+            console.log('📋 آزمون‌های محتوا · بارگذاری کامل شد');
+        })();
+    </script>
+
+</body>
+</html>

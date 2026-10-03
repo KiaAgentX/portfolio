@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#04161d">
+
+  <title>FISHKAL — Deep Catch | Dubai</title>
+  <meta name="description" content="FISHKAL — A cinematic fishing journey from the Dubai coast into deep water. Descend. Drop the hook. Time the strike.">
+  <meta name="author" content="FISHKAL">
+  <meta name="robots" content="index, follow">
+
+  <!-- Canonical + hreflang -->
+  <link rel="canonical" href="https://fishkal.ae/">
+  <link rel="alternate" hreflang="en" href="https://fishkal.ae/">
+  <link rel="alternate" hreflang="ar" href="https://fishkal.ae/ar/">
+  <link rel="alternate" hreflang="fr" href="https://fishkal.ae/fr/">
+  <link rel="alternate" hreflang="es" href="https://fishkal.ae/es/">
+  <link rel="alternate" hreflang="tr" href="https://fishkal.ae/tr/">
+  <link rel="alternate" hreflang="x-default" href="https://fishkal.ae/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fishkal.ae/">
+  <meta property="og:title" content="FISHKAL — Deep Catch">
+  <meta property="og:description" content="Leave the Dubai coast. Descend. Drop the hook. Time the strike.">
+  <meta property="og:image" content="https://fishkal.ae/assets/img/og-deep-catch.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ar_AE">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FISHKAL — Deep Catch">
+  <meta name="twitter:description" content="A cinematic fishing journey from the Dubai coast into deep water.">
+  <meta name="twitter:image" content="https://fishkal.ae/assets/img/og-deep-catch.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/icon-192.png">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="/manifest.webmanifest">
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "FISHKAL — Deep Catch",
+    "url": "https://fishkal.ae/",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Web",
+    "inLanguage": ["en", "ar", "fr", "es", "tr"],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "AED"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "FISHKAL",
+      "url": "https://fishkal.ae/"
+    }
+  }
+  </script>
+
+  <style>
+    /* ----------------------------------------------------------
+       Landing page — minimal, self-contained, no external CSS.
+       ---------------------------------------------------------- */
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --abyss: #03121a;
+      --ink:   #02090d;
+      --fg:    #efe6d6;
+      --fg-dim: rgba(239, 230, 214, .62);
+      --gold:  #d9a45c;
+      --sand:  #efe6d6;
+      --ease:  cubic-bezier(.22, .61, .36, 1);
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: var(--ink);
+      color: var(--fg);
+      font-family: 'Archivo', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Ambient glow behind the wordmark */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 40%,
+          rgba(217, 164, 92, .10) 0%,
+          rgba(217, 164, 92, .03) 40%,
+          transparent 70%),
+        radial-gradient(ellipse 40% 60% at 50% 70%,
+          rgba(26, 143, 138, .08) 0%,
+          transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.75; }
+      50%      { opacity: 1; }
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .mark {
+      font-size: clamp(38px, 11vw, 88px);
+      font-weight: 600;
+      letter-spacing: 0.42em;
+      text-indent: 0.42em;
+      line-height: 1;
+      text-transform: uppercase;
+      color: var(--fg);
+      margin-bottom: 20px;
+      animation: fadeIn 1.2s var(--ease) both;
+    }
+
+    .tag {
+      font-size: clamp(11px, 2.8vw, 13px);
+      font-weight: 500;
+      letter-spacing: 0.5em;
+      text-indent: 0.5em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 48px;
+      animation: fadeIn 1.2s 0.2s var(--ease) both;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 16px 42px;
+      border: 1px solid rgba(217, 164, 92, .5);
+      color: var(--sand);
+      text-decoration: none;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.34em;
+      text-indent: 0.34em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition:
+        border-color .45s var(--ease),
+        background-color .45s var(--ease),
+        color .45s var(--ease),
+        transform .45s var(--ease);
+      animation: fadeIn 1.2s 0.4s var(--ease) both;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      border-color: var(--gold);
+      background: rgba(217, 164, 92, .10);
+      color: #fff;
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .location {
+      margin-top: 56px;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-indent: 0.4em;
+      text-transform: uppercase;
+      color: rgba(239, 230, 214, .34);
+      animation: fadeIn 1.2s 0.6s var(--ease) both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body::before { animation: none; opacity: 0.8; }
+      .mark, .tag, .btn, .location { animation: none; opacity: 1; }
+      .btn { transition: none; }
+    }
+
+    /* RTL support (if the client prefers Arabic landing) */
+    [dir="rtl"] .mark,
+    [dir="rtl"] .tag,
+    [dir="rtl"] .btn,
+    [dir="rtl"] .location {
+      letter-spacing: 0;
+      text-indent: 0;
+      font-family: 'Tajawal', 'Archivo', sans-serif;
+    }
+
+    [dir="rtl"] .mark { font-weight: 700; }
+    [dir="rtl"] .tag  { font-size: 14px; letter-spacing: 0.05em; }
+    [dir="rtl"] .btn  { font-size: 13px; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="mark">Fishkal</div>
+    <div class="tag">Deep Catch</div>
+    <a class="btn" href="/deep-catch/">Enter the experience</a>
+    <div class="location">Dubai</div>
+  </main>
+
+</body>
+</html>

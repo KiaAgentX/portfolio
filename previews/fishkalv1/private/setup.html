@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Fishkal — Launch Control (Private)</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#050e1a;--teal:#10B6A8;--gold:#F0B64F;--txt:#eaf6f4;--mut:#9db8c4;--line:rgba(16,182,168,.25);--glass:rgba(8,20,36,.72)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Archivo','Segoe UI',Tahoma,sans-serif;background:
+ radial-gradient(1200px 600px at 85% -10%,rgba(16,182,168,.12),transparent 60%),
+ radial-gradient(900px 500px at 10% 110%,rgba(240,182,79,.08),transparent 60%),
+ linear-gradient(180deg,#071427,var(--ink));color:var(--txt);min-height:100vh;line-height:1.6}
+header{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:20px 5vw;background:rgba(4,11,22,.85);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+.logo{display:flex;align-items:center;gap:12px}
+.logo b{font-size:1.25rem;color:#fff;letter-spacing:.18em}
+.logo small{display:block;font-size:.55rem;letter-spacing:.35em;color:var(--teal)}
+.badge{background:linear-gradient(135deg,rgba(240,182,79,.18),rgba(240,182,79,.06));border:1px solid rgba(240,182,79,.5);color:var(--gold);padding:7px 16px;border-radius:999px;font-size:.72rem;font-weight:700;letter-spacing:.08em;white-space:nowrap}
+main{max-width:880px;margin:0 auto;padding:44px 5vw 90px}
+h1{font-size:clamp(1.4rem,3.2vw,2.1rem);font-weight:900;margin-bottom:6px}
+h1 span{color:var(--teal)}
+.intro{color:var(--mut);margin-bottom:30px;font-weight:400;font-size:.92rem}
+.warn{display:flex;gap:12px;align-items:flex-start;background:rgba(240,182,79,.1);border:1px solid rgba(240,182,79,.45);border-radius:18px;padding:16px 20px;margin-bottom:30px;font-size:.85rem;color:#ffe1a8}
+.warn svg{flex:0 0 22px;width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:1.8}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:24px;padding:30px 28px;margin-bottom:24px;backdrop-filter:blur(14px);box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.step{display:flex;gap:16px;align-items:flex-start}
+.num{flex:0 0 44px;width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--teal),#0a8c81);color:#03272b;font-weight:900;font-size:1.1rem;display:flex;align-items:center;justify-content:center}
+.card h2{font-size:1.05rem;font-weight:800;margin-bottom:4px}
+.card .sub{color:var(--mut);font-size:.85rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:.75rem;font-weight:700;color:#bfe8e2;margin-bottom:6px;letter-spacing:.06em;text-transform:uppercase}
+input{width:100%;background:rgba(3,10,20,.7);border:1px solid var(--line);border-radius:14px;padding:12px 16px;color:var(--txt);font-family:inherit;font-size:.92rem;transition:.25s}
+input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 4px rgba(16,182,168,.15)}
+input::placeholder{color:#5c7684}
+.full{grid-column:1/-1}
+pre{direction:ltr;text-align:left;background:#020a14;border:1px solid var(--line);border-radius:16px;padding:18px 20px;font-size:.78rem;color:#9fe8de;overflow:auto;margin-top:18px;font-family:ui-monospace,Consolas,monospace;line-height:1.7}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;border-radius:14px;padding:13px 24px;font-family:inherit;font-weight:800;font-size:.86rem;transition:.25s}
+.btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.btn.teal{background:linear-gradient(135deg,var(--teal),#0a8c81);color:#03272b;box-shadow:0 12px 30px rgba(16,182,168,.4)}
+.btn.teal:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:#bfe8e2}
+.btn.ghost:hover{border-color:var(--teal)}
+ul.check{list-style:none;margin-top:16px}
+ul.check li{display:flex;gap:10px;align-items:flex-start;padding:9px 0;font-size:.86rem;color:#cfe9e6;border-bottom:1px dashed rgba(157,184,196,.18)}
+ul.check li:last-child{border:none}
+ul.check li::before{content:"✓";color:var(--teal);font-weight:900;flex:0 0 auto}
+ul.check b{color:#fff}
+code{background:rgba(16,182,168,.12);border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-size:.78rem;color:#9fe8de;font-family:ui-monospace,Consolas,monospace}
+.ok{display:none;background:rgba(16,182,168,.14);border:1px solid rgba(16,182,168,.5);color:#8ff2e7;border-radius:12px;padding:10px 18px;font-size:.82rem;font-weight:700;margin-top:14px}
+footer{padding:28px 5vw;text-align:center;color:#5c7684;font-size:.74rem;border-top:1px solid rgba(16,182,168,.15)}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <svg width="46" height="30" viewBox="0 0 64 40"><path d="M6 18 C16 4 42 2 56 16 C42 30 16 30 6 18 Z" fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round"/><path d="M6 18 L0 10 M6 18 L0 26" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/><circle cx="46" cy="14" r="2.6" fill="#fff"/><path d="M18 33 q7 6 14 0 q7 -6 14 0" fill="none" stroke="#10B6A8" stroke-width="3.4" stroke-linecap="round"/></svg>
+    <span><b>fishkal</b><small>ONLINE SEAFOOD MARKET</small></span>
+  </div>
+  <span class="badge">LAUNCH CONTROL — PRIVATE</span>
+</header>
+
+<main>
+  <h1>Launch <span>Control Panel</span></h1>
+  <p class="intro">Internal configuration for the Fishkal pre-launch site. Edit the launch date below, download the generated <b>config.js</b>, and upload it next to <b>index.html</b> on the server. Changes go live instantly — no rebuild required.</p>
+
+  <div class="warn">
+    <svg viewBox="0 0 24 24"><path d="M12 3l10 18H2L12 3z"/><path d="M12 10v5"/><circle cx="12" cy="18" r=".6"/></svg>
+    <span><b>Keep this page private.</b> It lives outside <b>public_html</b> (see the checklist). Never upload <b>setup.html</b> to a publicly served folder.</span>
+  </div>
+
+  <div class="card">
+    <div class="step"><span class="num">1</span><div>
+      <h2>Launch countdown</h2>
+      <p class="sub">This value drives the live countdown on the site. Changes go live instantly — no rebuild required.</p>
+    </div></div>
+    <div class="grid">
+      <div class="full"><label for="ld">Launch date &amp; time (Gulf time, +04:00)</label><input id="ld" type="datetime-local" value="2026-10-18T10:00"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="step"><span class="num">2</span><div>
+      <h2>Generate config.js</h2>
+      <p class="sub">Preview below updates live. Download it, then upload it to <b>public_html</b> (overwrite the existing one).</p>
+    </div></div>
+    <pre id="out"></pre>
+    <div class="btns">
+      <button class="btn teal" id="dl"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>Download config.js</button>
+      <button class="btn ghost" id="cp"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>Copy to clipboard</button>
+    </div>
+    <div class="ok" id="ok">Copied ✓ — paste it into config.js on the server.</div>
+  </div>
+
+  <div class="card">
+    <div class="step"><span class="num">3</span><div>
+      <h2>cPanel launch checklist</h2>
+      <p class="sub">Follow in order. Everything is plain static hosting — no database, no build step.</p>
+    </div></div>
+    <ul class="check">
+      <li>In cPanel <b>File Manager</b>, open <b>public_html</b> and upload the contents of the <b>public_html</b> folder from the zip (index.html, biz.css, biz.js, config.js, sw.js, manifest.webmanifest, assets/, .htaccess).</li>
+      <li>Run this page locally, edit your details, then upload the downloaded <b>config.js</b> over the existing one.</li>
+      <li>Enable HTTPS: cPanel → <b>SSL/TLS Status</b> → <b>Run AutoSSL</b>. The install prompt and service worker require HTTPS.</li>
+      <li>The bundled <b>.htaccess</b> already forces HTTPS, sets caching, compression and correct MIME types — no edits needed.</li>
+      <li>Verify: open the site, check the countdown, switch languages from the language menu, and install the app from the browser menu.</li>
+      <li>Keep this <b>setup.html</b> and the zip outside <b>public_html</b>. It is for internal use only.</li>
+    </ul>
+  </div>
+</main>
+
+<footer>© 2026 FISHKAL — Dubai, UAE · Internal tool, not for publication.</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+function build(){
+  const ld=($('ld').value||'2026-10-18T10:00')+':00+04:00';
+  return '/* Fishkal — launch configuration (generated by setup.html) */\n'+
+    'window.FK_CONFIG = {\n  launch: \''+ld+'\'\n};\n';
+}
+function render(){ $('out').textContent=build(); }
+['ld'].forEach(id=>$(id).addEventListener('input',render));
+render();
+$('dl').addEventListener('click',()=>{
+  const b=new Blob([build()],{type:'text/javascript'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='config.js';a.click();
+});
+$('cp').addEventListener('click',()=>{
+  navigator.clipboard.writeText(build()).then(()=>{
+    $('ok').style.display='block';setTimeout(()=>{$('ok').style.display='none';},2500);
+  });
+});
+</script>
+</body>
+</html>

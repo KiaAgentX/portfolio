@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>بودجه‌بان | مدیریت مالی شخصی</title>
+    <style>
+        :root {
+            --bg: #02010a; --surface: rgba(17, 15, 28, 0.75); --surface2: rgba(30, 25, 50, 0.55);
+            --text: #f1f5f9; --text2: #94a3b8; --primary: #10b981; --primary-glow: #34d399;
+            --danger: #ef4444; --danger-glow: #f87171; --gold: #f59e0b; --info: #3b82f6;
+            --border: rgba(255, 255, 255, 0.07); --glass-blur: blur(22px);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3); --shadow: 0 8px 32px rgba(0,0,0,0.5);
+            --radius: 18px; --radius-sm: 12px; --font: 'Vazirmatn', system-ui, sans-serif;
+            direction: rtl; scroll-behavior: smooth;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font); background: #02010a; color: var(--text);
+            line-height: 1.75; min-height: 100vh; display: flex; justify-content: center;
+            padding: 18px; overflow-x: hidden; position: relative;
+        }
+        .galaxy {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 20% 15%, #0a1a10 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 75%, #100520 0%, transparent 50%);
+            z-index: 0; pointer-events: none;
+        }
+        .stars-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .grid-pattern {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background-image: linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+            background-size: 45px 45px; pointer-events:none; z-index:0;
+        }
+
+        .container { position: relative; z-index: 1; max-width: 750px; width: 100%; display: flex; flex-direction: column; gap: 16px; }
+
+        .hero {
+            background: rgba(17,15,28,0.65); backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;
+            text-align: center; box-shadow: var(--shadow);
+        }
+        .hero h1 { font-size: 1.8rem; font-weight: 900; color: var(--primary-glow); }
+        .balance { font-size: 2.5rem; font-weight: 900; color: var(--primary-glow); margin: 8px 0; }
+        .stats { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 8px; }
+        .stat { text-align: center; }
+        .stat-val { font-size: 1.3rem; font-weight: 900; }
+        .stat-lbl { font-size: 0.75rem; color: var(--text2); }
+
+        /* ── تحلیل ماهانه (جایگزین نوار) ── */
+        .analysis-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;
+            margin-top: 12px;
+        }
+        .analysis-card {
+            background: rgba(30, 25, 50, 0.5); border-radius: var(--radius-sm);
+            padding: 14px; text-align: center; border: 1px solid var(--border);
+        }
+        .analysis-card .a-val { font-size: 1.3rem; font-weight: 700; }
+        .analysis-card .a-lbl { font-size: 0.75rem; color: var(--text2); margin-top: 2px; }
+
+        .quick-row { display: flex; gap: 10px; }
+        .quick-btn {
+            flex: 1; padding: 14px; border-radius: var(--radius); border: 1px solid var(--border);
+            background: rgba(17,15,28,0.55); backdrop-filter: var(--glass-blur); color: #fff;
+            font-weight: 700; font-size: 1rem; cursor: pointer; font-family: inherit; transition: 0.2s;
+        }
+        .quick-btn.income { border-color: rgba(16,185,129,0.3); }
+        .quick-btn.income:hover { background: rgba(16,185,129,0.12); transform: translateY(-2px); }
+        .quick-btn.expense { border-color: rgba(239,68,68,0.3); }
+        .quick-btn.expense:hover { background: rgba(239,68,68,0.12); transform: translateY(-2px); }
+
+        .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-bar input, .filter-bar select {
+            flex: 2; min-width: 100px; padding: 10px 14px; border-radius: 25px;
+            border: 2px solid var(--border); background: #0f172a; color: #fff;
+            font-family: inherit; font-size: 0.85rem;
+        }
+        .btn {
+            padding: 10px 18px; border-radius: 25px; border: none; font-weight: 700;
+            cursor: pointer; font-family: inherit; font-size: 0.9rem;
+        }
+        .btn.primary { background: var(--primary); color: #000; }
+        .btn.outline { background: transparent; border: 2px solid var(--primary); color: var(--primary-glow); }
+        .btn.danger { background: var(--danger); color: #fff; }
+        .btn.info { background: var(--info); color: #fff; }
+
+        .tx-list { display: flex; flex-direction: column; gap: 8px; }
+        .tx-card {
+            background: rgba(17,15,28,0.55); backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius); padding: 14px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .tx-card .desc { font-weight: 700; }
+        .tx-card .meta { font-size: 0.8rem; color: var(--text2); }
+        .tx-amount { font-weight: 700; }
+        .tx-amount.pos { color: var(--primary-glow); }
+        .tx-amount.neg { color: var(--danger); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
+            z-index: 100; opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal {
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 22px; width: 90%; max-width: 400px;
+        }
+        .modal h3 { color: var(--primary-glow); text-align: center; margin-bottom: 12px; }
+        .modal input, .modal select {
+            width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px;
+            border: 1px solid var(--border); background: #111; color: #fff; font-family: inherit;
+        }
+        .modal .btn { width: 100%; margin-top: 10px; }
+        .modal .btn-row { display: flex; gap: 10px; }
+        .modal .btn-row .btn { flex: 1; }
+
+        .chart-card {
+            background: rgba(17,15,28,0.55); backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius); padding: 16px;
+        }
+        .chart-card h3 { color: var(--primary-glow); margin-bottom: 10px; }
+        canvas { width: 100%; height: 180px; display: block; }
+
+        .toast {
+            position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--primary);
+            color: #000; padding: 15px; border-radius: 30px; text-align: center;
+            font-weight: 700; z-index: 300; opacity: 0; transition: 0.3s; pointer-events: none;
+        }
+        .toast.show { opacity: 1; pointer-events: auto; }
+        @media (max-width: 400px) { .analysis-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="galaxy"></div>
+<canvas class="stars-canvas" id="starsCanvas"></canvas>
+<div class="grid-pattern"></div>
+
+<div class="container">
+    <div class="hero">
+        <h1>📊 بودجه‌بان</h1>
+        <div class="balance" id="balance">۰ تومان</div>
+        <div class="stats">
+            <div class="stat"><div class="stat-val green" id="totalIncome">۰</div><div class="stat-lbl">درآمد ماه</div></div>
+            <div class="stat"><div class="stat-val red" id="totalExpense">۰</div><div class="stat-lbl">هزینه ماه</div></div>
+            <div class="stat"><div class="stat-val gold" id="netMonth">۰</div><div class="stat-lbl">خالص ماه</div></div>
+        </div>
+
+        <!-- ▼▼▼ تحلیل ماهانه (جایگزین نوار) ▼▼▼ -->
+        <div class="analysis-grid">
+            <div class="analysis-card">
+                <div class="a-val" style="color:var(--info);" id="avgDaily">—</div>
+                <div class="a-lbl">📊 میانگین هزینه روزانه</div>
+            </div>
+            <div class="analysis-card">
+                <div class="a-val" style="color:var(--gold);" id="forecastEnd">—</div>
+                <div class="a-lbl">🔮 پیش‌بینی پایان ماه</div>
+            </div>
+            <div class="analysis-card">
+                <div class="a-val" style="color:var(--primary-glow);" id="lastMonthExp">—</div>
+                <div class="a-lbl">📅 هزینه ماه قبل</div>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:8px; justify-content:center;">
+            <button class="btn info" id="btnSetBudget">⚙️ تنظیم بودجه ماهانه</button>
+        </div>
+        <!-- ▲▲▲ پایان تحلیل ▲▲▲ -->
+    </div>
+
+    <div class="quick-row">
+        <button class="quick-btn income" id="quickIncome">💰 درآمد</button>
+        <button class="quick-btn expense" id="quickExpense">💸 هزینه</button>
+    </div>
+
+    <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="🔍 جستجو...">
+        <select id="filterType">
+            <option value="all">همه</option><option value="income">درآمد</option><option value="expense">هزینه</option>
+        </select>
+        <select id="filterPeriod">
+            <option value="all">همه</option><option value="today">امروز</option>
+            <option value="week">هفته</option><option value="month">ماه</option>
+        </select>
+    </div>
+
+    <div class="tx-list" id="txList"></div>
+
+    <div class="chart-card">
+        <h3>📈 روند ۷ روزه</h3>
+        <canvas id="trendChart"></canvas>
+    </div>
+
+    <button class="btn outline" onclick="location.href='../../index.html'" style="margin-top:8px;">🏠 بازگشت</button>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modalTx">
+    <div class="modal">
+        <h3 id="txTitle"></h3>
+        <input type="number" id="txAmount" placeholder="مبلغ (تومان)">
+        <input type="text" id="txDesc" placeholder="شرح">
+        <select id="txCategory">
+            <option>حقوق</option><option>فروش</option><option>اجاره</option>
+            <option>خوراک</option><option>حمل‌ونقل</option><option>سرگرمی</option><option>سایر</option>
+        </select>
+        <button class="btn primary" id="saveTx">ثبت</button>
+        <button class="btn" onclick="document.getElementById('modalTx').classList.remove('active')" style="background:#333;">انصراف</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalBudget">
+    <div class="modal">
+        <h3>🎯 بودجه ماهانه</h3>
+        <input type="number" id="budgetTotalInput" placeholder="مبلغ بودجه (تومان)">
+        <p style="color:var(--text2); font-size:0.8rem; text-align:center;">این عدد فقط برای یادآوری شما ذخیره می‌شود.</p>
+        <button class="btn primary" id="saveBudget">ذخیره</button>
+        <button class="btn" onclick="document.getElementById('modalBudget').classList.remove('active')" style="background:#333;">انصراف</button>
+    </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<script>
+    const STORAGE = 'budjeban_tx_v3', BUDGET_KEY = 'budjeban_budget';
+    let transactions = JSON.parse(localStorage.getItem(STORAGE) || '[]');
+    let monthlyBudget = parseInt(localStorage.getItem(BUDGET_KEY) || '0');
+    let curType = 'income';
+
+    const fmt = v => (v||0).toLocaleString() + ' تومان';
+    const toastEl = document.getElementById('toast'), toastMsg = document.getElementById('toastMsg');
+    function toast(m) { toastMsg.textContent = m; toastEl.classList.add('show'); setTimeout(() => toastEl.classList.remove('show'), 2000); }
+
+    function getMonthKey(date) {
+        const d = date ? new Date(date) : new Date();
+        return d.getFullYear() + '/' + String(d.getMonth()+1).padStart(2,'0');
+    }
+
+    function getTransactionsOfMonth(year, month) {
+        const key = year + '/' + String(month).padStart(2,'0');
+        return transactions.filter(t => t.date && t.date.startsWith(key));
+    }
+
+    function daysInMonth() {
+        const now = new Date();
+        return new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    }
+
+    function dayOfMonth() {
+        return new Date().getDate();
+    }
+
+    function render() {
+        const search = (document.getElementById('searchInput')?.value||'').trim().toLowerCase();
+        const typeF = document.getElementById('filterType')?.value||'all';
+        const periodF = document.getElementById('filterPeriod')?.value||'all';
+        let filtered = [...transactions];
+        if (search) filtered = filtered.filter(t => (t.desc||'').toLowerCase().includes(search));
+        if (typeF === 'income') filtered = filtered.filter(t => t.type === 'income');
+        else if (typeF === 'expense') filtered = filtered.filter(t => t.type === 'expense');
+
+        const now = new Date(); const today = now.toLocaleDateString('fa-IR');
+        if (periodF === 'today') filtered = filtered.filter(t => t.date === today);
+        else if (periodF === 'week') {
+            const weekAgo = new Date(now); weekAgo.setDate(weekAgo.getDate()-7);
+            filtered = filtered.filter(t => { const p = t.date.split('/'); return new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])) >= weekAgo; });
+        } else if (periodF === 'month') {
+            const monthAgo = new Date(now); monthAgo.setMonth(monthAgo.getMonth()-1);
+            filtered = filtered.filter(t => { const p = t.date.split('/'); return new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])) >= monthAgo; });
+        }
+        filtered.sort((a,b) => (b.id||0) - (a.id||0));
+
+        document.getElementById('txList').innerHTML = filtered.length === 0
+            ? '<p style="text-align:center;color:var(--text2);">تراکنشی نیست.</p>'
+            : filtered.map(t => `<div class="tx-card"><div><span class="desc">${t.desc}</span><br><span class="meta">${t.date} · ${t.category||''}</span></div><span class="tx-amount ${t.type==='income'?'pos':'neg'}">${t.type==='income'?'+':'-'} ${fmt(t.amount)}</span></div>`).join('');
+
+        // Stats for current month
+        const curKey = getMonthKey();
+        const curTx = transactions.filter(t => t.date && t.date.startsWith(curKey));
+        const inc = curTx.filter(t=>t.type==='income').reduce((a,t)=>a+t.amount,0);
+        const exp = curTx.filter(t=>t.type==='expense').reduce((a,t)=>a+t.amount,0);
+        document.getElementById('totalIncome').textContent = fmt(inc);
+        document.getElementById('totalExpense').textContent = fmt(exp);
+        document.getElementById('netMonth').textContent = fmt(inc - exp);
+        document.getElementById('balance').textContent = fmt(transactions.reduce((a,t)=>a+(t.type==='income'?t.amount:-t.amount),0));
+
+        // ▼▼▼ تحلیل ماهانه ▼▼▼
+        const daysGone = dayOfMonth();
+        const avgDaily = daysGone > 0 ? Math.round(exp / daysGone) : 0;
+        document.getElementById('avgDaily').textContent = fmt(avgDaily);
+
+        const daysLeft = daysInMonth() - daysGone;
+        const forecast = exp + (avgDaily * daysLeft);
+        document.getElementById('forecastEnd').textContent = fmt(forecast);
+
+        const nowDate = new Date();
+        const prevMonth = nowDate.getMonth() === 0 ? 12 : nowDate.getMonth();
+        const prevYear = nowDate.getMonth() === 0 ? nowDate.getFullYear()-1 : nowDate.getFullYear();
+        const prevTx = getTransactionsOfMonth(prevYear, prevMonth);
+        const prevExp = prevTx.filter(t=>t.type==='expense').reduce((a,t)=>a+t.amount,0);
+        document.getElementById('lastMonthExp').textContent = fmt(prevExp);
+
+        drawChart();
+    }
+
+    function drawChart() {
+        const c = document.getElementById('trendChart'); const ctx = c.getContext('2d');
+        c.width = c.parentElement.clientWidth-20; c.height = 180;
+        const dates = [], vals = [];
+        for (let i=6; i>=0; i--) {
+            const d = new Date(); d.setDate(d.getDate()-i);
+            const k = d.toLocaleDateString('fa-IR'); dates.push(k);
+            const dayTx = transactions.filter(t => t.date === k);
+            vals.push(dayTx.reduce((a,t)=>a+(t.type==='income'?t.amount:-t.amount),0));
+        }
+        const max = Math.max(...vals.map(Math.abs),1);
+        ctx.clearRect(0,0,c.width,c.height);
+        ctx.beginPath(); ctx.strokeStyle='#10b981'; ctx.lineWidth=2.5;
+        vals.forEach((v,i)=>{
+            const x = (i/(vals.length-1))*(c.width-30)+10;
+            const y = c.height-20 - ((v+max)/(max*2))*(c.height-40);
+            i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+        });
+        ctx.stroke();
+    }
+
+    function saveAll() {
+        localStorage.setItem(STORAGE, JSON.stringify(transactions));
+        localStorage.setItem(BUDGET_KEY, monthlyBudget.toString());
+    }
+
+    function openTxModal(type) {
+        curType = type;
+        document.getElementById('txTitle').textContent = type==='income'?'💰 ثبت درآمد':'💸 ثبت هزینه';
+        document.getElementById('txAmount').value = '';
+        document.getElementById('txDesc').value = '';
+        document.getElementById('modalTx').classList.add('active');
+    }
+
+    document.getElementById('quickIncome').addEventListener('click', ()=>openTxModal('income'));
+    document.getElementById('quickExpense').addEventListener('click', ()=>openTxModal('expense'));
+
+    document.getElementById('saveTx').addEventListener('click', ()=>{
+        const amount = parseInt(document.getElementById('txAmount').value);
+        if (!amount || amount <= 0) return toast('مبلغ معتبر وارد کنید.');
+        const desc = document.getElementById('txDesc').value.trim() || (curType==='income'?'درآمد':'هزینه');
+        const cat = document.getElementById('txCategory').value;
+        transactions.push({ id: Date.now(), type: curType, amount, desc, category: cat, date: new Date().toLocaleDateString('fa-IR') });
+        saveAll(); render(); document.getElementById('modalTx').classList.remove('active');
+        toast('✅ ثبت شد.');
+    });
+
+    document.getElementById('btnSetBudget').addEventListener('click', ()=>{
+        document.getElementById('budgetTotalInput').value = monthlyBudget || '';
+        document.getElementById('modalBudget').classList.add('active');
+    });
+
+    document.getElementById('saveBudget').addEventListener('click', ()=>{
+        monthlyBudget = parseInt(document.getElementById('budgetTotalInput').value) || 0;
+        saveAll(); document.getElementById('modalBudget').classList.remove('active');
+        toast('✅ بودجه ذخیره شد.');
+    });
+
+    document.getElementById('searchInput').addEventListener('input', render);
+    document.getElementById('filterType').addEventListener('change', render);
+    document.getElementById('filterPeriod').addEventListener('change', render);
+    document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click', e=>{ if(e.target===o) o.classList.remove('active'); }));
+
+    // Stars canvas
+    const sc = document.getElementById('starsCanvas'), sctx = sc.getContext('2d');
+    sc.width = window.innerWidth; sc.height = window.innerHeight;
+    const stars = Array.from({length:200},()=>({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*1.6+0.3,a:Math.random(),sp:Math.random()*0.016+0.004}));
+    (function animateStars(){
+        sctx.clearRect(0,0,sc.width,sc.height);
+        stars.forEach(s=>{s.a+=s.sp; if(s.a>1||s.a<0.07)s.sp*=-1; sctx.beginPath(); sctx.arc(s.x,s.y,s.r,0,Math.PI*2); sctx.fillStyle=`rgba(255,255,255,${Math.abs(s.a)})`; sctx.fill();});
+        requestAnimationFrame(animateStars);
+    })();
+
+    render();
+</script>
+</body>
+</html>

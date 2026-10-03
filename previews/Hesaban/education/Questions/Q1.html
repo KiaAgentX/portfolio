@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>حسابداری - موسسه خدماتی آقای توانا</title>
+    <style>
+        /* === RESET & BASE === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'IRANSans', 'Segoe UI', Tahoma, sans-serif;
+            background: #f0f4f8;
+            color: #1e2a3a;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            padding: 30px 30px 40px;
+        }
+
+        /* === HEADER === */
+        .header {
+            text-align: center;
+            padding: 20px 0 30px;
+            border-bottom: 3px solid #e8edf3;
+            position: relative;
+        }
+
+        .header .brand {
+            color: #1e5f8e;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .header .brand span {
+            color: #c79a3e;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e2a3a;
+            margin-top: 10px;
+        }
+
+        .header .subtitle {
+            color: #5a6b7c;
+            font-size: 1rem;
+            margin-top: 6px;
+            background: #eef3f8;
+            display: inline-block;
+            padding: 4px 24px;
+            border-radius: 30px;
+        }
+
+        /* === TABS === */
+        .tabs {
+            display: flex;
+            gap: 6px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            background: #f7f9fc;
+            padding: 8px;
+            border-radius: 16px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 14px 12px;
+            border: none;
+            background: transparent;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4a5a6a;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            background: rgba(30, 95, 142, 0.06);
+            color: #1e5f8e;
+        }
+
+        .tab-btn.active {
+            background: #1e5f8e;
+            color: #fff;
+            box-shadow: 0 6px 16px rgba(30, 95, 142, 0.25);
+        }
+
+        .tab-btn .icon {
+            font-size: 1.2rem;
+        }
+
+        /* === CONTENT === */
+        .tab-content {
+            display: none;
+            padding: 30px 10px 10px;
+            animation: fadeSlide 0.35s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1e2a3a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title .badge {
+            background: #c79a3e;
+            color: #fff;
+            font-size: 0.8rem;
+            padding: 2px 14px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        .section-desc {
+            color: #4a5a6a;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            line-height: 1.7;
+            background: #f7f9fc;
+            padding: 16px 22px;
+            border-radius: 12px;
+            border-right: 4px solid #1e5f8e;
+        }
+
+        /* === TABLE === */
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 10px;
+            border-radius: 14px;
+            border: 1px solid #e8edf3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            min-width: 600px;
+        }
+
+        th {
+            background: #1e2a3a;
+            color: #fff;
+            padding: 15px 16px;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 13px 16px;
+            text-align: center;
+            border-bottom: 1px solid #eef3f8;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #f7faff;
+        }
+
+        .table-highlight {
+            background: #f0f7fe;
+        }
+
+        .text-end {
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .account-name {
+            font-weight: 600;
+            color: #1e2a3a;
+        }
+
+        .debit {
+            color: #1e5f8e;
+            font-weight: 600;
+        }
+
+        .credit {
+            color: #b13e3e;
+            font-weight: 600;
+        }
+
+        .balance-pos {
+            color: #1e5f8e;
+            font-weight: 700;
+        }
+
+        .balance-neg {
+            color: #b13e3e;
+            font-weight: 700;
+        }
+
+        /* LEDGER (T-account style) */
+        .ledger-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 10px;
+        }
+
+        .ledger-card {
+            background: #fafcfe;
+            border: 1px solid #e0e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .ledger-card .ledger-title {
+            background: #1e2a3a;
+            color: #fff;
+            padding: 12px 18px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            text-align: center;
+        }
+
+        .ledger-card .ledger-body {
+            padding: 0;
+        }
+
+        .ledger-card table {
+            min-width: unset;
+            font-size: 0.88rem;
+        }
+
+        .ledger-card th {
+            background: #2c3d55;
+            padding: 10px 8px;
+            font-size: 0.8rem;
+        }
+
+        .ledger-card td {
+            padding: 9px 8px;
+            font-size: 0.88rem;
+        }
+
+        .ledger-card .balance-row {
+            background: #e8f0f8;
+            font-weight: 700;
+        }
+
+        .ledger-card .balance-row td {
+            border-top: 2px solid #1e5f8e;
+        }
+
+        /* === TRIAL BALANCE === */
+        .tb-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding: 20px 24px;
+            background: #f7f9fc;
+            border-radius: 14px;
+            border: 1px solid #e8edf3;
+        }
+
+        .tb-summary .item {
+            flex: 1;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .tb-summary .label {
+            font-size: 0.85rem;
+            color: #5a6b7c;
+        }
+
+        .tb-summary .value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .tb-summary .value.green {
+            color: #1e5f8e;
+        }
+        .tb-summary .value.red {
+            color: #b13e3e;
+        }
+
+        .check-mark {
+            display: inline-block;
+            background: #1e8e4a;
+            color: #fff;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-right: 8px;
+        }
+
+        /* === FOOTER === */
+        .footer {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid #e8edf3;
+            text-align: center;
+            color: #5a6b7c;
+            font-size: 0.95rem;
+        }
+
+        .footer .creator {
+            font-weight: 700;
+            color: #1e5f8e;
+            font-size: 1.1rem;
+        }
+
+        .footer .creator span {
+            color: #c79a3e;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            .tab-btn {
+                min-width: 100px;
+                padding: 10px 8px;
+                font-size: 0.85rem;
+            }
+            .section-title {
+                font-size: 1.3rem;
+            }
+            .ledger-grid {
+                grid-template-columns: 1fr;
+            }
+            .tb-summary {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tabs {
+                flex-direction: column;
+            }
+            .tab-btn {
+                min-width: unset;
+                justify-content: flex-start;
+                padding: 12px 16px;
+            }
+            th,
+            td {
+                padding: 8px 6px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #eef3f8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b0c4d8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8aa3ba;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="brand">🏠 <span>خانه حسابداری</span></div>
+            <h1>📒 پروژه کلاسی حسابداری مقدماتی</h1>
+            <div class="subtitle">موسسه خدماتی آقای توانا — خرداد ۱۳۹۵</div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tab-problem">
+                <span class="icon">📋</span> صورت مسئله
+            </button>
+            <button class="tab-btn" data-tab="tab-journal">
+                <span class="icon">📖</span> دفتر روزنامه
+            </button>
+            <button class="tab-btn" data-tab="tab-ledger">
+                <span class="icon">📁</span> دفتر کل
+            </button>
+            <button class="tab-btn" data-tab="tab-trial">
+                <span class="icon">⚖️</span> مانده‌گیری حساب‌ها
+            </button>
+        </div>
+
+        <!-- ===== TAB 1: PROBLEM ===== -->
+        <div id="tab-problem" class="tab-content active">
+            <div class="section-title">
+                📋 صورت مسئله
+                <span class="badge">خرداد ۱۳۹۵</span>
+            </div>
+
+            <div class="section-desc">
+                <strong>آقای توانا</strong> در خرداد ماه ۱۳۹۵ موسسه خدماتی خود را تاسیس کرد و
+                رویدادهای مالی زیر را انجام داد. مطلوب است ثبت رویدادها در <strong>دفتر روزنامه</strong>
+                ، انتقال به <strong>دفتر کل</strong> و <strong>مانده‌گیری حساب‌ها</strong>.
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">#</th>
+                            <th style="text-align:right;">شرح رویداد مالی</th>
+                            <th style="width:140px;">مبلغ (ریال)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>۱</td>
+                            <td style="text-align:right;">افتتاح حساب موسسه و واریز وجه نقد</td>
+                            <td class="debit">۸,۰۰۰,۰۰۰</td>
+                        </tr>
+                        <tr>
+                            <td>۲</td>
+                            <td style="text-align:right;">ارائه خدمات به صورت نقد</td>
+                            <td class="debit">۷۰۰,۰۰۰</td>
+                        </tr>
+                        <tr>
+                            <td>۳</td>
+                            <td style="text-align:right;">خرید ملزومات به صورت نسیه از فروشگاه حافظ</td>
+                            <td class="debit">۳۰۰,۰۰۰</td>
+                        </tr>
+                        <tr>
+                            <td>۴</td>
+                            <td style="text-align:right;">پرداخت هزینه اجاره ماشین‌آلات</td>
+                            <td class="debit">۲۰۰,۰۰۰</td>
+                        </tr>
+                        <tr>
+                            <td>۵</td>
+                            <td style="text-align:right;">استخدام منشی و تنظیم قرارداد</td>
+                            <td style="color:#5a6b7c;">— (ثبت نمی‌شود)</td>
+                        </tr>
+                        <tr>
+                            <td>۶</td>
+                            <td style="text-align:right;">پرداخت بدهی به فروشگاه حافظ (کل بدهی)</td>
+                            <td class="debit">۳۰۰,۰۰۰</td>
+                        </tr>
+                        <tr>
+                            <td>۷</td>
+                            <td style="text-align:right;">برداشت آقای توانا برای مصارف شخصی</td>
+                            <td class="debit">۳۵۰,۰۰۰</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top:20px; padding:14px 20px; background:#eef3f8; border-radius:12px; font-size:0.95rem; color:#1e2a3a;">
+                💡 <strong>نکته:</strong> رویداد شماره ۵ (استخدام منشی) صرفاً یک قرارداد است و
+                تا زمانی که پرداختی انجام نشود، در دفاتر حسابداری <strong>ثبت نمی‌شود</strong>.
+            </div>
+        </div>
+
+        <!-- ===== TAB 2: JOURNAL ===== -->
+        <div id="tab-journal" class="tab-content">
+            <div class="section-title">
+                📖 دفتر روزنامه (Journal Entries)
+                <span class="badge">خرداد ۱۳۹۵</span>
+            </div>
+
+            <div class="section-desc">
+                ثبت رویدادهای مالی به ترتیب تاریخ در دفتر روزنامه. هر سند شامل
+                <strong>بدهکار</strong> و <strong>بستانکار</strong> است
+                (اصل دوطرفه بودن).
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ردیف</th>
+                            <th style="text-align:right;">شرح</th>
+                            <th>بدهکار (ریال)</th>
+                            <th>بستانکار (ریال)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>۱</td>
+                            <td style="text-align:right;"><strong>وجه نقد</strong> — سرمایه</td>
+                            <td class="debit">۸,۰۰۰,۰۰۰</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="text-align:right; padding-right:30px;">سرمایه آقای توانا</td>
+                            <td></td>
+                            <td class="credit">۸,۰۰۰,۰۰۰</td>
+                        </tr>
+                        <tr class="table-highlight">
+                            <td></td>
+                            <td style="text-align:right; font-size:0.85rem; color:#5a6b7c;">(افتتاح حساب و واریز وجه)</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>۲</td>
+                            <td style="text-align:right;"><strong>وجه نقد</strong> — درآمد خدمات</td>
+                            <td class="debit">۷۰۰,۰۰۰</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="text-align:right; padding-right:30px;">درآمد خدمات</td>
+                            <td></td>
+                            <td class="credit">۷۰۰,۰۰۰</td>
+                        </tr>
+                        <tr class="table-highlight">
+                            <td></td>
+                            <td style="text-align:right; font-size:0.85rem; color:#5a6b7c;">(ارائه خدمات نقدی)</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>۳</td>
+                            <td style="text-align:right;"><strong>ملزومات</strong> — بدهی به فروشگاه حافظ</td>
+                            <td class="debit">۳۰۰,۰۰۰</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="text-align:right; padding-right:30px;">بدهی به فروشگاه حافظ</td>
+                            <td></td>
+                            <td class="credit">۳۰۰,۰۰۰</td>
+                        </tr>
+                        <tr class="table-highlight">
+                            <td></td>
+                            <td style="text-align:right; font-size:0.85rem; color:#5a6b7c;">(خرید ملزومات نسیه)</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>۴</td>
+                            <td style="text-align:right;"><strong>هزینه اجاره ماشین‌آلات</strong> — وجه نقد</td>
+                            <td class="debit">۲۰۰,۰۰۰</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="text-align:right; padding-right:30px;">وجه نقد</td>
+                            <td></td>
+                            <td class="credit">۲۰۰,۰۰۰</td>
+                        </tr>
+                        <tr class="table-highlight">
+                            <td></td>
+                            <td style="text-align:right; font-size:0.85rem; color:#5a6b7c;">(پرداخت اجاره ماشین‌آلات)</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>۶</td>
+                            <td style="text-align:right;"><strong>بدهی به فروشگاه حافظ</strong> — وجه نقد</td>
+                            <td class="debit">۳۰۰,۰۰۰</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="text-align:right; padding-right:30px;">وجه نقد</td>
+                            <td></td>
+                            <td class="credit">۳۰۰,۰۰۰</td>
+                        </tr>
+                        <tr class="table-highlight">
+                            <td></td>
+                            <td style="text-align:right; font-size:0.85rem; color:#5a6b7c;">(پرداخت بدهی به فروشگاه حافظ)</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>۷</td>
+                            <td style="text-align:right;"><strong>برداشت شخصی آقای توانا</strong> — وجه نقد</td>
+                            <td class="debit">۳۵۰,۰۰۰</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="text-align:right; padding-right:30px;">وجه نقد</td>
+                            <td></td>
+                            <td class="credit">۳۵۰,۰۰۰</td>
+                        </tr>
+                        <tr class="table-highlight">
+                            <td></td>
+                            <td style="text-align:right; font-size:0.85rem; color:#5a6b7c;">(برداشت شخصی برای مصارف فردی)</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== TAB 3: LEDGER ===== -->
+        <div id="tab-ledger" class="tab-content">
+            <div class="section-title">
+                📁 دفتر کل (Ledger Accounts)
+                <span class="badge">انتقال از روزنامه</span>
+            </div>
+
+            <div class="section-desc">
+                پس از ثبت در دفتر روزنامه، هر حساب به دفتر کل منتقل می‌شود تا
+                مانده نهایی هر حساب مشخص گردد. در ادامه مانده هر حساب به تفکیک آمده است.
+            </div>
+
+            <div class="ledger-grid">
+
+                <!-- حساب ۱: وجه نقد -->
+                <div class="ledger-card">
+                    <div class="ledger-title">💰 وجه نقد (Cash)</div>
+                    <div class="ledger-body">
+                        <table>
+                            <thead>
+                                <tr><th>تاریخ</th><th>شرح</th><th>بدهکار</th><th>بستانکار</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>خرداد ۱</td><td>سرمایه</td><td class="debit">۸,۰۰۰,۰۰۰</td><td></td></tr>
+                                <tr><td>خرداد ۲</td><td>درآمد خدمات</td><td class="debit">۷۰۰,۰۰۰</td><td></td></tr>
+                                <tr><td>خرداد ۴</td><td>اجاره ماشین‌آلات</td><td></td><td class="credit">۲۰۰,۰۰۰</td></tr>
+                                <tr><td>خرداد ۶</td><td>پرداخت بدهی حافظ</td><td></td><td class="credit">۳۰۰,۰۰۰</td></tr>
+                                <tr><td>خرداد ۷</td><td>برداشت شخصی</td><td></td><td class="credit">۳۵۰,۰۰۰</td></tr>
+                                <tr class="balance-row"><td colspan="2"><strong>مانده</strong></td>
+                                    <td class="balance-pos">۷,۸۵۰,۰۰۰</td><td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- حساب ۲: ملزومات -->
+                <div class="ledger-card">
+                    <div class="ledger-title">📦 ملزومات (Supplies)</div>
+                    <div class="ledger-body">
+                        <table>
+                            <thead>
+                                <tr><th>تاریخ</th><th>شرح</th><th>بدهکار</th><th>بستانکار</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>خرداد ۳</td><td>خرید نسیه از حافظ</td><td class="debit">۳۰۰,۰۰۰</td><td></td></tr>
+                                <tr class="balance-row"><td colspan="2"><strong>مانده</strong></td>
+                                    <td class="balance-pos">۳۰۰,۰۰۰</td><td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- حساب ۳: بدهی به فروشگاه حافظ -->
+                <div class="ledger-card">
+                    <div class="ledger-title">🏪 بدهی به فروشگاه حافظ (Accounts Payable)</div>
+                    <div class="ledger-body">
+                        <table>
+                            <thead>
+                                <tr><th>تاریخ</th><th>شرح</th><th>بدهکار</th><th>بستانکار</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>خرداد ۳</td><td>خرید ملزومات</td><td></td><td class="credit">۳۰۰,۰۰۰</td></tr>
+                                <tr><td>خرداد ۶</td><td>پرداخت بدهی</td><td class="debit">۳۰۰,۰۰۰</td><td></td></tr>
+                                <tr class="balance-row"><td colspan="2"><strong>مانده</strong></td>
+                                    <td></td><td class="balance-neg">۰</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- حساب ۴: سرمایه -->
+                <div class="ledger-card">
+                    <div class="ledger-title">👤 سرمایه آقای توانا (Capital)</div>
+                    <div class="ledger-body">
+                        <table>
+                            <thead>
+                                <tr><th>تاریخ</th><th>شرح</th><th>بدهکار</th><th>بستانکار</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>خرداد ۱</td><td>افتتاح حساب</td><td></td><td class="credit">۸,۰۰۰,۰۰۰</td></tr>
+                                <tr class="balance-row"><td colspan="2"><strong>مانده</strong></td>
+                                    <td></td><td class="balance-pos">۸,۰۰۰,۰۰۰</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- حساب ۵: درآمد خدمات -->
+                <div class="ledger-card">
+                    <div class="ledger-title">📈 درآمد خدمات (Service Revenue)</div>
+                    <div class="ledger-body">
+                        <table>
+                            <thead>
+                                <tr><th>تاریخ</th><th>شرح</th><th>بدهکار</th><th>بستانکار</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>خرداد ۲</td><td>ارائه خدمات نقد</td><td></td><td class="credit">۷۰۰,۰۰۰</td></tr>
+                                <tr class="balance-row"><td colspan="2"><strong>مانده</strong></td>
+                                    <td></td><td class="balance-pos">۷۰۰,۰۰۰</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- حساب ۶: هزینه اجاره ماشین‌آلات -->
+                <div class="ledger-card">
+                    <div class="ledger-title">🔧 هزینه اجاره ماشین‌آلات (Rent Expense)</div>
+                    <div class="ledger-body">
+                        <table>
+                            <thead>
+                                <tr><th>تاریخ</th><th>شرح</th><th>بدهکار</th><th>بستانکار</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>خرداد ۴</td><td>پرداخت اجاره</td><td class="debit">۲۰۰,۰۰۰</td><td></td></tr>
+                                <tr class="balance-row"><td colspan="2"><strong>مانده</strong></td>
+                                    <td class="balance-pos">۲۰۰,۰۰۰</td><td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- حساب ۷: برداشت شخصی -->
+                <div class="ledger-card">
+                    <div class="ledger-title">💸 برداشت شخصی (Withdrawals)</div>
+                    <div class="ledger-body">
+                        <table>
+                            <thead>
+                                <tr><th>تاریخ</th><th>شرح</th><th>بدهکار</th><th>بستانکار</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>خرداد ۷</td><td>برداشت برای مصارف شخصی</td><td class="debit">۳۵۰,۰۰۰</td><td></td></tr>
+                                <tr class="balance-row"><td colspan="2"><strong>مانده</strong></td>
+                                    <td class="balance-pos">۳۵۰,۰۰۰</td><td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ===== TAB 4: TRIAL BALANCE ===== -->
+        <div id="tab-trial" class="tab-content">
+            <div class="section-title">
+                ⚖️ مانده‌گیری حساب‌ها (Trial Balance)
+                <span class="badge">تاریخ: پایان خرداد ۱۳۹۵</span>
+            </div>
+
+            <div class="section-desc">
+                پس از انتقال تمام رویدادها به دفتر کل، مانده نهایی هر حساب را استخراج کرده
+                و در تراز آزمایشی (مانده‌گیری) ثبت می‌کنیم. مجموع بدهکارها و بستانکارها
+                باید با هم برابر باشند.
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="text-align:right;">نام حساب</th>
+                            <th>بدهکار (ریال)</th>
+                            <th>بستانکار (ریال)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:right; font-weight:600;">وجه نقد</td>
+                            <td class="debit">۷,۸۵۰,۰۰۰</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right; font-weight:600;">ملزومات</td>
+                            <td class="debit">۳۰۰,۰۰۰</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right; font-weight:600;">بدهی به فروشگاه حافظ</td>
+                            <td></td>
+                            <td class="credit">۰</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right; font-weight:600;">سرمایه آقای توانا</td>
+                            <td></td>
+                            <td class="credit">۸,۰۰۰,۰۰۰</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right; font-weight:600;">درآمد خدمات</td>
+                            <td></td>
+                            <td class="credit">۷۰۰,۰۰۰</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right; font-weight:600;">هزینه اجاره ماشین‌آلات</td>
+                            <td class="debit">۲۰۰,۰۰۰</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right; font-weight:600;">برداشت شخصی</td>
+                            <td class="debit">۳۵۰,۰۰۰</td>
+                            <td></td>
+                        </tr>
+                        <tr style="background:#e8f0f8; font-weight:700; border-top:2px solid #1e5f8e;">
+                            <td style="text-align:right;">جمع کل</td>
+                            <td class="debit">۸,۷۰۰,۰۰۰</td>
+                            <td class="credit">۸,۷۰۰,۰۰۰</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tb-summary">
+                <div class="item">
+                    <div class="label">مجموع بدهکارها</div>
+                    <div class="value green">۸,۷۰۰,۰۰۰ ریال</div>
+                </div>
+                <div class="item">
+                    <div class="label">مجموع بستانکارها</div>
+                    <div class="value red">۸,۷۰۰,۰۰۰ ریال</div>
+                </div>
+                <div class="item">
+                    <div class="label">وضعیت</div>
+                    <div class="value" style="color:#1e8e4a;">
+                        ✅ متوازن <span style="font-size:0.9rem; font-weight:400; color:#5a6b7c;">(تراز)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top:20px; padding:16px 22px; background:#eaf4ea; border-radius:12px; border-right:4px solid #1e8e4a;">
+                <strong>✅ نتیجه:</strong> تراز آزمایشی (مانده‌گیری حساب‌ها) در پایان خرداد ۱۳۹۵
+                نشان می‌دهد که مجموع بدهکارها و بستانکارها برابر است و کلیه ثبت‌ها به درستی انجام شده است.
+                <span style="display:block; margin-top:8px; font-size:0.9rem; color:#1e2a3a;">
+                    💡 سود خالص = درآمد (۷۰۰,۰۰۰) - هزینه (۲۰۰,۰۰۰) = ۵۰۰,۰۰۰ ریال
+                </span>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="creator">🏠 <span>خانه حسابداری</span></div>
+            <div style="margin-top:6px;">پروژه کلاسی حسابداری مقدماتی — موسسه خدماتی آقای توانا</div>
+            <div style="margin-top:4px; font-size:0.85rem; color:#7a8b9c;">
+                طراحی و اجرا شده توسط تیم آموزشی خانه حسابداری
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== JS ===== -->
+    <script>
+        (function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            function activateTab(tabId) {
+                // deactivate all
+                tabBtns.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(el => el.classList.remove('active'));
+
+                // activate selected
+                const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+                const targetContent = document.getElementById(tabId);
+                if (targetBtn && targetContent) {
+                    targetBtn.classList.add('active');
+                    targetContent.classList.add('active');
+                }
+            }
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const tabId = this.getAttribute('data-tab');
+                    activateTab(tabId);
+                });
+            });
+
+            // ensure first tab is active on load (default)
+            const firstTab = document.querySelector('.tab-btn.active');
+            if (!firstTab) {
+                const defaultBtn = document.querySelector('.tab-btn[data-tab="tab-problem"]');
+                if (defaultBtn) defaultBtn.classList.add('active');
+            }
+            const firstContent = document.querySelector('.tab-content.active');
+            if (!firstContent) {
+                const defaultContent = document.getElementById('tab-problem');
+                if (defaultContent) defaultContent.classList.add('active');
+            }
+        })();
+    </script>
+
+</body>
+</html>

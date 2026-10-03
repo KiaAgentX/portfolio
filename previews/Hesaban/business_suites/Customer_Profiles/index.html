@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>CRM مشتریان | Nexus Suite</title>
+    <style>
+        /* ===== تمام استایل‌های قبلی حفظ شود ===== */
+        :root {
+            --bg: #02010a;
+            --surface: rgba(17, 15, 28, 0.78);
+            --surface2: rgba(30, 25, 50, 0.55);
+            --text: #f1f5f9;
+            --text2: #94a3b8;
+            --primary: #a855f7;
+            --primary-glow: #c084fc;
+            --gold: #f59e0b;
+            --danger: #ef4444;
+            --danger-glow: #f87171;
+            --success: #10b981;
+            --success-glow: #34d399;
+            --info: #3b82f6;
+            --border: rgba(255, 255, 255, 0.07);
+            --glass-blur: blur(24px);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+            --radius-sm: 12px;
+            --radius: 18px;
+            --radius-lg: 28px;
+            --font: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+            direction: rtl;
+            scroll-behavior: smooth;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 16px;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+        }
+        .galaxy { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 60% 20%, #1a1025 0%, transparent 55%),
+                radial-gradient(ellipse at 30% 75%, #0a1a20 0%, transparent 50%);
+            z-index: 0; pointer-events: none; }
+        .stars-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .nebula { position: fixed; bottom: -10%; right: -5%; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(168,85,247,0.10) 0%, transparent 70%);
+            border-radius: 50%; filter: blur(60px); animation: nebulaDrift 22s ease-in-out infinite;
+            pointer-events: none; z-index: 0; }
+        @keyframes nebulaDrift { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(-25px,20px) scale(1.15); } 66% { transform: translate(30px,-20px) scale(0.9); } }
+        .grid-pattern { position: fixed; top:0; left:0; width:100%; height:100%;
+            background-image: linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+            background-size: 48px 48px; pointer-events:none; z-index:0; }
+        .shooting-star { position: fixed; width: 2px; height: 70px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.9), transparent);
+            filter: blur(1px); animation: shoot 1.3s ease-out forwards; z-index: 2; pointer-events: none; }
+        @keyframes shoot { 0% { transform: translate(0, 0) rotate(-30deg); opacity: 1; } 100% { transform: translate(-350px, 250px) rotate(-30deg); opacity: 0; } }
+
+        .container { position: relative; z-index: 1; max-width: 1100px; width: 100%; display: flex; flex-direction: column; gap: 18px; }
+
+        .hero { background: rgba(17,15,28,0.65); backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 24px;
+            text-align: center; box-shadow: var(--shadow-lg); }
+        .hero h1 { font-size: clamp(1.6rem, 4.5vw, 2.3rem); font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-glow), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            animation: titleGlow 3.5s ease-in-out infinite alternate; }
+        @keyframes titleGlow { 0% { filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.3)); } 100% { filter: drop-shadow(0 0 35px rgba(245, 158, 11, 0.5)); } }
+
+        .stats-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 12px; }
+        .stat-item { text-align: center; min-width: 80px;
+            background: rgba(255, 255, 255, 0.02); padding: 8px 16px; border-radius: var(--radius-sm);
+            border: 1px solid var(--border); }
+        .stat-val { font-size: 1.4rem; font-weight: 900; }
+        .stat-val.purple { color: var(--primary-glow); } .stat-val.gold { color: var(--gold); }
+        .stat-val.red { color: var(--danger); } .stat-val.green { color: var(--success); }
+        .stat-val.cyan { color: var(--info); }
+        .stat-lbl { font-size: 0.75rem; color: var(--text2); }
+
+        .chart-row-crm { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .chart-card { background: rgba(17,15,28,0.55); backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+        .chart-card h4 { color: var(--primary-glow); margin-bottom: 10px; font-size: 0.9rem; text-align: center; }
+        .chart-card canvas { width: 100%; height: 160px; display: block; }
+
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 4px; }
+        .filter-bar input, .filter-bar select { flex: 1; min-width: 140px; padding: 11px 16px; border-radius: 30px;
+            border: 2px solid var(--border); background: rgba(17,15,28,0.55); backdrop-filter: blur(10px);
+            color: #fff; font-family: inherit; font-size: 0.9rem; }
+        .filter-bar input:focus, .filter-bar select:focus { border-color: var(--primary); outline: none; }
+        .btn { padding: 10px 20px; border-radius: 30px; border: none; font-family: inherit; font-weight: 700;
+            font-size: 0.85rem; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 5px; }
+        .btn:active { transform: scale(0.96); }
+        .btn.primary { background: var(--primary); color: #fff; }
+        .btn.outline { background: transparent; border: 2px solid var(--primary); color: var(--primary-glow); }
+        .btn.danger { background: var(--danger); color: #fff; }
+        .btn.success { background: var(--success); color: #fff; }
+        .btn.gold { background: var(--gold); color: #0f0c1a; }
+        .btn.small { padding: 6px 14px; font-size: 0.75rem; }
+        .btn.back { background: transparent; border: 2px solid var(--primary); color: var(--primary-glow);
+            text-decoration: none; width: fit-content; margin-top: 4px; }
+
+        .action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+
+        .customer-grid { display: grid; gap: 10px; max-height: 460px; overflow-y: auto; padding-right: 4px; }
+        .customer-grid::-webkit-scrollbar { width: 4px; }
+        .customer-grid::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        .customer-card { background: rgba(17,15,28,0.55); backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px;
+            display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease; flex-wrap: wrap; cursor: pointer; }
+        .customer-card:hover { border-color: rgba(168,85,247,0.3); box-shadow: 0 6px 20px rgba(168,85,247,0.12); }
+        .cust-avatar { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 1.3rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+        .cust-info { flex: 1; min-width: 140px; }
+        .cust-name { font-weight: 700; font-size: 1.05rem; }
+        .cust-meta { font-size: 0.8rem; color: var(--text2); }
+        .cust-balance { font-size: 0.9rem; font-weight: 700; margin-top: 4px; }
+        .balance.owed { color: var(--danger); } .balance.credit { color: var(--success); } .balance.settled { color: var(--text2); }
+        .cust-tag { display: inline-block; padding: 1px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 700;
+            background: rgba(168,85,247,0.15); color: var(--primary-glow); }
+
+        .empty-state { text-align: center; color: var(--text2); padding: 40px 20px; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center;
+            z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal { background: rgba(24,22,36,0.95); backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 22px;
+            width: 92%; max-width: 550px; box-shadow: var(--shadow-lg); max-height: 85vh; overflow-y: auto; }
+        .modal h3 { color: var(--primary-glow); margin-bottom: 14px; text-align: center; font-size: 1.15rem; }
+        .form-row { margin: 8px 0; text-align: right; }
+        .form-row label { display: block; margin-bottom: 4px; color: var(--text2); font-size: 0.85rem; }
+        .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 12px 14px; border-radius: var(--radius-sm);
+            border: 2px solid var(--border); background: #0f0c1a; color: #fff; font-family: inherit; font-size: 0.9rem; }
+        .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--primary); outline: none; }
+        .btn-row { display: flex; gap: 10px; margin-top: 16px; }
+        .btn-row .btn { flex: 1; justify-content: center; }
+
+        .history-item { background: rgba(30,25,50,0.5); padding: 10px; border-radius: var(--radius-sm);
+            margin: 6px 0; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+
+        .toast { position: fixed; bottom: 24px; left: 24px; right: 24px; max-width: 500px; margin: 0 auto;
+            background: var(--success); color: #fff; padding: 14px 22px; border-radius: 30px; text-align: center;
+            font-weight: 700; z-index: 300; opacity: 0; transform: translateY(20px); transition: all 0.3s ease;
+            pointer-events: none; box-shadow: 0 10px 30px rgba(16,185,129,0.35); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .toast.error { background: var(--danger); box-shadow: 0 10px 30px rgba(239,68,68,0.35); }
+        .toast .undo-btn { background: rgba(255,255,255,0.2); border: none; color: #fff; font-weight: 700; padding: 5px 14px; border-radius: 20px; cursor: pointer; font-family: inherit; font-size: 0.8rem; }
+
+        @media (max-width: 700px) { .chart-row-crm { grid-template-columns: 1fr; }
+            .filter-bar input, .filter-bar select { min-width: 80px; padding: 8px 12px; font-size: 0.8rem; }
+            .customer-card { flex-wrap: wrap; } }
+        @media (max-width: 450px) { .hero h1 { font-size: 1.3rem; } .stats-row { gap: 8px; }
+            .stat-item { min-width: 60px; padding: 4px 10px; } .stat-val { font-size: 1.1rem; }
+            .btn { padding: 6px 14px; font-size: 0.75rem; } }
+    </style>
+</head>
+<body>
+    <div class="galaxy"></div>
+    <canvas class="stars-canvas" id="starsCanvas"></canvas>
+    <div class="nebula"></div>
+    <div class="grid-pattern"></div>
+    <div class="container">
+        <div class="hero">
+            <h1>👥 پروفایل مشتریان | CRM</h1>
+            <div class="stats-row">
+                <div class="stat-item"><div class="stat-val purple" id="totalCustomers">۰</div><div class="stat-lbl">کل مشتریان</div></div>
+                <div class="stat-item"><div class="stat-val red" id="totalDebt">۰</div><div class="stat-lbl">کل بدهی</div></div>
+                <div class="stat-item"><div class="stat-val green" id="totalCredit">۰</div><div class="stat-lbl">کل طلب</div></div>
+                <div class="stat-item"><div class="stat-val gold" id="totalRevenue">۰</div><div class="stat-lbl">درآمد کل (فاکتور)</div></div>
+                <div class="stat-item"><div class="stat-val cyan" id="avgBalance">۰</div><div class="stat-lbl">میانگین مانده</div></div>
+            </div>
+        </div>
+
+        <div class="chart-row-crm">
+            <div class="chart-card"><h4>🏆 ۵ مشتری برتر (بدهی)</h4><canvas id="topDebtChart"></canvas></div>
+            <div class="chart-card"><h4>📊 توزیع وضعیت مشتریان</h4><canvas id="statusChart"></canvas></div>
+        </div>
+
+        <div class="filter-bar">
+            <input type="text" id="searchInput" placeholder="🔍 جستجو (نام، تلفن، دسته)...">
+            <select id="filterStatus"><option value="all">📋 همه وضعیت‌ها</option><option value="owed">🔴 بدهکار</option><option value="credit">🟢 طلبکار</option><option value="settled">⚪ تسویه شده</option></select>
+            <button class="btn primary" id="btnNewCustomer">➕ مشتری جدید</button>
+        </div>
+        <div class="action-row">
+            <button class="btn outline small" id="btnExportJSON">📦 پشتیبان JSON</button>
+            <button class="btn gold small" id="btnRefreshData">🔄 همگام‌سازی با دفتر</button>
+            <button class="btn danger small" id="btnDeleteAll" style="margin-right:auto;">🗑️ پاک‌سازی همه</button>
+        </div>
+
+        <div class="customer-grid" id="customerList"><div class="empty-state">👥 مشتری‌ای یافت نشد. روی «مشتری جدید» کلیک کنید.</div></div>
+        <a href="../../index.html" class="btn back">🏠 بازگشت به داشبورد</a>
+    </div>
+
+    <!-- MODAL: Customer Form -->
+    <div class="modal-overlay" id="modalCustomerForm">
+        <div class="modal">
+            <h3 id="formTitle">➕ مشتری جدید</h3>
+            <div class="form-row"><label>نام مشتری:</label><input type="text" id="formName" placeholder="نام کامل"></div>
+            <div class="form-row"><label>شماره تماس:</label><input type="text" id="formPhone" placeholder="مثلاً ۰۹۱۲۳۴۵۶۷۸۹"></div>
+            <div class="form-row"><label>دسته‌بندی:</label><input type="text" id="formCategory" placeholder="مثلاً VIP، عمده، معمولی"></div>
+            <div class="form-row"><label>آدرس:</label><textarea id="formAddress" rows="2" placeholder="آدرس مشتری"></textarea></div>
+            <div class="form-row"><label>یادداشت:</label><textarea id="formNote" rows="2" placeholder="یادداشت داخلی"></textarea></div>
+            <div class="form-row"><label>رنگ پروفایل:</label><input type="color" id="formColor" value="#a855f7"></div>
+            <div class="btn-row">
+                <button class="btn primary" id="saveCustomer">💾 ذخیره</button>
+                <button class="btn outline" onclick="document.getElementById('modalCustomerForm').classList.remove('active')">انصراف</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Profile -->
+    <div class="modal-overlay" id="modalProfile">
+        <div class="modal" id="modalProfileContent"></div>
+    </div>
+
+    <div class="toast" id="toast"><span id="toastMsg"></span><button class="undo-btn" id="undoBtn" style="display:none;">↩ برگشت</button></div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ==== STORAGE ====
+            const STORAGE_CUSTOMERS = 'gifts_profiles_customers';
+            const STORAGE_DAFTAR = 'daftar_customers';
+            const STORAGE_INVOICES = 'faktorsaz_invoices_final';
+
+            // ==== STATE ====
+            let customers = [];
+            let editingId = null;
+            let lastDeleted = null;
+            let toastTimeout = null;
+
+            // ==== DOM ====
+            const $ = id => document.getElementById(id);
+            const D = id => document.getElementById(id);
+
+            // ==== UTILITY ====
+            function fmt(n) { if (n === undefined || n === null || isNaN(n)) return '—'; return Number(n).toLocaleString() + ' تومان'; }
+            function fmtShort(n) { if (n === undefined || n === null || isNaN(n)) return '—'; return Number(n).toLocaleString(); }
+            function todayStr() { return new Date().toLocaleDateString('fa-IR'); }
+            function closeModal(id) { D(id).classList.remove('active'); }
+            function launchStar() {
+                const star = document.createElement('div');
+                star.className = 'shooting-star';
+                star.style.top = (Math.random() * 50 + 10) + '%';
+                star.style.left = (Math.random() * 70 + 10) + '%';
+                star.style.animationDuration = (1.2 + Math.random() * 0.8) + 's';
+                document.body.appendChild(star);
+                setTimeout(() => star.remove(), 1800);
+            }
+
+            // ==== TOAST ====
+            function showToast(msg, isError = false, undoFn = null) {
+                D('toastMsg').textContent = msg;
+                const el = D('toast');
+                el.className = 'toast ' + (isError ? 'error' : '') + ' show';
+                const uBtn = D('undoBtn');
+                if (undoFn) { uBtn.style.display = 'block';
+                    uBtn.onclick = () => { undoFn();
+                        el.classList.remove('show'); }; } else uBtn.style.display = 'none';
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => el.classList.remove('show'), 4500);
+            }
+
+            // ==== DATA (LocalStorage) ====
+            function getDaftarCustomers() { return JSON.parse(localStorage.getItem(STORAGE_DAFTAR) || '[]'); }
+            function getInvoices() { return JSON.parse(localStorage.getItem(STORAGE_INVOICES) || '[]'); }
+            function getCustomerBalance(linkedId) {
+                const daftar = getDaftarCustomers();
+                const cust = daftar.find(c => c.id === linkedId);
+                if (!cust) return 0;
+                return (cust.transactions || []).reduce((a, t) => a + t.amount, 0);
+            }
+            function getCustomerTransactions(linkedId) {
+                const daftar = getDaftarCustomers();
+                const cust = daftar.find(c => c.id === linkedId);
+                return (cust?.transactions || []).slice().reverse();
+            }
+            function getCustomerInvoices(customerName) {
+                const invoices = getInvoices();
+                return invoices.filter(i => i.customer && i.customer.trim() === customerName.trim());
+            }
+            function getCustomerTotalRevenue(customerName) {
+                const invoices = getCustomerInvoices(customerName);
+                return invoices.reduce((a, i) => a + i.total, 0);
+            }
+            function saveCustomers() { localStorage.setItem(STORAGE_CUSTOMERS, JSON.stringify(customers)); }
+
+            function loadCustomers() {
+                customers = JSON.parse(localStorage.getItem(STORAGE_CUSTOMERS) || '[]');
+                const daftarData = getDaftarCustomers();
+                daftarData.forEach(dc => {
+                    if (!customers.find(c => c.linkedDaftarId === dc.id)) {
+                        customers.push({
+                            id: Date.now() + Math.random(),
+                            linkedDaftarId: dc.id,
+                            name: dc.name,
+                            phone: dc.phone || '',
+                            category: '',
+                            address: '',
+                            note: '',
+                            color: '#a855f7',
+                            createdAt: new Date().toISOString()
+                        });
+                    }
+                });
+                saveCustomers();
+            }
+
+            // ==== RENDER ====
+            function render() {
+                const search = (D('searchInput').value || '').trim().toLowerCase();
+                const statusFilter = D('filterStatus').value || 'all';
+                let filtered = customers.filter(c => c.name.toLowerCase().includes(search) || (c.phone || '').includes(search) || (c.category || '').toLowerCase().includes(search));
+                filtered = filtered.map(c => {
+                    const bal = getCustomerBalance(c.linkedDaftarId);
+                    return { ...c, balance: bal };
+                });
+                if (statusFilter === 'owed') filtered = filtered.filter(c => c.balance > 0);
+                else if (statusFilter === 'credit') filtered = filtered.filter(c => c.balance < 0);
+                else if (statusFilter === 'settled') filtered = filtered.filter(c => c.balance === 0);
+                filtered.sort((a, b) => Math.abs(b.balance) - Math.abs(a.balance));
+
+                const list = D('customerList');
+                if (filtered.length === 0) {
+                    list.innerHTML = '<div class="empty-state">👥 مشتری‌ای یافت نشد.</div>';
+                } else {
+                    list.innerHTML = filtered.map(c => {
+                        const bal = c.balance;
+                        const cls = bal > 0 ? 'owed' : (bal < 0 ? 'credit' : 'settled');
+                        const txt = bal > 0 ? '🔴 بدهکار ' + fmt(bal) : (bal < 0 ? '🟢 طلبکار ' + fmt(Math.abs(bal)) : '⚪ تسویه');
+                        const color = c.color || '#a855f7';
+                        const initials = c.name.charAt(0).toUpperCase();
+                        const totalRev = getCustomerTotalRevenue(c.name);
+                        return `<div class="customer-card" data-id="${c.id}">
+                                <div class="cust-avatar" style="background:${color};">${initials}</div>
+                                <div class="cust-info">
+                                    <div class="cust-name">${c.name} <span class="cust-tag">${c.category || 'عمومی'}</span></div>
+                                    <div class="cust-meta">📞 ${c.phone || '—'} | 🧾 درآمد: ${fmt(totalRev)}</div>
+                                    <div class="cust-balance balance ${cls}">${txt}</div>
+                                </div>
+                            </div>`;
+                    }).join('');
+                }
+
+                // Stats
+                const allBalances = customers.map(c => getCustomerBalance(c.linkedDaftarId));
+                const totalDebt = allBalances.reduce((a, b) => a + Math.max(0, b), 0);
+                const totalCredit = allBalances.reduce((a, b) => a + Math.max(0, -b), 0);
+                const totalCustomers = customers.length;
+                const totalRevAll = customers.reduce((a, c) => a + getCustomerTotalRevenue(c.name), 0);
+                const avgBal = totalCustomers > 0 ? totalDebt / totalCustomers : 0;
+
+                D('totalCustomers').textContent = totalCustomers;
+                D('totalDebt').textContent = fmt(totalDebt);
+                D('totalCredit').textContent = fmt(totalCredit);
+                D('totalRevenue').textContent = fmt(totalRevAll);
+                D('avgBalance').textContent = fmt(avgBal);
+
+                drawCharts();
+            }
+
+            function drawCharts() {
+                // Top debtors
+                const canvas1 = D('topDebtChart');
+                const ctx1 = canvas1.getContext('2d');
+                const rect1 = canvas1.parentElement.getBoundingClientRect();
+                const w1 = rect1.width - 20;
+                canvas1.width = w1;
+                canvas1.height = 160;
+                const sortedByDebt = customers.map(c => ({ name: c.name, debt: getCustomerBalance(c.linkedDaftarId) })).filter(c => c.debt > 0).sort((a, b) => b.debt - a.debt).slice(0, 5);
+                const maxDebt = sortedByDebt.length > 0 ? Math.max(...sortedByDebt.map(d => d.debt)) : 1;
+                ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+                if (sortedByDebt.length === 0) {
+                    ctx1.fillStyle = '#94a3b8';
+                    ctx1.font = '14px Vazirmatn, Tahoma';
+                    ctx1.textAlign = 'center';
+                    ctx1.fillText('هیچ بدهکاری یافت نشد.', canvas1.width / 2, canvas1.height / 2 + 6);
+                    return;
+                }
+                const pad1 = { top: 10, bottom: 25, left: 5, right: 10 };
+                const drawW1 = canvas1.width - pad1.left - pad1.right;
+                const drawH1 = canvas1.height - pad1.top - pad1.bottom;
+                const stepX1 = drawW1 / sortedByDebt.length;
+                sortedByDebt.forEach((item, i) => {
+                    const x = pad1.left + i * stepX1;
+                    const h = (item.debt / maxDebt) * drawH1;
+                    const y = pad1.top + drawH1 - h;
+                    ctx1.fillStyle = '#a855f7';
+                    ctx1.fillRect(x + 4, y, stepX1 - 8, h);
+                    ctx1.fillStyle = '#94a3b8';
+                    ctx1.font = '8px Vazirmatn, Tahoma';
+                    ctx1.textAlign = 'center';
+                    ctx1.fillText(item.name.slice(0, 4), x + stepX1 / 2, canvas1.height - 6);
+                    ctx1.fillText(fmtShort(item.debt), x + stepX1 / 2, y - 4);
+                });
+
+                // Status chart
+                const canvas2 = D('statusChart');
+                const ctx2 = canvas2.getContext('2d');
+                const rect2 = canvas2.parentElement.getBoundingClientRect();
+                const w2 = rect2.width - 20;
+                canvas2.width = w2;
+                canvas2.height = 160;
+                const owed = customers.filter(c => getCustomerBalance(c.linkedDaftarId) > 0).length;
+                const cred = customers.filter(c => getCustomerBalance(c.linkedDaftarId) < 0).length;
+                const settled = customers.filter(c => getCustomerBalance(c.linkedDaftarId) === 0).length;
+                const totalC = customers.length || 1;
+                const colors = ['#ef4444', '#10b981', '#94a3b8'];
+                const labels = [`بدهکار (${owed})`, `طلبکار (${cred})`, `تسویه (${settled})`];
+                const data = [owed, cred, settled];
+                const pd2 = { top: 15, bottom: 25, left: 5, right: 5 };
+                const drawW2 = canvas2.width - pd2.left - pd2.right;
+                const drawH2 = canvas2.height - pd2.top - pd2.bottom;
+                const stepX2 = drawW2 / data.length;
+                ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+                data.forEach((val, i) => {
+                    const x = pd2.left + i * stepX2;
+                    const h = (val / totalC) * drawH2;
+                    const y = pd2.top + drawH2 - h;
+                    ctx2.fillStyle = colors[i];
+                    ctx2.fillRect(x + 4, y, stepX2 - 8, h);
+                    ctx2.fillStyle = '#94a3b8';
+                    ctx2.font = '8px Vazirmatn, Tahoma';
+                    ctx2.textAlign = 'center';
+                    ctx2.fillText(labels[i], x + stepX2 / 2, canvas2.height - 6);
+                });
+            }
+
+            // ==== MODAL HANDLERS ====
+            function openCustomerForm(customer = null) {
+                editingId = customer ? customer.id : null;
+                D('formTitle').textContent = customer ? '✏️ ویرایش مشتری' : '➕ مشتری جدید';
+                D('formName').value = customer ? customer.name : '';
+                D('formPhone').value = customer ? customer.phone : '';
+                D('formCategory').value = customer ? customer.category : '';
+                D('formAddress').value = customer ? customer.address : '';
+                D('formNote').value = customer ? customer.note : '';
+                D('formColor').value = customer ? customer.color : '#a855f7';
+                D('modalCustomerForm').classList.add('active');
+            }
+
+            // ==== BUTTONS ====
+            D('btnNewCustomer').addEventListener('click', () => openCustomerForm());
+
+            D('saveCustomer').addEventListener('click', () => {
+                const name = D('formName').value.trim();
+                if (!name) return showToast('نام مشتری الزامی است.', true);
+                const phone = D('formPhone').value.trim();
+                const category = D('formCategory').value.trim();
+                const address = D('formAddress').value.trim();
+                const note = D('formNote').value.trim();
+                const color = D('formColor').value;
+
+                if (editingId) {
+                    const idx = customers.findIndex(c => c.id === editingId);
+                    if (idx >= 0) {
+                        customers[idx].name = name;
+                        customers[idx].phone = phone;
+                        customers[idx].category = category;
+                        customers[idx].address = address;
+                        customers[idx].note = note;
+                        customers[idx].color = color;
+                        // sync daftar
+                        const daftar = getDaftarCustomers();
+                        const dc = daftar.find(d => d.id === customers[idx].linkedDaftarId);
+                        if (dc) { dc.name = name;
+                            dc.phone = phone;
+                            localStorage.setItem(STORAGE_DAFTAR, JSON.stringify(daftar)); }
+                    }
+                } else {
+                    const daftarData = getDaftarCustomers();
+                    const newDaftarEntry = { id: Date.now(), name, phone, transactions: [] };
+                    daftarData.push(newDaftarEntry);
+                    localStorage.setItem(STORAGE_DAFTAR, JSON.stringify(daftarData));
+                    customers.push({
+                        id: Date.now(),
+                        linkedDaftarId: newDaftarEntry.id,
+                        name,
+                        phone,
+                        category,
+                        address,
+                        note,
+                        color,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+                saveCustomers();
+                render();
+                closeModal('modalCustomerForm');
+                showToast('✅ مشتری ذخیره شد.');
+                launchStar();
+            });
+
+            // ==== CUSTOMER LIST (Profile View) ====
+            D('customerList').addEventListener('click', (e) => {
+                const card = e.target.closest('.customer-card');
+                if (!card) return;
+                const id = parseFloat(card.dataset.id);
+                const customer = customers.find(c => c.id === id);
+                if (!customer) return;
+
+                const bal = getCustomerBalance(customer.linkedDaftarId);
+                const cls = bal > 0 ? 'owed' : (bal < 0 ? 'credit' : 'settled');
+                const txt = bal > 0 ? 'بدهکار ' + fmt(bal) : (bal < 0 ? 'طلبکار ' + fmt(Math.abs(bal)) : 'تسویه');
+                const transactions = getCustomerTransactions(customer.linkedDaftarId);
+                const invoices = getCustomerInvoices(customer.name);
+                const totalRev = getCustomerTotalRevenue(customer.name);
+
+                let html = `
+                    <h3>👤 ${customer.name}</h3>
+                    <div style="text-align:center;margin-bottom:12px;">
+                        <div style="width:60px;height:60px;border-radius:50%;background:${customer.color || '#a855f7'};display:inline-flex;align-items:center;justify-content:center;font-size:1.8rem;color:#fff;">${customer.name.charAt(0)}</div>
+                    </div>
+                    <div style="background:rgba(30,25,50,0.5);padding:12px;border-radius:12px;margin-bottom:12px;">
+                        <p>📞 ${customer.phone || '—'}</p>
+                        <p>🏷️ دسته: ${customer.category || '—'}</p>
+                        <p>📍 ${customer.address || '—'}</p>
+                        <p>📝 ${customer.note || '—'}</p>
+                        <p style="font-weight:700; color:${bal>0?'var(--danger)':bal<0?'var(--success)':'var(--text2)'};">💰 ${txt}</p>
+                        <p>🧾 درآمد کل از فاکتورها: ${fmt(totalRev)}</p>
+                    </div>
+                    <h4 style="color:var(--primary-glow);">📋 تاریخچه تراکنش‌ها</h4>
+                    ${transactions.length === 0 ? '<p style="color:var(--text2);">تراکنشی ثبت نشده.</p>' : transactions.map(t => `
+                        <div class="history-item"><span>${t.date} — ${t.amount>0?'🔼 خرید':'🔽 پرداخت'}: ${fmt(Math.abs(t.amount))}</span><span>${t.note||''}</span></div>`).join('')}
+                    <h4 style="color:var(--primary-glow);margin-top:12px;">🧾 فاکتورها</h4>
+                    ${invoices.length === 0 ? '<p style="color:var(--text2);">فاکتوری یافت نشد.</p>' : invoices.map(inv => `
+                        <div class="history-item"><span>${inv.number} — ${inv.date}</span><span>${fmt(inv.total)}</span></div>`).join('')}
+                    <div class="btn-row" style="margin-top:16px;">
+                        <button class="btn primary" data-action="edit" data-id="${customer.id}">✏️ ویرایش</button>
+                        <button class="btn danger" data-action="delete" data-id="${customer.id}">🗑️ حذف</button>
+                        <button class="btn outline" onclick="closeModal('modalProfile')">بستن</button>
+                    </div>
+                `;
+                D('modalProfileContent').innerHTML = html;
+                D('modalProfile').classList.add('active');
+
+                // bind edit/delete
+                document.querySelector('[data-action="edit"]')?.addEventListener('click', () => {
+                    closeModal('modalProfile');
+                    openCustomerForm(customer);
+                });
+                document.querySelector('[data-action="delete"]')?.addEventListener('click', () => {
+                    if (confirm('⚠️ آیا مطمئن هستید که می‌خواهید این مشتری و تمام داده‌های مرتبط را حذف کنید؟')) {
+                        const custId = customer.id;
+                        const linkedId = customer.linkedDaftarId;
+                        customers = customers.filter(c => c.id !== custId);
+                        saveCustomers();
+                        let daftar = getDaftarCustomers();
+                        daftar = daftar.filter(d => d.id !== linkedId);
+                        localStorage.setItem(STORAGE_DAFTAR, JSON.stringify(daftar));
+                        render();
+                        closeModal('modalProfile');
+                        showToast('🗑️ مشتری حذف شد.');
+                        launchStar();
+                    }
+                });
+            });
+
+            // ==== EXPORT ====
+            D('btnExportJSON').addEventListener('click', () => {
+                if (customers.length === 0) return showToast('داده‌ای برای پشتیبان وجود ندارد.', true);
+                const data = JSON.stringify(customers, null, 2);
+                const blob = new Blob([data], { type: 'application/json' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'customer_profiles_backup.json';
+                a.click();
+                showToast('📦 پشتیبان JSON دانلود شد.');
+            });
+
+            D('btnRefreshData').addEventListener('click', () => {
+                loadCustomers();
+                render();
+                showToast('🔄 داده‌ها با دفتر همگام‌سازی شدند.');
+            });
+
+            D('btnDeleteAll').addEventListener('click', () => {
+                if (customers.length === 0) return;
+                if (confirm('⚠️ آیا مطمئن هستید که می‌خواهید تمام مشتریان و داده‌های مرتبط را پاک کنید؟')) {
+                    const backup = customers.slice();
+                    customers = [];
+                    saveCustomers();
+                    const daftar = getDaftarCustomers();
+                    const idsToDelete = new Set(backup.map(c => c.linkedDaftarId));
+                    const newDaftar = daftar.filter(d => !idsToDelete.has(d.id));
+                    localStorage.setItem(STORAGE_DAFTAR, JSON.stringify(newDaftar));
+                    render();
+                    showToast('🗑️ همه مشتریان پاک شدند.', false, () => {
+                        customers = backup;
+                        saveCustomers();
+                        localStorage.setItem(STORAGE_DAFTAR, JSON.stringify(daftar));
+                        render();
+                        showToast('↩ همه مشتریان برگشت خوردند.');
+                    });
+                }
+            });
+
+            // ==== SEARCH & FILTER ====
+            D('searchInput').addEventListener('input', render);
+            D('filterStatus').addEventListener('change', render);
+
+            // ==== MODAL BACKDROP ====
+            document.querySelectorAll('.modal-overlay').forEach(o => {
+                o.addEventListener('click', function(e) {
+                    if (e.target === this) this.classList.remove('active');
+                });
+            });
+
+            // ==== STARS ====
+            const sc = D('starsCanvas');
+            const sctx = sc.getContext('2d');
+            sc.width = window.innerWidth;
+            sc.height = window.innerHeight;
+            const stars = Array.from({ length: 200 }, () => ({
+                x: Math.random() * sc.width,
+                y: Math.random() * sc.height,
+                r: Math.random() * 1.6 + 0.3,
+                a: Math.random(),
+                sp: Math.random() * 0.016 + 0.004
+            }));
+            (function drawStars() {
+                sctx.clearRect(0, 0, sc.width, sc.height);
+                stars.forEach(s => {
+                    s.a += s.sp;
+                    if (s.a > 1 || s.a < 0.07) s.sp *= -1;
+                    sctx.beginPath();
+                    sctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    sctx.fillStyle = `rgba(255,255,255,${Math.abs(s.a)})`;
+                    sctx.fill();
+                });
+                requestAnimationFrame(drawStars);
+            })();
+
+            // ==== INIT ====
+            loadCustomers();
+            render();
+            setInterval(() => { if (Math.random() > 0.5) launchStar(); }, 8000);
+
+            // Make closeModal global for inline use
+            window.closeModal = closeModal;
+
+        })();
+    </script>
+</body>
+</html>

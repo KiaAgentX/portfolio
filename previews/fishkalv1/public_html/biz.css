@@ -1,0 +1,61 @@
+/* ===== fishkal business layer ===== */
+#bizBar{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:9;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:94vw;
+  padding:8px 12px;border-radius:999px;background:rgba(2,9,13,.55);border:1px solid var(--line);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#bizBar .cd{color:var(--gold);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.18em;white-space:nowrap}
+#installBtn{display:none;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;border:1px solid var(--gold);
+  background:rgba(217,164,92,.14);color:var(--gold);cursor:pointer;font:600 10px/1 'Archivo',sans-serif;
+  letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+#installBtn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+html[dir="rtl"] #bizBar *{font-family:'Vazirmatn',sans-serif!important;letter-spacing:.02em!important;font-size:11px!important}
+#logoChip{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:8;display:flex;align-items:center;gap:9px;
+  padding:7px 14px;border-radius:999px;background:rgba(2,9,13,.5);border:1px solid var(--line);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--sand);cursor:pointer}
+#logoChip b{font:700 12px/1 'Archivo',sans-serif;letter-spacing:.24em;color:var(--sand)}
+#logoChip small{font:500 7px/1 'Archivo',sans-serif;letter-spacing:.3em;color:var(--fg-dim)}
+#logoChip .clk{color:var(--aqua);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.1em;border-inline-start:1px solid var(--line);padding-inline-start:9px}
+@media(max-width:560px){#logoChip small{display:none}}
+#depthVeil{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0;
+  background:linear-gradient(rgba(1,8,12,0),rgba(1,8,12,.85) 70%,rgba(0,4,7,.95))}
+#amb{position:fixed;inset:0;pointer-events:none;z-index:1}
+.lf{width:17px;height:12px;border-radius:2.5px;overflow:hidden;flex:none;display:inline-flex;box-shadow:0 0 0 1px rgba(239,230,214,.22)}
+.lf svg{width:100%;height:100%;display:block}
+#langBtn .lf{margin-inline-end:1px}
+#langBtn .lf svg{width:100%;height:100%;stroke:none;transition:none;transform:none!important}
+#langMenu button .lf{margin-inline-end:2px}
+#langMenu{max-height:min(70vh,430px);overflow-y:auto}
+#footLine{margin-top:8px;text-align:center;color:rgba(239,230,214,.4);font:500 9px/1.6 'Archivo',sans-serif;letter-spacing:.18em}
+/* ---- PHONE: bottom app-bar, 44px targets ---- */
+@media(max-width:700px){
+  #bizBar{left:0;right:0;bottom:0;transform:none;max-width:none;border-radius:18px 18px 0 0;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;gap:8px}
+  #bizBar .cd{flex:1 1 100%;text-align:center;font-size:10px}
+  #installBtn{flex:1 1 40%;justify-content:center;padding:11px 10px}
+  #logoChip{top:10px;padding:6px 12px}
+}
+@media(pointer:coarse){
+  #sound,#langBtn{min-height:44px;min-width:44px}
+  #installBtn{min-height:44px}
+}
+html{-webkit-text-size-adjust:100%}
+body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+/* ---- PC/TV ---- */
+@media(min-width:1800px){
+  #langBtn{height:48px;font-size:13px;padding:0 18px}
+  #langWrap,#sound{top:24px}
+  #sound{width:48px;height:48px;right:24px}
+  #langWrap{left:24px}
+  #logoChip{top:22px;padding:10px 20px}
+  #logoChip b{font-size:15px}
+  #logoChip .clk{font-size:12px}
+  #bizBar{bottom:24px;gap:14px;padding:12px 16px}
+  #bizBar .cd{font-size:12px}
+  #installBtn{padding:13px 22px;font-size:12px}
+  #depth{right:34px}
+}
+#langBtn:focus-visible,#sound:focus-visible,#installBtn:focus-visible,#logoChip:focus-visible{
+  outline:2px solid var(--gold);outline-offset:2px}
+/* ---- per-script font stacks ---- */
+:root[data-lang="ja"],:root[data-lang="zh"],:root[data-lang="ko"]{--font:'Archivo','Hiragino Kaku Gothic ProN','Yu Gothic','Microsoft YaHei','Noto Sans CJK JP',sans-serif}
+:root[data-lang="hi"]{--font:'Noto Sans Devanagari','Mangal','Archivo',sans-serif}
+:root[data-lang="he"]{--font:'Arial Hebrew','Noto Sans Hebrew','Arial',sans-serif}

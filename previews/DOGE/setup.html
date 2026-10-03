@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>DOGE Vault Premium · Setup &amp; Onboarding · Ultimate Guide</title>
+    <meta name="theme-color" content="#0a0a12" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="description" content="Complete setup guide for DOGE Vault Premium – The Dogefather Edition. Including 9 versions, PWA install, local/cloud hosting, and 100+ FAQs." />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon-512.png" />
+    <link rel="icon" sizes="192x192" href="icon-192.png" />
+    <link rel="icon" sizes="512x512" href="icon-512.png" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+    <style>
+        /* ============================================================
+           SETUP & ONBOARDING – ULTIMATE GUIDE v9.0
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        a, a:hover, a:focus, a:active, .nav-links a, .footer .links a, .btn-cta {
+            text-decoration: none !important;
+            color: inherit;
+        }
+
+        :root {
+            --doge-gold: #F2C94C;
+            --doge-orange: #F2994A;
+            --doge-red: #eb5757;
+            --musk-blue: #00b4d8;
+            --neon-green: #00ff88;
+            --dark-bg: #0a0a12;
+            --card-bg: rgba(18, 18, 30, 0.88);
+            --glass-border: rgba(242, 201, 76, 0.10);
+            --glass-border-strong: rgba(242, 201, 76, 0.20);
+            --shadow-gold: 0 0 40px rgba(242, 201, 76, 0.06);
+            --radius: 28px;
+            --radius-sm: 16px;
+            --radius-xs: 8px;
+            --font: 'Orbitron', 'Inter', Tahoma, sans-serif;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--dark-bg);
+            color: #f0f0ff;
+            min-height: 100vh;
+            padding: 0 16px 60px 16px;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #10101a; }
+        ::-webkit-scrollbar-thumb { background: var(--doge-gold); border-radius: 10px; }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ----- HEADER ----- */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 12px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            margin: 10px 0 18px 0;
+            gap: 8px;
+            position: relative;
+        }
+        .header .logo {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--doge-gold);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header .logo .badge {
+            background: var(--doge-red);
+            color: #fff;
+            font-size: 0.45rem;
+            padding: 1px 10px;
+            border-radius: 20px;
+            font-weight: 900;
+        }
+        .header .logo .version {
+            background: rgba(242, 201, 76, 0.08);
+            color: var(--doge-gold);
+            font-size: 0.4rem;
+            padding: 1px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(242, 201, 76, 0.1);
+        }
+        .header .nav-links {
+            display: flex;
+            gap: 6px 14px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .header .nav-links a {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+        .header .nav-links a:hover {
+            color: #f0f0ff;
+            border-color: var(--glass-border);
+        }
+        .header .nav-links a.green {
+            color: var(--neon-green);
+            border-color: rgba(0, 255, 136, 0.1);
+        }
+        .header .nav-links a.gold {
+            color: var(--doge-gold);
+            border-color: rgba(242, 201, 76, 0.1);
+        }
+
+        /* ----- HERO ----- */
+        .hero {
+            text-align: center;
+            padding: 36px 24px 28px 24px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(14px);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle at 30% 40%, rgba(242, 201, 76, 0.04), transparent 70%);
+            animation: heroGlow 12s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        @keyframes heroGlow {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+            100% { transform: translate(8%, 12%) scale(1.2); opacity: 1; }
+        }
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 900;
+            line-height: 1.2;
+            position: relative;
+        }
+        .hero h1 .gold { color: var(--doge-gold); text-shadow: 0 0 40px rgba(242, 201, 76, 0.2); }
+        .hero h1 .green { color: var(--neon-green); text-shadow: 0 0 30px rgba(0, 255, 136, 0.15); }
+        .hero .subtitle {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 750px;
+            margin: 8px auto 16px auto;
+            line-height: 1.8;
+            position: relative;
+        }
+        .hero .subtitle strong { color: #f0f0ff; }
+        .btn-cta {
+            display: inline-block;
+            padding: 12px 36px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 900;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            background: linear-gradient(135deg, var(--doge-gold), var(--doge-orange));
+            color: #0a0a12;
+            box-shadow: 0 0 40px rgba(242, 201, 76, 0.1);
+        }
+        .btn-cta:hover { transform: scale(1.03); box-shadow: 0 0 60px rgba(242, 201, 76, 0.2); }
+
+        /* ----- SECTION ----- */
+        .section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(8px);
+        }
+        .section .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .section .section-header h2 {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--doge-gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section .section-header h2 .sub {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 400;
+        }
+        .section .section-header .badge-count {
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--neon-green);
+        }
+
+        /* ----- TABLE ----- */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 8px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 600px;
+        }
+        th, td {
+            padding: 0.7rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: left;
+        }
+        th { color: var(--doge-gold); font-weight: 700; }
+        tr:hover td { background: rgba(242, 201, 76, 0.02); }
+        .badge-tag {
+            display: inline-block;
+            padding: 0.2rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            border: 1px solid rgba(242, 201, 76, 0.1);
+            color: var(--doge-gold);
+        }
+        .badge-tag.green { border-color: rgba(0, 255, 136, 0.15); color: var(--neon-green); }
+        .badge-tag.red { border-color: rgba(235, 87, 87, 0.15); color: var(--doge-red); }
+        .badge-tag.blue { border-color: rgba(0, 180, 216, 0.15); color: var(--musk-blue); }
+
+        /* ----- FAQ ----- */
+        .faq-item {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: var(--radius-xs);
+            padding: 10px 14px;
+            margin-bottom: 6px;
+        }
+        .faq-item .q {
+            font-weight: 700;
+            color: #f0f0ff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .faq-item .q .icon { font-size: 1.1rem; }
+        .faq-item .a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.3s ease-out;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        .faq-item .a.open {
+            max-height: 600px;
+            padding-top: 6px;
+        }
+
+        /* ----- FOOTER ----- */
+        .footer {
+            text-align: center;
+            padding: 20px 10px 4px 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            margin-top: 10px;
+        }
+        .footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            justify-content: center;
+        }
+        .footer .links a {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 0.7rem;
+            transition: 0.3s;
+        }
+        .footer .links a:hover {
+            color: var(--neon-green);
+        }
+        .footer .links a.gold:hover {
+            color: var(--doge-gold);
+        }
+        .footer .copy {
+            color: rgba(240, 240, 255, 0.08);
+            font-size: 0.6rem;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.8rem; }
+            .section { padding: 16px 14px; }
+            .header { flex-direction: column; align-items: stretch; text-align: center; padding: 10px 14px; }
+            .header .nav-links { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+            <div class="logo">
+                ⚡ DOGE<span style="color:#f0f0ff;">Vault</span>
+                <span class="badge">Premium</span>
+                <span class="version">v9.0</span>
+                <span style="color:var(--musk-blue);font-size:0.5rem;padding:2px 8px;border:1px solid var(--musk-blue);border-radius:20px;">Setup</span>
+            </div>
+            <div class="nav-links">
+                <a href="#start" class="green">⚡ Quick Start</a>
+                <a href="#versions">📊 Versions</a>
+                <a href="#config">⚙️ Config</a>
+                <a href="#hosting">🌐 Host</a>
+                <a href="#faq">❓ 100+ FAQ</a>
+                <a href="#support">💬 Support</a>
+            </div>
+        </header>
+
+        <!-- ===== HERO ===== -->
+        <section class="hero">
+            <h1>
+                <span class="gold">⚡ DOGE Vault</span>
+                <span style="color:#f0f0ff;">·</span>
+                <span class="green">Setup Guide</span>
+            </h1>
+            <p class="subtitle">
+                <strong>Your complete onboarding to the most advanced Dogecoin trading simulator.</strong><br />
+                Includes <strong>9 versions</strong>, PWA installation, local/cloud hosting, and <strong>100+ answers</strong> to everything you need to know.
+            </p>
+            <a href="#start" class="btn-cta">🚀 Start Setup</a>
+        </section>
+
+        <!-- ===== QUICK START ===== -->
+        <section class="section" id="start">
+            <div class="section-header">
+                <h2>⚡ Quick Start <span class="sub">— 3 steps</span></h2>
+                <span class="badge-count">2 min</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
+                <div style="background:rgba(0,0,0,0.2);border-radius:var(--radius-sm);padding:14px;border-left:4px solid var(--neon-green);">
+                    <div style="font-size:1.4rem;font-weight:900;color:var(--neon-green);">1</div>
+                    <h3 style="font-size:1rem;color:var(--doge-gold);margin:4px 0;">Unzip</h3>
+                    <p style="font-size:0.85rem;color:rgba(255,255,255,0.5);">Extract the ZIP package to any folder on your computer or phone.</p>
+                </div>
+                <div style="background:rgba(0,0,0,0.2);border-radius:var(--radius-sm);padding:14px;border-left:4px solid var(--musk-blue);">
+                    <div style="font-size:1.4rem;font-weight:900;color:var(--musk-blue);">2</div>
+                    <h3 style="font-size:1rem;color:var(--doge-gold);margin:4px 0;">Open Index</h3>
+                    <p style="font-size:0.85rem;color:rgba(255,255,255,0.5);">Open <strong>index.html</strong> in any browser. Explore 9 versions from the dashboard.</p>
+                </div>
+                <div style="background:rgba(0,0,0,0.2);border-radius:var(--radius-sm);padding:14px;border-left:4px solid var(--doge-gold);">
+                    <div style="font-size:1.4rem;font-weight:900;color:var(--doge-gold);">3</div>
+                    <h3 style="font-size:1rem;color:var(--doge-gold);margin:4px 0;">Load Config</h3>
+                    <p style="font-size:0.85rem;color:rgba(255,255,255,0.5);">In any version, go to <strong>Settings → Import Config</strong> and select <code>doge-config.json</code>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== VERSION COMPARISON ===== -->
+        <section class="section" id="versions">
+            <div class="section-header">
+                <h2>📊 9 Versions at a Glance <span class="sub">— choose your difficulty</span></h2>
+                <span class="badge-count">9 modes</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Version</th><th>Difficulty</th><th>Volatility</th><th>Best For</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>🌀 Easy</td><td><span class="badge-tag green">Beginner</span></td><td>Low</td><td>Learning basics</td></tr>
+                        <tr><td>📊 Normal</td><td><span class="badge-tag blue">Intermediate</span></td><td>Balanced</td><td>Balanced practice</td></tr>
+                        <tr><td>⚔️ Hard</td><td><span class="badge-tag">Advanced</span></td><td>High</td><td>Advanced risk management</td></tr>
+                        <tr><td>💀 Very Hard</td><td><span class="badge-tag red">Expert</span></td><td>Extreme</td><td>Pro challenges</td></tr>
+                        <tr><td>🔥 Legendary</td><td><span class="badge-tag red">Master</span></td><td>Very High</td><td>Ultimate challenge</td></tr>
+                        <tr><td>🧠 ICT</td><td><span class="badge-tag blue">Institutional</span></td><td>Medium</td><td>Smart Money concepts</td></tr>
+                        <tr><td>🌱 Starter</td><td><span class="badge-tag green">Beginner</span></td><td>Low</td><td>Simple RTM terminal</td></tr>
+                        <tr><td>🚀 Starter Pro</td><td><span class="badge-tag">Pro Beginner</span></td><td>Adjustable</td><td>120+ features</td></tr>
+                        <tr><td>📜 History</td><td><span class="badge-tag">Educational</span></td><td>Historical</td><td>Learning market psychology</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ===== CONFIG & SETTINGS ===== -->
+        <section class="section" id="config">
+            <div class="section-header">
+                <h2>⚙️ Config &amp; Customization <span class="sub">— load professional settings</span></h2>
+                <span class="badge-count">1 click</span>
+            </div>
+            <p style="font-size:0.9rem;color:rgba(255,255,255,0.6);margin-bottom:8px;">
+                <strong>Import <code>doge-config.json</code></strong> in <strong>Settings → Import Config</strong> to instantly apply:
+            </p>
+            <ul style="font-size:0.85rem;color:rgba(255,255,255,0.6);padding-left:20px;">
+                <li>Leverage: 10x</li>
+                <li>Trailing Stop: ON</li>
+                <li>Breakeven Mode: ON</li>
+                <li>Indicators: MA, BB, MACD, RSI enabled</li>
+                <li>Historical Speed Multiplier: 60x</li>
+            </ul>
+        </section>
+
+        <!-- ===== HOSTING ===== -->
+        <section class="section" id="hosting">
+            <div class="section-header">
+                <h2>🌐 Hosting Options <span class="sub">— run anywhere</span></h2>
+                <span class="badge-count">11 ways</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Method</th><th>Command</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Python (local)</td><td><code>python3 -m http.server 8000</code></td><td>Access at <code>http://localhost:8000</code></td></tr>
+                        <tr><td>Node.js</td><td><code>npx serve</code> or <code>npx http-server .</code></td><td>Port 3000 or 8080</td></tr>
+                        <tr><td>VS Code Live Server</td><td>Install extension → right-click index.html → Open with Live Server</td><td>Auto-refresh</td></tr>
+                        <tr><td>Android (Termux)</td><td><code>pkg install python &amp;&amp; python3 -m http.server 8080</code></td><td>Access from any device on network</td></tr>
+                        <tr><td>iOS (iSH)</td><td><code>apk add python3 &amp;&amp; python3 -m http.server 8080</code></td><td>Same as Python</td></tr>
+                        <tr><td>GitHub Pages</td><td>Upload to repo → enable Pages → branch main</td><td>Free SSL, public URL</td></tr>
+                        <tr><td>Netlify</td><td>Drag &amp; drop folder to dashboard</td><td>Free SSL, auto-deploys</td></tr>
+                        <tr><td>Vercel</td><td><code>vercel</code> in project folder</td><td>Edge network, free tier</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-top:8px;">
+                💡 All methods support <strong>PWA installation</strong> once hosted on a network (not local file).
+            </div>
+        </section>
+
+        <!-- ===== 100+ FAQ ===== -->
+        <section class="section" id="faq">
+            <div class="section-header">
+                <h2>❓ 100+ FAQs <span class="sub">— everything you need to know</span></h2>
+                <span class="badge-count">100+ answers</span>
+            </div>
+
+            <!-- CATEGORY: General -->
+            <h3 style="font-size:1rem;color:var(--doge-gold);margin:14px 0 6px 0;">📦 General</h3>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">1</span> What is DOGE Vault Premium?</div><div class="a">It's a complete offline Dogecoin trading simulator with 9 difficulty levels, Pattern Scanner, Musk Mentor, and full PWA support.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">2</span> Is it free?</div><div class="a">The core simulator is free to use locally. The full Premium package includes all 9 versions and advanced features.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">3</span> Do I need an internet connection?</div><div class="a">No. Once loaded, the entire app runs 100% offline via service worker. Internet is only needed for the initial download.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">4</span> Where is my data saved?</div><div class="a">All data is stored in your browser's localStorage. It stays on your device only. Nothing is sent anywhere.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">5</span> Can I use this on my phone?</div><div class="a">Yes! Open in Chrome/Safari → tap "Add to Home Screen" → install as a PWA. Works offline.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">6</span> Which version should I start with?</div><div class="a">Start with <strong>Easy</strong> if you're new, then move to <strong>Normal</strong> and <strong>Hard</strong> as you gain confidence.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">7</span> How do I reset everything?</div><div class="a">In Dashboard → Settings tab → click "Reset Everything". Or delete localStorage manually via browser dev tools.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">8</span> Is this safe? Does it track me?</div><div class="a">Yes, it's completely safe. No tracking, no analytics, no external servers. All data stays on your device.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">9</span> What is the difference between Dashboard and Journal?</div><div class="a">Dashboard is for trading (buy/sell, charts, XP). Journal is for tracking (log trades, filters, export, analytics).</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">10</span> Can I export my data?</div><div class="a">Yes. In Journal → Export CSV or JSON. In Dashboard → Settings → Export CSV/JSON.</div></div>
+
+            <!-- CATEGORY: Installation & Setup -->
+            <h3 style="font-size:1rem;color:var(--doge-gold);margin:14px 0 6px 0;">📥 Installation & Setup</h3>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">11</span> How do I install the PWA?</div><div class="a">Open the page in Chrome/Safari → tap the share button → "Add to Home Screen". The app will open standalone.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">12</span> I don't see "Add to Home Screen" on iPhone.</div><div class="a">Use Safari, not Chrome. Tap the Share button (box with arrow) → scroll down → Add to Home Screen.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">13</span> Can I run this without Python?</div><div class="a">Yes. You can use any static server (Node.js, VS Code Live Server, or upload to Netlify/GitHub Pages).</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">14</span> What is the command to start Python server?</div><div class="a">Open terminal in the project folder and run: <code>python3 -m http.server 8000</code>. Then open <code>http://localhost:8000</code>.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">15</span> How do I find my local IP address?</div><div class="a">On Linux/macOS: <code>ip addr</code>. On Windows: <code>ipconfig</code>. Look for <code>192.168.x.x</code>.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">16</span> Can I host this on GitHub Pages?</div><div class="a">Yes. Upload all files to a GitHub repo → Settings → Pages → select branch <code>main</code> → enable. Your URL will be <code>https://username.github.io/repo-name/</code>.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">17</span> Does Netlify support PWA?</div><div class="a">Yes. Drag and drop your folder to Netlify. PWA features work automatically because <code>manifest.json</code> and <code>service-worker.js</code> are in the root.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">18</span> What about Vercel?</div><div class="a">Yes, Vercel works the same way. Run <code>vercel</code> in your project folder and follow the prompts.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">19</span> Can I use this on Android with Termux?</div><div class="a">Yes. Install Termux, run <code>pkg install python</code>, then <code>python3 -m http.server 8080</code>. Access from any device on the same network.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">20</span> Is there a Docker version?</div><div class="a">Yes. Create a <code>Dockerfile</code> with <code>FROM nginx:alpine</code> and <code>COPY . /usr/share/nginx/html</code>. Build and run: <code>docker run -p 8080:80 doge-vault</code>.</div></div>
+
+            <!-- CATEGORY: Features -->
+            <h3 style="font-size:1rem;color:var(--doge-gold);margin:14px 0 6px 0;">⚙️ Features</h3>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">21</span> What are the 5 patterns detected?</div><div class="a">G-61 (Gap + Fibo 61.8%), T-61 (Trendline + Fibo 61.8%), 2-DIV (Double Top + RSI Divergence), 2-INV (Double Top + Inverted Hanging Man), T-LH (Trendline + Lower High).</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">22</span> What timeframes does the Pattern Scanner use?</div><div class="a">It scans on 5s (5-second) and 30s (30-second) timeframes for fast detection.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">23</span> What is Musk Mentor?</div><div class="a">It's an AI-driven assistant that analyzes market regime, RSI, and detected patterns to give you plain-English trading advice.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">24</span> What does OCO mean?</div><div class="a">One-Cancels-Other. You place two orders (e.g., buy above market + sell below market). Whichever triggers first cancels the other.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">25</span> What is Auto-BE?</div><div class="a">Auto-Breakeven. When price moves in your favor, the stop loss automatically moves to your entry price.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">26</span> What indicators are included?</div><div class="a">MA (20 & 50), Bollinger Bands, MACD, RSI, and Volume. All toggleable with one click.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">27</span> What advanced analytics are available?</div><div class="a">Sharpe Ratio, Profit Factor, Expectancy, Max Drawdown, Win Rate, Net P&L, and an Equity Curve chart.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">28</span> What is the gamification system?</div><div class="a">You earn XP from each trade, level up, unlock achievements, and get confetti + toast notifications when you win.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">29</span> What are the achievements?</div><div class="a">16+ trophies including First Trade, 10 Wins, 5-Win Streak, Level 5, Sharpe ≥ 2, and more. Each triggers confetti.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">30</span> Does the journal include psychology tracking?</div><div class="a">Yes. The Pro Journal (mini-journal-pro.html) has a Psychology tab to record your emotions before and after each trade.</div></div>
+
+            <!-- CATEGORY: Trading & Strategies -->
+            <h3 style="font-size:1rem;color:var(--doge-gold);margin:14px 0 6px 0;">📈 Trading & Strategies</h3>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">31</span> What is the recommended leverage?</div><div class="a">Start with 10x. You can adjust from 1x to 150x in the Trade Panel.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">32</span> What is the best risk percentage?</div><div class="a">1%–2% per trade is recommended. Use the quick risk buttons (1%, 2%, 5%) for easy adjustment.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">33</span> How do I set a Stop Loss and Take Profit?</div><div class="a">Enter the price in the SL and TP fields in the Trade Panel before opening a position. The system will close automatically when hit.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">34</span> How does the trailing stop work?</div><div class="a">Enable "Trailing" in the Trade Panel. The stop loss will move up (for long) or down (for short) as price moves in your favor.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">35</span> Can I backtest my strategies?</div><div class="a">Yes. In the Dashboard, click "Run Backtest" – choose Quick (10 candles) or Full (50 candles) test.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">36</span> What is the Strategy Library?</div><div class="a">In the Pro Journal, you can save your custom strategies with name and rules. Tag trades with your strategy name.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">37</span> What is the difference between Limit and Stop orders?</div><div class="a">Limit: buy below market / sell above market. Stop: buy above market / sell below market. Both are pending orders.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">38</span> How do I use OCO for breakout trading?</div><div class="a">Set a buy order above market (for upward breakout) and a sell order below market (for downward breakout). The first one triggered cancels the other.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">39</span> What is the best timeframe for scalping?</div><div class="a">1s to 15s timeframes are ideal for scalping. Use the shortcut keys 1-5 to switch instantly.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">40</span> How do I read the order book?</div><div class="a">The order book shows bid (green) and ask (red) prices with volume. The spread is the difference between highest bid and lowest ask.</div></div>
+
+            <!-- CATEGORY: Troubleshooting -->
+            <h3 style="font-size:1rem;color:var(--doge-gold);margin:14px 0 6px 0;">🔧 Troubleshooting</h3>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">41</span> The page is blank. What should I do?</div><div class="a">Open the browser's developer console (F12) to check for errors. Ensure all files are in the same folder.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">42</span> PWA won't install. Why?</div><div class="a">Ensure you are opening the page via <code>http://</code> (not <code>file://</code>). Verify <code>manifest.json</code> and <code>service-worker.js</code> exist in the root folder.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">43</span> Data is not saving. What's wrong?</div><div class="a">Do not use Incognito/Private mode. localStorage is disabled in private mode. Check that your browser allows localStorage.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">44</span> I can't connect from my phone to my computer.</div><div class="a">Ensure both devices are on the same Wi-Fi. Check your firewall settings and allow port 8000. Use the correct IP address (not <code>localhost</code>).</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">45</span> Import Config failed. What should I do?</div><div class="a">Make sure <code>doge-config.json</code> is in the same folder as the HTML files. Open Settings → Import Config → select the file.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">46</span> The chart is not updating.</div><div class="a">Check if you have JavaScript enabled. Refresh the page. If using a mobile browser, try Chrome or Safari.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">47</span> Why are the Fibonacci levels not showing?</div><div class="a">Fibonacci levels are auto-drawn on the chart. If there isn't enough range, they may appear clustered. Zoom out.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">48</span> The Scanner shows "—". Is it broken?</div><div class="a">No. "—" means no pattern detected. Wait for price action to form a pattern. Scanner updates every 1-2 seconds.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">49</span> I closed a trade but the position box still shows data.</div><div class="a">Click the "Close" button again or refresh the page. The position should clear after a successful close.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">50</span> Why is my balance not updating after a trade?</div><div class="a">Balance updates after a trade is closed (not while open). Check the History tab for the closed trade record.</div></div>
+
+            <!-- CATEGORY: Advanced -->
+            <h3 style="font-size:1rem;color:var(--doge-gold);margin:14px 0 6px 0;">🚀 Advanced</h3>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">51</span> Can I customize the colors?</div><div class="a">Yes. Go to Settings → Custom Colors and pick your Up/Down/BG colors. Click Apply.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">52</span> How do I change the speed of the market?</div><div class="a">In Settings → Speed (General). Choose from 0.1s to 5s. For historical replay, adjust Historical Speed Multiplier (10x to 200x).</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">53</span> What is the historical replay?</div><div class="a">The simulator replays DOGE price from 2013 to 2026. After completing history, it enters live market mode.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">54</span> What is the Historical Speed Multiplier?</div><div class="a">Controls how fast price moves through historical events. Higher = slower (more detailed). Lower = faster.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">55</span> Can I change the initial balance?</div><div class="a">Yes. In Settings → Initial Balance, enter any value and click Apply. The balance resets to that value.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">56</span> How do I enable/disable sound effects?</div><div class="a">In Settings → Sound Alerts. Toggle Trade, Alert, and Win sounds independently.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">57</span> What is the difference between Starter and Starter Pro?</div><div class="a">Starter is a simple RTM terminal with 1m timeframe. Starter Pro has 120+ features, professional charts, and all indicators.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">58</span> What is the ICT version?</div><div class="a">ICT (Smart Money Concepts) includes Order Block, FVG, Liquidity Sweep, Breaker Block, MSS, SMT, and OTE detection.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">59</span> What is the Legendary version?</div><div class="a">Legendary includes whale manipulation, fakeouts, and FOF (Flow of Funds) logic. It's the ultimate challenge.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">60</span> What is the Very Hard version?</div><div class="a">Very Hard has extreme volatility, complex multi-pattern confluence, and professional-grade risk challenges.</div></div>
+
+            <!-- CATEGORY: Miscellaneous -->
+            <h3 style="font-size:1rem;color:var(--doge-gold);margin:14px 0 6px 0;">🎯 Miscellaneous</h3>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">61</span> What is the "Dogefather" edition?</div><div class="a">It's a tribute to Elon Musk's influence on Dogecoin. The edition includes special branding and Elon Tweet simulation.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">62</span> How do I use Elon Tweets?</div><div class="a">Tweets are generated automatically every 60 seconds (adjustable in Settings). They bias the market for 20 ticks.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">63</span> What is the keyboard shortcut for fullscreen?</div><div class="a">Press <code>F</code> on your keyboard. Works in all versions.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">64</span> How do I take a screenshot of the chart?</div><div class="a">Click the 📸 button next to the indicator toggle. The screenshot will download as a PNG.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">65</span> What is the "Walkthrough" file?</div><div class="a"><code>walkthrough.html</code> is an interactive academy with 9 tabs, pattern demo charts, a 10-question quiz, and progress tracking.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">66</span> What is "Easy Run" for?</div><div class="a"><code>easy-run.html</code> is a visual quick-start guide that explains how to run the simulator on any device in 3 steps.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">67</span> What is the difference between History tab and History version?</div><div class="a">History tab in Dashboard shows your trade history. History version (<code>doge-history.html</code>) is an educational tool that replays DOGE price from 2013 to 2026.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">68</span> How do I use the Position Size Calculator?</div><div class="a">Go to the Calculator tab in Pro Journal → enter balance, risk%, and SL% → click Calculate. It shows position size and risk amount.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">69</span> How do I restore a backup?</div><div class="a">In Journal → click "Restore" → select your <code>.json</code> backup file. All trades and notes will be restored.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">70</span> Can I import trades from a CSV file?</div><div class="a">Yes. In Journal → click "Import CSV" → select a CSV file with columns: Pair, Direction, Entry, Exit, Volume, Date.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">71</span> What is the Psychology tab for?</div><div class="a">It helps you record your emotions before and after each trade. Use it to identify patterns in your trading psychology.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">72</span> How do I delete all journal entries?</div><div class="a">In Journal → click "Clear All" (red button). Confirm the dialog. All entries will be permanently deleted.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">73</span> What is the "TL;DR" button for?</div><div class="a">It's a quick shortcut to show a helpful toast message. Useful for developers and quick interactions.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">74</span> What are the shortcut keys for timeframes?</div><div class="a">1 = 1s, 2 = 5s, 3 = 15s, 4 = 30s, 5 = 1m. (In Starter Pro: 1 = 1s, 2 = 5s, 3 = 15s, 4 = 30s, 5 = 1m, 6 = 5m, 7 = 15m, 8 = 1h, 9 = 4h, 0 = 1D).</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">75</span> How do I change the theme to light mode?</div><div class="a">Press <code>T</code> on your keyboard or click the 🌓 button in the header. Theme preference is saved.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">76</span> What is the "Reset Game" button?</div><div class="a">It resets all trades, journal, balance, position, achievements, and chart data. It's a full factory reset.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">77</span> How do I update the simulator?</div><div class="a">Download the latest version from your Etsy purchase page. Copy your backup data (JSON) and restore it in the new version.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">78</span> Is there a multi-coin version?</div><div class="a">Yes, custom versions (BTC, ETH, SOL, etc.) are available. Send a message through Etsy for pricing and details.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">79</span> Can I use this with real money?</div><div class="a">No. This is a simulator for educational and fun purposes only. No real trades are executed.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">80</span> What is the "Equity Curve" chart?</div><div class="a">It's a visual representation of your net P&L over time. It updates automatically as you close trades.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">81</span> What is the Sharpe Ratio?</div><div class="a">A measure of risk-adjusted return. A Sharpe ratio above 1 is good, above 2 is excellent.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">82</span> What is the Profit Factor?</div><div class="a">Gross profit divided by gross loss. A Profit Factor above 1 is profitable, above 2 is excellent.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">83</span> What is the Expectancy?</div><div class="a">Average P&L per trade. A positive expectancy means your system is likely to be profitable over time.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">84</span> What is the Max Drawdown?</div><div class="a">The maximum loss from your peak balance. It helps you understand your risk exposure.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">85</span> How do I use the TradingView chart?</div><div class="a">The TradingView widget is embedded in the Pro Journal. It shows real-time DOGE/USDT price. You can change timeframe and studies.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">86</span> Why is the TradingView chart not loading?</div><div class="a">The chart requires an internet connection. Check your connection and refresh the page. The chart is not available offline.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">87</span> What is the "Musk Mentor" advice based on?</div><div class="a">It analyzes market regime (trending/ranging/volatile), RSI value, and any detected patterns. It gives you plain-English trading advice.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">88</span> How often does the Mentor update?</div><div class="a">You can click "Analyze Now" in the Mentor tab. It also updates automatically when a new pattern is detected.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">89</span> What is the "Regime" tag in the status bar?</div><div class="a">It shows the current market regime: Trending (📈), Ranging (📊), or Volatile (⚡).</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">90</span> Can I change the speed of the historical replay?</div><div class="a">Yes. In Settings → Historical Speed Multiplier (10x to 200x). Higher = slower, lower = faster.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">91</span> What is the difference between "Easy" and "Starter"?</div><div class="a">Easy has more features (Musk Mentor, OCO, Auto-BE) and lower volatility. Starter is a simple RTM terminal with 1m timeframe only.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">92</span> What is the difference between "Hard" and "Very Hard"?</div><div class="a">Hard has high volatility and deeper patterns. Very Hard has extreme volatility, complex multi-pattern confluence, and professional-grade risk challenges.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">93</span> What is the "FOF" in Legendary version?</div><div class="a">FOF stands for Flow of Funds. It simulates institutional money flow, whale manipulation, and fakeouts.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">94</span> What are the key shortcuts for the dashboard?</div><div class="a">B = Buy, S = Sell, C = Close, T = Dark mode, F = Fullscreen, 1-0 = Timeframes, ? = Help, I = Install PWA.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">95</span> How do I bookmark a feature in the list?</div><div class="a">In the Features list, click the 🔖/⭐ button on any card. The bookmark is saved locally and visible in the Dashboard.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">96</span> What is the "Random" button for?</div><div class="a">It selects a random feature from the list and scrolls to it. Useful for discovery.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">97</span> What is the "Quick P&L" preview?</div><div class="a">In the Journal, before saving a trade, click "Quick P&L" to see the estimated profit or loss based on entry/exit/volume/fees.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">98</span> How do I use the "Screenshot" feature in the Journal?</div><div class="a">In the New Trade form, click "Choose File" next to Screenshot. Select an image. The screenshot will be saved in your trade entry.</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">99</span> How do I enable/disable the "Daily Note" feature?</div><div class="a">The Daily Note feature is always enabled. Write your pre-market analysis or lessons in the Notes tab and click "Save".</div></div>
+            <div class="faq-item"><div class="q" onclick="toggleFAQ(this)"><span class="icon">100</span> How do I contact support?</div><div class="a">Send a message through the Etsy shop (<a href="https://www.etsy.com/shop/NexusDigitalArtShop" style="color:var(--doge-gold);">NexusDigitalArtShop</a>) or join the Telegram channel: <a href="https://t.me/NexusDigitalArt" style="color:var(--musk-blue);">@NexusDigitalArt</a>.</div></div>
+
+            <div style="font-size:0.8rem;color:rgba(255,255,255,0.3);margin-top:6px;text-align:center;">
+                💡 <strong>Tap any question to reveal the answer.</strong> All data is local. No tracking.
+            </div>
+        </section>
+
+        <!-- ===== SUPPORT ===== -->
+        <section class="section" id="support">
+            <div class="section-header">
+                <h2>💬 Support &amp; Contact <span class="sub">— we're here to help</span></h2>
+                <span class="badge-count">24/7</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;">
+                <div style="background:rgba(0,0,0,0.2);border-radius:var(--radius-sm);padding:14px 20px;text-align:center;flex:1;min-width:140px;">
+                    <span style="font-size:2rem;">🛒</span>
+                    <h3 style="font-size:0.9rem;color:var(--doge-gold);margin:4px 0;">Etsy Shop</h3>
+                    <a href="https://www.etsy.com/shop/NexusDigitalArtShop" target="_blank" style="color:var(--neon-green);font-weight:700;">NexusDigitalArtShop</a>
+                </div>
+                <div style="background:rgba(0,0,0,0.2);border-radius:var(--radius-sm);padding:14px 20px;text-align:center;flex:1;min-width:140px;">
+                    <span style="font-size:2rem;">💬</span>
+                    <h3 style="font-size:0.9rem;color:var(--musk-blue);margin:4px 0;">Telegram</h3>
+                    <a href="https://t.me/NexusDigitalArt" target="_blank" style="color:var(--neon-green);font-weight:700;">@NexusDigitalArt</a>
+                </div>
+                <div style="background:rgba(0,0,0,0.2);border-radius:var(--radius-sm);padding:14px 20px;text-align:center;flex:1;min-width:140px;">
+                    <span style="font-size:2rem;">📧</span>
+                    <h3 style="font-size:0.9rem;color:var(--doge-gold);margin:4px 0;">Email</h3>
+                    <span style="color:var(--neon-green);font-weight:700;">via Etsy</span>
+                </div>
+            </div>
+            <div style="text-align:center;font-size:0.75rem;color:rgba(255,255,255,0.3);margin-top:10px;">
+                📦 <strong>100% satisfaction guarantee</strong> · Responses within 24 hours · Custom versions available
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="footer">
+            <div class="links">
+                <a href="index.html">🏠 Dashboard</a>
+                <a href="doge-easy.html">🌀 Easy</a>
+                <a href="doge-normal.html">📊 Normal</a>
+                <a href="doge-hard.html">⚔️ Hard</a>
+                <a href="doge-legendry.html">🔥 Legendary</a>
+                <a href="doge-ict.html">🧠 ICT</a>
+                <a href="doge-starter.html">🌱 Starter</a>
+                <a href="doge-starterpro.html">🚀 Starter Pro</a>
+                <a href="doge-history.html">📜 History</a>
+                <a href="https://t.me/NexusDigitalArt" target="_blank" class="gold">💬 Telegram</a>
+                <a href="https://www.etsy.com/shop/NexusDigitalArtShop" target="_blank" class="gold">🛒 Etsy</a>
+            </div>
+            <div class="copy">
+                <span style="color:rgba(242,201,76,0.3);">⚡ DOGE Vault Premium</span> · The Dogefather Edition · v9.0 · Setup Guide
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ---------- FAQ TOGGLE ----------
+        function toggleFAQ(el) {
+            const answer = el.parentElement.querySelector('.a');
+            if (answer) {
+                answer.classList.toggle('open');
+            }
+        }
+        // Make toggleFAQ globally accessible
+        window.toggleFAQ = toggleFAQ;
+
+        // ---------- SERVICE WORKER ----------
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js').catch(() => {});
+        }
+    </script>
+<script>
+// DOGE global error surface (debug v1.1)
+(function(){window.esc=window.esc||function(s){var d=document.createElement('div');d.textContent=String(s==null?'':s);return d.innerHTML;};function t(m){try{var d=document.createElement("div");d.style.cssText="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#3a1015;color:#ffd7dc;border:1px solid #ff5566;padding:8px 14px;border-radius:10px;font-size:12px;z-index:99999;max-width:92vw;";d.textContent="WARN "+String(m).slice(0,160);document.body.appendChild(d);setTimeout(function(){d.remove();},5000);}catch(e){}}
+window.addEventListener("error",function(e){t(e.message||"Script error");});window.addEventListener("unhandledrejection",function(e){t((e.reason&&e.reason.message)||"Async error");});})();
+</script>
+</body>
+</html>

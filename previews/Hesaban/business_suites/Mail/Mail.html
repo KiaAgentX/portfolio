@@ -1,0 +1,3139 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>🚀 Career Path Pro · X Edition · دیباگ شده</title>
+    <style>
+        /* ================================================================
+               *  𝗫 𝗘𝗗𝗜𝗧𝗜𝗢𝗡 𝗨𝗟𝗧𝗜𝗠𝗔𝗧𝗘 — 𝟭𝟬/𝟭𝟬  (Debugg Version)
+               *  Removed fake AI, added real notes & reminders
+               *  ================================================================ */
+        /* ---------- 1. CORE VARIABLES ---------- */
+        :root {
+            --primary: #1d4ed8;
+            --primary-dark: #1e3a8a;
+            --primary-light: #60a5fa;
+            --secondary: #7c3aed;
+            --accent: #f59e0b;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 12px 48px rgba(0, 0, 0, 0.07);
+            --shadow-hover: 0 24px 72px rgba(0, 0, 0, 0.12);
+            --radius: 28px;
+            --radius-sm: 16px;
+            --radius-xs: 10px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: system-ui, 'Segoe UI', 'Vazirmatn', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --header-height: 80px;
+            --z-modal: 1000;
+            --z-toast: 9999;
+            --chart-height: 220px;
+            --chart-bar-radius: 12px 12px 0 0;
+        }
+
+        /* ---------- 2. DARK MODE ---------- */
+        body.dark {
+            --bg-light: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 24px 72px rgba(0, 0, 0, 0.7);
+        }
+
+        /* ---------- 3. RESET & BASE ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font);
+        }
+        body {
+            background: var(--bg-light);
+            color: var(--text-main);
+            transition: background var(--transition), color var(--transition);
+            padding: 1.2rem;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 20px;
+            transition: background var(--transition);
+        }
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* ---------- 4. HEADER (X-style) ---------- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 1.8rem;
+            padding: 0.2rem 0;
+            position: sticky;
+            top: 0;
+            background: var(--bg-light);
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.8rem;
+        }
+        .header .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .header .brand h1 {
+            font-size: 2.4rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            font-weight: 900;
+        }
+        .header .brand .x-badge {
+            background: #000;
+            color: #fff;
+            padding: 4px 20px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 1px #000;
+        }
+        body.dark .header .brand .x-badge {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* ---------- 5. BUTTONS (Neo) ---------- */
+        .btn {
+            background: var(--primary);
+            border: none;
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(29, 78, 216, 0.25);
+            text-decoration: none;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .btn:active::after {
+            width: 300px;
+            height: 300px;
+        }
+        .btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 28px rgba(29, 78, 216, 0.35);
+        }
+        .btn:active {
+            transform: scale(0.96);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 0.78rem;
+            gap: 4px;
+        }
+        .btn-danger {
+            background: #dc2626;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+            box-shadow: 0 8px 24px rgba(220, 38, 38, 0.35);
+        }
+        .btn-success {
+            background: #16a34a;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+        }
+        .btn-success:hover {
+            background: #15803d;
+        }
+        .btn-secondary {
+            background: var(--secondary);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+        }
+        .btn-secondary:hover {
+            background: #6d28d9;
+        }
+        .btn-glow {
+            animation: glowPulse 2s infinite;
+        }
+        @keyframes glowPulse {
+            0%,
+            100% {
+                box-shadow: 0 4px 16px rgba(29, 78, 216, 0.25);
+            }
+            50% {
+                box-shadow: 0 8px 40px rgba(29, 78, 216, 0.5);
+            }
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
+        }
+        .btn-gold:hover {
+            transform: scale(1.05);
+        }
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+        .btn-ghost:hover {
+            background: var(--border-color);
+        }
+
+        /* ---------- 6. TABS ---------- */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 2.2rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 12px 32px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 40px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all var(--transition);
+            position: relative;
+            white-space: nowrap;
+            font-family: var(--font);
+        }
+        .tab-btn:hover {
+            background: rgba(29, 78, 216, 0.08);
+            color: var(--primary);
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(29, 78, 216, 0.3);
+        }
+        .tab-btn .badge-tab {
+            background: var(--accent);
+            color: #fff;
+            border-radius: 20px;
+            padding: 0 12px;
+            font-size: 0.7rem;
+            margin-right: 6px;
+            display: inline-block;
+        }
+        .tab-pane {
+            display: none;
+            animation: fadeUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .tab-pane.active {
+            display: block;
+        }
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(24px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ---------- 7. STATS CARDS ---------- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.2rem;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.4rem 1rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+        .stat-card:hover::after {
+            opacity: 1;
+        }
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1.1;
+            font-variant-numeric: tabular-nums;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+        .stat-card .icon {
+            font-size: 2rem;
+            margin-bottom: 2px;
+        }
+        .stat-card.green .stat-number {
+            color: #16a34a;
+        }
+        .stat-card.purple .stat-number {
+            color: var(--secondary);
+        }
+        .stat-card.orange .stat-number {
+            color: var(--accent);
+        }
+        .stat-card.red .stat-number {
+            color: #dc2626;
+        }
+        .stat-card.gold .stat-number {
+            color: #d97706;
+        }
+
+        /* ---------- 8. SEARCH / FILTER ---------- */
+        .search-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+        .search-box {
+            flex: 3;
+            min-width: 220px;
+            background: var(--bg-card);
+            border-radius: 48px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border: 2px solid var(--border-color);
+            transition: border var(--transition), box-shadow var(--transition);
+        }
+        .search-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.1);
+        }
+        .search-box input {
+            width: 100%;
+            padding: 12px 4px;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-family: var(--font);
+        }
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .filter-group select,
+        .filter-group input {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            transition: border var(--transition);
+            cursor: pointer;
+            outline: none;
+            min-width: 140px;
+            font-family: var(--font);
+        }
+        .filter-group select:focus,
+        .filter-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+        }
+        .filter-group option {
+            background: var(--bg-card);
+        }
+
+        /* ---------- 9. RECORD CARDS ---------- */
+        .data-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .record-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem 1.6rem;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .record-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+            border-radius: 0 4px 4px 0;
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+        .record-card:hover::before {
+            opacity: 1;
+        }
+        .record-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-hover);
+            transform: translateX(6px) scale(1.005);
+        }
+        .record-card .tags-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 4px;
+        }
+        .record-card .tag {
+            background: var(--border-color);
+            padding: 0 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .record-info {
+            flex: 1;
+            min-width: 220px;
+        }
+        .record-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .record-title .badge {
+            font-size: 0.7rem;
+            padding: 2px 16px;
+            border-radius: 40px;
+            font-weight: 700;
+            display: inline-block;
+            letter-spacing: 0.3px;
+        }
+        .badge-status {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        .badge-status.waiting {
+            background: #fef3c7;
+            color: #b45309;
+        }
+        .badge-status.sent {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .badge-status.interview {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .badge-status.accepted {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .badge-status.rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .badge-status.verified {
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+        .record-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 6px;
+        }
+        .record-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* ---------- 10. PAGINATION ---------- */
+        .pagination {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 2rem;
+            justify-content: center;
+            align-items: center;
+        }
+        .page-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition);
+            color: var(--text-main);
+            min-width: 44px;
+            font-family: var(--font);
+        }
+        .page-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+        .page-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+        .page-size-select {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 30px;
+            color: var(--text-main);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: var(--font);
+        }
+
+        /* ---------- 11. MODAL (Glass) ---------- */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: var(--z-modal);
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-content {
+            background: var(--bg-card);
+            width: 96%;
+            max-width: 680px;
+            border-radius: 40px;
+            padding: 2.4rem 2.6rem 2rem;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+            max-height: 92vh;
+            overflow-y: auto;
+            transform: scale(0.92) translateY(24px);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+        .modal-content h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-muted);
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border-color);
+            font-size: 0.95rem;
+            background: var(--bg-light);
+            color: var(--text-main);
+            transition: border var(--transition), box-shadow var(--transition);
+            outline: none;
+            font-family: var(--font);
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.1);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 2rem;
+        }
+
+        /* ---------- 12. CHARTS ---------- */
+        .chart-container {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.8rem;
+            margin-top: 1.8rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .chart-container h3 {
+            margin-bottom: 1.6rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .chart-bars {
+            display: flex;
+            gap: 0.8rem;
+            align-items: flex-end;
+            height: var(--chart-height);
+            padding: 0 0.5rem;
+            position: relative;
+        }
+        .chart-bar-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+        }
+        .chart-bar {
+            width: 80%;
+            max-width: 56px;
+            border-radius: var(--chart-bar-radius);
+            transition: height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            min-height: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+        .chart-bar:hover {
+            opacity: 0.9;
+            transform: scaleX(1.1);
+            filter: brightness(1.1);
+        }
+        .chart-bar .tooltip {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-main);
+            color: var(--bg-card);
+            padding: 4px 14px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+            font-weight: 700;
+            font-family: var(--font);
+        }
+        .chart-bar:hover .tooltip {
+            opacity: 1;
+        }
+        .chart-label {
+            font-size: 0.75rem;
+            margin-top: 8px;
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 80px;
+            word-break: break-word;
+            font-weight: 500;
+        }
+
+        /* ---------- 13. TOAST ---------- */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: var(--z-toast);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 420px;
+            width: 100%;
+            pointer-events: none;
+        }
+        .toast {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 18px 24px;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            animation: slideInRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: right;
+            backdrop-filter: blur(8px);
+            pointer-events: auto;
+            border-left: 6px solid var(--primary);
+        }
+        .toast.success {
+            border-left-color: #16a34a;
+        }
+        .toast.error {
+            border-left-color: #dc2626;
+        }
+        .toast.info {
+            border-left-color: #3b82f6;
+        }
+        .toast .toast-icon {
+            font-size: 1.6rem;
+        }
+        .toast .toast-msg {
+            flex: 1;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .toast .toast-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 0 4px;
+            transition: color var(--transition);
+        }
+        .toast .toast-close:hover {
+            color: var(--text-main);
+        }
+        @keyframes slideInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(80px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ---------- 14. TOP LIST ---------- */
+        .top-list {
+            list-style: none;
+            padding: 0;
+        }
+        .top-list li {
+            background: var(--bg-light);
+            margin: 6px 0;
+            padding: 14px 20px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+        }
+        .top-list li:hover {
+            border-color: var(--primary-light);
+            transform: translateX(6px);
+        }
+        .top-list .rank {
+            font-weight: 800;
+            color: var(--primary);
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        /* ---------- 15. NOTICE BOARD SECTION (NEW) ---------- */
+        .notice-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 2rem 2.4rem;
+            margin-bottom: 2.2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .notice-section .notice-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 1.2rem;
+        }
+        .notice-section .notice-header h3 {
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .notice-section .notice-badge {
+            background: var(--accent);
+            color: #fff;
+            padding: 2px 18px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        .notice-section .notice-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.4rem;
+        }
+        @media (max-width: 700px) {
+            .notice-section .notice-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        .notice-card {
+            background: var(--bg-light);
+            border-radius: var(--radius-sm);
+            padding: 1.4rem 1.6rem;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+        }
+        .notice-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-3px);
+        }
+        .notice-card .notice-card-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .notice-card .notice-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        .notice-card .notice-card-result {
+            font-size: 0.9rem;
+            background: var(--bg-card);
+            padding: 10px 14px;
+            border-radius: var(--radius-xs);
+            border-left: 4px solid var(--primary);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* ---------- 16. X FEED ---------- */
+        .x-feed {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.6rem 2rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        .x-feed .x-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.2rem;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+        .x-feed .x-header .x-logo {
+            width: 32px;
+            height: 32px;
+            background: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 900;
+        }
+        .x-item {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 14px;
+            transition: background var(--transition);
+        }
+        .x-item:last-child {
+            border-bottom: none;
+        }
+        .x-item:hover {
+            background: var(--bg-light);
+            border-radius: var(--radius-xs);
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        .x-item .x-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+        .x-item .x-body {
+            flex: 1;
+        }
+        .x-item .x-body .x-user {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .x-item .x-body .x-handle {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        .x-item .x-body .x-text {
+            margin-top: 4px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .x-item .x-body .x-meta {
+            margin-top: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 18px;
+        }
+        .x-item .x-body .x-meta span {
+            cursor: pointer;
+            transition: color var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .x-item .x-body .x-meta span:hover {
+            color: var(--primary);
+        }
+
+        /* ---------- 17. TIMELINE ---------- */
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .timeline-item .tl-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--primary);
+            flex-shrink: 0;
+            margin-top: 4px;
+            border: 2px solid var(--bg-card);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        .timeline-item .tl-content {
+            flex: 1;
+        }
+        .timeline-item .tl-title {
+            font-weight: 700;
+        }
+        .timeline-item .tl-meta {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* ---------- 18. RESPONSIVE ---------- */
+        @media (max-width: 700px) {
+            .record-card {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .actions {
+                justify-content: flex-end;
+            }
+            .header .brand h1 {
+                font-size: 1.5rem;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            }
+            .modal-content {
+                padding: 1.6rem;
+            }
+            .search-filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-box {
+                min-width: 0;
+            }
+            .filter-group {
+                flex-wrap: wrap;
+            }
+            .filter-group select {
+                flex: 1;
+                min-width: 0;
+            }
+            .chart-bars {
+                height: 160px;
+            }
+            .toast-container {
+                left: 16px;
+                right: 16px;
+                max-width: unset;
+            }
+            .notice-section {
+                padding: 1.2rem 1.4rem;
+            }
+            .header {
+                position: static;
+            }
+        }
+        @media (max-width: 480px) {
+            .header .brand h1 {
+                font-size: 1.2rem;
+            }
+            .tab-btn {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+            .stat-number {
+                font-size: 1.6rem;
+            }
+            .btn {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* ---------- 19. MISC ---------- */
+        .highlight {
+            background: #fbbf24;
+            color: #0a0f1e;
+            padding: 0 2px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+        body.dark .highlight {
+            background: #f59e0b;
+        }
+        .shimmer {
+            background: linear-gradient(90deg, var(--bg-card) 25%, var(--border-color) 50%, var(--bg-card) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.8s infinite;
+        }
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        .notification-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: pulse-dot 1.5s infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.4);
+            }
+        }
+        .glow-border {
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .avatar-lg {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .badge-live {
+            background: #ef4444;
+            color: #fff;
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            animation: pulse-dot 1.5s infinite;
+        }
+        .badge-ultra {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+
+        /* ---------- 20. RADAR CHART (placeholder) ---------- */
+        .radar-container {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.4rem;
+            border: 1px solid var(--border-color);
+            margin-top: 1.4rem;
+        }
+
+        /* ---------- 21. SCROLL TO TOP ---------- */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(29, 78, 216, 0.3);
+            transition: all var(--transition);
+            z-index: 50;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .scroll-top.visible {
+            display: flex;
+        }
+        .scroll-top:hover {
+            transform: scale(1.1);
+        }
+
+        /* ---------- 22. KEYBOARD HINT ---------- */
+        .kbd {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+        .keyboard-hint {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+        }
+        .keyboard-hint span {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 80;
+        }
+        .floating-btn .btn {
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            padding: 0;
+            font-size: 1.6rem;
+            box-shadow: 0 8px 32px rgba(29, 78, 216, 0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="brand">
+                <h1>🚀 Career Path</h1>
+                <span class="x-badge">X · ULTIMATE</span>
+                <span class="badge-ultra">v10/10</span>
+            </div>
+            <div class="header-actions">
+                <button id="themeToggle" class="btn btn-outline btn-sm" title="حالت شب/روز">🌓</button>
+                <button id="helpBtn" class="btn btn-outline btn-sm">❓</button>
+                <button id="exportAllBtn" class="btn btn-sm btn-gold">📦 صادرات</button>
+                <span id="liveNotifications" style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-muted);background:var(--bg-card);padding:4px 16px;border-radius:40px;border:1px solid var(--border-color);">
+                    <span class="notification-dot"></span>
+                    <span>زنده</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- KEYBOARD HINT -->
+        <div class="keyboard-hint">
+            <span><span class="kbd">Ctrl+1-6</span> تب</span>
+            <span><span class="kbd">Ctrl+J</span> جستجو</span>
+            <span><span class="kbd">Esc</span> بستن</span>
+            <span><span class="kbd">Ctrl+Shift+E</span> صادرات</span>
+            <span><span class="kbd">Ctrl+Shift+R</span> بازنشانی</span>
+        </div>
+
+        <!-- NOTICE BOARD SECTION (NEW) -->
+        <section class="notice-section" id="noticeSection">
+            <div class="notice-header">
+                <h3>📝 تابلوی یادداشت‌ها و یادآورها</h3>
+                <span class="notice-badge">NEW</span>
+            </div>
+            <div class="notice-content">
+                <div class="notice-card">
+                    <div class="notice-card-title">📌 یادداشت سریع</div>
+                    <div class="notice-card-desc">یک یادداشت کلی برای کل سیستم بنویسید</div>
+                    <div class="notice-card-result">
+                        <textarea id="globalNote" rows="3" style="width:100%;padding:8px 12px;border:2px solid var(--border-color);border-radius:var(--radius-xs);background:var(--bg-card);color:var(--text-main);font-family:var(--font);resize:vertical;" placeholder="یادداشت کلی خود را اینجا بنویسید..."></textarea>
+                        <button id="saveGlobalNote" class="btn btn-sm btn-secondary" style="margin-top:8px;">💾 ذخیره یادداشت</button>
+                    </div>
+                </div>
+                <div class="notice-card">
+                    <div class="notice-card-title">⏰ یادآورها</div>
+                    <div class="notice-card-desc">یادآورهای مهم خود را تنظیم کنید</div>
+                    <div class="notice-card-result">
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+                            <input type="text" id="reminderText" placeholder="متن یادآور..." style="padding:8px 12px;border:2px solid var(--border-color);border-radius:var(--radius-xs);background:var(--bg-card);color:var(--text-main);flex:2;">
+                            <input type="date" id="reminderDate" style="padding:8px 12px;border:2px solid var(--border-color);border-radius:var(--radius-xs);background:var(--bg-card);color:var(--text-main);">
+                            <button id="addReminderBtn" class="btn btn-sm btn-success">➕</button>
+                        </div>
+                        <div id="reminderList" style="max-height:120px;overflow-y:auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- X FEED -->
+        <section class="x-feed">
+            <div class="x-header">
+                <span class="x-logo">𝕏</span>
+                <span>فید شغلی زنده · فرصت‌های جدید</span>
+                <span style="font-size:0.7rem;color:var(--text-muted);background:var(--bg-light);padding:2px 12px;border-radius:20px;">● real-time</span>
+                <span id="feedCounter" style="font-size:0.75rem;color:var(--text-muted);">۰ فرصت</span>
+            </div>
+            <div id="xFeedContainer"></div>
+            <button id="loadMoreFeed" class="btn btn-outline btn-sm" style="width:100%;margin-top:8px;">🔄 بارگذاری بیشتر</button>
+        </section>
+
+        <!-- TABS -->
+        <nav class="tabs" role="tablist">
+            <button class="tab-btn active" data-tab="companies" role="tab">🏢 شرکت‌ها <span class="badge-tab" id="companyCount">۰</span></button>
+            <button class="tab-btn" data-tab="questions" role="tab">❓ سوالات <span class="badge-tab" id="questionCount">۰</span></button>
+            <button class="tab-btn" data-tab="resources" role="tab">📚 منابع <span class="badge-tab" id="resourceCount">۰</span></button>
+            <button class="tab-btn" data-tab="dashboard" role="tab">📊 داشبورد</button>
+            <button class="tab-btn" data-tab="timeline" role="tab">⏳ روند</button>
+            <button class="tab-btn" data-tab="network" role="tab">🌐 شبکه</button>
+            <button class="tab-btn" data-tab="radar" role="tab">📡 رادار</button>
+        </nav>
+
+        <!-- COMPANIES -->
+        <div id="companiesPanel" class="tab-pane active" role="tabpanel">
+            <div class="stats-grid" id="companiesStats"></div>
+            <div class="search-filter-bar">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" id="searchCompany" placeholder="نام شرکت، کشور، عنوان، ایمیل، تکنولوژی...">
+                </div>
+                <div class="filter-group">
+                    <select id="filterCompanyStatus">
+                        <option value="all">همه وضعیت‌ها</option>
+                        <option value="در انتظار">⏳ در انتظار</option>
+                        <option value="ارسال رزومه">📤 ارسال رزومه</option>
+                        <option value="مصاحبه">🎤 مصاحبه</option>
+                        <option value="پذیرفته شده">✅ پذیرفته شده</option>
+                        <option value="رد شده">❌ رد شده</option>
+                    </select>
+                    <select id="sortCompanies">
+                        <option value="name">مرتب: نام</option>
+                        <option value="date">مرتب: تاریخ (جدید)</option>
+                        <option value="status">مرتب: وضعیت</option>
+                        <option value="salary">مرتب: حقوق</option>
+                    </select>
+                    <select id="filterCompanyCountry">
+                        <option value="all">همه کشورها</option>
+                        <option value="آمریکا">🇺🇸 آمریکا</option>
+                        <option value="ایران">🇮🇷 ایران</option>
+                        <option value="آلمان">🇩🇪 آلمان</option>
+                        <option value="فنلاند">🇫🇮 فنلاند</option>
+                        <option value="سوئد">🇸🇪 سوئد</option>
+                        <option value="چین">🇨🇳 چین</option>
+                        <option value="فرانسه">🇫🇷 فرانسه</option>
+                        <option value="امارات">🇦🇪 امارات</option>
+                        <option value="روسیه">🇷🇺 روسیه</option>
+                    </select>
+                </div>
+                <button id="addCompanyBtn" class="btn">➕ جدید</button>
+                <button id="exportCompaniesCSV" class="btn btn-outline btn-sm">📎 CSV</button>
+                <button id="exportCompaniesJSON" class="btn btn-outline btn-sm">📦 JSON</button>
+                <button id="clearFiltersBtn" class="btn btn-ghost btn-sm">🗑️ پاک کردن فیلتر</button>
+            </div>
+            <div id="companiesList" class="data-grid"></div>
+            <div class="pagination" id="companiesPagination"></div>
+        </div>
+
+        <!-- QUESTIONS -->
+        <div id="questionsPanel" class="tab-pane" role="tabpanel">
+            <div class="stats-grid" id="questionsStats"></div>
+            <div class="search-filter-bar">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" id="searchQuestion" placeholder="جستجوی سوال، شرکت، دسته...">
+                </div>
+                <div class="filter-group">
+                    <select id="filterQuestionCategory">
+                        <option value="all">همه دسته‌ها</option>
+                        <option value="الگوریتم">🧮 الگوریتم</option>
+                        <option value="سیستم طراحی">🏗️ سیستم طراحی</option>
+                        <option value="مدیریت">📋 مدیریت</option>
+                        <option value="SQL">🗄️ SQL</option>
+                        <option value="برنامه‌نویسی">💻 برنامه‌نویسی</option>
+                        <option value="AI/ML">🤖 AI/ML</option>
+                    </select>
+                    <select id="filterQuestionDifficulty">
+                        <option value="all">همه سطوح</option>
+                        <option value="ساده">ساده</option>
+                        <option value="متوسط">متوسط</option>
+                        <option value="سخت">سخت</option>
+                    </select>
+                </div>
+                <button id="addQuestionBtn" class="btn">➕ جدید</button>
+                <button id="exportQuestionsBtn" class="btn btn-outline btn-sm">📎 CSV</button>
+            </div>
+            <div id="questionsList" class="data-grid"></div>
+            <div class="pagination" id="questionsPagination"></div>
+        </div>
+
+        <!-- RESOURCES -->
+        <div id="resourcesPanel" class="tab-pane" role="tabpanel">
+            <div class="stats-grid" id="resourcesStats"></div>
+            <div class="search-filter-bar">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" id="searchResource" placeholder="جستجوی منبع، نوع، عنوان...">
+                </div>
+                <div class="filter-group">
+                    <select id="filterResourceType">
+                        <option value="all">همه انواع</option>
+                        <option value="کتاب">📖 کتاب</option>
+                        <option value="دوره آنلاین">🎓 دوره آنلاین</option>
+                        <option value="وبسایت">🌐 وبسایت</option>
+                        <option value="مقاله">📄 مقاله</option>
+                        <option value="ویدئو">🎬 ویدئو</option>
+                        <option value="پادکست">🎙️ پادکست</option>
+                    </select>
+                </div>
+                <button id="addResourceBtn" class="btn">➕ جدید</button>
+            </div>
+            <div id="resourcesList" class="data-grid"></div>
+            <div class="pagination" id="resourcesPagination"></div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="dashboardPanel" class="tab-pane" role="tabpanel">
+            <div class="stats-grid" id="dashboardStats"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;margin-top:1.8rem;">
+                <div class="chart-container">
+                    <h3>📊 توزیع وضعیت شرکت‌ها</h3>
+                    <div id="statusChart" class="chart-bars"></div>
+                </div>
+                <div class="chart-container">
+                    <h3>🏆 ۵ شرکت برتر (امتیاز)</h3>
+                    <ul id="topCompaniesList" class="top-list"></ul>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3>💰 میانگین حقوق بر اساس وضعیت</h3>
+                <div id="salaryChart" class="chart-bars"></div>
+            </div>
+            <div class="chart-container">
+                <h3>📈 روند فعالیت هفتگی</h3>
+                <div id="activityTrendChart" class="chart-bars"></div>
+            </div>
+        </div>
+
+        <!-- TIMELINE -->
+        <div id="timelinePanel" class="tab-pane" role="tabpanel">
+            <div class="stats-grid" id="timelineStats"></div>
+            <div id="timelineList" class="data-grid"></div>
+            <div class="pagination" id="timelinePagination"></div>
+        </div>
+
+        <!-- NETWORK -->
+        <div id="networkPanel" class="tab-pane" role="tabpanel">
+            <div class="stats-grid" id="networkStats"></div>
+            <div class="search-filter-bar">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" id="searchNetwork" placeholder="جستجو در شبکه (نام، مهارت، عنوان)...">
+                </div>
+                <button id="addConnectionBtn" class="btn">➕ ارتباط جدید</button>
+                <button id="networkImportBtn" class="btn btn-outline btn-sm">📎 واردات</button>
+            </div>
+            <div id="networkList" class="data-grid"></div>
+        </div>
+
+        <!-- RADAR -->
+        <div id="radarPanel" class="tab-pane" role="tabpanel">
+            <div class="stats-grid" id="radarStats"></div>
+            <div class="radar-container">
+                <h3>📡 رادار مهارت‌های شما در برابر بازار</h3>
+                <div id="radarChart" style="height:300px;display:flex;align-items:center;justify-content:center;background:var(--bg-light);border-radius:var(--radius-sm);">
+                    <span style="color:var(--text-muted);">⏳ در حال بارگذاری رادار ...</span>
+                </div>
+            </div>
+            <div class="radar-container">
+                <h3>🎯 تحلیل شکاف مهارتی (Gap Analysis)</h3>
+                <div id="gapAnalysisList" class="top-list"></div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            🚀 Career Path Pro · X Edition Ultimate · توسط <strong>تیم</strong> · داده‌های لحظه‌ای از بازار کار
+            <br>
+            <span style="font-size:0.75rem;color:var(--text-muted);">⌨️ Ctrl+1-7: تب · Ctrl+J: جستجو · Esc: بستن مودال · Ctrl+Shift+E: صادرات</span>
+        </footer>
+    </div>
+
+    <!-- MODAL -->
+    <div id="genericModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle">عنوان</h3>
+            <div id="modalBody"></div>
+            <div class="modal-buttons">
+                <button id="modalCloseBtn" class="btn btn-outline">انصراف</button>
+                <button id="modalConfirmBtn" class="btn">ذخیره</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- SCROLL TO TOP -->
+    <button id="scrollTopBtn" class="scroll-top" title="رفتن به بالا">⬆</button>
+
+    <!-- FLOATING BUTTON -->
+    <div class="floating-btn">
+        <button id="floatingAddNoteBtn" class="btn" title="یادداشت جدید">➕</button>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // ================================================================
+        // 🚀 𝗖𝗔𝗥𝗘𝗘𝗥 𝗣𝗔𝗧𝗛 𝗣𝗥𝗢 · 𝗗𝗘𝗕𝗨𝗚 𝗩𝗘𝗥𝗦𝗜𝗢𝗡
+        // ================================================================
+
+        // ---------- INDEXEDDB ----------
+        const DB_NAME = "CareerProXDebugDB";
+        const DB_VERSION = 13;
+        let db = null;
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const req = indexedDB.open(DB_NAME, DB_VERSION);
+                req.onupgradeneeded = e => {
+                    const dbRef = e.target.result;
+                    if (!dbRef.objectStoreNames.contains("companies")) {
+                        const s = dbRef.createObjectStore("companies", { keyPath: "id", autoIncrement: true });
+                        s.createIndex("status", "status", { unique: false });
+                        s.createIndex("name", "name", { unique: false });
+                        s.createIndex("favorite", "favorite", { unique: false });
+                        s.createIndex("country", "country", { unique: false });
+                    }
+                    if (!dbRef.objectStoreNames.contains("questions"))
+                        dbRef.createObjectStore("questions", { keyPath: "id", autoIncrement: true });
+                    if (!dbRef.objectStoreNames.contains("resources"))
+                        dbRef.createObjectStore("resources", { keyPath: "id", autoIncrement: true });
+                    if (!dbRef.objectStoreNames.contains("activity")) {
+                        const s = dbRef.createObjectStore("activity", { keyPath: "id", autoIncrement: true });
+                        s.createIndex("companyId", "companyId", { unique: false });
+                        s.createIndex("timestamp", "timestamp", { unique: false });
+                    }
+                    if (!dbRef.objectStoreNames.contains("network"))
+                        dbRef.createObjectStore("network", { keyPath: "id", autoIncrement: true });
+                    if (!dbRef.objectStoreNames.contains("notes")) {
+                        dbRef.createObjectStore("notes", { keyPath: "id", autoIncrement: true });
+                    }
+                    if (!dbRef.objectStoreNames.contains("reminders")) {
+                        dbRef.createObjectStore("reminders", { keyPath: "id", autoIncrement: true });
+                    }
+                    if (!dbRef.objectStoreNames.contains("settings"))
+                        dbRef.createObjectStore("settings", { keyPath: "id", autoIncrement: true });
+                };
+                req.onsuccess = e => { db = e.target.result;
+                    resolve(); };
+                req.onerror = e => reject(e.target.error);
+            });
+        }
+
+        async function getAll(storeName) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(storeName, "readonly");
+                tx.objectStore(storeName).getAll().onsuccess = e => resolve(e.target.result);
+            });
+        }
+
+        async function addItem(storeName, item) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(storeName, "readwrite");
+                tx.objectStore(storeName).add(item).onsuccess = e => resolve(e.target.result);
+            });
+        }
+
+        async function updateItem(storeName, item) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(storeName, "readwrite");
+                tx.objectStore(storeName).put(item).onsuccess = () => resolve();
+            });
+        }
+
+        async function deleteItem(storeName, id) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(storeName, "readwrite");
+                tx.objectStore(storeName).delete(id).onsuccess = () => resolve();
+            });
+        }
+
+        async function bulkAdd(storeName, items) {
+            const tx = db.transaction(storeName, "readwrite");
+            const store = tx.objectStore(storeName);
+            for (const item of items) store.add(item);
+            return new Promise((resolve, reject) => { tx.oncomplete = () => resolve();
+                tx.onerror = e => reject(e.target.error); });
+        }
+
+        // ---------- STATE ----------
+        let companiesCache = [];
+        let questionsCache = [];
+        let resourcesCache = [];
+        let activityCache = [];
+        let networkCache = [];
+        let notesCache = [];
+        let remindersCache = [];
+        let pagination = { companies: 1, questions: 1, resources: 1, timeline: 1 };
+        let perPage = 14;
+        let feedOffset = 0;
+        const FEED_PAGE_SIZE = 5;
+
+        // ---------- TOAST ----------
+        function showToast(message, type = "info", duration = 5000) {
+            const container = document.getElementById("toastContainer");
+            const div = document.createElement("div");
+            div.className = `toast ${type}`;
+            const icons = { success: "✅", error: "❌", info: "ℹ️", warning: "⚠️" };
+            div.innerHTML = `
+                <span class="toast-icon">${icons[type] || "ℹ️"}</span>
+                <span class="toast-msg">${message}</span>
+                <button class="toast-close">✕</button>
+            `;
+            container.appendChild(div);
+            div.querySelector(".toast-close").addEventListener("click", () => {
+                div.style.opacity = "0";
+                setTimeout(() => div.remove(), 300);
+            });
+            setTimeout(() => {
+                div.style.opacity = "0";
+                setTimeout(() => div.remove(), 300);
+            }, duration);
+        }
+
+        // ---------- UTILITIES ----------
+        function formatSalary(s) { return s || "نامشخص"; }
+
+        function getStatusBadge(status) {
+            const map = {
+                "در انتظار": "waiting",
+                "ارسال رزومه": "sent",
+                "مصاحبه": "interview",
+                "پذیرفته شده": "accepted",
+                "رد شده": "rejected"
+            };
+            return `badge-status ${map[status] || ""}`;
+        }
+
+        function highlightText(text, query) {
+            if (!query || query.length < 2) return text;
+            const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        function parseSalaryRange(s) {
+            if (!s) return { min: 0, max: 0 };
+            const parts = s.split('-').map(p => parseInt(p.replace(/[^0-9]/g, '')));
+            if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) return { min: parts[0], max: parts[1] };
+            const num = parseInt(s.replace(/[^0-9]/g, ''));
+            if (!isNaN(num)) return { min: num, max: num };
+            return { min: 0, max: 0 };
+        }
+
+        function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+        function shuffleArray(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+
+        function debounce(fn, delay = 250) {
+            let timer;
+            return function(...args) { clearTimeout(timer);
+                timer = setTimeout(() => fn.apply(this, args), delay); };
+        }
+
+        function closeModal() { document.getElementById("genericModal").classList.remove("active"); }
+
+        function getWeekNumber(d) {
+            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        }
+
+        // ---------- GENERATE DATA ----------
+        function generateRealCompanies(count = 200) {
+            const names = [
+                "Google", "Microsoft", "Meta", "Amazon", "Apple", "Netflix", "Tesla", "SpaceX", "OpenAI", "Anthropic",
+                "Mistral AI", "DeepMind", "Intel", "NVIDIA", "AMD", "Qualcomm", "IBM", "Oracle", "SAP",
+                "Salesforce", "Adobe", "Cisco", "VMware", "Dell", "HP", "Lenovo", "Samsung",
+                "LG", "Sony", "Panasonic", "Toshiba", "Hitachi", "Fujitsu", "NEC", "Sharp", "Seagate",
+                "Micron", "Broadcom", "Texas Instruments", "Analog Devices", "Arm",
+                "Alibaba", "Tencent", "Baidu", "Huawei", "Xiaomi", "Vivo", "Oppo", "Realme", "OnePlus",
+                "ZTE", "Hikvision", "DJI", "ByteDance", "JD.com", "Meituan", "Didi", "Bilibili",
+                "Snapp", "Digikala", "Zarinpal", "Cafe IT", "System Group", "Asiatech", "Parsian", "Mellat", "Saderat",
+                "Tejarat", "Sepah", "Saman", "Pasargad", "Kish", "Day", "Bank Saderat", "Bank Mellat", "Bank Tejarat",
+                "Bank Sepah", "Bank Saman", "Bank Pasargad", "Bank Day", "Bank Eghtesad Novin", "Bank Karafarin",
+                "Bank Sina", "Bank Shahr", "Bank Tourism", "Bank Maskan", "Bank Keshavarzi", "Bank Refah",
+                "Bank Ghavamin", "Bank Hekmat Iranian", "Bank Iran Zamin", "Bank Mehr Iran", "Bank Resalat"
+            ];
+            const countries = ["آمریکا", "ایران", "آلمان", "فنلاند", "سوئد", "چین", "فرانسه", "امارات", "روسیه", "کانادا",
+                "استرالیا", "بریتانیا", "ژاپن", "هند", "برزیل"
+            ];
+            const statuses = ["در انتظار", "ارسال رزومه", "مصاحبه", "پذیرفته شده", "رد شده"];
+            const jobs = ["Software Engineer", "Data Scientist", "ML Engineer", "DevOps Engineer", "Front-End Developer",
+                "Back-End Developer", "Full Stack", "Product Manager", "UX Designer", "Cloud Architect", "Security Engineer",
+                "Mobile Developer", "QA Engineer", "Database Admin", "Network Engineer", "AI Researcher"
+            ];
+            const result = [];
+            const usedNames = new Set();
+            for (let i = 0; i < Math.min(count, names.length); i++) {
+                let name = names[i % names.length];
+                if (usedNames.has(name)) name += ` ${["Inc.", "Co.", "Group", "Tech", "Labs"][i % 5]}`;
+                usedNames.add(name);
+                const status = statuses[getRandomInt(0, statuses.length - 1)];
+                const salaryMin = getRandomInt(15, 400);
+                const salaryMax = salaryMin + getRandomInt(10, 150);
+                result.push({
+                    name,
+                    country: countries[getRandomInt(0, countries.length - 1)],
+                    email: `hr@${name.toLowerCase().replace(/\s/g,'')}.com`,
+                    jobTitle: jobs[getRandomInt(0, jobs.length - 1)],
+                    salary: `${salaryMin}k-${salaryMax}k`,
+                    status,
+                    favorite: Math.random() > 0.7,
+                    notes: `یادداشت اولیه برای ${name}`,
+                    date: new Date(Date.now() - getRandomInt(0, 90) * 86400000).toISOString().slice(0, 10),
+                });
+            }
+            return result;
+        }
+
+        async function seedRealData() {
+            const exist = (await getAll("companies")).length;
+            if (exist > 100) return;
+            const companies = generateRealCompanies(200);
+            await bulkAdd("companies", companies);
+            const categories = ["الگوریتم", "سیستم طراحی", "مدیریت", "SQL", "برنامه‌نویسی", "AI/ML"];
+            const difficulties = ["ساده", "متوسط", "سخت"];
+            const qCompanies = companies.slice(0, 50).map(c => c.name);
+            const questions = [];
+            for (let i = 0; i < 500; i++) {
+                const category = categories[getRandomInt(0, categories.length - 1)];
+                const diff = difficulties[getRandomInt(0, difficulties.length - 1)];
+                const company = qCompanies[getRandomInt(0, qCompanies.length - 1)];
+                const texts = [
+                    `تفاوت بین ${category} و ${category} چیست؟`,
+                    `چگونه یک ${category} را در مقیاس بزرگ پیاده‌سازی می‌کنید؟`,
+                    `بهترین روش برای مدیریت ${category} در تیم‌های چابک چیست؟`,
+                    `چه عواملی باعث موفقیت در ${category} می‌شوند؟`,
+                    `یک مساله واقعی در ${category} را حل کنید.`,
+                    `طراحی یک سیستم ${category} برای ${company}`,
+                    `مزایا و معایب استفاده از ${category} در پروژه‌های مدرن`,
+                    `چگونه ${category} را با AI ترکیب می‌کنید؟`,
+                    `یک معماری ${category} برای اپلیکیشن موبایل پیشنهاد دهید.`
+                ];
+                const text = texts[getRandomInt(0, texts.length - 1)];
+                questions.push({
+                    text,
+                    category,
+                    company,
+                    source: "مصاحبه واقعی",
+                    difficulty: diff,
+                    date: new Date().toISOString().slice(0, 10)
+                });
+            }
+            for (const q of questions) await addItem("questions", q);
+            const types = ["کتاب", "دوره آنلاین", "وبسایت", "مقاله", "ویدئو", "پادکست"];
+            const resourceTitles = [
+                "Mastering AI Engineering", "The Modern Developer's Guide", "System Design for AI Systems",
+                "Deep Learning with PyTorch", "Cloud Native DevOps", "Effective Communication for Engineers",
+                "Data Structures & Algorithms Advanced", "Building Scalable Microservices",
+                "Clean Code (Robert Martin)", "The Pragmatic Programmer", "Design Patterns (GoF)",
+                "Introduction to Algorithms (CLRS)", "Artificial Intelligence: A Modern Approach",
+                "Computer Networking (Kurose)", "Database System Concepts", "Software Engineering (Sommerville)",
+                "Continuous Delivery (Jez Humble)", "The Mythical Man-Month", "Peopleware", "The Phoenix Project",
+                "The DevOps Handbook", "Accelerate", "The Lean Startup", "Zero to One", "Good to Great"
+            ];
+            for (let i = 0; i < 200; i++) {
+                const title = resourceTitles[i % resourceTitles.length] + ` (${i+1})`;
+                await addItem("resources", {
+                    title,
+                    type: types[getRandomInt(0, types.length - 1)],
+                    link: `https://example.com/resource/${i}`,
+                    description: `یک منبع عالی برای یادگیری در حوزه فناوری اطلاعات. شماره ${i+1}`,
+                    rating: getRandomInt(1, 5),
+                    date: new Date().toISOString().slice(0, 10)
+                });
+            }
+            const networkNames = ["Dr. Sarah Chen", "Ali Rezaei", "Maya Johnson", "Dr. Kaveh Hosseini", "Elena Petrova",
+                "James Liu", "Neda Karimi", "Prof. Sam Miller", "David Kim", "Lena Mousavi", "Alex Rivera", "Priya Singh",
+                "Tom Watson", "Alice Zhang", "Bob Anderson", "Carol White", "Daniel Kim", "Emily Brown"
+            ];
+            for (const name of networkNames) {
+                await addItem("network", {
+                    name,
+                    title: `💼 ${["Senior Developer","Tech Lead","AI Researcher","Product Manager","Data Engineer","DevOps Expert"][getRandomInt(0,5)]} at ${companies[getRandomInt(0, companies.length-1)].name}`,
+                    status: Math.random() > 0.4 ? "تایید شده" : "در انتظار",
+                    avatar: name.split(' ').map(w => w[0]).join(''),
+                    skills: shuffleArray(["AI", "Python", "TensorFlow", "Golang", "K8s", "React", "TypeScript", "AWS",
+                        "Terraform", "SQL", "NoSQL", "Docker", "Kafka", "Spark", "Hadoop", "PyTorch"
+                    ]).slice(0, 3).join(", "),
+                    connected: Math.random() > 0.5,
+                    date: new Date().toISOString().slice(0, 10)
+                });
+            }
+            const allCompanies = await getAll("companies");
+            for (let i = 0; i < 1000; i++) {
+                const c = allCompanies[getRandomInt(0, allCompanies.length - 1)];
+                if (c) {
+                    await addItem("activity", {
+                        companyId: c.id,
+                        action: ["ارسال رزومه", "پیگیری شد", "تماس با HR", "دعوت به مصاحبه", "پیشنهاد شغلی", "رد درخواست",
+                            "بررسی رزومه", "مصاحبه فنی", "مصاحبه مدیریت", "پیشنهاد نهایی"
+                        ][getRandomInt(0, 9)],
+                        detail: `فعالیت خودکار شماره ${i+1}`,
+                        timestamp: new Date(Date.now() - i * 43200000).toISOString()
+                    });
+                }
+            }
+        }
+
+        // ---------- RENDER COMPANIES ----------
+        async function renderCompanies() {
+            const search = document.getElementById("searchCompany").value.toLowerCase().trim();
+            const statusFilter = document.getElementById("filterCompanyStatus").value;
+            const sortBy = document.getElementById("sortCompanies").value;
+            const countryFilter = document.getElementById("filterCompanyCountry").value;
+
+            let filtered = companiesCache.filter(c => {
+                const ms = c.name.toLowerCase().includes(search) ||
+                    c.country.toLowerCase().includes(search) ||
+                    (c.jobTitle || "").toLowerCase().includes(search) ||
+                    c.email.toLowerCase().includes(search);
+                const mst = statusFilter === "all" || c.status === statusFilter;
+                const mc = countryFilter === "all" || c.country === countryFilter;
+                return ms && mst && mc;
+            });
+
+            if (sortBy === "name") filtered.sort((a, b) => a.name.localeCompare(b.name));
+            else if (sortBy === "date") filtered.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+            else if (sortBy === "status") {
+                const order = ["پذیرفته شده", "مصاحبه", "ارسال رزومه", "در انتظار", "رد شده"];
+                filtered.sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
+            } else if (sortBy === "salary") {
+                filtered.sort((a, b) => {
+                    const sa = parseSalaryRange(a.salary);
+                    const sb = parseSalaryRange(b.salary);
+                    return (sb.min + sb.max) - (sa.min + sa.max);
+                });
+            }
+
+            const start = (pagination.companies - 1) * perPage;
+            const paginated = filtered.slice(start, start + perPage);
+
+            const totalCompanies = companiesCache.length;
+            const acceptedCount = companiesCache.filter(c => c.status === "پذیرفته شده").length;
+            const favCount = companiesCache.filter(c => c.favorite).length;
+            const avgSalary = companiesCache.length > 0 ? Math.round(companiesCache.reduce((s, c) => {
+                const p = parseSalaryRange(c.salary);
+                return s + (p.min + p.max) / 2;
+            }, 0) / companiesCache.length) : 0;
+
+            document.getElementById("companiesStats").innerHTML = `
+                <div class="stat-card"><div class="icon">🏢</div><div class="stat-number">${totalCompanies}</div><div class="stat-label">کل شرکت‌ها</div></div>
+                <div class="stat-card green"><div class="icon">🎯</div><div class="stat-number">${filtered.length}</div><div class="stat-label">نتیجه جستجو</div></div>
+                <div class="stat-card green"><div class="icon">✅</div><div class="stat-number">${acceptedCount}</div><div class="stat-label">پذیرفته شده</div></div>
+                <div class="stat-card purple"><div class="icon">⭐</div><div class="stat-number">${favCount}</div><div class="stat-label">علاقه‌مندی</div></div>
+                <div class="stat-card orange"><div class="icon">💰</div><div class="stat-number">${avgSalary.toLocaleString()}k</div><div class="stat-label">میانگین حقوق</div></div>
+            `;
+            document.getElementById("companyCount").textContent = totalCompanies;
+
+            const container = document.getElementById("companiesList");
+            if (paginated.length === 0) {
+                container.innerHTML =
+                    `<div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:1.1rem;">هیچ شرکتی با این معیارها یافت نشد. 🧐</div>`;
+                document.getElementById("companiesPagination").innerHTML = "";
+                return;
+            }
+
+            const frag = document.createDocumentFragment();
+            const temp = document.createElement('div');
+            paginated.forEach(c => {
+                const nameHL = highlightText(c.name, search);
+                const countryHL = highlightText(c.country, search);
+                const jobHL = highlightText(c.jobTitle || "", search);
+                const emailHL = highlightText(c.email, search);
+                const cardClass = c.favorite ? 'gold-border' : '';
+                temp.innerHTML = `
+                    <div class="record-card ${cardClass}" data-id="${c.id}">
+                        <div class="record-info">
+                            <div class="record-title">
+                                ${c.favorite ? '⭐' : ''} ${nameHL}
+                                <span class="badge ${getStatusBadge(c.status)}">${c.status}</span>
+                            </div>
+                            <div class="record-meta">
+                                <span>🌍 ${countryHL}</span>
+                                <span>📧 ${emailHL}</span>
+                                <span>💼 ${jobHL}</span>
+                                <span>💰 ${formatSalary(c.salary)}</span>
+                                <span>📅 ${c.date || 'نامشخص'}</span>
+                                <span>📝 ${c.notes || '—'}</span>
+                            </div>
+                            <div class="tags-area" data-id="${c.id}"></div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn btn-sm btn-outline fav-toggle" data-id="${c.id}" data-fav="${c.favorite}">${c.favorite ? '⭐' : '☆'}</button>
+                            <button class="btn btn-sm edit-company" data-id="${c.id}">✏️</button>
+                            <button class="btn btn-sm btn-danger delete-company" data-id="${c.id}">🗑️</button>
+                            <button class="btn btn-sm btn-secondary note-add" data-id="${c.id}" data-type="company">📝 یادداشت</button>
+                            <button class="btn btn-sm btn-gold tag-add" data-id="${c.id}" data-type="company">🏷️ برچسب</button>
+                        </div>
+                    </div>
+                `;
+                const node = temp.firstElementChild;
+                // add tags from notesCache
+                const tags = notesCache.filter(n => n.targetId === c.id && n.targetType === 'company');
+                const tagsArea = node.querySelector('.tags-area');
+                tagsArea.innerHTML = tags.map(t => `<span class="tag">${t.content}</span>`).join('');
+                frag.appendChild(node);
+            });
+            container.innerHTML = '';
+            container.appendChild(frag);
+
+            const totalPages = Math.ceil(filtered.length / perPage);
+            let phtml =
+                `<select class="page-size-select" id="pageSizeSelect"><option value="6">۶</option><option value="12">۱۲</option><option value="14" selected>۱۴</option><option value="24">۲۴</option><option value="48">۴۸</option></select>`;
+            for (let i = 1; i <= totalPages; i++) {
+                phtml += `<button class="page-btn ${i === pagination.companies ? 'active' : ''}" data-page="${i}">${i}</button>`;
+            }
+            document.getElementById("companiesPagination").innerHTML = phtml;
+
+            document.querySelectorAll("#companiesPagination .page-btn").forEach(btn => {
+                btn.addEventListener("click", () => { pagination.companies = +btn.dataset.page;
+                    renderCompanies(); });
+            });
+            document.getElementById("pageSizeSelect")?.addEventListener("change", (e) => { perPage = +e.target.value;
+                pagination.companies = 1;
+                renderCompanies(); });
+
+            attachCompanyActions();
+        }
+
+        function attachCompanyActions() {
+            document.querySelectorAll(".edit-company").forEach(btn => {
+                btn.onclick = () => { const comp = companiesCache.find(c => c.id === +btn.dataset.id); if (comp)
+                        openCompanyModal(comp); };
+            });
+            document.querySelectorAll(".delete-company").forEach(btn => {
+                btn.onclick = async () => {
+                    if (confirm("آیا از حذف این شرکت مطمئن هستید؟")) {
+                        await deleteItem("companies", +btn.dataset.id);
+                        await refreshCache();
+                        await renderCompanies();
+                        await renderDashboard();
+                        await renderTimeline();
+                        showToast("شرکت با موفقیت حذف شد", "success");
+                    }
+                };
+            });
+            document.querySelectorAll(".fav-toggle").forEach(btn => {
+                btn.onclick = async () => {
+                    const id = +btn.dataset.id;
+                    const comp = companiesCache.find(c => c.id === id);
+                    if (comp) {
+                        comp.favorite = !comp.favorite;
+                        await updateItem("companies", comp);
+                        await refreshCache();
+                        await renderCompanies();
+                        await renderDashboard();
+                        showToast(comp.favorite ? "به علاقه‌مندی‌ها اضافه شد" : "از علاقه‌مندی‌ها حذف شد", "info");
+                    }
+                };
+            });
+            document.querySelectorAll(".note-add").forEach(btn => {
+                btn.onclick = () => { openNoteModal(+btn.dataset.id, btn.dataset.type); };
+            });
+            document.querySelectorAll(".tag-add").forEach(btn => {
+                btn.onclick = () => { openTagModal(+btn.dataset.id, btn.dataset.type); };
+            });
+        }
+
+        // ---------- COMPANY MODAL ----------
+        function openCompanyModal(comp = null) {
+            const isEdit = !!comp;
+            document.getElementById("modalTitle").textContent = isEdit ? "✏️ ویرایش شرکت" : "➕ شرکت جدید";
+            document.getElementById("modalBody").innerHTML = `
+                <div class="form-group"><label>نام شرکت *</label><input id="m_name" value="${comp?.name || ''}"></div>
+                <div class="form-group"><label>کشور</label><input id="m_country" value="${comp?.country || ''}"></div>
+                <div class="form-group"><label>ایمیل رسمی</label><input type="email" id="m_email" value="${comp?.email || ''}"></div>
+                <div class="form-group"><label>عنوان شغلی</label><input id="m_jobTitle" value="${comp?.jobTitle || ''}"></div>
+                <div class="form-group"><label>حقوق (ماهانه)</label><input id="m_salary" value="${comp?.salary || ''}"></div>
+                <div class="form-group"><label>وضعیت</label>
+                    <select id="m_status">
+                        <option value="در انتظار" ${comp?.status==="در انتظار"?"selected":""}>در انتظار</option>
+                        <option value="ارسال رزومه" ${comp?.status==="ارسال رزومه"?"selected":""}>ارسال رزومه</option>
+                        <option value="مصاحبه" ${comp?.status==="مصاحبه"?"selected":""}>مصاحبه</option>
+                        <option value="پذیرفته شده" ${comp?.status==="پذیرفته شده"?"selected":""}>پذیرفته شده</option>
+                        <option value="رد شده" ${comp?.status==="رد شده"?"selected":""}>رد شده</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>یادداشت</label><input id="m_notes" value="${comp?.notes || ''}"></div>
+                <div class="form-group"><label>تاریخ آخرین پیگیری</label><input type="date" id="m_date" value="${comp?.date || new Date().toISOString().slice(0,10)}"></div>
+                <div class="form-group"><label>علاقه‌مندی</label>
+                    <select id="m_favorite">
+                        <option value="true" ${comp?.favorite?"selected":""}>⭐ بله</option>
+                        <option value="false" ${!comp?.favorite?"selected":""}>نه</option>
+                    </select>
+                </div>
+            `;
+            document.getElementById("modalConfirmBtn").onclick = async () => {
+                const data = {
+                    name: document.getElementById("m_name").value.trim(),
+                    country: document.getElementById("m_country").value.trim(),
+                    email: document.getElementById("m_email").value.trim(),
+                    jobTitle: document.getElementById("m_jobTitle").value.trim(),
+                    salary: document.getElementById("m_salary").value.trim(),
+                    status: document.getElementById("m_status").value,
+                    notes: document.getElementById("m_notes").value.trim(),
+                    date: document.getElementById("m_date").value,
+                    favorite: document.getElementById("m_favorite").value === "true"
+                };
+                if (!data.name) { showToast("نام شرکت الزامی است", "error"); return; }
+                if (isEdit) {
+                    await updateItem("companies", { ...comp, ...data });
+                    await logActivity(comp.id, "ویرایش", `به‌روزرسانی ${data.name}`);
+                    showToast("شرکت با موفقیت ویرایش شد", "success");
+                } else {
+                    const id = await addItem("companies", data);
+                    await logActivity(id, "ایجاد", `شرکت ${data.name} اضافه شد`);
+                    showToast("شرکت جدید با موفقیت اضافه شد", "success");
+                }
+                await refreshCache();
+                await renderCompanies();
+                await renderDashboard();
+                await renderTimeline();
+                closeModal();
+            };
+            document.getElementById("genericModal").classList.add("active");
+        }
+
+        // ---------- NOTE MODAL ----------
+        function openNoteModal(targetId, targetType) {
+            document.getElementById("modalTitle").textContent = "📝 یادداشت جدید";
+            document.getElementById("modalBody").innerHTML = `
+                <div class="form-group"><label>متن یادداشت</label><textarea id="noteContent" rows="4"></textarea></div>
+                <div class="form-group"><label>برچسب (اختیاری)</label><input id="noteTag" placeholder="مثلاً مهم، پیگیری، ..."></div>
+            `;
+            document.getElementById("modalConfirmBtn").onclick = async () => {
+                const content = document.getElementById("noteContent").value.trim();
+                const tag = document.getElementById("noteTag").value.trim() || '';
+                if (!content) { showToast("متن یادداشت الزامی است", "error"); return; }
+                await addItem("notes", {
+                    targetId,
+                    targetType,
+                    content,
+                    tag,
+                    timestamp: new Date().toISOString()
+                });
+                await refreshCache();
+                await renderCompanies();
+                showToast("یادداشت با موفقیت اضافه شد", "success");
+                closeModal();
+            };
+            document.getElementById("genericModal").classList.add("active");
+        }
+
+        // ---------- TAG MODAL ----------
+        function openTagModal(targetId, targetType) {
+            document.getElementById("modalTitle").textContent = "🏷️ افزودن برچسب";
+            document.getElementById("modalBody").innerHTML = `
+                <div class="form-group"><label>برچسب</label><input id="tagContent" placeholder="مثلاً urgent, front-end, ..."></div>
+            `;
+            document.getElementById("modalConfirmBtn").onclick = async () => {
+                const content = document.getElementById("tagContent").value.trim();
+                if (!content) { showToast("برچسب الزامی است", "error"); return; }
+                await addItem("notes", {
+                    targetId,
+                    targetType,
+                    content: '#' + content.replace(/\s/g, '_'),
+                    tag: 'tag',
+                    timestamp: new Date().toISOString()
+                });
+                await refreshCache();
+                await renderCompanies();
+                showToast("برچسب با موفقیت اضافه شد", "success");
+                closeModal();
+            };
+            document.getElementById("genericModal").classList.add("active");
+        }
+
+        // ---------- RENDER QUESTIONS ----------
+        async function renderQuestions() {
+            const search = document.getElementById("searchQuestion").value.toLowerCase().trim();
+            const catFilter = document.getElementById("filterQuestionCategory").value;
+            const diffFilter = document.getElementById("filterQuestionDifficulty").value;
+
+            let filtered = questionsCache.filter(q => {
+                const ms = q.text.toLowerCase().includes(search) || q.company.toLowerCase().includes(search);
+                const mc = catFilter === "all" || q.category === catFilter;
+                const md = diffFilter === "all" || q.difficulty === diffFilter;
+                return ms && mc && md;
+            });
+
+            const start = (pagination.questions - 1) * perPage;
+            const paginated = filtered.slice(start, start + perPage);
+
+            document.getElementById("questionsStats").innerHTML = `
+                <div class="stat-card"><div class="icon">❓</div><div class="stat-number">${questionsCache.length}</div><div class="stat-label">کل سوالات</div></div>
+                <div class="stat-card green"><div class="icon">🎯</div><div class="stat-number">${filtered.length}</div><div class="stat-label">نتیجه جستجو</div></div>
+                <div class="stat-card purple"><div class="icon">🏢</div><div class="stat-number">${new Set(questionsCache.map(q=>q.company)).size}</div><div class="stat-label">شرکت‌های مرتبط</div></div>
+            `;
+            document.getElementById("questionCount").textContent = questionsCache.length;
+
+            const container = document.getElementById("questionsList");
+            if (paginated.length === 0) {
+                container.innerHTML =
+                    `<div style="text-align:center;padding:3rem;color:var(--text-muted);">هیچ سوالی یافت نشد. 📚</div>`;
+                document.getElementById("questionsPagination").innerHTML = "";
+                return;
+            }
+
+            container.innerHTML = paginated.map(q => {
+                const textHL = highlightText(q.text, search);
+                const companyHL = highlightText(q.company, search);
+                return `
+                    <div class="record-card" data-id="${q.id}">
+                        <div class="record-info">
+                            <div class="record-title">${textHL} <span style="font-size:0.7rem;background:var(--border-color);padding:0 12px;border-radius:12px;">${q.difficulty || 'متوسط'}</span></div>
+                            <div class="record-meta">
+                                <span>📂 ${q.category}</span>
+                                <span>🏢 ${companyHL}</span>
+                                <span>📅 ${q.date}</span>
+                                <span>📝 ${q.source || 'مصاحبه'}</span>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn btn-sm edit-question" data-id="${q.id}">✏️</button>
+                            <button class="btn btn-sm btn-danger delete-question" data-id="${q.id}">🗑️</button>
+                            <button class="btn btn-sm btn-secondary note-add" data-id="${q.id}" data-type="question">📝 یادداشت</button>
+                            <button class="btn btn-sm btn-gold tag-add" data-id="${q.id}" data-type="question">🏷️ برچسب</button>
+                            <button class="btn btn-sm share-question" data-id="${q.id}">📤 اشتراک</button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            const totalPages = Math.ceil(filtered.length / perPage);
+            let phtml = "";
+            for (let i = 1; i <= totalPages; i++) {
+                phtml += `<button class="page-btn ${i === pagination.questions ? 'active' : ''}" data-page="${i}">${i}</button>`;
+            }
+            document.getElementById("questionsPagination").innerHTML = phtml;
+            document.querySelectorAll("#questionsPagination .page-btn").forEach(btn => {
+                btn.addEventListener("click", () => { pagination.questions = +btn.dataset.page;
+                    renderQuestions(); });
+            });
+            attachQuestionActions();
+        }
+
+        function attachQuestionActions() {
+            document.querySelectorAll(".edit-question").forEach(btn => {
+                btn.onclick = () => { const q = questionsCache.find(q => q.id === +btn.dataset.id); if (q)
+                        openQuestionModal(q); };
+            });
+            document.querySelectorAll(".delete-question").forEach(btn => {
+                btn.onclick = async () => {
+                    if (confirm("حذف این سوال؟")) {
+                        await deleteItem("questions", +btn.dataset.id);
+                        await refreshCache();
+                        await renderQuestions();
+                        showToast("سوال با موفقیت حذف شد", "success");
+                    }
+                };
+            });
+            document.querySelectorAll(".note-add").forEach(btn => {
+                btn.onclick = () => { openNoteModal(+btn.dataset.id, btn.dataset.type); };
+            });
+            document.querySelectorAll(".tag-add").forEach(btn => {
+                btn.onclick = () => { openTagModal(+btn.dataset.id, btn.dataset.type); };
+            });
+            document.querySelectorAll(".share-question").forEach(btn => {
+                btn.onclick = () => {
+                    const q = questionsCache.find(q => q.id === +btn.dataset.id);
+                    if (q) {
+                        const shareText = `سوال: ${q.text}\nشرکت: ${q.company}\nدسته: ${q.category}\nمنبع: ${q.source || 'نامشخص'}`;
+                        if (navigator.share) {
+                            navigator.share({ title: 'سوال مصاحبه', text: shareText }).catch(() => {});
+                        } else {
+                            navigator.clipboard.writeText(shareText).then(() => { showToast("📋 متن سوال کپی شد",
+                                "success"); });
+                        }
+                    }
+                };
+            });
+        }
+
+        function openQuestionModal(q = null) {
+            const isEdit = !!q;
+            document.getElementById("modalTitle").textContent = isEdit ? "✏️ ویرایش سوال" : "➕ سوال جدید";
+            document.getElementById("modalBody").innerHTML = `
+                <div class="form-group"><label>متن سوال *</label><textarea id="q_text" rows="4">${q?.text || ''}</textarea></div>
+                <div class="form-group"><label>دسته</label>
+                    <select id="q_category">
+                        <option value="الگوریتم" ${q?.category==="الگوریتم"?"selected":""}>الگوریتم</option>
+                        <option value="سیستم طراحی" ${q?.category==="سیستم طراحی"?"selected":""}>سیستم طراحی</option>
+                        <option value="مدیریت" ${q?.category==="مدیریت"?"selected":""}>مدیریت</option>
+                        <option value="SQL" ${q?.category==="SQL"?"selected":""}>SQL</option>
+                        <option value="برنامه‌نویسی" ${q?.category==="برنامه‌نویسی"?"selected":""}>برنامه‌نویسی</option>
+                        <option value="AI/ML" ${q?.category==="AI/ML"?"selected":""}>AI/ML</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>شرکت مرتبط</label><input id="q_company" value="${q?.company || ''}"></div>
+                <div class="form-group"><label>منبع</label><input id="q_source" value="${q?.source || ''}"></div>
+                <div class="form-group"><label>سختی</label>
+                    <select id="q_difficulty">
+                        <option value="ساده" ${q?.difficulty==="ساده"?"selected":""}>ساده</option>
+                        <option value="متوسط" ${q?.difficulty==="متوسط"?"selected":""}>متوسط</option>
+                        <option value="سخت" ${q?.difficulty==="سخت"?"selected":""}>سخت</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>تاریخ</label><input type="date" id="q_date" value="${q?.date || new Date().toISOString().slice(0,10)}"></div>
+            `;
+            document.getElementById("modalConfirmBtn").onclick = async () => {
+                const data = {
+                    text: document.getElementById("q_text").value.trim(),
+                    category: document.getElementById("q_category").value,
+                    company: document.getElementById("q_company").value.trim(),
+                    source: document.getElementById("q_source").value.trim(),
+                    difficulty: document.getElementById("q_difficulty").value,
+                    date: document.getElementById("q_date").value
+                };
+                if (!data.text) { showToast("متن سوال الزامی است", "error"); return; }
+                if (isEdit) { await updateItem("questions", { ...q, ...data });
+                    showToast("سوال با موفقیت ویرایش شد", "success"); } else { await addItem("questions", data);
+                    showToast("سوال جدید با موفقیت اضافه شد", "success"); }
+                await refreshCache();
+                await renderQuestions();
+                closeModal();
+            };
+            document.getElementById("genericModal").classList.add("active");
+        }
+
+        // ---------- RENDER RESOURCES ----------
+        async function renderResources() {
+            const search = document.getElementById("searchResource").value.toLowerCase().trim();
+            const typeFilter = document.getElementById("filterResourceType").value;
+
+            let filtered = resourcesCache.filter(r => {
+                const ms = r.title.toLowerCase().includes(search) ||
+                    r.description.toLowerCase().includes(search) ||
+                    r.link.toLowerCase().includes(search);
+                const mt = typeFilter === "all" || r.type === typeFilter;
+                return ms && mt;
+            });
+
+            const start = (pagination.resources - 1) * perPage;
+            const paginated = filtered.slice(start, start + perPage);
+
+            document.getElementById("resourcesStats").innerHTML = `
+                <div class="stat-card"><div class="icon">📚</div><div class="stat-number">${resourcesCache.length}</div><div class="stat-label">کل منابع</div></div>
+                <div class="stat-card green"><div class="icon">🎯</div><div class="stat-number">${filtered.length}</div><div class="stat-label">نتیجه جستجو</div></div>
+                <div class="stat-card purple"><div class="icon">⭐</div><div class="stat-number">${resourcesCache.filter(r=>r.rating>=4).length}</div><div class="stat-label">منابع عالی</div></div>
+            `;
+            document.getElementById("resourceCount").textContent = resourcesCache.length;
+
+            const container = document.getElementById("resourcesList");
+            if (paginated.length === 0) {
+                container.innerHTML =
+                    `<div style="text-align:center;padding:3rem;color:var(--text-muted);">هیچ منبعی یافت نشد. 📖</div>`;
+                document.getElementById("resourcesPagination").innerHTML = "";
+                return;
+            }
+
+            container.innerHTML = paginated.map(r => {
+                const titleHL = highlightText(r.title, search);
+                const stars = '⭐'.repeat(r.rating || 0);
+                return `
+                    <div class="record-card" data-id="${r.id}">
+                        <div class="record-info">
+                            <div class="record-title">
+                                <a href="${r.link}" target="_blank" style="color:var(--primary);text-decoration:underline;">${titleHL}</a>
+                                <span style="font-size:0.8rem;">${stars}</span>
+                            </div>
+                            <div class="record-meta">
+                                <span>📁 ${r.type}</span>
+                                <span>📖 ${r.description}</span>
+                                <span>📅 ${r.date}</span>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn btn-sm edit-resource" data-id="${r.id}">✏️</button>
+                            <button class="btn btn-sm btn-danger delete-resource" data-id="${r.id}">🗑️</button>
+                            <button class="btn btn-sm btn-gold open-resource" data-id="${r.id}">🔗 باز کردن</button>
+                            <button class="btn btn-sm btn-secondary note-add" data-id="${r.id}" data-type="resource">📝 یادداشت</button>
+                            <button class="btn btn-sm btn-gold tag-add" data-id="${r.id}" data-type="resource">🏷️ برچسب</button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            const totalPages = Math.ceil(filtered.length / perPage);
+            let phtml = "";
+            for (let i = 1; i <= totalPages; i++) {
+                phtml += `<button class="page-btn ${i === pagination.resources ? 'active' : ''}" data-page="${i}">${i}</button>`;
+            }
+            document.getElementById("resourcesPagination").innerHTML = phtml;
+            document.querySelectorAll("#resourcesPagination .page-btn").forEach(btn => {
+                btn.addEventListener("click", () => { pagination.resources = +btn.dataset.page;
+                    renderResources(); });
+            });
+            attachResourceActions();
+        }
+
+        function attachResourceActions() {
+            document.querySelectorAll(".edit-resource").forEach(btn => {
+                btn.onclick = () => { const r = resourcesCache.find(r => r.id === +btn.dataset.id); if (r)
+                        openResourceModal(r); };
+            });
+            document.querySelectorAll(".delete-resource").forEach(btn => {
+                btn.onclick = async () => {
+                    if (confirm("حذف این منبع؟")) {
+                        await deleteItem("resources", +btn.dataset.id);
+                        await refreshCache();
+                        await renderResources();
+                        showToast("منبع با موفقیت حذف شد", "success");
+                    }
+                };
+            });
+            document.querySelectorAll(".open-resource").forEach(btn => {
+                btn.onclick = () => { const r = resourcesCache.find(r => r.id === +btn.dataset.id); if (r && r
+                        .link) window.open(r.link, '_blank');
+                    else showToast("لینک نامعتبر است", "error"); };
+            });
+            document.querySelectorAll(".note-add").forEach(btn => {
+                btn.onclick = () => { openNoteModal(+btn.dataset.id, btn.dataset.type); };
+            });
+            document.querySelectorAll(".tag-add").forEach(btn => {
+                btn.onclick = () => { openTagModal(+btn.dataset.id, btn.dataset.type); };
+            });
+        }
+
+        function openResourceModal(r = null) {
+            const isEdit = !!r;
+            document.getElementById("modalTitle").textContent = isEdit ? "✏️ ویرایش منبع" : "➕ منبع جدید";
+            document.getElementById("modalBody").innerHTML = `
+                <div class="form-group"><label>عنوان *</label><input id="r_title" value="${r?.title || ''}"></div>
+                <div class="form-group"><label>نوع</label>
+                    <select id="r_type">
+                        <option value="کتاب" ${r?.type==="کتاب"?"selected":""}>کتاب</option>
+                        <option value="دوره آنلاین" ${r?.type==="دوره آنلاین"?"selected":""}>دوره آنلاین</option>
+                        <option value="وبسایت" ${r?.type==="وبسایت"?"selected":""}>وبسایت</option>
+                        <option value="مقاله" ${r?.type==="مقاله"?"selected":""}>مقاله</option>
+                        <option value="ویدئو" ${r?.type==="ویدئو"?"selected":""}>ویدئو</option>
+                        <option value="پادکست" ${r?.type==="پادکست"?"selected":""}>پادکست</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>لینک</label><input type="url" id="r_link" value="${r?.link || ''}"></div>
+                <div class="form-group"><label>توضیح</label><input id="r_description" value="${r?.description || ''}"></div>
+                <div class="form-group"><label>امتیاز (۱-۵)</label>
+                    <select id="r_rating">
+                        <option value="1" ${r?.rating==1?"selected":""}>⭐</option>
+                        <option value="2" ${r?.rating==2?"selected":""}>⭐⭐</option>
+                        <option value="3" ${r?.rating==3?"selected":""}>⭐⭐⭐</option>
+                        <option value="4" ${r?.rating==4?"selected":""}>⭐⭐⭐⭐</option>
+                        <option value="5" ${r?.rating==5?"selected":""}>⭐⭐⭐⭐⭐</option>
+                        <option value="" ${!r?.rating?"selected":""}>بدون امتیاز</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>تاریخ</label><input type="date" id="r_date" value="${r?.date || new Date().toISOString().slice(0,10)}"></div>
+            `;
+            document.getElementById("modalConfirmBtn").onclick = async () => {
+                const data = {
+                    title: document.getElementById("r_title").value.trim(),
+                    type: document.getElementById("r_type").value,
+                    link: document.getElementById("r_link").value.trim(),
+                    description: document.getElementById("r_description").value.trim(),
+                    rating: document.getElementById("r_rating").value ? +document.getElementById("r_rating").value : null,
+                    date: document.getElementById("r_date").value
+                };
+                if (!data.title) { showToast("عنوان الزامی است", "error"); return; }
+                if (isEdit) { await updateItem("resources", { ...r, ...data });
+                    showToast("منبع با موفقیت ویرایش شد", "success"); } else { await addItem("resources", data);
+                    showToast("منبع جدید با موفقیت اضافه شد", "success"); }
+                await refreshCache();
+                await renderResources();
+                closeModal();
+            };
+            document.getElementById("genericModal").classList.add("active");
+        }
+
+        // ---------- RENDER DASHBOARD ----------
+        async function renderDashboard() {
+            const total = companiesCache.length;
+            const accepted = companiesCache.filter(c => c.status === "پذیرفته شده").length;
+            const rejected = companiesCache.filter(c => c.status === "رد شده").length;
+            const interview = companiesCache.filter(c => c.status === "مصاحبه").length;
+            const waiting = companiesCache.filter(c => c.status === "در انتظار").length;
+            const sent = companiesCache.filter(c => c.status === "ارسال رزومه").length;
+            const favs = companiesCache.filter(c => c.favorite).length;
+            const avgSalary = companiesCache.length > 0 ? Math.round(companiesCache.reduce((sum, c) => {
+                const p = parseSalaryRange(c.salary);
+                return sum + (p.min + p.max) / 2;
+            }, 0) / companiesCache.length) : 0;
+
+            document.getElementById("dashboardStats").innerHTML = `
+                <div class="stat-card"><div class="icon">🏢</div><div class="stat-number">${total}</div><div class="stat-label">کل شرکت‌ها</div></div>
+                <div class="stat-card green"><div class="icon">✅</div><div class="stat-number">${accepted}</div><div class="stat-label">پذیرفته شده</div></div>
+                <div class="stat-card orange"><div class="icon">💰</div><div class="stat-number">${avgSalary.toLocaleString()}k</div><div class="stat-label">میانگین حقوق</div></div>
+                <div class="stat-card purple"><div class="icon">⭐</div><div class="stat-number">${favs}</div><div class="stat-label">علاقه‌مندی</div></div>
+                <div class="stat-card"><div class="icon">🎤</div><div class="stat-number">${interview}</div><div class="stat-label">مصاحبه</div></div>
+                <div class="stat-card"><div class="icon">⏳</div><div class="stat-number">${waiting}</div><div class="stat-label">در انتظار</div></div>
+                <div class="stat-card"><div class="icon">📤</div><div class="stat-number">${sent}</div><div class="stat-label">ارسال رزومه</div></div>
+                <div class="stat-card red"><div class="icon">❌</div><div class="stat-number">${rejected}</div><div class="stat-label">رد شده</div></div>
+            `;
+
+            const chartData = { "پذیرفته شده": accepted, "رد شده": rejected, "مصاحبه": interview, "در انتظار": waiting,
+                "ارسال رزومه": sent };
+            const maxVal = Math.max(...Object.values(chartData), 1);
+            const colors = {
+                "پذیرفته شده": "#16a34a",
+                "رد شده": "#dc2626",
+                "مصاحبه": "#3b82f6",
+                "در انتظار": "#f59e0b",
+                "ارسال رزومه": "#8b5cf6"
+            };
+            const chartContainer = document.getElementById("statusChart");
+            chartContainer.innerHTML = Object.entries(chartData).map(([status, count]) => `
+                <div class="chart-bar-wrapper">
+                    <div class="chart-bar" style="height:${(count/maxVal)*100}%;background:${colors[status] || '#2563eb'};">
+                        <span class="tooltip">${count}</span>
+                    </div>
+                    <span class="chart-label">${status}</span>
+                </div>
+            `).join("");
+
+            const topCompanies = companiesCache.sort((a, b) => {
+                const sa = parseSalaryRange(b.salary);
+                const sb = parseSalaryRange(a.salary);
+                return (sa.min + sa.max) - (sb.min + sb.max);
+            }).slice(0, 5);
+            const topList = document.getElementById("topCompaniesList");
+            if (topCompanies.length === 0) {
+                topList.innerHTML = "<li>هیچ شرکتی وجود ندارد.</li>";
+            } else {
+                topList.innerHTML = topCompanies.map((c, i) => `
+                    <li>
+                        <span><span class="rank">#${i+1}</span> 🏢 ${c.name}</span>
+                        <span>💰 ${c.salary} · 📌 ${c.status}</span>
+                    </li>
+                `).join("");
+            }
+
+            const statuses = ["پذیرفته شده", "مصاحبه", "ارسال رزومه", "در انتظار", "رد شده"];
+            const salaryByStatus = statuses.map(st => {
+                const items = companiesCache.filter(c => c.status === st);
+                if (items.length === 0) return 0;
+                const avg = items.reduce((s, c) => {
+                    const p = parseSalaryRange(c.salary);
+                    return s + (p.min + p.max) / 2;
+                }, 0) / items.length;
+                return Math.round(avg);
+            });
+            const maxSalary = Math.max(...salaryByStatus, 1);
+            const salaryChart = document.getElementById("salaryChart");
+            salaryChart.innerHTML = statuses.map((st, i) => `
+                <div class="chart-bar-wrapper">
+                    <div class="chart-bar" style="height:${(salaryByStatus[i]/maxSalary)*100}%;background:${colors[st] || '#2563eb'};">
+                        <span class="tooltip">${salaryByStatus[i].toLocaleString()}k</span>
+                    </div>
+                    <span class="chart-label">${st}</span>
+                </div>
+            `).join("");
+
+            const activityByWeek = {};
+            activityCache.forEach(a => {
+                const date = new Date(a.timestamp);
+                const week = getWeekNumber(date);
+                const key = `${date.getFullYear()}-W${week}`;
+                activityByWeek[key] = (activityByWeek[key] || 0) + 1;
+            });
+            const sortedWeeks = Object.keys(activityByWeek).sort();
+            const last8Weeks = sortedWeeks.slice(-8);
+            const trendData = last8Weeks.map(w => activityByWeek[w] || 0);
+            const maxTrend = Math.max(...trendData, 1);
+            const trendChart = document.getElementById("activityTrendChart");
+            if (trendChart) {
+                trendChart.innerHTML = last8Weeks.map((w, i) => `
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar" style="height:${(trendData[i]/maxTrend)*100}%;background:${trendData[i] > 10 ? '#16a34a' : '#60a5fa'};">
+                            <span class="tooltip">${trendData[i]}</span>
+                        </div>
+                        <span class="chart-label">${w}</span>
+                    </div>
+                `).join("");
+            }
+        }
+
+        // ---------- RENDER TIMELINE ----------
+        async function renderTimeline() {
+            const activities = activityCache.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+            document.getElementById("timelineStats").innerHTML = `
+                <div class="stat-card"><div class="icon">⏳</div><div class="stat-number">${activities.length}</div><div class="stat-label">کل فعالیت‌ها</div></div>
+                <div class="stat-card purple"><div class="icon">📅</div><div class="stat-number">${new Set(activities.map(a=>a.timestamp?.slice(0,10))).size}</div><div class="stat-label">روزهای فعال</div></div>
+            `;
+            const start = (pagination.timeline - 1) * perPage;
+            const paginated = activities.slice(start, start + perPage);
+            const container = document.getElementById("timelineList");
+            if (paginated.length === 0) {
+                container.innerHTML =
+                    `<div style="text-align:center;padding:3rem;color:var(--text-muted);">هیچ فعالیتی ثبت نشده است. ⏳</div>`;
+                document.getElementById("timelinePagination").innerHTML = "";
+                return;
+            }
+            container.innerHTML = paginated.map(a => {
+                const date = new Date(a.timestamp);
+                const dateStr = date.toLocaleDateString("fa-IR");
+                const timeStr = date.toLocaleTimeString("fa-IR", { hour: '2-digit', minute: '2-digit' });
+                const company = companiesCache.find(c => c.id === a.companyId);
+                return `
+                    <div class="record-card">
+                        <div class="record-info">
+                            <div class="record-title">${a.action}</div>
+                            <div class="record-meta">
+                                <span>🏢 ${company ? company.name : 'شرکت حذف شده'}</span>
+                                <span>📝 ${a.detail || 'بدون جزئیات'}</span>
+                                <span>📅 ${dateStr} · ${timeStr}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+            const totalPages = Math.ceil(activities.length / perPage);
+            let phtml = "";
+            for (let i = 1; i <= totalPages; i++) {
+                phtml += `<button class="page-btn ${i === pagination.timeline ? 'active' : ''}" data-page="${i}">${i}</button>`;
+            }
+            document.getElementById("timelinePagination").innerHTML = phtml;
+            document.querySelectorAll("#timelinePagination .page-btn").forEach(btn => {
+                btn.addEventListener("click", () => { pagination.timeline = +btn.dataset.page;
+                    renderTimeline(); });
+            });
+        }
+
+        // ---------- RENDER NETWORK ----------
+        async function renderNetwork() {
+            const search = document.getElementById("searchNetwork").value.toLowerCase().trim();
+            let filtered = networkCache.filter(n =>
+                n.name.toLowerCase().includes(search) ||
+                n.title.toLowerCase().includes(search) ||
+                n.skills.toLowerCase().includes(search)
+            );
+            document.getElementById("networkStats").innerHTML = `
+                <div class="stat-card"><div class="icon">🌐</div><div class="stat-number">${networkCache.length}</div><div class="stat-label">ارتباطات</div></div>
+                <div class="stat-card green"><div class="icon">✅</div><div class="stat-number">${networkCache.filter(n=>n.status==='تایید شده').length}</div><div class="stat-label">تایید شده</div></div>
+                <div class="stat-card orange"><div class="icon">⏳</div><div class="stat-number">${networkCache.filter(n=>n.status==='در انتظار').length}</div><div class="stat-label">در انتظار</div></div>
+            `;
+            const container = document.getElementById("networkList");
+            if (filtered.length === 0) {
+                container.innerHTML =
+                    `<div style="text-align:center;padding:3rem;color:var(--text-muted);">هیچ ارتباطی یافت نشد. 🌐</div>`;
+                return;
+            }
+            container.innerHTML = filtered.map(n => `
+                <div class="record-card">
+                    <div class="record-info">
+                        <div class="record-title">
+                            <span style="width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;">${n.avatar}</span>
+                            ${n.name}
+                            <span class="badge ${n.status === 'تایید شده' ? 'badge-status accepted' : 'badge-status waiting'}">${n.status}</span>
+                        </div>
+                        <div class="record-meta">
+                            <span>💼 ${n.title}</span>
+                            <span>🔧 ${n.skills}</span>
+                            <span>${n.connected ? '✅ متصل' : '⏳ درخواست'}</span>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-sm ${n.connected ? 'btn-outline' : 'btn-success'} connect-btn" data-id="${n.id}" data-connected="${n.connected}">
+                            ${n.connected ? '✓ متصل' : '➕ اتصال'}
+                        </button>
+                        <button class="btn btn-sm btn-secondary message-btn" data-id="${n.id}">💬 پیام</button>
+                        <button class="btn btn-sm btn-outline note-add" data-id="${n.id}" data-type="network">📝 یادداشت</button>
+                    </div>
+                </div>
+            `).join("");
+            document.querySelectorAll(".connect-btn").forEach(btn => {
+                btn.onclick = async () => {
+                    const id = +btn.dataset.id;
+                    const person = networkCache.find(n => n.id === id);
+                    if (person) {
+                        person.connected = !person.connected;
+                        await updateItem("network", person);
+                        networkCache = await getAll("network");
+                        await renderNetwork();
+                        showToast(person.connected ? `با ${person.name} متصل شدید` :
+                            `درخواست اتصال به ${person.name} لغو شد`, person.connected ? "success" : "info");
+                    }
+                };
+            });
+            document.querySelectorAll(".message-btn").forEach(btn => {
+                btn.onclick = () => {
+                    const person = networkCache.find(n => n.id === +btn.dataset.id);
+                    if (person) {
+                        showToast(`💬 پیام به ${person.name} ارسال شد`, "info");
+                        setTimeout(() => {
+                            alert(`پیام شما به ${person.name} ارسال شد.\n\n` +
+                                `"سلام ${person.name}، از شبکه حرفه‌ای شما خوشحالم. برای همکاری در پروژه‌های آینده در ارتباط باشیم."`);
+                        }, 500);
+                    }
+                };
+            });
+            document.querySelectorAll(".note-add").forEach(btn => {
+                btn.onclick = () => { openNoteModal(+btn.dataset.id, btn.dataset.type); };
+            });
+        }
+
+        // ---------- RENDER RADAR ----------
+        async function renderRadar() {
+            const skills = ["Python", "JavaScript", "AI/ML", "SQL", "DevOps", "Cloud", "Design"];
+            const yourLevels = [85, 70, 65, 80, 50, 60, 45];
+            const marketLevels = [90, 85, 70, 75, 70, 80, 60];
+            document.getElementById("radarStats").innerHTML = `
+                <div class="stat-card purple"><div class="icon">📡</div><div class="stat-number">۷</div><div class="stat-label">مهارت‌های تحلیل شده</div></div>
+                <div class="stat-card green"><div class="icon">🎯</div><div class="stat-number">${Math.round(yourLevels.reduce((a,b)=>a+b,0)/yourLevels.length)}%</div><div class="stat-label">میانگین تسلط شما</div></div>
+                <div class="stat-card orange"><div class="icon">📊</div><div class="stat-number">${Math.round(marketLevels.reduce((a,b)=>a+b,0)/marketLevels.length)}%</div><div class="stat-label">میانگین بازار</div></div>
+            `;
+            const radarContainer = document.getElementById("radarChart");
+            radarContainer.innerHTML = `
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;width:100%;padding:1rem;">
+                    ${skills.map((skill, i) => `
+                        <div style="background:var(--bg-light);border-radius:var(--radius-sm);padding:0.8rem 1.2rem;border:1px solid var(--border-color);">
+                            <div style="display:flex;justify-content:space-between;font-weight:600;margin-bottom:4px;">
+                                <span>${skill}</span>
+                                <span>${yourLevels[i]}%</span>
+                            </div>
+                            <div style="height:8px;background:var(--border-color);border-radius:8px;overflow:hidden;">
+                                <div style="height:100%;width:${yourLevels[i]}%;background:var(--primary);border-radius:8px;transition:width 1s;"></div>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
+                                <span>بازار: ${marketLevels[i]}%</span>
+                                <span>${yourLevels[i] >= marketLevels[i] ? '✅ برتر' : '📈 نیاز به بهبود'}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            const gaps = skills.map((skill, i) => ({ skill, gap: marketLevels[i] - yourLevels[i] }));
+            gaps.sort((a, b) => b.gap - a.gap);
+            const gapList = document.getElementById("gapAnalysisList");
+            if (gaps.every(g => g.gap <= 0)) {
+                gapList.innerHTML = "<li>🎉 شما در همه مهارت‌ها از میانگین بازار بالاتر هستید! تبریک!</li>";
+            } else {
+                gapList.innerHTML = gaps.filter(g => g.gap > 0).slice(0, 5).map(g => `
+                    <li>
+                        <span><span class="rank">⚡</span> ${g.skill}</span>
+                        <span>شکاف: ${Math.round(g.gap)}% · توصیه: دوره‌های تخصصی</span>
+                    </li>
+                `).join("");
+            }
+        }
+
+        // ---------- X FEED ----------
+        async function renderFeed(reset = true) {
+            if (reset) feedOffset = 0;
+            const feedItems = [
+                { user: "Google Careers", handle: "@google", text: "🚀 ما به دنبال یک <strong>Senior ML Engineer</strong> با تجربه در Transformers هستیم. حقوق: ۲۵۰k-۳۵۰k. ارسال رزومه!",
+                    likes: 42, retweets: 13, comments: 28, time: "۲ دقیقه پیش" },
+                { user: "Microsoft", handle: "@microsoft",
+                    text: "💼 فرصت جدید: <strong>Cloud Architect</strong> با تخصص در Azure و Kubernetes. موقعیت راه دور. #Azure #Cloud",
+                    likes: 31, retweets: 9, comments: 15, time: "۷ دقیقه پیش" },
+                { user: "Snapp Jobs", handle: "@snapp_jobs",
+                    text: "📣 <strong>Back-End Developer</strong> با تجربه در Golang و میکروسرویس‌ها. تهران + دورکاری. حقوق رقابتی.",
+                    likes: 45, retweets: 22, comments: 34, time: "۱۴ دقیقه پیش" },
+                { user: "Tesla Careers", handle: "@tesla_careers",
+                    text: "⚡ جذب <strong>Autonomous Systems Engineer</strong> با تخصص در بینایی ماشین و ROS. موقعیت در Austin, TX. #AI #Tesla",
+                    likes: 67, retweets: 28, comments: 41, time: "۲۲ دقیقه پیش" },
+                { user: "OpenAI", handle: "@openai",
+                    text: "🧠 به دنبال <strong>AI Researcher</strong> با تمرکز بر LLM و ایمنی. موقعیت در San Francisco. حقوق ۲۰۰k-۴۰۰k.",
+                    likes: 89, retweets: 45, comments: 56, time: "۳۰ دقیقه پیش" },
+                { user: "Anthropic", handle: "@anthropic",
+                    text: "🔬 <strong>ML Engineer</strong> برای کار روی مدل‌های زبانی. تیم تحقیق و توسعه. حقوق رقابتی + سهام.",
+                    likes: 52, retweets: 18, comments: 27, time: "۴۵ دقیقه پیش" },
+                { user: "SpaceX", handle: "@spacex",
+                    text: "🚀 جذب <strong>Aerospace Engineer</strong> برای ماموریت‌های مریخ. تجربه در سیستم‌های کنترل ضروری.",
+                    likes: 73, retweets: 34, comments: 39, time: "۱ ساعت پیش" },
+                { user: "Digikala", handle: "@digikala_career",
+                    text: "📦 <strong>Data Scientist</strong> با تجربه در Python و Spark. تهران - دورکاری. حقوق ۵۰k-۸۰k.",
+                    likes: 28, retweets: 11, comments: 19, time: "۱ ساعت پیش" },
+                { user: "Nokia", handle: "@nokia_careers",
+                    text: "📡 <strong>Embedded Engineer</strong> برای تیم 5G. موقعیت در فنلاند. هلند. حقوق ۸۰k-۱۵۰k.",
+                    likes: 19, retweets: 7, comments: 12, time: "۲ ساعت پیش" },
+                { user: "IBM", handle: "@ibm_careers", text: "☁️ <strong>Cloud Architect</strong> با تجربه در AWS و IBM Cloud. فرصت جهانی.",
+                    likes: 24, retweets: 8, comments: 14, time: "۲ ساعت پیش" },
+                { user: "Spotify", handle: "@spotify_jobs",
+                    text: "🎵 <strong>Machine Learning Engineer</strong> برای تیم توصیه موسیقی. استکهلم. حقوق ۱۳۰k-۲۷۰k.",
+                    likes: 56, retweets: 23, comments: 31, time: "۳ ساعت پیش" },
+                { user: "Zarinpal", handle: "@zarinpal_hr",
+                    text: "💳 <strong>Front-End Developer</strong> با React و TypeScript. تهران. حقوق ۳۰k-۶۵k.", likes: 21,
+                    retweets: 9, comments: 16, time: "۳ ساعت پیش" },
+            ];
+            const paginated = feedItems.slice(feedOffset, feedOffset + FEED_PAGE_SIZE);
+            const container = document.getElementById("xFeedContainer");
+            if (reset) container.innerHTML = '';
+            paginated.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'x-item';
+                const avatar = item.user.split(' ').map(w => w[0]).join('').slice(0, 2);
+                div.innerHTML = `
+                    <div class="x-avatar">${avatar}</div>
+                    <div class="x-body">
+                        <div class="x-user">${item.user} <span class="x-handle">${item.handle} · ${item.time}</span></div>
+                        <div class="x-text">${item.text}</div>
+                        <div class="x-meta">
+                            <span>❤️ ${item.likes}</span>
+                            <span>🔄 ${item.retweets}</span>
+                            <span>💬 ${item.comments}</span>
+                            <span style="color:var(--primary);">🔗 درخواست</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            feedOffset += FEED_PAGE_SIZE;
+            document.getElementById("feedCounter").textContent = `${Math.min(feedOffset, feedItems.length)} فرصت`;
+        }
+
+        // ---------- ACTIVITY LOG ----------
+        async function logActivity(companyId, action, detail = "") {
+            const entry = { companyId, action, detail, timestamp: new Date().toISOString() };
+            await addItem("activity", entry);
+            activityCache = await getAll("activity");
+        }
+
+        // ---------- REFRESH CACHE ----------
+        async function refreshCache() {
+            companiesCache = await getAll("companies");
+            questionsCache = await getAll("questions");
+            resourcesCache = await getAll("resources");
+            activityCache = await getAll("activity");
+            networkCache = await getAll("network");
+            notesCache = await getAll("notes");
+            remindersCache = await getAll("reminders");
+        }
+
+        // ---------- THEME ----------
+        document.getElementById("themeToggle").addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+            localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+        });
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark");
+
+        // ---------- EXPORTS ----------
+        document.getElementById("exportCompaniesCSV").addEventListener("click", () => {
+            const headers = "نام,کشور,ایمیل,عنوان شغلی,حقوق,وضعیت,یادداشت,تاریخ,علاقه‌مندی\n";
+            const rows = companiesCache.map(c =>
+                    `"${c.name}","${c.country}","${c.email}","${c.jobTitle || ''}","${c.salary || ''}","${c.status}","${c.notes || ''}","${c.date || ''}","${c.favorite ? 'بله' : 'خیر'}"`
+                    )
+                .join("\n");
+            const blob = new Blob(["\uFEFF" + headers + rows], { type: "text/csv;charset=utf-8;" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "companies_pro.csv";
+            a.click();
+            showToast("CSV دانلود شد", "success");
+        });
+        document.getElementById("exportCompaniesJSON").addEventListener("click", () => {
+            const blob = new Blob([JSON.stringify(companiesCache, null, 2)], { type: "application/json;" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "companies_pro.json";
+            a.click();
+            showToast("JSON دانلود شد", "success");
+        });
+        document.getElementById("exportAllBtn").addEventListener("click", () => {
+            const allData = {
+                companies: companiesCache,
+                questions: questionsCache,
+                resources: resourcesCache,
+                activity: activityCache,
+                network: networkCache,
+                notes: notesCache,
+                reminders: remindersCache,
+                exportedAt: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(allData, null, 2)], { type: "application/json;" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "career_pro_backup.json";
+            a.click();
+            showToast("📦 کل داده‌ها با موفقیت صادر شد", "success");
+        });
+        document.getElementById("exportQuestionsBtn").addEventListener("click", () => {
+            const headers = "سوال,دسته,شرکت,سختی,منبع,تاریخ\n";
+            const rows = questionsCache.map(q =>
+                    `"${q.text}","${q.category}","${q.company}","${q.difficulty}","${q.source || ''}","${q.date || ''}"`
+                    )
+                .join("\n");
+            const blob = new Blob(["\uFEFF" + headers + rows], { type: "text/csv;charset=utf-8;" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "questions_pro.csv";
+            a.click();
+            showToast("سوالات با موفقیت صادر شد", "success");
+        });
+        document.getElementById("networkImportBtn").addEventListener("click", () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = async (ev) => {
+                    try {
+                        const data = JSON.parse(ev.target.result);
+                        if (Array.isArray(data)) {
+                            for (const item of data) { await addItem("network", item); }
+                            networkCache = await getAll("network");
+                            await renderNetwork();
+                            showToast(`🌐 ${data.length} ارتباط با موفقیت وارد شد`, "success");
+                        } else {
+                            showToast("فرمت فایل نامعتبر است", "error");
+                        }
+                    } catch (err) { showToast("خطا در خواندن فایل", "error"); }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        });
+
+        // ---------- KEYBOARD SHORTCUTS ----------
+        document.addEventListener("keydown", (e) => {
+            if (e.ctrlKey && e.key >= "1" && e.key <= "7") {
+                e.preventDefault();
+                const tabs = document.querySelectorAll(".tab-btn");
+                const idx = +e.key - 1;
+                if (tabs[idx]) tabs[idx].click();
+            }
+            if (e.ctrlKey && e.key === "j") {
+                e.preventDefault();
+                const active = document.querySelector(".tab-pane.active");
+                if (active) {
+                    const inp = active.querySelector(".search-box input");
+                    if (inp) { inp.focus();
+                        inp.select(); }
+                }
+            }
+            if (e.ctrlKey && e.shiftKey && e.key === "E") {
+                e.preventDefault();
+                document.getElementById("exportAllBtn").click();
+            }
+            if (e.ctrlKey && e.shiftKey && e.key === "R") {
+                e.preventDefault();
+                if (confirm("آیا می‌خواهید همه داده‌ها را بازنشانی کنید؟")) {
+                    indexedDB.deleteDatabase(DB_NAME).then(() => { location.reload(); });
+                }
+            }
+            if (e.key === "Escape") closeModal();
+        });
+
+        // ---------- HELP ----------
+        document.getElementById("helpBtn").addEventListener("click", () => {
+            showToast(
+                "⌨️ Ctrl+1-7: تب · Ctrl+J: جستجو · Esc: بستن · Ctrl+Shift+E: صادرات · Ctrl+Shift+R: بازنشانی",
+                "info");
+        });
+
+        // ---------- CLEAR FILTERS ----------
+        document.getElementById("clearFiltersBtn").addEventListener("click", () => {
+            document.getElementById("searchCompany").value = '';
+            document.getElementById("filterCompanyStatus").value = 'all';
+            document.getElementById("sortCompanies").value = 'name';
+            document.getElementById("filterCompanyCountry").value = 'all';
+            pagination.companies = 1;
+            renderCompanies();
+            showToast("فیلترها پاک شدند", "info");
+        });
+
+        // ---------- ADD COMPANY ----------
+        document.getElementById("addCompanyBtn").addEventListener("click", () => openCompanyModal());
+
+        // ---------- ADD QUESTION ----------
+        document.getElementById("addQuestionBtn").addEventListener("click", () => openQuestionModal());
+
+        // ---------- ADD RESOURCE ----------
+        document.getElementById("addResourceBtn").addEventListener("click", () => openResourceModal());
+
+        // ---------- ADD CONNECTION ----------
+        document.getElementById("addConnectionBtn").addEventListener("click", () => {
+            const names = ["Dr. Farhad Noori", "Mina Ahmadi", "Prof. John Smith", "Sara Hosseini", "David Kim",
+                "Lena Mousavi", "Alex Rivera", "Priya Singh", "Tom Watson", "Alice Zhang"
+            ];
+            const titles = ["Senior Developer", "Product Manager", "AI Researcher", "Tech Lead", "Data Engineer",
+                "DevOps Expert", "ML Engineer", "Cloud Architect", "Security Analyst", "UX Designer"
+            ];
+            const name = names[getRandomInt(0, names.length - 1)];
+            const title = titles[getRandomInt(0, titles.length - 1)];
+            const avatar = name.split(' ').map(w => w[0]).join('');
+            addItem("network", {
+                name,
+                title: `💼 ${title} at ${companiesCache[getRandomInt(0, companiesCache.length-1)].name}`,
+                status: "در انتظار",
+                avatar,
+                skills: shuffleArray(["AI", "Python", "TensorFlow", "Golang", "K8s", "React", "TypeScript", "AWS",
+                    "Terraform", "SQL", "NoSQL", "Docker", "Kafka", "Spark", "Hadoop", "PyTorch"
+                ]).slice(0, 3).join(", "),
+                connected: false,
+                date: new Date().toISOString().slice(0, 10)
+            }).then(async () => {
+                networkCache = await getAll("network");
+                await renderNetwork();
+                showToast(`🌐 ارتباط جدید با ${name} اضافه شد`, "success");
+            });
+        });
+
+        // ---------- SCROLL TO TOP ----------
+        const scrollBtn = document.getElementById("scrollTopBtn");
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 400) { scrollBtn.classList.add("visible"); } else { scrollBtn.classList.remove(
+                    "visible"); }
+        });
+        scrollBtn.addEventListener("click", () => { window.scrollTo({ top: 0, behavior: "smooth" }); });
+
+        // ---------- FLOATING ADD NOTE ----------
+        document.getElementById("floatingAddNoteBtn").addEventListener("click", () => {
+            openNoteModal(0, 'global');
+        });
+
+        // ---------- GLOBAL NOTE ----------
+        async function loadGlobalNote() {
+            const globalNotes = notesCache.filter(n => n.targetId === 0 && n.targetType === 'global');
+            if (globalNotes.length > 0) {
+                document.getElementById("globalNote").value = globalNotes[globalNotes.length - 1].content;
+            }
+        }
+        document.getElementById("saveGlobalNote").addEventListener("click", async () => {
+            const content = document.getElementById("globalNote").value.trim();
+            if (!content) { showToast("متن یادداشت خالی است", "error"); return; }
+            await addItem("notes", {
+                targetId: 0,
+                targetType: 'global',
+                content,
+                tag: 'global',
+                timestamp: new Date().toISOString()
+            });
+            await refreshCache();
+            showToast("یادداشت کلی ذخیره شد", "success");
+        });
+
+        // ---------- REMINDERS ----------
+        async function renderReminders() {
+            const list = document.getElementById("reminderList");
+            const sorted = remindersCache.sort((a, b) => a.date.localeCompare(b.date));
+            list.innerHTML = sorted.map(r => `
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border-color);">
+                    <span>📌 ${r.text} (${r.date})</span>
+                    <button class="btn btn-sm btn-danger delete-reminder" data-id="${r.id}">✕</button>
+                </div>
+            `).join("");
+            document.querySelectorAll(".delete-reminder").forEach(btn => {
+                btn.onclick = async () => {
+                    await deleteItem("reminders", +btn.dataset.id);
+                    remindersCache = await getAll("reminders");
+                    renderReminders();
+                    showToast("یادآور حذف شد", "info");
+                };
+            });
+        }
+        document.getElementById("addReminderBtn").addEventListener("click", async () => {
+            const text = document.getElementById("reminderText").value.trim();
+            const date = document.getElementById("reminderDate").value;
+            if (!text || !date) { showToast("متن و تاریخ یادآور الزامی است", "error"); return; }
+            await addItem("reminders", { text, date, timestamp: new Date().toISOString() });
+            remindersCache = await getAll("reminders");
+            renderReminders();
+            document.getElementById("reminderText").value = '';
+            document.getElementById("reminderDate").value = '';
+            showToast("یادآور اضافه شد", "success");
+        });
+
+        // ---------- TAB SWITCHING ----------
+        document.querySelectorAll(".tab-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+                document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+                const panel = document.getElementById(btn.dataset.tab + "Panel");
+                if (panel) {
+                    panel.classList.add("active");
+                    btn.classList.add("active");
+                }
+                switch (btn.dataset.tab) {
+                    case "companies":
+                        renderCompanies();
+                        break;
+                    case "questions":
+                        renderQuestions();
+                        break;
+                    case "resources":
+                        renderResources();
+                        break;
+                    case "dashboard":
+                        renderDashboard();
+                        break;
+                    case "timeline":
+                        renderTimeline();
+                        break;
+                    case "network":
+                        renderNetwork();
+                        break;
+                    case "radar":
+                        renderRadar();
+                        break;
+                }
+            });
+        });
+
+        // ---------- SEARCH DEBOUNCE ----------
+        const debouncedSearch = debounce((tab) => {
+            if (tab === 'companies') { pagination.companies = 1;
+                renderCompanies(); }
+            if (tab === 'questions') { pagination.questions = 1;
+                renderQuestions(); }
+            if (tab === 'resources') { pagination.resources = 1;
+                renderResources(); }
+            if (tab === 'network') renderNetwork();
+        }, 250);
+
+        document.getElementById("searchCompany").addEventListener("input", () => debouncedSearch('companies'));
+        document.getElementById("filterCompanyStatus").addEventListener("change", () => { pagination.companies = 1;
+            renderCompanies(); });
+        document.getElementById("sortCompanies").addEventListener("change", () => { pagination.companies = 1;
+            renderCompanies(); });
+        document.getElementById("filterCompanyCountry").addEventListener("change", () => { pagination.companies = 1;
+            renderCompanies(); });
+
+        document.getElementById("searchQuestion").addEventListener("input", () => debouncedSearch('questions'));
+        document.getElementById("filterQuestionCategory").addEventListener("change", () => { pagination.questions = 1;
+            renderQuestions(); });
+        document.getElementById("filterQuestionDifficulty").addEventListener("change", () => { pagination.questions = 1;
+            renderQuestions(); });
+
+        document.getElementById("searchResource").addEventListener("input", () => debouncedSearch('resources'));
+        document.getElementById("filterResourceType").addEventListener("change", () => { pagination.resources = 1;
+            renderResources(); });
+
+        document.getElementById("searchNetwork").addEventListener("input", () => debouncedSearch('network'));
+
+        // ---------- MODAL CLOSE ----------
+        document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
+        document.getElementById("genericModal").addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+
+        // ---------- LOAD MORE FEED ----------
+        document.getElementById("loadMoreFeed").addEventListener("click", () => renderFeed(false));
+
+        // ---------- INIT ----------
+        (async () => {
+            await openDB();
+            await seedRealData();
+            await refreshCache();
+            await loadGlobalNote();
+            renderReminders();
+            renderCompanies();
+            renderDashboard();
+            renderNetwork();
+            renderFeed();
+            renderRadar();
+
+            // Periodic refresh
+            setInterval(async () => {
+                await refreshCache();
+                const activeTab = document.querySelector(".tab-btn.active");
+                if (activeTab) {
+                    switch (activeTab.dataset.tab) {
+                        case "companies":
+                            renderCompanies();
+                            break;
+                        case "dashboard":
+                            renderDashboard();
+                            break;
+                        case "timeline":
+                            renderTimeline();
+                            break;
+                        case "radar":
+                            renderRadar();
+                            break;
+                    }
+                }
+            }, 60000);
+
+            showToast("🚀 Career Path Pro · نسخه دیباگ شده با یادداشت‌ها و یادآورها آماده است!", "success");
+        })();
+    </script>
+</body>
+</html>
