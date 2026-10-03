@@ -1,7 +1,10 @@
 node_modules/
 .tmp-build/
+.publish/
 builds/
 dist/
 scan.json
 build-previews.log
+gp-err.txt
+gp-out.txt
 *.fail.txt

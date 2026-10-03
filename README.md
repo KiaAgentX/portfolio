@@ -42,14 +42,14 @@ cd portfolio
 git init
 git add . && git commit -m "portfolio site"
 # create an empty repo on GitHub, then:
-git remote add origin https://github.com/ImXforever/portfolio.git
+git remote add origin https://github.com/KiaAgentX/portfolio.git
 git push -u origin main
 
 npm run deploy          # publishes dist/ to the gh-pages branch
 ```
 
 Then on GitHub: **Settings → Pages → Source: Deploy from a branch → `gh-pages` / root**.
-Your site will be at `https://imxforever.github.io/portfolio/`.
+Your site will be at `https://kiaagentx.github.io/portfolio/`.
 
 Because all links are relative, the site also works from any subpath or custom domain without config changes.
 

@@ -361,3 +361,5 @@ fs.writeFileSync(path.join(DIST, 'data', 'projects.json'), JSON.stringify({ stat
 const distSize = walk(DIST).reduce((a, f) => a + fs.statSync(f).size, 0);
 console.log(`\nBuilt ${projects.length} pages -> dist/ (${(distSize / 1048576).toFixed(1)} MB)`);
 console.log(`Projects: ${stats.projects} · LOC: ${fmt(stats.loc)} · Est. value: ${money(stats.value)} · Live previews: ${stats.previews}`);
+
+execFileSync(process.execPath, [path.join(HERE, 'redact-secrets.mjs'), '--apply'], { stdio: 'inherit' });
