@@ -42,7 +42,9 @@ function fmt(n) { return n.toLocaleString('en-US'); }
 function money(n) { return '$' + fmt(n); }
 function safeJson(obj) { return JSON.stringify(obj).replace(/</g, '\\u003c'); }
 
-const repoUrl = p => `https://github.com/${config.owner.handle}/${p.repo}`;
+const repoUrl = p => config.site.sourceRepo
+  ? `https://github.com/${config.site.sourceRepo}/tree/${config.site.sourceBranch || 'main'}/projects/${p.folder}`
+  : `https://github.com/${config.owner.handle}/${p.repo}`;
 
 /* ---------------- source extraction ---------------- */
 function extractSource(folder) {
@@ -261,7 +263,7 @@ ${navHtml(base)}
         ${gallery}
         <div class="cta-row">
           <a class="btn primary" href="${esc(repo)}" target="_blank" rel="noopener">View source on GitHub</a>
-          <a class="btn" href="${esc(repo)}/archive/refs/heads/main.zip">Download ZIP</a>
+          ${config.site.sourceRepo ? '' : `<a class="btn" href="${esc(repo)}/archive/refs/heads/main.zip">Download ZIP</a>`}
           ${ctx.preview.ready ? `<a class="btn" href="#preview">Live preview</a>` : ''}
         </div>
       </div>
@@ -273,7 +275,7 @@ ${navHtml(base)}
         <div class="kv"><span class="k">Files</span><span class="v">${fmt(ctx.stats.fileCount)}</span></div>
         <div class="kv"><span class="k">Status</span><span class="v">${esc(p.status)}</span></div>
         <div class="kv"><span class="k">Est. market value</span><span class="v gold">${money(p.value)}</span></div>
-        <div class="kv"><span class="k">Repository</span><span class="v">${esc(p.repo)}</span></div>
+        <div class="kv"><span class="k">${config.site.sourceRepo ? 'Source path' : 'Repository'}</span><span class="v">${esc(config.site.sourceRepo ? 'projects/' + p.folder : p.repo)}</span></div>
         <h4 style="margin-top:18px">Stack</h4>
         <div class="stack-chips">${stack}</div>
       </div>

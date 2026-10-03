@@ -7,4 +7,6 @@ scan.json
 build-previews.log
 gp-err.txt
 gp-out.txt
+migrate.log
+import.log
 *.fail.txt
