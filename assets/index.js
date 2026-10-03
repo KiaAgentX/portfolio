@@ -91,25 +91,45 @@
     const color = CAT_COLORS[p.category] || "#62647a";
     const isFeature = isDefaultView() && featuredIds.has(p.id);
     if (isFeature) return featureCard(p);
-    const thumb = p.thumb ? `<div class="thumb-reveal"><img src="${p.thumb}" alt="" loading="lazy"></div>` : "";
+    const cover = p.thumb ? `<div class="cover"><img src="${p.thumb}" alt="${esc(p.name)} preview" loading="lazy"></div>` : `<div class="cover"></div>`;
     return `<article class="card" style="--cc:${color};--i:${Math.min(i, 14)}">
-      ${thumb}
-      <div class="card-top">
-        <span class="cat">${esc(p.category)}</span>
-        <span class="loc">${fmt(p.loc)} LOC</span>
-      </div>
-      <h3><a href="projects/${encodeURIComponent(p.id)}/">${esc(p.name)}</a></h3>
-      <p class="tag">${esc(p.tagline)}</p>
-      <div class="meta">
-        <span class="badge lang">${esc(p.language)}</span>
-        ${p.stack.slice(0, 3).map(s => `<span class="badge">${esc(s)}</span>`).join("")}
-        ${statusBadge(p)}
-      </div>
-      <div class="foot">
-        <div class="value" title="Market-rate estimate of equivalent agency build cost">${money(p.value)}<small>EST. VALUE</small></div>
-        <div class="actions">${actions(p)}</div>
+      ${cover}
+      <div class="body">
+        <div class="card-top">
+          <span class="cat">${esc(p.category)}</span>
+          <span class="loc">${fmt(p.loc)} LOC</span>
+        </div>
+        <h3><a href="projects/${encodeURIComponent(p.id)}/">${esc(p.name)}</a></h3>
+        <p class="tag">${esc(p.tagline)}</p>
+        <div class="meta">
+          <span class="badge lang">${esc(p.language)}</span>
+          ${p.stack.slice(0, 3).map(s => `<span class="badge">${esc(s)}</span>`).join("")}
+          ${statusBadge(p)}
+        </div>
+        <div class="foot">
+          <div class="value" title="Market-rate estimate of equivalent agency build cost">${money(p.value)}<small>EST. VALUE</small></div>
+          <div class="actions">${actions(p)}</div>
+        </div>
       </div>
     </article>`;
+  }
+
+  function renderFlagships() {
+    const sec = document.getElementById("flagships");
+    const host = document.getElementById("stories");
+    if (!sec || !host) return;
+    const top = P.filter(p => !featuredIds.has(p.id) && p.thumb).sort((a, b) => b.value - a.value).slice(0, 3);
+    host.innerHTML = top.map((p, i) => `<article class="story${i % 2 ? " flip" : ""}">
+      <div class="story-media"><img src="${p.thumb}" alt="${esc(p.name)}" loading="lazy"></div>
+      <div class="story-body">
+        <span class="story-kicker">Flagship · ${money(p.value)} est.</span>
+        <h3><a href="projects/${encodeURIComponent(p.id)}/">${esc(p.name)}</a></h3>
+        <p>${esc(p.description)}</p>
+        <div class="story-facts"><span><b>${fmt(p.loc)}</b> LOC</span><span><b>${esc(p.language)}</b></span><span>${p.stack.slice(0, 3).map(esc).join(" · ")}</span></div>
+        <a class="learn" href="projects/${encodeURIComponent(p.id)}/">Learn more</a>
+      </div>
+    </article>`).join("");
+    sec.style.display = top.length ? "" : "none";
   }
 
   function render() {
@@ -167,6 +187,7 @@
   renderChips();
   render();
   renderRoadmap();
+  renderFlagships();
 
   /* ---- animated counters (skipped where IntersectionObserver missing) ---- */
   try {

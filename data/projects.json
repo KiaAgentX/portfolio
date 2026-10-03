@@ -3,7 +3,7 @@
     "projects": 59,
     "loc": 662465,
     "value": 462000,
-    "previews": 43
+    "previews": 59
   },
   "projects": [
     {
@@ -41,7 +41,7 @@
       "value": 18000,
       "status": "stable",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 38309,
       "fileCount": 242,
       "thumb": "projects/0.6.0/gallery/poster-ai-chat.jpg"
@@ -61,7 +61,7 @@
       "value": 4000,
       "status": "stable",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 15606,
       "fileCount": 90,
       "thumb": "projects/0xElon/gallery/shot-full.jpg"
@@ -106,7 +106,7 @@
       "previewReady": true,
       "loc": 4708,
       "fileCount": 30,
-      "thumb": null
+      "thumb": "projects/3dspace/cover.svg"
     },
     {
       "id": "accounting",
@@ -143,7 +143,7 @@
       "value": 35000,
       "status": "stable",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 120788,
       "fileCount": 457,
       "thumb": "projects/AGI/gallery/shot-landing.jpg"
@@ -248,7 +248,7 @@
       "previewReady": true,
       "loc": 42703,
       "fileCount": 29,
-      "thumb": null
+      "thumb": "projects/DOGE/cover.svg"
     },
     {
       "id": "DropAgentX",
@@ -266,7 +266,7 @@
       "value": 9000,
       "status": "stable",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 2664,
       "fileCount": 34,
       "thumb": "projects/DropAgentX/gallery/overview.jpg"
@@ -286,7 +286,7 @@
       "value": 12000,
       "status": "stable",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 39937,
       "fileCount": 226,
       "thumb": "projects/DropAgentXBot/gallery/poster-ai-chat.jpg"
@@ -307,7 +307,7 @@
       "value": 16000,
       "status": "stable",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 32443,
       "fileCount": 148,
       "thumb": "projects/DropAgentXmain/gallery/web-next.jpg"
@@ -366,7 +366,7 @@
       "value": 22000,
       "status": "stable",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 5123,
       "fileCount": 80,
       "thumb": "projects/fly-gold-trader/gallery/dashboard-live.jpg"
@@ -387,7 +387,7 @@
       "value": 28000,
       "status": "stable",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 6472,
       "fileCount": 112,
       "thumb": "projects/fly/gallery/teaser.jpg"
@@ -428,7 +428,7 @@
       "value": 10000,
       "status": "stable",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 2086,
       "fileCount": 55,
       "thumb": "projects/GQR-v1/gallery/shot-guide.jpg"
@@ -489,10 +489,10 @@
       "value": 2500,
       "status": "stable",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 0,
       "fileCount": 10,
-      "thumb": null
+      "thumb": "projects/Hermes/cover.svg"
     },
     {
       "id": "Hesaban",
@@ -566,10 +566,10 @@
       "value": 1500,
       "status": "in-dev",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 0,
       "fileCount": 3,
-      "thumb": null
+      "thumb": "projects/Kia-Agent/cover.svg"
     },
     {
       "id": "kiarouter",
@@ -584,10 +584,10 @@
       "value": 1500,
       "status": "in-dev",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 0,
       "fileCount": 3,
-      "thumb": null
+      "thumb": "projects/kiarouter/cover.svg"
     },
     {
       "id": "mt5-fetcher",
@@ -605,7 +605,7 @@
       "value": 5000,
       "status": "stable",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 3165,
       "fileCount": 15,
       "thumb": "projects/mt5-fetcher/gallery/shot-llm.jpg"
@@ -784,10 +784,10 @@
       "value": 1000,
       "status": "in-dev",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 0,
       "fileCount": 3,
-      "thumb": null
+      "thumb": "projects/startagent/cover.svg"
     },
     {
       "id": "tidewater",
@@ -866,7 +866,7 @@
       "previewReady": true,
       "loc": 5697,
       "fileCount": 157,
-      "thumb": null
+      "thumb": "projects/WaterCuda/cover.svg"
     },
     {
       "id": "win12",
@@ -904,7 +904,7 @@
       "value": 14000,
       "status": "beta",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 4115,
       "fileCount": 161,
       "thumb": "projects/xA/gallery/shot-desk.jpg"
@@ -924,7 +924,7 @@
       "value": 7500,
       "status": "stable",
       "preview": "none",
-      "previewReady": false,
+      "previewReady": true,
       "loc": 4963,
       "fileCount": 45,
       "thumb": "projects/Xbot/gallery/shot-hokm.jpg"
@@ -988,7 +988,7 @@
       "previewReady": true,
       "loc": 0,
       "fileCount": 2,
-      "thumb": null
+      "thumb": "projects/ag/cover.svg"
     },
     {
       "id": "dropagentx-architecture",
@@ -1007,7 +1007,7 @@
       "previewReady": true,
       "loc": 531,
       "fileCount": 2,
-      "thumb": null
+      "thumb": "projects/dropagentx-architecture/cover.svg"
     },
     {
       "id": "dropagentx-roadmap",
@@ -1026,7 +1026,7 @@
       "previewReady": true,
       "loc": 385,
       "fileCount": 2,
-      "thumb": null
+      "thumb": "projects/dropagentx-roadmap/cover.svg"
     },
     {
       "id": "fable-berger",
@@ -1045,7 +1045,7 @@
       "previewReady": true,
       "loc": 582,
       "fileCount": 2,
-      "thumb": null
+      "thumb": "projects/fable-berger/cover.svg"
     },
     {
       "id": "hermes-company-structure",
@@ -1064,7 +1064,7 @@
       "previewReady": true,
       "loc": 366,
       "fileCount": 2,
-      "thumb": null
+      "thumb": "projects/hermes-company-structure/cover.svg"
     },
     {
       "id": "imx-landing-3d",
@@ -1084,7 +1084,7 @@
       "previewReady": true,
       "loc": 832,
       "fileCount": 2,
-      "thumb": null
+      "thumb": "projects/imx-landing-3d/cover.svg"
     },
     {
       "id": "sc-studio",
@@ -1103,7 +1103,7 @@
       "previewReady": true,
       "loc": 0,
       "fileCount": 2,
-      "thumb": null
+      "thumb": "projects/sc-studio/cover.svg"
     },
     {
       "id": "fishkal-deep-catch",
@@ -1122,7 +1122,7 @@
       "previewReady": true,
       "loc": 0,
       "fileCount": 2,
-      "thumb": null
+      "thumb": "projects/fishkal-deep-catch/cover.svg"
     },
     {
       "id": "trading-god-arena",
@@ -1142,7 +1142,7 @@
       "previewReady": true,
       "loc": 4013,
       "fileCount": 2,
-      "thumb": null
+      "thumb": "projects/trading-god-arena/cover.svg"
     },
     {
       "id": "guide-9router",
@@ -1162,7 +1162,7 @@
       "previewReady": true,
       "loc": 1184,
       "fileCount": 2,
-      "thumb": null
+      "thumb": "projects/guide-9router/cover.svg"
     },
     {
       "id": "guide-railway",
@@ -1181,7 +1181,7 @@
       "previewReady": true,
       "loc": 864,
       "fileCount": 2,
-      "thumb": null
+      "thumb": "projects/guide-railway/cover.svg"
     }
   ]
 }
