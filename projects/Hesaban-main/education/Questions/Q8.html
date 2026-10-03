@@ -1,0 +1,2308 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+    <title>حل مسئله حسابداری | موسسه ایران</title>
+    <style>
+        /* ============================================================
+               RESET & BASE
+               ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-red: #ff2255;
+            --neon-white: #f0f0ff;
+            --dark-bg: #0a0a12;
+            --card-bg: rgba(18, 18, 30, 0.92);
+            --glass-border: rgba(0, 255, 136, 0.10);
+            --shadow-green: 0 0 40px rgba(0, 255, 136, 0.06);
+            --shadow-red: 0 0 40px rgba(255, 34, 85, 0.06);
+            --radius: 18px;
+            --radius-sm: 10px;
+            --font: 'Vazirmatn', Tahoma, sans-serif;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --touch-min: 44px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--dark-bg);
+            color: var(--neon-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 0 1rem 3rem 1rem;
+            position: relative;
+        }
+
+        /* ============================================================
+               CANVAS – ذرات معلق
+               ============================================================ */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ============================================================
+               WRAPPER اصلی
+               ============================================================ */
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.2rem 0 0 0;
+        }
+
+        /* ============================================================
+               HEADER
+               ============================================================ */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.9rem 1.8rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(16px);
+            margin-bottom: 2.2rem;
+            box-shadow: var(--shadow-green), inset 0 0 60px rgba(0, 255, 136, 0.02);
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-red), transparent);
+            opacity: 0.3;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--neon-white);
+            font-weight: 300;
+            font-size: 1rem;
+        }
+
+        .logo .badge {
+            background: var(--neon-red);
+            color: #fff;
+            font-size: 0.55rem;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.25);
+            margin-right: 0.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.4rem 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(240, 240, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-white);
+            border-color: rgba(0, 255, 136, 0.12);
+            background: rgba(0, 255, 136, 0.03);
+        }
+
+        .nav-links a.active {
+            color: var(--neon-green);
+            border-color: rgba(0, 255, 136, 0.18);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .header-actions a {
+            color: var(--neon-white);
+            text-decoration: none;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid rgba(240, 240, 255, 0.06);
+            font-size: 0.7rem;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+        }
+
+        .header-actions a:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.08);
+        }
+
+        /* ============================================================
+               HERO
+               ============================================================ */
+        .hero {
+            text-align: center;
+            padding: 2.4rem 2rem 2rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(14px);
+            margin-bottom: 2.2rem;
+            box-shadow: var(--shadow-green);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(circle at 20% 40%, rgba(0, 255, 136, 0.04), transparent 70%);
+            animation: heroGlow 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes heroGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(8%, 10%) scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        .hero .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .green {
+            color: var(--neon-green);
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.15);
+        }
+
+        .hero h1 .red {
+            color: var(--neon-red);
+            text-shadow: 0 0 40px rgba(255, 34, 85, 0.12);
+        }
+
+        .hero h1 .white {
+            color: var(--neon-white);
+        }
+
+        .hero .subtitle {
+            font-size: 0.95rem;
+            color: rgba(240, 240, 255, 0.5);
+            max-width: 700px;
+            margin: 0.6rem auto 1.2rem auto;
+            line-height: 1.8;
+        }
+
+        .hero .transactions-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem 1.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .hero .tx-item {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .hero .tx-item .num {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+               SECTION HEADER
+               ============================================================ */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 2.2rem 0 1.5rem 0;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.06);
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section-header h2 .green {
+            color: var(--neon-green);
+        }
+
+        .section-header h2 .red {
+            color: var(--neon-red);
+        }
+
+        .section-header .sub {
+            color: rgba(240, 240, 255, 0.3);
+            font-size: 0.8rem;
+            font-weight: 300;
+        }
+
+        /* ============================================================
+               OUTPUT AREA – اصلی
+               ============================================================ */
+        .output-area {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 14px 14px 18px;
+            transition: var(--transition);
+            min-height: 400px;
+        }
+
+        .output-area:hover {
+            border-color: rgba(0, 255, 136, 0.18);
+        }
+
+        .output-tabs {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+        }
+
+        .output-tab {
+            padding: 6px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: clamp(0.6rem, 1vw, 0.78rem);
+            color: rgba(240, 240, 255, 0.4);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            backdrop-filter: blur(10px);
+            min-height: var(--touch-min);
+            touch-action: manipulation;
+            user-select: none;
+        }
+
+        .output-tab:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--neon-white);
+        }
+
+        .output-tab.active {
+            background: var(--neon-green);
+            color: #0a0e17;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+        }
+
+        .output-content {
+            display: none;
+            animation: fadeSlide 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            padding-top: 2px;
+        }
+
+        .output-content.active {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================================
+               TABLES
+               ============================================================ */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--glass-border);
+            margin-top: 2px;
+            background: rgba(0, 0, 0, 0.08);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table-wrap table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            min-width: 480px;
+        }
+
+        .table-wrap th {
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(240, 240, 255, 0.4);
+            padding: 8px 8px;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.65rem;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--glass-border);
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .table-wrap td {
+            padding: 6px 8px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            vertical-align: middle;
+            font-size: 0.72rem;
+        }
+
+        .table-wrap tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-wrap tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .debit {
+            color: var(--neon-green);
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.08);
+        }
+
+        .credit {
+            color: var(--neon-red);
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(255, 34, 85, 0.08);
+        }
+
+        .balance-pos {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .balance-neg {
+            color: var(--neon-red);
+            font-weight: 700;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
+        .fw-bold {
+            font-weight: 700;
+        }
+
+        .num {
+            font-family: var(--font);
+            direction: ltr;
+            display: inline-block;
+        }
+
+        .total-row {
+            background: rgba(0, 255, 136, 0.06);
+            font-weight: 700;
+            border-top: 2px solid var(--neon-green);
+        }
+
+        .total-row td {
+            padding: 8px 8px;
+            font-size: 0.78rem;
+        }
+
+        .subtotal-row {
+            background: rgba(255, 255, 255, 0.02);
+            font-weight: 600;
+        }
+
+        /* ============================================================
+               LEDGER (T-ACCOUNTS)
+               ============================================================ */
+        .ledger-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+            margin-top: 2px;
+        }
+
+        .t-account {
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .t-account:hover {
+            border-color: rgba(0, 255, 136, 0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .t-account .t-header {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--neon-white);
+            padding: 6px 10px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.78rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .t-account .t-header.asset {
+            background: rgba(0, 255, 136, 0.10);
+            border-bottom: 2px solid var(--neon-green);
+        }
+
+        .t-account .t-header.liability {
+            background: rgba(255, 34, 85, 0.10);
+            border-bottom: 2px solid var(--neon-red);
+        }
+
+        .t-account .t-header.equity {
+            background: rgba(0, 255, 136, 0.08);
+            border-bottom: 2px solid var(--neon-green);
+        }
+
+        .t-account .t-header.revenue {
+            background: rgba(0, 255, 136, 0.10);
+            border-bottom: 2px solid var(--neon-green);
+        }
+
+        .t-account .t-header.expense {
+            background: rgba(255, 34, 85, 0.10);
+            border-bottom: 2px solid var(--neon-red);
+        }
+
+        .t-body {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .t-side {
+            flex: 1;
+            padding: 0;
+            min-height: 36px;
+        }
+
+        .t-side:first-child {
+            border-left: 1px dashed var(--glass-border);
+        }
+
+        .t-side-label {
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.55rem;
+            padding: 3px;
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(240, 240, 255, 0.3);
+            border-bottom: 1px solid var(--glass-border);
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .t-side-label.debit-label {
+            color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.04);
+        }
+
+        .t-side-label.credit-label {
+            color: var(--neon-red);
+            background: rgba(255, 34, 85, 0.04);
+        }
+
+        .t-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 8px;
+            font-size: 0.6rem;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.03);
+        }
+
+        .t-row .t-num {
+            font-weight: 600;
+            direction: ltr;
+        }
+
+        .t-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 10px;
+            font-weight: 700;
+            font-size: 0.66rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 2px solid var(--glass-border);
+        }
+
+        .t-footer .balance {
+            direction: ltr;
+        }
+
+        /* ============================================================
+               TRIAL SUMMARY
+               ============================================================ */
+        .tb-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--glass-border);
+        }
+
+        .tb-summary .item {
+            flex: 1;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .tb-summary .label {
+            font-size: 0.6rem;
+            color: rgba(240, 240, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .tb-summary .value {
+            font-size: clamp(0.85rem, 1.4vw, 1.1rem);
+            font-weight: 700;
+            margin-top: 1px;
+        }
+
+        .tb-summary .green {
+            color: var(--neon-green);
+        }
+
+        .tb-summary .red {
+            color: var(--neon-red);
+        }
+
+        .balanced-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.10);
+            color: var(--neon-green);
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.72rem;
+            margin-top: 8px;
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.10);
+        }
+
+        /* ============================================================
+               BALANCE SHEET
+               ============================================================ */
+        .bs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 2px;
+        }
+
+        .bs-card {
+            background: rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .bs-card:hover {
+            border-color: rgba(0, 255, 136, 0.18);
+        }
+
+        .bs-card .bs-header {
+            color: #0a0e17;
+            padding: 8px 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .bs-card .bs-header.assets {
+            background: var(--neon-green);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+        }
+
+        .bs-card .bs-header.liabilities {
+            background: var(--neon-red);
+            box-shadow: 0 0 30px rgba(255, 34, 85, 0.15);
+        }
+
+        .bs-card .bs-header.equity {
+            background: var(--neon-green);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+        }
+
+        .bs-card table {
+            min-width: unset;
+            font-size: 0.7rem;
+        }
+
+        .bs-card th {
+            font-size: 0.6rem;
+            padding: 5px 6px;
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(240, 240, 255, 0.3);
+            border-bottom: 1px solid var(--glass-border);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .bs-card td {
+            padding: 4px 6px;
+            font-size: 0.68rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .bs-total {
+            background: rgba(0, 255, 136, 0.06);
+            font-weight: 700;
+            border-top: 2px solid var(--neon-green);
+        }
+
+        .bs-total td {
+            font-size: 0.74rem;
+            padding: 6px 6px;
+        }
+
+        .bs-eq-note {
+            margin-top: 10px;
+            text-align: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--glass-border);
+            font-size: 0.78rem;
+            color: rgba(240, 240, 255, 0.3);
+        }
+
+        .bs-eq-note strong {
+            color: var(--neon-white);
+        }
+
+        /* ============================================================
+               INCOME STATEMENT
+               ============================================================ */
+        .is-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 2px;
+        }
+
+        .is-card {
+            background: rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .is-card:hover {
+            border-color: rgba(0, 255, 136, 0.18);
+        }
+
+        .is-card .is-header {
+            color: #0a0e17;
+            padding: 8px 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .is-card .is-header.revenues {
+            background: var(--neon-green);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+        }
+
+        .is-card .is-header.expenses {
+            background: var(--neon-red);
+            box-shadow: 0 0 30px rgba(255, 34, 85, 0.15);
+        }
+
+        .is-card table {
+            min-width: unset;
+            font-size: 0.7rem;
+        }
+
+        .is-card th {
+            font-size: 0.6rem;
+            padding: 5px 6px;
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(240, 240, 255, 0.3);
+            border-bottom: 1px solid var(--glass-border);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .is-card td {
+            padding: 4px 6px;
+            font-size: 0.68rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .is-total {
+            background: rgba(0, 255, 136, 0.06);
+            font-weight: 700;
+            border-top: 2px solid var(--neon-green);
+        }
+
+        .is-total td {
+            font-size: 0.74rem;
+            padding: 6px 6px;
+        }
+
+        .is-net-income {
+            margin-top: 10px;
+            text-align: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--glass-border);
+            font-size: 0.78rem;
+            color: rgba(240, 240, 255, 0.3);
+        }
+
+        .is-net-income strong {
+            color: var(--neon-white);
+        }
+
+        /* ============================================================
+               TYPE BADGE
+               ============================================================ */
+        .type-badge {
+            display: inline-block;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-size: 0.5rem;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+
+        .type-badge.asset {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--neon-green);
+        }
+
+        .type-badge.liability {
+            background: rgba(255, 34, 85, 0.15);
+            color: var(--neon-red);
+        }
+
+        .type-badge.equity {
+            background: rgba(0, 255, 136, 0.12);
+            color: var(--neon-green);
+        }
+
+        .type-badge.revenue {
+            background: rgba(0, 255, 136, 0.18);
+            color: var(--neon-green);
+        }
+
+        .type-badge.expense {
+            background: rgba(255, 34, 85, 0.18);
+            color: var(--neon-red);
+        }
+
+        /* ============================================================
+               RESPONSIVE
+               ============================================================ */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .bs-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .is-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0 0.6rem 2rem 0.6rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 0.8rem 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .hero {
+                padding: 1.8rem 1.2rem;
+            }
+            .hero h1 {
+                font-size: 1.3rem;
+            }
+            .hero .subtitle {
+                font-size: 0.8rem;
+            }
+            .hero .transactions-list {
+                gap: 0.3rem 0.8rem;
+            }
+            .hero .tx-item {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.6rem;
+            }
+            .output-area {
+                padding: 10px;
+                min-height: 250px;
+            }
+            .output-tabs {
+                gap: 2px;
+                padding-bottom: 8px;
+                margin-bottom: 10px;
+            }
+            .output-tab {
+                font-size: 0.55rem;
+                padding: 4px 10px;
+                min-height: 32px;
+            }
+            .table-wrap table {
+                font-size: 0.62rem;
+                min-width: 280px;
+            }
+            .table-wrap th {
+                font-size: 0.55rem;
+                padding: 4px 4px;
+            }
+            .table-wrap td {
+                font-size: 0.6rem;
+                padding: 4px 4px;
+            }
+            .ledger-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .tb-summary {
+                padding: 8px 12px;
+                gap: 6px;
+            }
+            .tb-summary .value {
+                font-size: 0.78rem;
+            }
+            .tb-summary .label {
+                font-size: 0.55rem;
+            }
+            .balanced-badge {
+                font-size: 0.6rem;
+                padding: 4px 12px;
+            }
+            .bs-card .bs-header {
+                font-size: 0.72rem;
+                padding: 6px 8px;
+            }
+            .bs-card td {
+                font-size: 0.6rem;
+                padding: 3px 4px;
+            }
+            .bs-total td {
+                font-size: 0.65rem;
+                padding: 4px 4px;
+            }
+            .is-card .is-header {
+                font-size: 0.72rem;
+                padding: 6px 8px;
+            }
+            .is-card td {
+                font-size: 0.6rem;
+                padding: 3px 4px;
+            }
+            .is-total td {
+                font-size: 0.65rem;
+                padding: 4px 4px;
+            }
+            .bs-eq-note {
+                font-size: 0.68rem;
+                padding: 8px;
+            }
+            .is-net-income {
+                font-size: 0.68rem;
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.0rem;
+            }
+            .output-tab {
+                font-size: 0.5rem;
+                padding: 3px 8px;
+                min-height: 28px;
+            }
+            .table-wrap table {
+                font-size: 0.55rem;
+                min-width: 200px;
+            }
+            .ledger-grid {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+            .btn {
+                font-size: 0.58rem;
+                padding: 6px 8px;
+                min-height: 34px;
+                min-width: 34px;
+            }
+            .tb-summary .value {
+                font-size: 0.7rem;
+            }
+            .balanced-badge {
+                font-size: 0.52rem;
+                padding: 3px 10px;
+            }
+            .bs-eq-note {
+                font-size: 0.6rem;
+                padding: 6px;
+            }
+            .is-net-income {
+                font-size: 0.6rem;
+                padding: 6px;
+            }
+            .t-account .t-header {
+                font-size: 0.58rem;
+                padding: 3px 4px;
+            }
+            .t-row {
+                font-size: 0.5rem;
+                padding: 1px 4px;
+            }
+            .t-footer {
+                font-size: 0.52rem;
+                padding: 2px 6px;
+            }
+        }
+
+        /* ============================================================
+               PRINT
+               ============================================================ */
+        @media print {
+            body {
+                background: #0a0e17;
+                padding: 0;
+                font-size: 8px;
+            }
+            .container {
+                box-shadow: none;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                padding: 8px;
+                backdrop-filter: none;
+                background: #0a0e17;
+            }
+            .output-content {
+                display: block !important;
+            }
+            .output-tabs {
+                display: none;
+            }
+            .btn,
+            .action-row {
+                display: none;
+            }
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .bs-grid {
+                grid-template-columns: 1fr;
+            }
+            .is-grid {
+                grid-template-columns: 1fr;
+            }
+            #particles-canvas {
+                display: none;
+            }
+            .header .sub {
+                background: rgba(255, 255, 255, 0.03);
+            }
+            .table-wrap {
+                border-color: rgba(255, 255, 255, 0.03);
+            }
+            .t-account {
+                border-color: rgba(255, 255, 255, 0.03);
+            }
+            .bs-card {
+                border-color: rgba(255, 255, 255, 0.03);
+            }
+            .tb-summary {
+                border-color: rgba(255, 255, 255, 0.03);
+            }
+            .bs-eq-note {
+                border-color: rgba(255, 255, 255, 0.03);
+            }
+            .modal-overlay {
+                display: none !important;
+            }
+            .toast {
+                display: none !important;
+            }
+            .search-row {
+                display: none;
+            }
+            .tx-list-wrap .del-btn,
+            .tx-list-wrap .edit-btn {
+                display: none;
+            }
+        }
+
+        /* ============================================================
+               TOAST
+               ============================================================ */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            padding: 12px 22px;
+            box-shadow: var(--shadow-green);
+            z-index: 99999;
+            backdrop-filter: blur(20px);
+            font-size: 0.82rem;
+            color: var(--neon-white);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            max-width: 90vw;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .toast.success {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.12);
+        }
+
+        .toast.error {
+            border-color: var(--neon-red);
+            box-shadow: 0 0 30px rgba(255, 34, 85, 0.12);
+        }
+
+        /* ============================================================
+               FOOTER
+               ============================================================ */
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 1rem 0.5rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 1rem;
+        }
+
+        .footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+        }
+
+        .footer .links a {
+            color: rgba(240, 240, 255, 0.2);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .footer .links a:hover {
+            color: var(--neon-green);
+        }
+
+        .footer .copyright {
+            color: rgba(240, 240, 255, 0.10);
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer .copyright .green {
+            color: rgba(0, 255, 136, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    CANVAS – ذرات معلق
+    ============================================================ -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ============================================================
+    WRAPPER
+    ============================================================ -->
+    <div class="main-wrapper">
+
+        <!-- ========== HEADER ========== -->
+        <header class="header">
+            <a href="#" class="logo">
+                🧾 موسسه ایران
+                <span>|</span>
+                <span style="font-weight:300;font-size:1rem;color:rgba(240,240,255,0.5);">حل مسئله حسابداری</span>
+                <span class="badge">v1.0</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#" class="active">📒 دفتر روزنامه</a>
+                <a href="#">📁 دفتر کل</a>
+                <a href="#">⚖️ تراز آزمایشی</a>
+                <a href="#">📈 سود و زیان</a>
+                <a href="#">📊 ترازنامه</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" onclick="window.print();">🖨️ چاپ</a>
+                <a href="#" onclick="location.reload();">🔄 تازه</a>
+            </div>
+        </header>
+
+        <!-- ========== HERO ========== -->
+        <section class="hero">
+            <div class="content">
+                <h1>
+                    <span class="green">📒</span>
+                    <span class="white">حل مسئله حسابداری</span>
+                    <span class="green">·</span>
+                    <span class="red">موسسه ایران</span>
+                </h1>
+                <p class="subtitle">
+                    ۸ رویداد مالی ثبت شده — از تاسیس تا سرمایه‌گذاری مجدد. تمام صورت‌های مالی
+                    (دفتر روزنامه، دفتر کل، تراز آزمایشی، سود و زیان و ترازنامه) به صورت خودکار تولید شده‌اند.
+                </p>
+                <div class="transactions-list">
+                    <span class="tx-item"><span class="num">۱</span> تاسیس با ۸,۰۰۰,۰۰۰ ریال</span>
+                    <span class="tx-item"><span class="num">۲</span> ارائه خدمات ۱,۰۰۰,۰۰۰ ریال</span>
+                    <span class="tx-item"><span class="num">۳</span> هزینه‌ها: اجاره+حقوق+تعمیرات</span>
+                    <span class="tx-item"><span class="num">۴</span> خرید ملزومات ۷۰۰,۰۰۰ ریال</span>
+                    <span class="tx-item"><span class="num">۵</span> برداشت صاحب ۳۰۰,۰۰۰ ریال</span>
+                    <span class="tx-item"><span class="num">۶</span> پرداخت بدهی ۲۰۰,۰۰۰ ریال</span>
+                    <span class="tx-item"><span class="num">۷</span> دریافت از بدهکاران ۱۰۰,۰۰۰ ریال</span>
+                    <span class="tx-item"><span class="num">۸</span> سرمایه‌گذاری مجدد (اثاثه) ۵۰۰,۰۰۰ ریال</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SECTION HEADER ========== -->
+        <div class="section-header">
+            <h2>
+                <span>📊</span>
+                <span class="green">گزارش‌های مالی</span>
+                <span class="sub">— موسسه ایران</span>
+            </h2>
+            <span class="badge-count">۸ رویداد</span>
+        </div>
+
+        <!-- ========== OUTPUT AREA ========== -->
+        <div class="output-area">
+
+            <div class="output-tabs">
+                <button class="output-tab active" data-target="out-journal">📖 دفتر روزنامه</button>
+                <button class="output-tab" data-target="out-ledger">📁 دفتر کل</button>
+                <button class="output-tab" data-target="out-trial">⚖️ تراز آزمایشی</button>
+                <button class="output-tab" data-target="out-income">📈 صورت سود و زیان</button>
+                <button class="output-tab" data-target="out-bs">📊 ترازنامه</button>
+            </div>
+
+            <!-- ========== JOURNAL ========== -->
+            <div id="out-journal" class="output-content active">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ردیف</th>
+                                <th style="text-align:right;">تاریخ</th>
+                                <th style="text-align:right;">شماره</th>
+                                <th style="text-align:right;">شرح</th>
+                                <th style="text-align:right;">حساب</th>
+                                <th>بدهکار (ریال)</th>
+                                <th>بستانکار (ریال)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="journalBody">
+                            <!-- توسط JS پر می‌شود -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ========== LEDGER ========== -->
+            <div id="out-ledger" class="output-content">
+                <div class="ledger-grid" id="ledgerGrid">
+                    <!-- توسط JS پر می‌شود -->
+                </div>
+            </div>
+
+            <!-- ========== TRIAL ========== -->
+            <div id="out-trial" class="output-content">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="text-align:right;">نام حساب</th>
+                                <th>نوع</th>
+                                <th>بدهکار (ریال)</th>
+                                <th>بستانکار (ریال)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trialBody">
+                            <!-- توسط JS پر می‌شود -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tb-summary" id="trialSummary">
+                    <div class="item"><div class="label">مجموع بدهکارها</div><div class="value green" id="totalDebit">۰ ریال</div></div>
+                    <div class="item"><div class="label">مجموع بستانکارها</div><div class="value red" id="totalCredit">۰ ریال</div></div>
+                    <div class="item"><div class="label">وضعیت</div><div class="value" id="statusValue" style="color:rgba(240,240,255,0.3);">⏳ منتظر داده</div></div>
+                </div>
+                <div style="text-align:center;" id="balancedBadgeContainer"></div>
+            </div>
+
+            <!-- ========== INCOME ========== -->
+            <div id="out-income" class="output-content">
+                <div class="is-grid" id="isGrid">
+                    <!-- توسط JS پر می‌شود -->
+                </div>
+                <div class="is-net-income" id="isNetIncome" style="display:none;"></div>
+            </div>
+
+            <!-- ========== BALANCE SHEET ========== -->
+            <div id="out-bs" class="output-content">
+                <div class="bs-grid" id="bsGrid">
+                    <!-- توسط JS پر می‌شود -->
+                </div>
+                <div class="bs-eq-note" id="bsEquation" style="display:none;"></div>
+            </div>
+
+        </div>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="links">
+                <a href="#" onclick="window.print();">🖨️ چاپ</a>
+                <a href="#" onclick="location.reload();">🔄 تازه</a>
+                <a href="#" onclick="alert('حل مسئله حسابداری · موسسه ایران · ۸ رویداد مالی');">📌 نسخه ۱.۰</a>
+            </div>
+            <div class="copyright">
+                <span class="green">موسسه ایران</span> · حل مسئله حسابداری · ۱۴۰۴
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    TOAST
+    ============================================================ -->
+    <div id="toast" class="toast"></div>
+
+    <!-- ============================================================
+    SCRIPT – ذرات معلق + منطق حسابداری
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // ۱. ذرات معلق – canvas
+            // ============================================================
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let W, H;
+            let particles = [];
+            const PARTICLE_COUNT = 60;
+
+            const COLORS = [
+                'rgba(0, 255, 136, ',
+                'rgba(255, 34, 85, ',
+                'rgba(240, 240, 255, ',
+            ];
+
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H;
+                    this.size = Math.random() * 2.0 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.4;
+                    this.speedY = (Math.random() - 0.5) * 0.4;
+                    this.opacity = Math.random() * 0.3 + 0.08;
+                    this.colorIdx = Math.floor(Math.random() * COLORS.length);
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = 0.006 + Math.random() * 0.012;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < 0 || this.x > W) { this.speedX *= -1;
+                        this.x = Math.max(0, Math.min(W, this.x)); }
+                    if (this.y < 0 || this.y > H) { this.speedY *= -1;
+                        this.y = Math.max(0, Math.min(H, this.y)); }
+                    this.currentOpacity = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                }
+                draw() {
+                    const alpha = Math.max(0.03, Math.min(0.7, this.currentOpacity));
+                    const color = COLORS[this.colorIdx] + alpha + ')';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 8;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+            }
+
+            function resizeCanvas() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, W, H);
+                const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
+                grad.addColorStop(0, '#0d0d18');
+                grad.addColorStop(1, '#05050a');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, W, H);
+
+                particles.forEach(p => { p.update();
+                    p.draw(); });
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = 120;
+                        if (dist < maxDist) {
+                            const alpha = (1 - dist / maxDist) * 0.10;
+                            const color = COLORS[0] + alpha + ')';
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = color;
+                            ctx.lineWidth = 0.3;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            function setupParticles() {
+                resizeCanvas();
+                initParticles();
+                drawParticles();
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                particles.forEach(p => { p.x = Math.min(p.x, W);
+                    p.y = Math.min(p.y, H); });
+            });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupParticles);
+            } else {
+                setupParticles();
+            }
+
+            // ============================================================
+            // ۲. DATA – ۸ رویداد مالی موسسه ایران
+            // ============================================================
+            const transactions = [{
+                id: 1,
+                date: '۱ خرداد ۱۳۹۵',
+                ref: '۱۰۱',
+                desc: 'تاسیس موسسه و واریز سرمایه به بانک',
+                debit: 'بانک',
+                credit: 'سرمایه',
+                amount: 8000000,
+                debitType: 'asset',
+                creditType: 'equity',
+                note: ''
+            }, {
+                id: 2,
+                date: '۲ خرداد ۱۳۹۵',
+                ref: '۱۰۲',
+                desc: 'ارائه خدمات (۴۰۰,۰۰۰ نقد + ۶۰۰,۰۰۰ نسیه)',
+                debit: 'وجه نقد',
+                credit: 'درآمد خدمات',
+                amount: 400000,
+                debitType: 'asset',
+                creditType: 'revenue',
+                note: 'دریافت ۴۰۰,۰۰۰ ریال نقد'
+            }, {
+                id: 3,
+                date: '۲ خرداد ۱۳۹۵',
+                ref: '۱۰۲',
+                desc: 'ارائه خدمات (۴۰۰,۰۰۰ نقد + ۶۰۰,۰۰۰ نسیه)',
+                debit: 'حساب دریافتنی',
+                credit: 'درآمد خدمات',
+                amount: 600000,
+                debitType: 'asset',
+                creditType: 'revenue',
+                note: 'باقی‌مانده نسیه'
+            }, {
+                id: 4,
+                date: '۳ خرداد ۱۳۹۵',
+                ref: '۱۰۳',
+                desc: 'پرداخت هزینه اجاره',
+                debit: 'هزینه اجاره',
+                credit: 'وجه نقد',
+                amount: 200000,
+                debitType: 'expense',
+                creditType: 'asset',
+                note: ''
+            }, {
+                id: 5,
+                date: '۳ خرداد ۱۳۹۵',
+                ref: '۱۰۴',
+                desc: 'پرداخت هزینه حقوق کارکنان',
+                debit: 'هزینه حقوق',
+                credit: 'وجه نقد',
+                amount: 300000,
+                debitType: 'expense',
+                creditType: 'asset',
+                note: ''
+            }, {
+                id: 6,
+                date: '۳ خرداد ۱۳۹۵',
+                ref: '۱۰۵',
+                desc: 'پرداخت هزینه تعمیرات',
+                debit: 'هزینه تعمیرات',
+                credit: 'وجه نقد',
+                amount: 200000,
+                debitType: 'expense',
+                creditType: 'asset',
+                note: ''
+            }, {
+                id: 7,
+                date: '۴ خرداد ۱۳۹۵',
+                ref: '۱۰۶',
+                desc: 'خرید ملزومات (۲۰۰,۰۰۰ نقد + ۵۰۰,۰۰۰ نسیه)',
+                debit: 'ملزومات',
+                credit: 'وجه نقد',
+                amount: 200000,
+                debitType: 'asset',
+                creditType: 'asset',
+                note: 'بخشی نقد'
+            }, {
+                id: 8,
+                date: '۴ خرداد ۱۳۹۵',
+                ref: '۱۰۶',
+                desc: 'خرید ملزومات (۲۰۰,۰۰۰ نقد + ۵۰۰,۰۰۰ نسیه)',
+                debit: 'ملزومات',
+                credit: 'حساب پرداختنی',
+                amount: 500000,
+                debitType: 'asset',
+                creditType: 'liability',
+                note: 'باقی‌مانده نسیه'
+            }, {
+                id: 9,
+                date: '۵ خرداد ۱۳۹۵',
+                ref: '۱۰۷',
+                desc: 'برداشت صاحب موسسه از حساب بانکی',
+                debit: 'برداشت صاحب',
+                credit: 'بانک',
+                amount: 300000,
+                debitType: 'equity',
+                creditType: 'asset',
+                note: ''
+            }, {
+                id: 10,
+                date: '۶ خرداد ۱۳۹۵',
+                ref: '۱۰۸',
+                desc: 'پرداخت بخشی از بدهی‌ها (بستانکاران)',
+                debit: 'حساب پرداختنی',
+                credit: 'وجه نقد',
+                amount: 200000,
+                debitType: 'liability',
+                creditType: 'asset',
+                note: ''
+            }, {
+                id: 11,
+                date: '۷ خرداد ۱۳۹۵',
+                ref: '۱۰۹',
+                desc: 'دریافت وجه از بدهکاران',
+                debit: 'وجه نقد',
+                credit: 'حساب دریافتنی',
+                amount: 100000,
+                debitType: 'asset',
+                creditType: 'asset',
+                note: ''
+            }, {
+                id: 12,
+                date: '۸ خرداد ۱۳۹۵',
+                ref: '۱۱۰',
+                desc: 'سرمایه‌گذاری مجدد (اثاثه)',
+                debit: 'اثاثه',
+                credit: 'سرمایه',
+                amount: 500000,
+                debitType: 'asset',
+                creditType: 'equity',
+                note: ''
+            }];
+
+            // ============================================================
+            // ۳. HELPERS
+            // ============================================================
+            function fmt(n) {
+                if (n === undefined || n === null || isNaN(n)) return '۰';
+                return Number(n).toLocaleString('fa-IR');
+            }
+
+            function currency(n) {
+                return fmt(n) + ' ریال';
+            }
+
+            function getAccountType(accountName, override) {
+                if (override && override !== 'auto') return override;
+                const name = accountName.trim();
+
+                const assets = ['وجه نقد', 'بانک', 'صندوق', 'اثاثه', 'ملزومات', 'وسیله', 'زمین', 'حساب دریافتنی',
+                    'بدهکاران', 'تجهیزات', 'موجودی', 'پیش‌پرداخت', 'بیمه', 'دارایی', 'ثابت',
+                    'اموال', 'ماشین‌آلات', 'کامپیوتر', 'نرم‌افزار', 'حقوق', 'سرمایه‌گذاری', 'مواد اولیه',
+                    'کالا', 'ساختمان'
+                ];
+                const liabilities = ['بدهی', 'بستانکاران', 'حساب پرداختنی', 'سفته پرداختنی', 'بدهی تجاری',
+                    'بدهی مالیاتی', 'وام', 'تسویه', 'پرداختنی', 'ذخیره', 'پیش‌دریافت'
+                ];
+                const equity = ['سرمایه', 'برداشت صاحب', 'برداشت شخصی', 'برداشت مالک', 'حقوق صاحب',
+                    'اندوخته', 'سود', 'زیان', 'انباشته', 'مالکانه', 'سهام', 'شرکا'
+                ];
+                const revenue = ['درآمد خدمات', 'درآمد', 'فروش', 'درآمد ناخالص', 'حقالعمل', 'کارمزد',
+                    'درآمد فروش', 'درآمد عملیاتی', 'درآمد غیرعملیاتی', 'سود فروش'
+                ];
+                const expense = ['هزینه اجاره', 'هزینه حقوق', 'هزینه تعمیرات', 'هزینه تبلیغات', 'هزینه',
+                    'حقوق کارکنان', 'اجاره بها', 'تعمیرات', 'تبلیغات', 'هزینه استهلاک',
+                    'هزینه بیمه', 'هزینه آب و برق', 'هزینه مواد', 'هزینه دستمزد', 'هزینه فروش'
+                ];
+
+                if (assets.some(a => name.includes(a))) return 'asset';
+                if (liabilities.some(a => name.includes(a))) return 'liability';
+                if (equity.some(a => name.includes(a))) return 'equity';
+                if (revenue.some(a => name.includes(a))) return 'revenue';
+                if (expense.some(a => name.includes(a))) return 'expense';
+
+                if (name.includes('وجه') || name.includes('نقد') || name.includes('بانک') ||
+                    name.includes('صندوق') || name.includes('اثاث') || name.includes('ملزومات') ||
+                    name.includes('وسیله') || name.includes('زمین') || name.includes('دریافتنی') ||
+                    name.includes('تجهیزات') || name.includes('پیش') || name.includes('دارایی')) return 'asset';
+                if (name.includes('بدهی') || name.includes('پرداختنی') || name.includes('بستانکار') ||
+                    name.includes('وام')) return 'liability';
+                if (name.includes('سرمایه') || name.includes('برداشت') || name.includes('حقوق') ||
+                    name.includes('مالک')) return 'equity';
+                if (name.includes('درآمد') || name.includes('فروش')) return 'revenue';
+                if (name.includes('هزینه') || name.includes('حقوق') || name.includes('اجاره') ||
+                    name.includes('تعمیرات') || name.includes('تبلیغات')) return 'expense';
+                return 'asset';
+            }
+
+            function getAccountTypeLabel(type) {
+                const map = { asset: 'دارایی', liability: 'بدهی', equity: 'حقوق مالکانه', revenue: 'درآمد',
+                    expense: 'هزینه' };
+                return map[type] || type;
+            }
+
+            function getTypeBadge(type) {
+                return `<span class="type-badge ${type}">${getAccountTypeLabel(type)}</span>`;
+            }
+
+            function toast(message, type = 'success') {
+                const el = document.getElementById('toast');
+                if (!el) return;
+                el.textContent = message;
+                el.className = 'toast ' + type;
+                setTimeout(() => el.classList.add('show'), 10);
+                clearTimeout(el._hideTimer);
+                el._hideTimer = setTimeout(() => el.classList.remove('show'), 3000);
+            }
+
+            // ============================================================
+            // ۴. RENDER: JOURNAL
+            // ============================================================
+            function renderJournal() {
+                const tbody = document.getElementById('journalBody');
+                if (!tbody) return;
+                if (transactions.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="empty-msg">هیچ رویدادی ثبت نشده است.</td></tr>`;
+                    return;
+                }
+                let html = '';
+                let rowNum = 1;
+                transactions.forEach((tx, idx) => {
+                    const dType = getAccountType(tx.debit, tx.debitType);
+                    const cType = getAccountType(tx.credit, tx.creditType);
+
+                    // ردیف بدهکار
+                    html += `<tr>
+                        <td>${rowNum}</td>
+                        <td class="text-right">${tx.date}</td>
+                        <td class="text-right">${tx.ref}</td>
+                        <td class="text-right">${tx.desc}</td>
+                        <td class="text-right"><strong>${tx.debit}</strong> ${getTypeBadge(dType)}</td>
+                        <td class="debit">${fmt(tx.amount)}</td>
+                        <td></td>
+                    </tr>`;
+                    // ردیف بستانکار
+                    html += `<tr>
+                        <td></td>
+                        <td class="text-right"></td>
+                        <td class="text-right"></td>
+                        <td class="text-right"></td>
+                        <td class="text-right" style="padding-right:20px;"><strong>${tx.credit}</strong> ${getTypeBadge(cType)}</td>
+                        <td></td>
+                        <td class="credit">${fmt(tx.amount)}</td>
+                    </tr>`;
+                    if (tx.note) {
+                        html += `<tr style="background:rgba(255,255,255,0.02);">
+                            <td></td>
+                            <td class="text-right" style="font-size:0.6rem;color:rgba(240,240,255,0.3);" colspan="6">📎 ${tx.note}</td>
+                        </tr>`;
+                    }
+                    rowNum++;
+                    if (idx < transactions.length - 1) {
+                        html +=
+                        `<tr style="background:rgba(255,255,255,0.02);"><td colspan="7" style="padding:2px;"></td></tr>`;
+                    }
+                });
+                tbody.innerHTML = html;
+            }
+
+            // ============================================================
+            // ۵. RENDER: LEDGER
+            // ============================================================
+            function renderLedger() {
+                const grid = document.getElementById('ledgerGrid');
+                if (!grid) return;
+                if (transactions.length === 0) {
+                    grid.innerHTML =
+                    `<div class="empty-msg" style="grid-column:1/-1;padding:16px;">هیچ رویدادی ثبت نشده است.</div>`;
+                    return;
+                }
+
+                const entries = [];
+                transactions.forEach(tx => {
+                    const dType = getAccountType(tx.debit, tx.debitType);
+                    const cType = getAccountType(tx.credit, tx.creditType);
+                    entries.push({ account: tx.debit, amount: tx.amount, side: 'debit', desc: tx.desc,
+                        date: tx.date, ref: tx.ref, type: dType });
+                    entries.push({ account: tx.credit, amount: tx.amount, side: 'credit', desc: tx.desc,
+                        date: tx.date, ref: tx.ref, type: cType });
+                });
+
+                const groups = {};
+                entries.forEach(e => {
+                    if (!groups[e.account]) groups[e.account] = [];
+                    groups[e.account].push(e);
+                });
+
+                const accountNames = Object.keys(groups).sort((a, b) => {
+                    const order = ['وجه نقد', 'بانک', 'اثاثه', 'ملزومات', 'حساب دریافتنی',
+                        'حساب پرداختنی', 'سرمایه', 'برداشت صاحب', 'درآمد خدمات',
+                        'هزینه اجاره', 'هزینه حقوق', 'هزینه تعمیرات'
+                    ];
+                    const ia = order.indexOf(a);
+                    const ib = order.indexOf(b);
+                    if (ia !== -1 && ib !== -1) return ia - ib;
+                    if (ia !== -1) return -1;
+                    if (ib !== -1) return 1;
+                    return a.localeCompare(b);
+                });
+
+                let html = '';
+                accountNames.forEach(acc => {
+                    const items = groups[acc] || [];
+                    if (items.length === 0) return;
+                    let dr = 0,
+                        cr = 0;
+                    let rowsDebit = '',
+                        rowsCredit = '';
+                    items.forEach(e => {
+                        if (e.side === 'debit') {
+                            dr += e.amount;
+                            rowsDebit +=
+                                `<div class="t-row"><span style="font-size:0.58rem;color:rgba(240,240,255,0.3);">${e.date} (${e.ref})</span><span class="t-num">${fmt(e.amount)}</span></div>`;
+                        } else {
+                            cr += e.amount;
+                            rowsCredit +=
+                                `<div class="t-row"><span style="font-size:0.58rem;color:rgba(240,240,255,0.3);">${e.date} (${e.ref})</span><span class="t-num">${fmt(e.amount)}</span></div>`;
+                        }
+                    });
+                    if (!rowsDebit) rowsDebit = '<div class="t-row" style="color:rgba(240,240,255,0.2);">—</div>';
+                    if (!rowsCredit) rowsCredit = '<div class="t-row" style="color:rgba(240,240,255,0.2);">—</div>';
+                    const bal = dr - cr;
+                    const balStr = bal > 0 ? fmt(bal) : (bal < 0 ? fmt(-bal) : '۰');
+                    const balClass = bal > 0 ? 'balance-pos' : (bal < 0 ? 'balance-neg' : '');
+                    const balSide = bal > 0 ? 'بدهکار' : (bal < 0 ? 'بستانکار' : '—');
+                    const type = items[0].type || getAccountType(acc, 'auto');
+                    const typeClass = type;
+
+                    html += `<div class="t-account">
+                        <div class="t-header ${typeClass}">${acc}</div>
+                        <div class="t-body">
+                            <div class="t-side">
+                                <div class="t-side-label debit-label">بدهکار (${fmt(dr)})</div>
+                                ${rowsDebit}
+                            </div>
+                            <div class="t-side">
+                                <div class="t-side-label credit-label">بستانکار (${fmt(cr)})</div>
+                                ${rowsCredit}
+                            </div>
+                        </div>
+                        <div class="t-footer">
+                            <span>مانده ${balSide}</span>
+                            <span class="balance ${balClass}">${balStr}</span>
+                        </div>
+                    </div>`;
+                });
+
+                grid.innerHTML = html;
+            }
+
+            // ============================================================
+            // ۶. RENDER: TRIAL
+            // ============================================================
+            function renderTrial() {
+                const tbody = document.getElementById('trialBody');
+                const totalDebitEl = document.getElementById('totalDebit');
+                const totalCreditEl = document.getElementById('totalCredit');
+                const statusEl = document.getElementById('statusValue');
+                const badgeContainer = document.getElementById('balancedBadgeContainer');
+                if (!tbody) return;
+
+                if (transactions.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="empty-msg">هیچ داده‌ای موجود نیست.</td></tr>`;
+                    if (totalDebitEl) totalDebitEl.textContent = '۰ ریال';
+                    if (totalCreditEl) totalCreditEl.textContent = '۰ ریال';
+                    if (statusEl) statusEl.textContent = '⏳ منتظر داده';
+                    if (badgeContainer) badgeContainer.innerHTML = '';
+                    return;
+                }
+
+                const entries = [];
+                transactions.forEach(tx => {
+                    const dType = getAccountType(tx.debit, tx.debitType);
+                    const cType = getAccountType(tx.credit, tx.creditType);
+                    entries.push({ account: tx.debit, amount: tx.amount, side: 'debit', type: dType });
+                    entries.push({ account: tx.credit, amount: tx.amount, side: 'credit', type: cType });
+                });
+
+                const groups = {};
+                entries.forEach(e => {
+                    if (!groups[e.account]) groups[e.account] = { dr: 0, cr: 0, type: e.type };
+                    if (e.side === 'debit') groups[e.account].dr += e.amount;
+                    else groups[e.account].cr += e.amount;
+                });
+
+                const accountNames = Object.keys(groups).sort((a, b) => {
+                    const order = ['وجه نقد', 'بانک', 'اثاثه', 'ملزومات', 'حساب دریافتنی',
+                        'حساب پرداختنی', 'سرمایه', 'برداشت صاحب', 'درآمد خدمات',
+                        'هزینه اجاره', 'هزینه حقوق', 'هزینه تعمیرات'
+                    ];
+                    const ia = order.indexOf(a);
+                    const ib = order.indexOf(b);
+                    if (ia !== -1 && ib !== -1) return ia - ib;
+                    if (ia !== -1) return -1;
+                    if (ib !== -1) return 1;
+                    return a.localeCompare(b);
+                });
+
+                let html = '';
+                let totalDr = 0,
+                    totalCr = 0;
+
+                accountNames.forEach(acc => {
+                    const g = groups[acc];
+                    if (!g) return;
+                    const net = g.dr - g.cr;
+                    const type = g.type || getAccountType(acc, 'auto');
+                    let drCol = '',
+                        crCol = '';
+                    if (net > 0) { drCol = fmt(net);
+                        totalDr += net; } else if (net < 0) { crCol = fmt(-net);
+                        totalCr += -net; } else { drCol = '۰';
+                        crCol = '۰'; }
+                    html += `<tr>
+                        <td class="text-right fw-bold">${acc}</td>
+                        <td>${getTypeBadge(type)}</td>
+                        <td class="debit">${drCol}</td>
+                        <td class="credit">${crCol}</td>
+                    </tr>`;
+                });
+
+                html += `<tr class="total-row">
+                    <td class="text-right">جمع کل</td>
+                    <td>—</td>
+                    <td class="debit">${fmt(totalDr)}</td>
+                    <td class="credit">${fmt(totalCr)}</td>
+                </tr>`;
+                tbody.innerHTML = html;
+
+                if (totalDebitEl) totalDebitEl.textContent = currency(totalDr);
+                if (totalCreditEl) totalCreditEl.textContent = currency(totalCr);
+
+                const equal = totalDr === totalCr;
+                if (statusEl) {
+                    if (totalDr === 0 && totalCr === 0) {
+                        statusEl.textContent = '⏳ منتظر داده';
+                        statusEl.style.color = 'rgba(240,240,255,0.3)';
+                    } else if (equal) {
+                        statusEl.textContent = '✅ متوازن (تراز)';
+                        statusEl.style.color = 'var(--neon-green)';
+                    } else {
+                        statusEl.textContent = '⚠️ عدم توازن';
+                        statusEl.style.color = 'var(--neon-red)';
+                    }
+                }
+                if (badgeContainer) {
+                    if (totalDr === 0 && totalCr === 0) {
+                        badgeContainer.innerHTML = '';
+                    } else if (equal) {
+                        badgeContainer.innerHTML =
+                            `<span class="balanced-badge">✅ تراز آزمایشی متوازن — جمع بدهکاران = جمع بستانکاران = ${fmt(totalDr)} ریال</span>`;
+                    } else {
+                        badgeContainer.innerHTML =
+                            `<span style="display:inline-block;background:rgba(255,34,85,0.12);color:var(--neon-red);padding:4px 14px;border-radius:20px;font-weight:700;font-size:0.68rem;margin-top:8px;border:1px solid var(--neon-red);">⚠️ عدم توازن — اختلاف: ${fmt(Math.abs(totalDr - totalCr))} ریال</span>`;
+                    }
+                }
+            }
+
+            // ============================================================
+            // ۷. RENDER: INCOME STATEMENT
+            // ============================================================
+            function renderIncomeStatement() {
+                const grid = document.getElementById('isGrid');
+                const netIncomeEl = document.getElementById('isNetIncome');
+                if (!grid) return;
+
+                if (transactions.length === 0) {
+                    grid.innerHTML =
+                    `<div class="empty-msg" style="grid-column:1/-1;text-align:center;padding:24px;">هیچ داده‌ای موجود نیست.</div>`;
+                    if (netIncomeEl) { netIncomeEl.style.display = 'none';
+                        netIncomeEl.innerHTML = ''; }
+                    return;
+                }
+
+                const entries = [];
+                transactions.forEach(tx => {
+                    const dType = getAccountType(tx.debit, tx.debitType);
+                    const cType = getAccountType(tx.credit, tx.creditType);
+                    entries.push({ account: tx.debit, amount: tx.amount, side: 'debit', type: dType });
+                    entries.push({ account: tx.credit, amount: tx.amount, side: 'credit', type: cType });
+                });
+
+                const groups = {};
+                entries.forEach(e => {
+                    if (!groups[e.account]) groups[e.account] = { dr: 0, cr: 0, type: e.type };
+                    if (e.side === 'debit') groups[e.account].dr += e.amount;
+                    else groups[e.account].cr += e.amount;
+                });
+
+                const revenues = [];
+                const expenses = [];
+
+                Object.keys(groups).forEach(acc => {
+                    const g = groups[acc];
+                    const net = g.dr - g.cr;
+                    if (net === 0) return;
+                    const type = g.type || getAccountType(acc, 'auto');
+                    if (type === 'revenue') {
+                        revenues.push({ account: acc, amount: net < 0 ? -net : net });
+                    } else if (type === 'expense') {
+                        expenses.push({ account: acc, amount: net > 0 ? net : -net });
+                    }
+                });
+
+                if (revenues.length === 0 && expenses.length === 0) {
+                    grid.innerHTML =
+                        `<div class="empty-msg" style="grid-column:1/-1;text-align:center;padding:24px;">هیچ حساب درآمد یا هزینه‌ای یافت نشد.</div>`;
+                    if (netIncomeEl) { netIncomeEl.style.display = 'none';
+                        netIncomeEl.innerHTML = ''; }
+                    return;
+                }
+
+                let html = '';
+
+                html += `<div class="is-card">
+                    <div class="is-header revenues">📈 درآمدها</div>
+                    <table>
+                        <thead><tr><th style="text-align:right;">حساب</th><th>مبلغ (ریال)</th></tr></thead>
+                        <tbody>`;
+                if (revenues.length === 0) {
+                    html += `<tr><td colspan="2" style="color:rgba(240,240,255,0.3);">هیچ درآمدی ثبت نشده است.</td></tr>`;
+                } else {
+                    let totalRev = 0;
+                    revenues.sort((a, b) => a.account.localeCompare(b.account));
+                    revenues.forEach(item => {
+                        totalRev += item.amount;
+                        html +=
+                            `<tr><td class="text-right">${item.account}</td><td class="balance-pos">${fmt(item.amount)}</td></tr>`;
+                    });
+                    html += `<tr class="is-total"><td class="text-right"><strong>جمع درآمدها</strong></td>
+                                <td class="balance-pos"><strong>${fmt(totalRev)}</strong></td></tr>`;
+                }
+                html += `</tbody></table></div>`;
+
+                html += `<div style="display:flex;flex-direction:column;gap:12px;">
+                    <div class="is-card">
+                        <div class="is-header expenses">📉 هزینه‌ها</div>
+                        <table>
+                            <thead><tr><th style="text-align:right;">حساب</th><th>مبلغ (ریال)</th></tr></thead>
+                            <tbody>`;
+                if (expenses.length === 0) {
+                    html += `<tr><td colspan="2" style="color:rgba(240,240,255,0.3);">هیچ هزینه‌ای ثبت نشده است.</td></tr>`;
+                } else {
+                    let totalExp = 0;
+                    expenses.sort((a, b) => a.account.localeCompare(b.account));
+                    expenses.forEach(item => {
+                        totalExp += item.amount;
+                        html +=
+                            `<tr><td class="text-right">${item.account}</td><td class="balance-neg">${fmt(item.amount)}</td></tr>`;
+                    });
+                    html += `<tr class="is-total"><td class="text-right"><strong>جمع هزینه‌ها</strong></td>
+                                <td class="balance-neg"><strong>${fmt(totalExp)}</strong></td></tr>`;
+                }
+                html += `</tbody></table></div></div>`;
+
+                grid.innerHTML = html;
+
+                const totalRevenue = revenues.reduce((s, i) => s + i.amount, 0);
+                const totalExpense = expenses.reduce((s, i) => s + i.amount, 0);
+                const netIncome = totalRevenue - totalExpense;
+
+                if (netIncomeEl) {
+                    netIncomeEl.style.display = 'block';
+                    const isProfit = netIncome >= 0;
+                    netIncomeEl.innerHTML = `
+                        <strong>📊 نتیجه عملیات:</strong>
+                        درآمدها (${fmt(totalRevenue)}) - هزینه‌ها (${fmt(totalExpense)}) = 
+                        <span style="font-weight:700;color:${isProfit ? 'var(--neon-green)' : 'var(--neon-red)'};">
+                            ${isProfit ? 'سود خالص' : 'زیان خالص'} ${fmt(Math.abs(netIncome))} ریال
+                        </span>
+                    `;
+                }
+            }
+
+            // ============================================================
+            // ۸. RENDER: BALANCE SHEET
+            // ============================================================
+            function renderBalanceSheet() {
+                const grid = document.getElementById('bsGrid');
+                const eqNote = document.getElementById('bsEquation');
+                if (!grid) return;
+
+                if (transactions.length === 0) {
+                    grid.innerHTML =
+                    `<div class="empty-msg" style="grid-column:1/-1;text-align:center;padding:24px;">هیچ داده‌ای موجود نیست.</div>`;
+                    if (eqNote) { eqNote.style.display = 'none';
+                        eqNote.innerHTML = ''; }
+                    return;
+                }
+
+                const entries = [];
+                transactions.forEach(tx => {
+                    const dType = getAccountType(tx.debit, tx.debitType);
+                    const cType = getAccountType(tx.credit, tx.creditType);
+                    entries.push({ account: tx.debit, amount: tx.amount, side: 'debit', type: dType });
+                    entries.push({ account: tx.credit, amount: tx.amount, side: 'credit', type: cType });
+                });
+
+                const groups = {};
+                entries.forEach(e => {
+                    if (!groups[e.account]) groups[e.account] = { dr: 0, cr: 0, type: e.type };
+                    if (e.side === 'debit') groups[e.account].dr += e.amount;
+                    else groups[e.account].cr += e.amount;
+                });
+
+                const assets = [];
+                const liabilities = [];
+                let capitalBalance = 0;
+                let withdrawalBalance = 0;
+                let revenueBalance = 0;
+                let expenseBalance = 0;
+
+                Object.keys(groups).forEach(acc => {
+                    const g = groups[acc];
+                    const net = g.dr - g.cr;
+                    if (net === 0) return;
+                    const type = g.type || getAccountType(acc, 'auto');
+
+                    if (type === 'asset') {
+                        if (net > 0) assets.push({ account: acc, balance: net });
+                        else if (net < 0) liabilities.push({ account: acc + ' (منفی)', balance: -net,
+                            isContra: true });
+                    } else if (type === 'liability') {
+                        if (net < 0) liabilities.push({ account: acc, balance: -net, isContra: false });
+                        else if (net > 0) assets.push({ account: acc + ' (پیش‌پرداخت)', balance: net });
+                    } else if (type === 'equity') {
+                        if (acc.includes('برداشت')) {
+                            if (net > 0) withdrawalBalance += net;
+                            else if (net < 0) withdrawalBalance -= net;
+                        } else {
+                            if (net > 0) capitalBalance += net;
+                            else if (net < 0) capitalBalance -= net;
+                        }
+                    } else if (type === 'revenue') {
+                        if (net < 0) revenueBalance += -net;
+                        else if (net > 0) revenueBalance -= net;
+                    } else if (type === 'expense') {
+                        if (net > 0) expenseBalance += net;
+                        else if (net < 0) expenseBalance -= net;
+                    }
+                });
+
+                const totalEquity = capitalBalance - withdrawalBalance + revenueBalance - expenseBalance;
+
+                const equityItems = [];
+                if (capitalBalance !== 0) equityItems.push({ account: 'سرمایه', balance: capitalBalance });
+                if (withdrawalBalance !== 0) equityItems.push({ account: 'برداشت صاحب', balance: -withdrawalBalance });
+                if (revenueBalance !== 0) equityItems.push({ account: 'درآمدها (خالص)', balance: revenueBalance });
+                if (expenseBalance !== 0) equityItems.push({ account: 'هزینه‌ها (خالص)', balance: -expenseBalance });
+                if (equityItems.length === 0) equityItems.push({ account: 'حقوق مالکانه', balance: totalEquity });
+
+                const totalAssets = assets.reduce((s, i) => s + i.balance, 0);
+                const totalLiabilities = liabilities.reduce((s, i) => s + i.balance, 0);
+
+                let html = '';
+
+                html += `<div class="bs-card">
+                    <div class="bs-header assets">💰 دارایی‌ها</div>
+                    <table>
+                        <thead><tr><th style="text-align:right;">حساب</th><th>مبلغ (ریال)</th></tr></thead>
+                        <tbody>`;
+                if (assets.length === 0) {
+                    html += `<tr><td colspan="2" style="color:rgba(240,240,255,0.3);">هیچ دارایی ثبت نشده است.</td></tr>`;
+                } else {
+                    assets.sort((a, b) => a.account.localeCompare(b.account));
+                    assets.forEach(item => {
+                        html +=
+                            `<tr><td class="text-right">${item.account}</td><td class="balance-pos">${fmt(item.balance)}</td></tr>`;
+                    });
+                }
+                html += `<tr class="bs-total"><td class="text-right"><strong>جمع دارایی‌ها</strong></td>
+                            <td class="balance-pos"><strong>${fmt(totalAssets)}</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>`;
+
+                html += `<div style="display:flex;flex-direction:column;gap:12px;">
+                    <div class="bs-card">
+                        <div class="bs-header liabilities">📋 بدهی‌ها</div>
+                        <table>
+                            <thead><tr><th style="text-align:right;">حساب</th><th>مبلغ (ریال)</th></tr></thead>
+                            <tbody>`;
+                if (liabilities.length === 0) {
+                    html += `<tr><td colspan="2" style="color:rgba(240,240,255,0.3);">هیچ بدهی ثبت نشده است.</td></tr>`;
+                } else {
+                    liabilities.sort((a, b) => a.account.localeCompare(b.account));
+                    liabilities.forEach(item => {
+                        html +=
+                            `<tr><td class="text-right">${item.account}</td><td class="balance-neg">${fmt(item.balance)}</td></tr>`;
+                    });
+                }
+                html += `<tr class="bs-total"><td class="text-right"><strong>جمع بدهی‌ها</strong></td>
+                            <td class="balance-neg"><strong>${fmt(totalLiabilities)}</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bs-card">
+                    <div class="bs-header equity">👤 حقوق مالکانه</div>
+                    <table>
+                        <thead><tr><th style="text-align:right;">حساب</th><th>مبلغ (ریال)</th></tr></thead>
+                        <tbody>`;
+                if (equityItems.length === 0) {
+                    html += `<tr><td colspan="2" style="color:rgba(240,240,255,0.3);">هیچ حساب حقوق مالکانه ثبت نشده است.</td></tr>`;
+                } else {
+                    equityItems.forEach(item => {
+                        const cls = item.balance >= 0 ? 'balance-pos' : 'balance-neg';
+                        const display = item.balance >= 0 ? fmt(item.balance) : '(' + fmt(-item.balance) + ')';
+                        html +=
+                            `<tr><td class="text-right">${item.account}</td><td class="${cls}">${display}</td></tr>`;
+                    });
+                }
+                const equityCls = totalEquity >= 0 ? 'balance-pos' : 'balance-neg';
+                const equityDisplay = totalEquity >= 0 ? fmt(totalEquity) : '(' + fmt(-totalEquity) + ')';
+                html += `<tr class="bs-total"><td class="text-right"><strong>جمع حقوق مالکانه</strong></td>
+                            <td class="${equityCls}"><strong>${equityDisplay}</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                </div>`;
+
+                grid.innerHTML = html;
+
+                const totalLiabilitiesAndEquity = totalLiabilities + (totalEquity > 0 ? totalEquity : 0);
+                if (eqNote) {
+                    eqNote.style.display = 'block';
+                    const isBalanced = Math.abs(totalAssets - totalLiabilitiesAndEquity) < 1;
+                    eqNote.innerHTML = `
+                        <strong>📐 معادله حسابداری:</strong>
+                        دارایی‌ها (${fmt(totalAssets)}) = بدهی‌ها (${fmt(totalLiabilities)}) + حقوق مالکانه (${fmt(totalEquity)})
+                        <br>
+                        <span style="font-weight:${isBalanced ? '700' : '400'}; color:${isBalanced ? 'var(--neon-green)' : 'var(--neon-red)'};">
+                            ${isBalanced ? '✅ معادله برقرار است.' : '⚠️ معادله برقرار نیست (اختلاف: ' + fmt(Math.abs(totalAssets - totalLiabilitiesAndEquity)) + ' ریال).'}
+                        </span>
+                        <br><small style="color:rgba(240,240,255,0.2);">(حقوق مالکانه خالص = سرمایه + درآمد - برداشت - هزینه‌ها)</small>
+                    `;
+                }
+            }
+
+            // ============================================================
+            // ۹. TABS
+            // ============================================================
+            function setupOutputTabs() {
+                const tabs = document.querySelectorAll('.output-tab');
+                const contents = document.querySelectorAll('.output-content');
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const targetId = this.dataset.target;
+                        tabs.forEach(t => t.classList.remove('active'));
+                        contents.forEach(c => c.classList.remove('active'));
+                        this.classList.add('active');
+                        const target = document.getElementById(targetId);
+                        if (target) target.classList.add('active');
+                    });
+                });
+            }
+
+            // ============================================================
+            // ۱۰. RENDER ALL
+            // ============================================================
+            function renderAll() {
+                renderJournal();
+                renderLedger();
+                renderTrial();
+                renderIncomeStatement();
+                renderBalanceSheet();
+                toast('✅ تمام گزارش‌های مالی به‌روز شدند.', 'success');
+            }
+
+            // ============================================================
+            // ۱۱. INIT
+            // ============================================================
+            function init() {
+                setupOutputTabs();
+                renderAll();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+            console.log('📒 حل مسئله حسابداری · موسسه ایران · بارگذاری کامل شد');
+        })();
+    </script>
+
+</body>
+</html>

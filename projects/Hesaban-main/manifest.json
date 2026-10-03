@@ -1,0 +1,23 @@
+{
+  "name": "حسابان",
+  "short_name": "حسابان",
+  "description": "پلتفرم جامع آموزش حسابداری، حسابرسی، ترید و چت هوشمند",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#05050c",
+  "background_color": "#05050c",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

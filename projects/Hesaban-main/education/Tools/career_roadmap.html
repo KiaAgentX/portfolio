@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نقشه راه شغلی حسابداری | کیانوش کریمی</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: rgba(24,24,24,0.85);
+            --text: #f0f0f0;
+            --text2: #c0c0c0;
+            --primary: #fbbf24;
+            --accent: #2dd4bf;
+            --success: #22c55e;
+            --border: rgba(255,255,255,0.12);
+            --radius: 16px;
+            --shadow: 0 8px 32px rgba(0,0,0,0.6);
+            direction: rtl; font-size: 15px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Vazirmatn','B Nazanin','Tahoma',sans-serif;
+            background: radial-gradient(ellipse at 50% 0%, #1a1a1a, #0a0a0a);
+            color: var(--text); line-height: 1.8; min-height: 100vh; padding: 20px;
+            display: flex; justify-content: center;
+        }
+        .container { max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 20px; }
+        .header {
+            background: var(--surface); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 30px 25px; text-align: center; box-shadow: var(--shadow);
+        }
+        .header h1 {
+            font-size: 2.2rem; font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #22c55e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .roadmap { position: relative; padding-right: 80px; }
+        .roadmap::before {
+            content: ''; position: absolute; right: 30px; top: 0; bottom: 0;
+            width: 4px; background: linear-gradient(180deg, #fbbf24, #22c55e, #fbbf24);
+            border-radius: 4px;
+        }
+        .stage {
+            position: relative; margin-bottom: 35px; padding-right: 50px;
+        }
+        .stage::before {
+            content: ''; position: absolute; right: 14px; top: 10px;
+            width: 28px; height: 28px; background: #fbbf24; border-radius: 50%;
+            border: 4px solid #0a0a0a; box-shadow: 0 0 0 4px #fbbf24;
+        }
+        .stage.completed::before { background: #22c55e; box-shadow: 0 0 0 4px #22c55e; }
+        .card {
+            background: var(--surface); backdrop-filter: blur(15px);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 20px; box-shadow: var(--shadow);
+        }
+        .card h3 { color: #fbbf24; margin-bottom: 8px; font-size: 1.2rem; }
+        .card p { color: var(--text2); font-size: 0.9rem; }
+        .skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .skill-tag {
+            background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.3);
+            padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; color: #fbbf24;
+        }
+        .salary { margin-top: 10px; font-weight: 700; color: #22c55e; font-size: 0.9rem; }
+        .footer { text-align: center; color: #666; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗺️ نقشه راه شغلی حسابداری</h1>
+            <p style="color:var(--text2);">از مبتدی تا حرفه‌ای — مسیری که این دوره برای شما می‌سازد</p>
+        </div>
+
+        <div class="roadmap">
+            <div class="stage completed">
+                <div class="card">
+                    <h3>🚀 سطح ۱: پایه‌های حسابداری (همین دوره)</h3>
+                    <p>شما با اتمام این ۲۴ جلسه، اصول اولیه، دفتر روزنامه، دفتر کل، تراز آزمایشی، صورت‌های مالی، و تحلیل نسبت‌ها را کاملاً فرا می‌گیرید.</p>
+                    <div class="skills">
+                        <span class="skill-tag">دفتر روزنامه</span><span class="skill-tag">ترازنامه</span><span class="skill-tag">صورت سود و زیان</span><span class="skill-tag">تحلیل نسبت‌ها</span>
+                    </div>
+                    <div class="salary">💰 موقعیت شغلی: کمک‌حسابدار / دفتردار | درآمد ماهانه: ۱۰-۲۰ میلیون تومان</div>
+                </div>
+            </div>
+
+            <div class="stage">
+                <div class="card">
+                    <h3>📊 سطح ۲: تسلط بر نرم‌افزارهای حسابداری</h3>
+                    <p>بعد از این دوره، یادگیری نرم‌افزارهای رایج (هلو، سپیدار، همکاران سیستم) و اکسل پیشرفته را شروع کنید.</p>
+                    <div class="skills">
+                        <span class="skill-tag">اکسل</span><span class="skill-tag">هلو</span><span class="skill-tag">سپیدار</span><span class="skill-tag">حقوق و دستمزد</span>
+                    </div>
+                    <div class="salary">💰 موقعیت شغلی: حسابدار | درآمد ماهانه: ۱۵-۳۰ میلیون تومان</div>
+                </div>
+            </div>
+
+            <div class="stage">
+                <div class="card">
+                    <h3>🏢 سطح ۳: حسابداری صنعتی و بهای تمام‌شده</h3>
+                    <p>با کسب تجربه در شرکت‌های تولیدی می‌توانید در زمینه حسابداری صنعتی و بهای تمام‌شده تخصص بگیرید.</p>
+                    <div class="skills">
+                        <span class="skill-tag">بهای تمام‌شده</span><span class="skill-tag">کنترل موجودی</span><span class="skill-tag">گزارش‌گری مدیریت</span>
+                    </div>
+                    <div class="salary">💰 موقعیت شغلی: حسابدار صنعتی / سرپرست حسابداری | درآمد: ۲۰-۴۰ میلیون تومان</div>
+                </div>
+            </div>
+
+            <div class="stage">
+                <div class="card">
+                    <h3>📈 سطح ۴: مالیات و قوانین</h3>
+                    <p>تسلط بر مالیات بر ارزش افزوده، مالیات بر درآمد، اظهارنامه‌های مالیاتی و قوانین بیمه تأمین اجتماعی.</p>
+                    <div class="skills">
+                        <span class="skill-tag">VAT</span><span class="skill-tag">اظهارنامه</span><span class="skill-tag">بیمه</span><span class="skill-tag">قانون مالیات</span>
+                    </div>
+                    <div class="salary">💰 موقعیت: مشاور مالیاتی / حسابدار رسمی | درآمد: ۳۰-۶۰ میلیون تومان</div>
+                </div>
+            </div>
+
+            <div class="stage">
+                <div class="card">
+                    <h3>🌍 سطح ۵: استانداردهای بین‌المللی و حسابرسی</h3>
+                    <p>یادگیری IFRS و شروع دوره‌های حسابرسی. می‌توانید در مؤسسات حسابرسی عضو شوید.</p>
+                    <div class="skills">
+                        <span class="skill-tag">IFRS</span><span class="skill-tag">حسابرسی</span><span class="skill-tag">گزارشگری</span><span class="skill-tag">تحلیل مالی</span>
+                    </div>
+                    <div class="salary">💰 موقعیت: حسابرس / مدیر مالی | درآمد: ۴۰-۱۰۰ میلیون تومان</div>
+                </div>
+            </div>
+
+            <div class="stage">
+                <div class="card">
+                    <h3>👑 سطح ۶: مدیر مالی و مشاور سرمایه‌گذاری</h3>
+                    <p>با سال‌ها تجربه، می‌توانید مدیر مالی (CFO) شرکت‌ها شوید یا به عنوان مشاور سرمایه‌گذاری فعالیت کنید.</p>
+                    <div class="skills">
+                        <span class="skill-tag">مدیریت مالی</span><span class="skill-tag">سرمایه‌گذاری</span><span class="skill-tag">ادغام و تملک</span>
+                    </div>
+                    <div class="salary">💰 درآمد: ۱۰۰ میلیون تومان به بالا</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">✍️ کیانوش کریمی | 📅 ۱۴۰۴ | مسیر موفقیت از همین امروز شروع می‌شود</div>
+    </div>
+</body>
+</html>

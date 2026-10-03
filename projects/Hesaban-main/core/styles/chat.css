@@ -1,0 +1,29 @@
+.chat-widget { position:fixed; bottom:24px; right:24px; z-index:1000; }
+.chat-toggle-btn { width:60px; height:60px; border-radius:50%; background:linear-gradient(135deg, var(--neon-cyan), var(--neon-purple)); color:#fff; font-size:28px; box-shadow:0 8px 30px rgba(0,240,255,0.3); transition:all 0.3s cubic-bezier(0.175,0.885,0.32,1.275); display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; }
+.chat-toggle-btn:hover { transform:scale(1.1); }
+.chat-window { display:none; position:absolute; bottom:80px; right:0; width:380px; max-height:520px; background:var(--card-bg); backdrop-filter:blur(30px); border:1px solid var(--glass-border); border-radius:var(--radius); box-shadow:0 15px 60px rgba(0,0,0,0.6); overflow:hidden; flex-direction:column; }
+.chat-window.open { display:flex; }
+.chat-header { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid var(--glass-border); background:rgba(0,0,0,0.2); flex-shrink:0; }
+.chat-header span { font-weight:700; color:var(--neon-cyan); font-size:0.9rem; }
+.chat-close-btn { background:transparent; border:none; color:var(--text-muted); font-size:20px; padding:4px 8px; border-radius:8px; transition:0.2s; cursor:pointer; }
+.chat-close-btn:hover { background:rgba(255,255,255,0.05); color:var(--neon-red); }
+.chat-body { flex:1; display:flex; flex-direction:column; padding:12px 16px; overflow:hidden; }
+.chat-model-select { display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:0.75rem; color:var(--text-secondary); flex-shrink:0; }
+.chat-model-select select { background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:8px; color:var(--text-primary); padding:4px 8px; font-size:0.75rem; flex:1; outline:none; cursor:pointer; }
+.chat-model-select select:focus { border-color:var(--neon-cyan); }
+.chat-model-select button { background:none; border:none; color:var(--neon-red); font-size:0.65rem; cursor:pointer; padding:4px 8px; border-radius:6px; transition:0.2s; }
+.chat-model-select button:hover { background:rgba(255,34,85,0.1); }
+.chat-messages { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:8px; padding:4px 0; max-height:300px; scroll-behavior:smooth; }
+.chat-msg { padding:8px 12px; border-radius:var(--radius-sm); font-size:0.85rem; line-height:1.6; max-width:92%; animation:fadeUp 0.3s ease-out both; word-wrap:break-word; }
+.chat-msg.bot { align-self:flex-start; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); border-bottom-left-radius:4px; }
+.chat-msg.user { align-self:flex-end; background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.15); border-bottom-right-radius:4px; }
+.chat-input-area { display:flex; gap:8px; margin-top:8px; border-top:1px solid var(--glass-border); padding-top:8px; flex-shrink:0; }
+.chat-input-area input { flex:1; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); border-radius:var(--radius-sm); padding:8px 12px; color:var(--text-primary); font-size:0.85rem; outline:none; }
+.chat-input-area input:focus { border-color:var(--neon-cyan); box-shadow:0 0 20px rgba(0,240,255,0.05); }
+.chat-input-area button { padding:8px 16px; border-radius:var(--radius-sm); background:linear-gradient(135deg, var(--neon-cyan), var(--neon-purple)); color:#fff; font-weight:700; border:none; cursor:pointer; transition:0.2s; }
+.chat-input-area button:hover { transform:scale(1.05); box-shadow:0 0 30px rgba(0,240,255,0.2); }
+.typing-indicator { align-self:flex-start; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); border-radius:var(--radius-sm); padding:8px 12px; display:flex; gap:4px; }
+.typing-indicator span { width:6px; height:6px; border-radius:50%; background:var(--neon-cyan); animation:typing-bounce 1.4s infinite; }
+.typing-indicator span:nth-child(2) { animation-delay:0.2s; background:var(--neon-purple); }
+.typing-indicator span:nth-child(3) { animation-delay:0.4s; background:var(--neon-pink); }
+@keyframes typing-bounce { 0%,60%,100% { transform:translateY(0); opacity:0.3; } 30% { transform:translateY(-6px); opacity:1; } }

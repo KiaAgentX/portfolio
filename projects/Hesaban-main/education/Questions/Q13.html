@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محاسبه استهلاک - موسسه بهداد</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background: #111111;
+            border: 1px solid #333;
+            border-radius: 16px;
+            max-width: 550px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.2);
+        }
+
+        .card-header {
+            background: #1a1a1a;
+            padding: 20px 25px;
+            border-bottom: 1px solid #2a2a2a;
+            border-radius: 16px 16px 0 0;
+            text-align: center;
+        }
+
+        .card-header h2 {
+            color: #d4af37;
+            font-size: 1.8em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin: 0;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .info-box {
+            background: #181818;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed #333;
+            color: #ccc;
+            font-size: 1em;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #a0a0a0;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #e0e0e0;
+            font-weight: 600;
+            background: #222;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+
+        .highlight-gold {
+            color: #d4af37;
+            background: #2a2a2a;
+        }
+
+        .result-section {
+            background: #0d0d0d;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .result-title {
+            color: #d4af37;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .calc-step {
+            color: #b0b0b0;
+            font-size: 0.95em;
+            margin: 10px 0;
+            padding: 10px;
+            background: #141414;
+            border-radius: 8px;
+            border-right: 3px solid #d4af37;
+        }
+
+        .final-answer {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #ffffff;
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 10px;
+            border: 1px solid #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #666;
+            font-size: 0.8em;
+            margin-top: 15px;
+            letter-spacing: 1px;
+        }
+
+        .year-badge {
+            background: #d4af37;
+            color: #000;
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h2>📊 موسسه بهداد</h2>
+            <p style="color: #888; margin-top: 5px; font-size: 0.9em;">محاسبات استهلاک خط مستقیم</p>
+        </div>
+        <div class="card-body">
+            <!-- اطلاعات پایه -->
+            <div class="info-box">
+                <div class="info-row">
+                    <span class="info-label">📅 سال خرید</span>
+                    <span class="info-value">ابتدای ۱۳۹۰</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">💵 بهای تمام شده</span>
+                    <span class="info-value">۴۵۰,۰۰۰,۰۰۰ ریال</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">♻️ ارزش اسقاط</span>
+                    <span class="info-value">۱۵۰,۰۰۰,۰۰۰ ریال</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">⏳ عمر مفید</span>
+                    <span class="info-value">۴ سال</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">📐 روش محاسبه</span>
+                    <span class="info-value highlight-gold">خط مستقیم</span>
+                </div>
+            </div>
+
+            <!-- محاسبه هزینه استهلاک سالانه -->
+            <div class="result-section">
+                <div class="result-title">
+                    <span>🔹 محاسبه استهلاک سالانه</span>
+                </div>
+                <div class="calc-step">
+                    <span style="color: #ccc;">استهلاک سالانه = (بهای تمام شده - ارزش اسقاط) ÷ عمر مفید</span>
+                    <br>
+                    <span style="color: #d4af37; font-weight: bold;">(۴۵۰,۰۰۰,۰۰۰ - ۱۵۰,۰۰۰,۰۰۰) ÷ ۴</span>
+                    <br>
+                    <span style="color: #fff;">= ۳۰۰,۰۰۰,۰۰۰ ÷ ۴ = <strong>۷۵,۰۰۰,۰۰۰ ریال</strong></span>
+                </div>
+            </div>
+
+            <!-- الف) هزینه استهلاک سال ۹۲ -->
+            <div class="result-section">
+                <div class="result-title">
+                    <span>الف) هزینه استهلاک در سال ۱۳۹۲</span>
+                </div>
+                <div class="calc-step">
+                    <span style="color: #ccc;">در روش خط مستقیم، هزینه استهلاک هر سال یکسان است.</span>
+                </div>
+                <div class="final-answer">
+                    ۷۵,۰۰۰,۰۰۰ ریال
+                </div>
+            </div>
+
+            <!-- ب) ارزش دفتری پایان سال ۹۳ -->
+            <div class="result-section">
+                <div class="result-title">
+                    <span>ب) ارزش دفتری تا پایان سال ۱۳۹۳</span>
+                </div>
+                <div class="calc-step">
+                    <span style="color: #ccc;">تا پایان سال ۱۳۹۳، ۴ سال از عمر دارایی گذشته است (ابتدای ۹۰ تا پایان ۹۳).</span>
+                    <br>
+                    <span style="color: #ccc;">استهلاک انباشته = ۴ سال × ۷۵,۰۰۰,۰۰۰ = ۳۰۰,۰۰۰,۰۰۰ ریال</span>
+                </div>
+                <div class="calc-step">
+                    <span style="color: #ccc;">ارزش دفتری = بهای تمام شده - استهلاک انباشته</span>
+                    <br>
+                    <span style="color: #d4af37; font-weight: bold;">۴۵۰,۰۰۰,۰۰۰ - ۳۰۰,۰۰۰,۰۰۰</span>
+                </div>
+                <div class="final-answer">
+                    ۱۵۰,۰۰۰,۰۰۰ ریال <span style="font-size: 0.7em; color: #aaa;">(برابر با ارزش اسقاط)</span>
+                </div>
+            </div>
+
+            <div class="footer-note">
+                ✦ محاسبات مالی موسسه بهداد ✦
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>جلسه اول: اصول اولیه حسابداری | کیانوش کریمی</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: rgba(24, 24, 24, 0.75);
+            --surface2: rgba(40, 40, 40, 0.5);
+            --text: #f0f0f0;
+            --text2: #c0c0c0;
+            --primary: #fbbf24;
+            --primary-light: #fde68a;
+            --primary-dark: #92400e;
+            --accent: #2dd4bf;
+            --accent-light: #134e4a;
+            --danger: #ef4444;
+            --danger-light: #450a0a;
+            --success: #22c55e;
+            --success-light: #14532d;
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+            --shadow: 0 4px 20px rgba(0,0,0,0.5);
+            --shadow-lg: 0 12px 30px rgba(0,0,0,0.6);
+            --radius-sm: 10px;
+            --radius: 16px;
+            --radius-lg: 24px;
+            --transition: 0.2s ease;
+            direction: rtl;
+            font-size: 15px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Vazirmatn', 'B Nazanin', 'Tahoma', sans-serif;
+            background: #0a0a0a;
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ░░ پس‌زمینه زنده با ذرات ░░ */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            opacity: 0.55;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1.4); opacity: 0; }
+        }
+        .drift-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            animation: drift 12s ease-in-out infinite;
+            opacity: 0.2;
+            background: radial-gradient(circle at 30% 40%, #fbbf24 0%, transparent 40%),
+                radial-gradient(circle at 70% 60%, #22c55e 0%, transparent 40%),
+                radial-gradient(circle at 50% 20%, #ef4444 0%, transparent 35%);
+        }
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(18px); }
+            100% { transform: translateX(0); }
+        }
+
+        .container { position: relative; z-index: 1; max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 14px; }
+
+        /* HEADER */
+        .header {
+            background: rgba(24, 24, 24, 0.7);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-lg);
+            padding: 20px 18px 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #fbbf24, #22c55e, #fbbf24);
+            background-size: 200% 100%;
+            animation: headerBar 3s linear infinite;
+        }
+        @keyframes headerBar {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .session-badge {
+            display: inline-block;
+            background: rgba(251,191,36,0.2);
+            color: #fbbf24;
+            padding: 4px 18px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            border: 1px solid rgba(251,191,36,0.3);
+        }
+        .glow-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 6px 0;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 6px rgba(251,191,36,0.4)); }
+            100% { filter: drop-shadow(0 0 16px rgba(34,197,94,0.7)); }
+        }
+        .subtitle { font-size: 0.9rem; color: #c0c0c0; }
+
+        .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin-top: 8px; }
+        .toolbar button {
+            background: rgba(40,40,40,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #e0e0e0;
+            padding: 7px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .toolbar button:active { transform: scale(0.96); background: #fbbf24; color: #000; border-color: #fbbf24; }
+
+        /* CARD */
+        .card {
+            background: rgba(24, 24, 24, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius);
+            padding: 18px 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+            transition: 0.2s;
+        }
+        .card:hover { border-color: rgba(251,191,36,0.25); }
+        .card h2 {
+            font-size: 1.25rem;
+            color: #fbbf24;
+            border-bottom: 2px solid rgba(251,191,36,0.2);
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .card h3 { font-size: 1.05rem; color: #2dd4bf; margin: 12px 0 6px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 500px) { .grid-2 { grid-template-columns: 1fr; } }
+
+        .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 12px 0; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.08); }
+        table { width: 100%; min-width: 450px; border-collapse: collapse; background: rgba(20,20,20,0.5); font-size: 0.85rem; }
+        th { background: #fbbf24; color: #000; padding: 10px 6px; font-weight: 700; text-align: center; font-size: 0.8rem; white-space: nowrap; }
+        td { padding: 9px 6px; border-bottom: 1px solid rgba(255,255,255,0.06); text-align: center; }
+        .highlight { background: rgba(251,191,36,0.18); font-weight: 700; }
+
+        /* FLASHCARDS */
+        .flashcard-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 15px 0; }
+        .flashcard { perspective: 1000px; height: 110px; cursor: pointer; }
+        .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.5s; transform-style: preserve-3d; }
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .flashcard-front, .flashcard-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.9rem; padding: 10px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .flashcard-front { background: rgba(30,30,30,0.8); color: #fbbf24; }
+        .flashcard-back { background: #fbbf24; color: #000; transform: rotateY(180deg); }
+
+        /* EQUATION MACHINE */
+        .eq-machine { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; padding: 15px; background: rgba(40,40,40,0.4); border-radius: var(--radius-sm); margin: 15px 0; }
+        .eq-machine input { width: 120px; padding: 10px; border-radius: 8px; border: 2px solid rgba(255,255,255,0.15); background: #1a1a1a; color: #f0f0f0; font-family: inherit; font-size: 0.9rem; text-align: center; }
+        .eq-machine input:focus { border-color: #fbbf24; outline: none; }
+        .eq-machine button { padding: 8px 18px; background: #fbbf24; color: #000; border: none; border-radius: 20px; font-weight: 700; cursor: pointer; font-family: inherit; }
+
+        .btn {
+            display: inline-block; padding: 10px 22px; border-radius: 25px; border: none;
+            font-family: inherit; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: 0.2s; text-align: center;
+        }
+        .btn-primary { background: #fbbf24; color: #000; }
+        .btn-primary:active { background: #f59e0b; transform: scale(0.96); }
+        .btn-outline { background: transparent; border: 2px solid #fbbf24; color: #fbbf24; }
+
+        .result-box { text-align: center; padding: 12px; border-radius: var(--radius-sm); margin-top: 10px; font-weight: 700; font-size: 0.95rem; }
+        .result-box.success { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid #22c55e; }
+        .result-box.info { background: rgba(45,212,191,0.15); color: #2dd4bf; border: 1px solid #2dd4bf; }
+
+        .progress-bar { height: 6px; background: rgba(40,40,40,0.6); border-radius: 6px; overflow: hidden; margin: 4px 0 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #fbbf24, #22c55e); width: 0%; transition: width 0.4s; border-radius: 6px; }
+
+        .notepad textarea { width: 100%; height: 100px; background: #1a1a1a; color: #e0e0e0; border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm); padding: 10px; font-family: inherit; resize: vertical; }
+
+        .footer { text-align: center; font-size: 0.75rem; color: #666; padding: 10px; }
+
+        ::-webkit-scrollbar { height: 4px; width: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="particles" id="particlesContainer"></div>
+    <div class="drift-layer"></div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <span class="session-badge">📘 جلسه ۱ از ۲۴</span>
+            <h1 class="glow-text">اصول اولیه حسابداری</h1>
+            <p class="subtitle">مبانی نظری، مفاهیم و چارچوب استاندارد</p>
+            <div class="toolbar">
+                <button id="printBtn">🖨️ چاپ</button>
+                <button id="resetBtn">🔄 بازنشانی</button>
+                <span style="font-size:0.75rem;color:#c0c0c0;">👤 کیانوش کریمی</span>
+            </div>
+        </div>
+
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+        <!-- ۱. انواع دارایی‌ها -->
+        <div class="card">
+            <h2>🏢 انواع دارایی‌ها</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>🏢 دارایی‌های غیرجاری (ثابت)</h3>
+                    <p style="font-size:0.9rem;">دارایی‌هایی که بیش از یک سال عمر مفید دارند و به‌سرعت نقد نمی‌شوند.</p>
+                    <p style="font-size:0.85rem;color:#c0c0c0;">مثال: زمین، ساختمان، ماشین‌آلات، وسایل نقلیه، اثاثیه اداری.</p>
+                </div>
+                <div>
+                    <h3>💵 دارایی‌های جاری</h3>
+                    <p style="font-size:0.9rem;">دارایی‌هایی که ظرف یک سال به وجه نقد تبدیل یا مصرف می‌شوند.</p>
+                    <p style="font-size:0.85rem;color:#c0c0c0;">مثال: وجه نقد، موجودی کالا، حساب‌های دریافتنی، سرمایه‌گذاری‌های کوتاه‌مدت.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ۲. معادله اساسی -->
+        <div class="card">
+            <h2>⚖️ معادله اساسی حسابداری</h2>
+            <div style="text-align:center;font-size:1.6rem;font-weight:900;color:#fbbf24;margin:15px 0;">
+                دارایی‌ها = بدهی‌ها + سرمایه
+            </div>
+            <p style="text-align:center;color:#c0c0c0;">پایه‌ای‌ترین اصل حسابداری؛ ترازنامه بر اساس آن متعادل می‌شود.</p>
+            <div class="eq-machine">
+                <input type="number" id="eqAssets" placeholder="دارایی‌ها">
+                <span>=</span>
+                <input type="number" id="eqLiabilities" placeholder="بدهی‌ها">
+                <span>+</span>
+                <input type="number" id="eqEquity" placeholder="سرمایه">
+                <button id="calcEquation">محاسبه</button>
+            </div>
+            <p id="eqMessage" style="text-align:center;font-weight:700;"></p>
+        </div>
+
+        <!-- ۳. انواع حساب‌ها و ماهیت -->
+        <div class="card">
+            <h2>📋 انواع حساب‌ها و ماهیت</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>دسته حساب</th><th>انگلیسی</th><th>ماهیت</th></tr></thead>
+                    <tbody>
+                        <tr><td>دارایی</td><td>Assets</td><td>بدهکار</td></tr>
+                        <tr><td>بدهی</td><td>Liabilities</td><td>بستانکار</td></tr>
+                        <tr><td>سرمایه</td><td>Owner's Equity</td><td>بستانکار</td></tr>
+                        <tr><td>درآمد</td><td>Revenues</td><td>بستانکار</td></tr>
+                        <tr><td>هزینه</td><td>Expenses</td><td>بدهکار</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size:0.9rem;">🔹 <strong>بدهکار (Debit - Dr)</strong> ← سمت چپ | 🔹 <strong>بستانکار (Credit - Cr)</strong> ← سمت راست</p>
+        </div>
+
+        <!-- ۴. فلش‌کارت‌ها -->
+        <div class="card">
+            <h2>🃏 فلش‌کارت ماهیت حساب‌ها</h2>
+            <div class="flashcard-container" id="flashcardContainer"></div>
+        </div>
+
+        <!-- ۵. جدول تحلیلی ماهیت -->
+        <div class="card">
+            <h2>📊 جدول تحلیلی ماهیت حساب‌ها</h2>
+            <h3>حساب‌های با ماهیت بستانکار</h3>
+            <div class="table-wrapper"><table><thead><tr><th>حساب</th><th>ماهیت</th><th>توضیحات</th></tr></thead><tbody><tr><td>بدهی</td><td>بستانکار</td><td>تعهدات مالی شرکت</td></tr><tr><td>سرمایه</td><td>بستانکار</td><td>حقوق مالکانه صاحب کسب‌وکار</td></tr><tr><td>درآمد</td><td>بستانکار</td><td>عواید حاصل از فعالیت‌ها</td></tr></tbody></table></div>
+            <h3>حساب‌های با ماهیت بدهکار</h3>
+            <div class="table-wrapper"><table><thead><tr><th>حساب</th><th>ماهیت</th><th>توضیحات</th></tr></thead><tbody><tr><td>دارایی</td><td>بدهکار</td><td>منابع اقتصادی تحت کنترل</td></tr><tr><td>هزینه</td><td>بدهکار</td><td>مصرف منابع برای کسب درآمد</td></tr><tr><td>برداشت</td><td>بدهکار</td><td>برداشت صاحب سرمایه</td></tr></tbody></table></div>
+        </div>
+
+        <!-- ۶. دفترچه یادداشت -->
+        <div class="card notepad">
+            <h2>📝 یادداشت‌های من</h2>
+            <textarea id="notes" placeholder="نکات مهم رو اینجا بنویس..."></textarea>
+            <button class="btn btn-primary" id="saveNotes" style="margin-top:8px;">💾 ذخیره</button>
+        </div>
+
+        <!-- ۷. تمرین ترازنامه -->
+        <div class="card">
+            <h2>🧮 تمرین تعاملی ترازنامه</h2>
+            <p style="font-size:0.85rem;">مقادیر را تغییر دهید و ترازنامه جدید را ببینید:</p>
+            <div style="display:grid; gap:10px; max-width:450px; margin:10px auto;">
+                <label>سرمایه اولیه: <input type="number" id="pCapital" value="200000000" class="sim-input"></label>
+                <label>وام دریافتی: <input type="number" id="pLoan" value="55000000" class="sim-input"></label>
+                <label>خرید کالا (نسیه): <input type="number" id="pPurchase" value="30000000" class="sim-input"></label>
+                <label>پرداخت بدهی: <input type="number" id="pPayDebt" value="10000000" class="sim-input"></label>
+                <label>خرید اثاثیه (نقد): <input type="number" id="pFurniture" value="20000000" class="sim-input"></label>
+            </div>
+            <button class="btn btn-primary" id="calcPractice" style="display:block;margin:10px auto;">🧮 محاسبه ترازنامه</button>
+            <div id="practiceResult" style="margin-top:15px;"></div>
+        </div>
+
+        <!-- منابع -->
+        <div class="card">
+            <h2>📚 منابع پیشنهادی</h2>
+            <ul style="padding-right:16px;font-size:0.9rem;color:#c0c0c0;">
+                <li>اصول حسابداری ۱ – دکتر جمشید اسکندری</li>
+                <li>Accounting Principles – Weygandt, Kimmel, Kieso</li>
+                <li>استانداردهای حسابداری ایران – سازمان حسابرسی</li>
+            </ul>
+        </div>
+
+        <div class="card" style="text-align:center;">
+            <p style="font-size:0.85rem;color:#c0c0c0;">🔜 جلسه دوم: <strong>دفتر روزنامه و ثبت رویدادها</strong></p>
+        </div>
+
+        <div class="footer">✍️ تهیه و تنظیم: کیانوش کریمی | 📅 ۱۴۰۴</div>
+    </div>
+
+    <script>
+        // ░░ ذرات پس‌زمینه ░░
+        const pc = document.getElementById('particlesContainer');
+        for (let i = 0; i < 50; i++) {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            const s = Math.random() * 5 + 2;
+            p.style.width = s + 'px';
+            p.style.height = s + 'px';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = Math.random() * 18 + 10 + 's';
+            p.style.animationDelay = Math.random() * 12 + 's';
+            const colors = ['#fbbf24', '#22c55e', '#ef4444', '#2dd4bf', '#f59e0b'];
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            p.style.boxShadow = `0 0 ${s+3}px ${p.style.background}`;
+            pc.appendChild(p);
+        }
+
+        const pf = document.getElementById('progressFill');
+        let done = 0;
+        const total = 3;
+        function upd() { pf.style.width = Math.round((done/total)*100) + '%'; }
+
+        // چاپ
+        document.getElementById('printBtn').addEventListener('click', () => window.print());
+        // بازنشانی
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            document.querySelectorAll('input[type=number]').forEach(i => i.value = i.id.startsWith('p') ? i.defaultValue : '');
+            document.getElementById('eqMessage').innerHTML = '';
+            document.getElementById('practiceResult').innerHTML = '';
+            document.querySelectorAll('.flashcard').forEach(f => f.classList.remove('flipped'));
+            done = 0; upd(); window.scrollTo({top:0,behavior:'smooth'});
+        });
+
+        // فلش‌کارت‌ها
+        const fdata = [
+            { q: 'دارایی', a: 'ماهیت بدهکار' },
+            { q: 'بدهی', a: 'ماهیت بستانکار' },
+            { q: 'سرمایه', a: 'ماهیت بستانکار' },
+            { q: 'درآمد', a: 'ماهیت بستانکار' },
+            { q: 'هزینه', a: 'ماهیت بدهکار' },
+            { q: 'برداشت', a: 'ماهیت بدهکار' },
+        ];
+        const fc = document.getElementById('flashcardContainer');
+        fdata.forEach(fd => {
+            const div = document.createElement('div'); div.className = 'flashcard';
+            div.innerHTML = `<div class="flashcard-inner"><div class="flashcard-front">${fd.q}</div><div class="flashcard-back">${fd.a}</div></div>`;
+            div.addEventListener('click', () => div.classList.toggle('flipped'));
+            fc.appendChild(div);
+        });
+
+        // ماشین معادله
+        document.getElementById('calcEquation').addEventListener('click', () => {
+            const a = parseFloat(document.getElementById('eqAssets').value) || 0;
+            const l = parseFloat(document.getElementById('eqLiabilities').value) || 0;
+            const e = parseFloat(document.getElementById('eqEquity').value) || 0;
+            const msg = document.getElementById('eqMessage');
+            if (a && l && !e) {
+                document.getElementById('eqEquity').value = a - l;
+                msg.innerHTML = `<span class="result-box info">💡 سرمایه = ${(a-l).toLocaleString()}</span>`;
+            } else if (a && e && !l) {
+                document.getElementById('eqLiabilities').value = a - e;
+                msg.innerHTML = `<span class="result-box info">💡 بدهی‌ها = ${(a-e).toLocaleString()}</span>`;
+            } else if (l && e && !a) {
+                document.getElementById('eqAssets').value = l + e;
+                msg.innerHTML = `<span class="result-box info">💡 دارایی‌ها = ${(l+e).toLocaleString()}</span>`;
+            } else if (a === l + e) {
+                msg.innerHTML = `<span class="result-box success">✅ ترازنامه متعادل است!</span>`;
+            } else {
+                msg.innerHTML = `<span class="result-box info">⚠️ دو مقدار را وارد کنید تا سومی محاسبه شود.</span>`;
+            }
+            if (!window._eqDone) { window._eqDone = true; done++; upd(); }
+        });
+
+        // تمرین ترازنامه
+        document.getElementById('calcPractice').addEventListener('click', () => {
+            const cap = parseFloat(document.getElementById('pCapital').value) || 0;
+            const loan = parseFloat(document.getElementById('pLoan').value) || 0;
+            const pur = parseFloat(document.getElementById('pPurchase').value) || 0;
+            const pay = parseFloat(document.getElementById('pPayDebt').value) || 0;
+            const furn = parseFloat(document.getElementById('pFurniture').value) || 0;
+
+            const bank = cap + loan - pay - furn;
+            const totalAssets = bank + pur + furn;
+            const totalLiab = loan;
+            const totalEquity = cap;
+
+            const html = `
+                <div class="table-wrapper"><table>
+                    <tr><th>دارایی‌ها</th><th>مبلغ</th><th>بدهی و سرمایه</th><th>مبلغ</th></tr>
+                    <tr><td>موجودی بانک</td><td>${bank.toLocaleString()}</td><td>وام بانکی</td><td>${loan.toLocaleString()}</td></tr>
+                    <tr><td>موجودی کالا</td><td>${pur.toLocaleString()}</td><td>سرمایه</td><td>${cap.toLocaleString()}</td></tr>
+                    <tr><td>اثاثیه اداری</td><td>${furn.toLocaleString()}</td><td></td><td></td></tr>
+                    <tr class="highlight"><td><strong>جمع دارایی‌ها</strong></td><td><strong>${totalAssets.toLocaleString()}</strong></td><td><strong>جمع بدهی و سرمایه</strong></td><td><strong>${(totalLiab+totalEquity).toLocaleString()}</strong></td></tr>
+                </table></div>
+                <div class="result-box ${totalAssets === totalLiab+totalEquity ? 'success' : 'info'}">${totalAssets === totalLiab+totalEquity ? '✅ ترازنامه متعادل است' : '❌ عدم تعادل'}</div>
+            `;
+            document.getElementById('practiceResult').innerHTML = html;
+            if (!window._prDone) { window._prDone = true; done++; upd(); }
+        });
+
+        // یادداشت‌ها
+        const notes = document.getElementById('notes');
+        if (localStorage.getItem('acctNotes1')) notes.value = localStorage.getItem('acctNotes1');
+        document.getElementById('saveNotes').addEventListener('click', () => {
+            localStorage.setItem('acctNotes1', notes.value);
+            if (!window._noteDone) { window._noteDone = true; done++; upd(); }
+        });
+    </script>
+</body>
+</html>

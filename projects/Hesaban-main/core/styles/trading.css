@@ -1,0 +1,558 @@
+/* ============================================================
+   TRADING.CSS — استایل اختصاصی هاب تریدینگ (Trading Hub)
+   ============================================================ */
+
+/* ===== کانتینر اصلی هاب ترید ===== */
+.trading-hub {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ===== جدول قیمت‌ها (Market Watch) ===== */
+.quotes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 0;
+}
+.quote-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border);
+  align-items: center;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+.quote-item:hover {
+  border-color: rgba(0, 240, 255, 0.2);
+  background: rgba(255, 255, 255, 0.02);
+}
+.quote-item .q-pair {
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.quote-item .q-price {
+  font-weight: 600;
+  font-size: 0.85rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+.quote-item .q-change {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 4px;
+}
+.quote-item .q-change.up {
+  background: rgba(0, 255, 136, 0.1);
+  color: var(--neon-green);
+}
+.quote-item .q-change.down {
+  background: rgba(255, 34, 85, 0.1);
+  color: var(--neon-red);
+}
+
+/* ===== نمودار چارت ===== */
+.chart-container {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-glow);
+}
+.chart-container canvas {
+  width: 100%;
+  height: 100%;
+  min-height: 350px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ===== پنل معامله ===== */
+.trade-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-glow);
+  margin-bottom: 20px;
+}
+.trade-panel label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.trade-panel input[type="number"],
+.trade-panel select {
+  width: 100%;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+.trade-panel input[type="number"]:focus,
+.trade-panel select:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
+}
+.trade-panel .btn-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.trade-panel .btn-row button {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition-bounce);
+  min-width: 60px;
+  text-transform: uppercase;
+}
+.trade-panel .btn-row .btn-buy {
+  background: linear-gradient(135deg, var(--neon-green), #00cc66);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0, 255, 136, 0.2);
+}
+.trade-panel .btn-row .btn-buy:hover {
+  box-shadow: 0 0 50px rgba(0, 255, 136, 0.3);
+  transform: scale(1.02);
+}
+.trade-panel .btn-row .btn-sell {
+  background: linear-gradient(135deg, var(--neon-red), #b71c1c);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(255, 34, 85, 0.2);
+}
+.trade-panel .btn-row .btn-sell:hover {
+  box-shadow: 0 0 50px rgba(255, 34, 85, 0.3);
+  transform: scale(1.02);
+}
+.trade-panel .btn-row .btn-close {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+}
+.trade-panel .btn-row .btn-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.trade-panel .leverage-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  margin-top: 8px;
+}
+.trade-panel .leverage-row input[type="range"] {
+  flex: 1;
+  accent-color: var(--gold);
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  outline: none;
+}
+.trade-panel .leverage-row .lev-val {
+  font-weight: 700;
+  min-width: 40px;
+  color: var(--gold);
+}
+
+/* ===== جعبه پوزیشن ===== */
+.position-box {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px 16px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-glow);
+}
+.position-box .pos-item {
+  display: flex;
+  flex-direction: column;
+}
+.position-box .pos-label {
+  font-size: 0.6rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.position-box .pos-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.position-box .pos-value.green { color: var(--neon-green); }
+.position-box .pos-value.red { color: var(--neon-red); }
+.position-box .pos-value.gold { color: var(--gold); }
+.position-box .pos-value.cyan { color: var(--neon-cyan); }
+.position-box .pos-value.small { font-size: 0.65rem; }
+
+/* ===== پنل خدایان AI (Gods) ===== */
+.gods-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-glow);
+}
+.gods-panel .gods-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.gods-panel .gods-header .god-count { color: var(--gold); }
+.gods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 8px;
+  padding-top: 8px;
+}
+.god-card {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  padding: 8px 4px;
+  border: 1px solid var(--glass-border);
+  text-align: center;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+.god-card:hover {
+  border-color: var(--text-secondary);
+  transform: scale(1.03);
+}
+.god-card .god-icon { font-size: 1.4rem; }
+.god-card .god-name {
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+.god-card .god-status {
+  font-size: 0.45rem;
+  color: var(--text-secondary);
+}
+.god-card .god-status .dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+.god-card .god-status .dot.green { background: var(--neon-green); }
+.god-card .god-status .dot.red { background: var(--neon-red); }
+.god-card .god-status .dot.gold { background: var(--gold); }
+.god-card .god-status .dot.cyan { background: var(--neon-cyan); }
+.god-card .god-pnl {
+  font-size: 0.5rem;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.god-card .god-pnl.green { color: var(--neon-green); }
+.god-card .god-pnl.red { color: var(--neon-red); }
+.god-card .god-pnl.gold { color: var(--gold); }
+
+/* ===== میدان نبرد (Battle Arena) ===== */
+.battle-arena {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-glow);
+}
+.battle-arena .battle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--glass-border);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.battle-arena .battle-header .battle-title {
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 1.1rem;
+}
+.battle-arena .battle-header .battle-mode {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+.battle-arena .battle-header .battle-mode select {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  outline: none;
+  cursor: pointer;
+}
+.battle-arena .battle-field {
+  display: flex;
+  gap: 8px;
+  padding: 12px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.battle-arena .battle-field .fighter {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  border: 1px solid var(--glass-border);
+  text-align: center;
+  min-width: 70px;
+  transition: var(--transition-smooth);
+}
+.battle-arena .battle-field .fighter.active {
+  border-color: var(--gold);
+  background: rgba(255, 215, 0, 0.05);
+}
+.battle-arena .battle-field .fighter .f-icon { font-size: 1.2rem; }
+.battle-arena .battle-field .fighter .f-name {
+  font-size: 0.5rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.battle-arena .battle-field .fighter .f-pnl {
+  font-size: 0.5rem;
+  font-weight: 700;
+}
+.battle-arena .battle-field .fighter .f-pnl.green { color: var(--neon-green); }
+.battle-arena .battle-field .fighter .f-pnl.red { color: var(--neon-red); }
+.battle-arena .battle-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 1px solid var(--glass-border);
+}
+.battle-arena .battle-actions button {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-weight: 600;
+}
+.battle-arena .battle-actions button:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(255, 215, 0, 0.05);
+}
+.battle-arena .battle-log {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  max-height: 80px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+.battle-arena .battle-log .log-entry {
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+.battle-arena .battle-log .log-entry .highlight {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* ===== جدول رهبری ===== */
+.leaderboard-container {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-glow);
+}
+.leaderboard-container .lb-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.leaderboard-container .lb-header .lb-title {
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 0.9rem;
+}
+.lb-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+.lb-item:last-child { border-bottom: none; }
+.lb-item .lb-rank {
+  font-weight: 700;
+  color: var(--gold);
+  min-width: 20px;
+}
+.lb-item .lb-name { flex: 1; padding-left: 8px; }
+.lb-item .lb-pnl { font-weight: 600; }
+.lb-item .lb-pnl.green { color: var(--neon-green); }
+.lb-item .lb-pnl.red { color: var(--neon-red); }
+.lb-item .lb-pnl.gold { color: var(--gold); }
+.lb-item.lb-top1 { background: rgba(255, 215, 0, 0.05); border-radius: var(--radius-sm); }
+.lb-item.lb-top2 { background: rgba(168, 85, 247, 0.05); border-radius: var(--radius-sm); }
+.lb-item.lb-top3 { background: rgba(0, 240, 255, 0.05); border-radius: var(--radius-sm); }
+
+/* ===== تایم‌لاین ===== */
+.timeline-container {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+.timeline-item {
+  display: flex;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  font-size: 0.65rem;
+  align-items: center;
+}
+.timeline-item .tl-time {
+  color: var(--text-muted);
+  min-width: 50px;
+  font-size: 0.55rem;
+}
+.timeline-item .tl-icon { font-size: 0.9rem; }
+.timeline-item .tl-desc { flex: 1; }
+.timeline-item .tl-desc .highlight { color: var(--gold); font-weight: 700; }
+.timeline-item .tl-pnl {
+  font-weight: 700;
+  min-width: 40px;
+  text-align: right;
+}
+.timeline-item .tl-pnl.green { color: var(--neon-green); }
+.timeline-item .tl-pnl.red { color: var(--neon-red); }
+.timeline-item .tl-pnl.gold { color: var(--gold); }
+
+/* ===== تنظیمات ترید ===== */
+.trading-settings .settings-group {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  border-radius: var(--radius-lg);
+  margin-bottom: 20px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-glow);
+}
+.trading-settings .settings-group .settings-group-title {
+  padding: 14px 22px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.trading-settings .settings-group .settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--glass-border);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  min-height: 56px;
+}
+.trading-settings .settings-group .settings-item:last-child { border-bottom: none; }
+.trading-settings .settings-group .settings-item:hover {
+  background: rgba(0, 240, 255, 0.03);
+}
+.trading-settings .settings-group .settings-item .settings-item-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+.trading-settings .settings-group .settings-item .settings-item-left .icon {
+  font-size: 20px;
+  color: var(--text-secondary);
+  width: 30px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.trading-settings .settings-group .settings-item .settings-item-left .label {
+  font-size: 14px;
+  font-weight: 500;
+}
+.trading-settings .settings-group .settings-item .settings-item-left .sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
+.trading-settings .settings-group .settings-item .settings-item-right {
+  color: var(--text-secondary);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.trading-settings .settings-group .settings-item .settings-item-right .toggle-switch {
+  width: 48px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 13px;
+  position: relative;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  border: 1px solid var(--glass-border);
+  flex-shrink: 0;
+}
+.trading-settings .settings-group .settings-item .settings-item-right .toggle-switch.active {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.08);
+}
+.trading-settings .settings-group .settings-item .settings-item-right .toggle-switch .toggle-knob {
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: var(--transition-smooth);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+.trading-settings .settings-group .settings-item .settings-item-right .toggle-switch.active .toggle-knob {
+  left: 24px;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+}

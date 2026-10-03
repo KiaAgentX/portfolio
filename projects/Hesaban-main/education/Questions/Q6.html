@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>حل مسئله حسابداری — گالری بیتا</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0b111e;
+            --bg-secondary: #141c2b;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.15);
+            --text-primary: #f0f4f8;
+            --text-secondary: #b0c0d0;
+            --text-muted: #6a7f94;
+            --green: #22c55e;
+            --green-dark: #16a34a;
+            --green-glow: rgba(34, 197, 94, 0.25);
+            --red: #ef4444;
+            --red-glow: rgba(239, 68, 68, 0.20);
+            --blue: #3b82f6;
+            --blue-glow: rgba(59, 130, 246, 0.25);
+            --gold: #fbbf24;
+            --gold-glow: rgba(251, 191, 36, 0.20);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+            --font: 'Vazirmatn', 'IRANSans', 'Tahoma', 'Segoe UI', sans-serif;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 20px;
+            direction: rtl;
+            line-height: 1.7;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse at 20% 50%, rgba(34, 197, 94, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(239, 68, 68, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 100%, rgba(59, 130, 246, 0.03) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.10);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow), inset 0 0 80px rgba(255, 255, 255, 0.01);
+            padding: 24px 28px 30px;
+            transition: 0.3s ease;
+        }
+        .container:hover {
+            border-color: var(--border-strong);
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            text-align: center;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border-glass);
+            margin-bottom: 22px;
+            position: relative;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--green), var(--gold), var(--red), transparent);
+            border-radius: 2px;
+        }
+        .header h1 {
+            font-size: clamp(1.4rem, 4vw, 2.2rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #4ade80 50%, #f87171 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+        }
+        .header .sub {
+            color: var(--text-secondary);
+            font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+            margin-top: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-glass);
+            display: inline-block;
+            padding: 2px 20px;
+            border-radius: 30px;
+            font-weight: 400;
+        }
+        .header .sub .highlight {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* ===== INFO BANNER ===== */
+        .info-banner {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            padding: 12px 20px;
+            margin-bottom: 24px;
+            font-size: 0.85rem;
+        }
+        .info-banner .item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+        }
+        .info-banner .item strong {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        .info-banner .item .val {
+            color: var(--green);
+            font-weight: 700;
+        }
+        .info-banner .item .val.red {
+            color: var(--red);
+        }
+
+        /* ===== SECTION TITLE ===== */
+        .section-title {
+            font-size: clamp(1.0rem, 2vw, 1.35rem);
+            font-weight: 700;
+            margin: 20px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-glass);
+            padding-bottom: 8px;
+        }
+        .section-title .emoji {
+            font-size: 1.3em;
+        }
+        .section-title .badge {
+            font-size: 0.65rem;
+            background: var(--green);
+            color: #0b111e;
+            padding: 0 12px;
+            border-radius: 30px;
+            font-weight: 800;
+            margin-right: auto;
+            box-shadow: 0 0 20px var(--green-glow);
+        }
+
+        /* ===== TABLE WRAP ===== */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-glass);
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            margin-top: 4px;
+            -webkit-overflow-scrolling: touch;
+            transition: 0.2s;
+        }
+        .table-wrap:hover {
+            border-color: var(--border-strong);
+        }
+        .table-wrap table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            min-width: 480px;
+        }
+        .table-wrap th {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            padding: 10px 12px;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-glass);
+        }
+        .table-wrap td {
+            padding: 8px 12px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            vertical-align: middle;
+            font-size: 0.78rem;
+        }
+        .table-wrap tr:last-child td {
+            border-bottom: none;
+        }
+        .table-wrap tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+        .text-left {
+            text-align: left !important;
+        }
+        .fw-bold {
+            font-weight: 700;
+        }
+        .fw-800 {
+            font-weight: 800;
+        }
+
+        .num {
+            direction: ltr;
+            display: inline-block;
+            font-family: var(--font);
+        }
+        .debit {
+            color: var(--green);
+            font-weight: 700;
+        }
+        .credit {
+            color: var(--red);
+            font-weight: 700;
+        }
+        .gold {
+            color: var(--gold);
+            font-weight: 700;
+        }
+        .balance-pos {
+            color: var(--green);
+            font-weight: 700;
+        }
+        .balance-neg {
+            color: var(--red);
+            font-weight: 700;
+        }
+
+        .total-row {
+            background: rgba(34, 197, 94, 0.06);
+            font-weight: 700;
+            border-top: 2px solid var(--green);
+        }
+        .total-row td {
+            padding: 10px 12px;
+            font-size: 0.85rem;
+        }
+        .total-row.red-border {
+            border-top-color: var(--red);
+            background: rgba(239, 68, 68, 0.06);
+        }
+
+        .empty-msg {
+            text-align: center;
+            padding: 30px 12px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ===== FINANCIAL STATEMENTS GRID ===== */
+        .fs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 4px;
+        }
+        .fs-card {
+            background: rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            transition: 0.25s;
+        }
+        .fs-card:hover {
+            border-color: var(--border-strong);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
+        }
+        .fs-card .fs-header {
+            padding: 10px 16px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #0b111e;
+        }
+        .fs-card .fs-header.revenue {
+            background: var(--green);
+            box-shadow: 0 0 30px var(--green-glow);
+        }
+        .fs-card .fs-header.expense {
+            background: var(--red);
+            box-shadow: 0 0 30px var(--red-glow);
+        }
+        .fs-card .fs-header.assets {
+            background: var(--green);
+            box-shadow: 0 0 30px var(--green-glow);
+        }
+        .fs-card .fs-header.liabilities {
+            background: var(--red);
+            box-shadow: 0 0 30px var(--red-glow);
+        }
+        .fs-card .fs-header.equity {
+            background: var(--gold);
+            box-shadow: 0 0 30px var(--gold-glow);
+            color: #0b111e;
+        }
+        .fs-card table {
+            min-width: unset;
+            font-size: 0.75rem;
+        }
+        .fs-card th {
+            font-size: 0.6rem;
+            padding: 6px 8px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-glass);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .fs-card td {
+            padding: 5px 8px;
+            font-size: 0.72rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+        .fs-card .fs-total {
+            background: rgba(34, 197, 94, 0.06);
+            font-weight: 700;
+            border-top: 2px solid var(--green);
+        }
+        .fs-card .fs-total td {
+            font-size: 0.78rem;
+            padding: 7px 8px;
+        }
+        .fs-card .fs-total.red-border {
+            border-top-color: var(--red);
+            background: rgba(239, 68, 68, 0.06);
+        }
+
+        /* ===== EQUITY NOTE ===== */
+        .eq-note {
+            margin-top: 14px;
+            padding: 14px 20px;
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .eq-note strong {
+            color: var(--text-primary);
+        }
+        .eq-note .green {
+            color: var(--green);
+            font-weight: 700;
+        }
+        .eq-note .red {
+            color: var(--red);
+            font-weight: 700;
+        }
+        .eq-note .gold {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* ===== BALANCE SHEET GRID ===== */
+        .bs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-top: 4px;
+        }
+        .bs-grid .fs-card {
+            height: 100%;
+        }
+
+        /* ===== SUMMARY BAR ===== */
+        .summary-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            justify-content: center;
+            margin-top: 18px;
+            padding: 14px 20px;
+            background: rgba(0, 0, 0, 0.18);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+        }
+        .summary-bar .item {
+            text-align: center;
+            min-width: 80px;
+        }
+        .summary-bar .label {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .summary-bar .value {
+            font-size: clamp(0.8rem, 1.2vw, 1.0rem);
+            font-weight: 700;
+            margin-top: 2px;
+        }
+        .summary-bar .value.green {
+            color: var(--green);
+        }
+        .summary-bar .value.red {
+            color: var(--red);
+        }
+        .summary-bar .value.gold {
+            color: var(--gold);
+        }
+
+        .balanced-badge {
+            display: inline-block;
+            background: rgba(34, 197, 94, 0.10);
+            color: var(--green);
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.78rem;
+            border: 1px solid var(--green);
+            box-shadow: 0 0 30px var(--green-glow);
+            margin-top: 6px;
+        }
+
+        /* ===== NOTE ===== */
+        .footnote {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.10);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-glass);
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        .footnote strong {
+            color: var(--text-secondary);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .bs-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .bs-grid .fs-card:last-child {
+                grid-column: span 2;
+            }
+            .fs-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 18px 16px 22px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 12px 10px 16px;
+                border-radius: 12px;
+            }
+            .header h1 {
+                font-size: 1.1rem;
+            }
+            .header .sub {
+                font-size: 0.6rem;
+                padding: 1px 12px;
+            }
+            .table-wrap table {
+                font-size: 0.65rem;
+                min-width: 280px;
+            }
+            .table-wrap th {
+                font-size: 0.55rem;
+                padding: 6px 6px;
+            }
+            .table-wrap td {
+                font-size: 0.62rem;
+                padding: 5px 6px;
+            }
+            .bs-grid {
+                grid-template-columns: 1fr;
+            }
+            .bs-grid .fs-card:last-child {
+                grid-column: span 1;
+            }
+            .info-banner {
+                font-size: 0.7rem;
+                padding: 8px 12px;
+                gap: 6px 12px;
+            }
+            .section-title {
+                font-size: 0.95rem;
+                margin: 14px 0 8px;
+            }
+            .fs-card .fs-header {
+                font-size: 0.75rem;
+                padding: 7px 10px;
+            }
+            .fs-card td {
+                font-size: 0.62rem;
+                padding: 4px 6px;
+            }
+            .fs-card .fs-total td {
+                font-size: 0.68rem;
+                padding: 5px 6px;
+            }
+            .summary-bar {
+                padding: 10px 14px;
+                gap: 6px 12px;
+            }
+            .summary-bar .value {
+                font-size: 0.75rem;
+            }
+            .eq-note {
+                font-size: 0.7rem;
+                padding: 10px 14px;
+            }
+            .footnote {
+                font-size: 0.6rem;
+                padding: 8px 10px;
+            }
+            .balanced-badge {
+                font-size: 0.65rem;
+                padding: 4px 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 8px 6px 12px;
+                border-radius: 10px;
+            }
+            .header h1 {
+                font-size: 0.9rem;
+            }
+            .table-wrap table {
+                font-size: 0.55rem;
+                min-width: 200px;
+            }
+            .table-wrap th {
+                font-size: 0.48rem;
+                padding: 4px 4px;
+            }
+            .table-wrap td {
+                font-size: 0.52rem;
+                padding: 3px 4px;
+            }
+            .section-title {
+                font-size: 0.8rem;
+            }
+            .fs-card .fs-header {
+                font-size: 0.65rem;
+                padding: 5px 8px;
+            }
+            .fs-card td {
+                font-size: 0.55rem;
+                padding: 3px 4px;
+            }
+            .fs-card .fs-total td {
+                font-size: 0.6rem;
+                padding: 4px 4px;
+            }
+            .info-banner {
+                font-size: 0.6rem;
+                padding: 6px 8px;
+            }
+            .summary-bar .value {
+                font-size: 0.65rem;
+            }
+            .eq-note {
+                font-size: 0.6rem;
+                padding: 8px 10px;
+            }
+            .footnote {
+                font-size: 0.5rem;
+                padding: 6px 8px;
+            }
+        }
+
+        /* ===== PRINT ===== */
+        @media print {
+            body {
+                background: #0b111e;
+                padding: 0;
+                font-size: 8px;
+            }
+            .container {
+                box-shadow: none;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                padding: 8px;
+                backdrop-filter: none;
+                background: #0b111e;
+            }
+            .fs-card {
+                break-inside: avoid;
+                background: rgba(255, 255, 255, 0.02);
+            }
+            .table-wrap {
+                break-inside: avoid;
+            }
+            .info-banner {
+                break-inside: avoid;
+            }
+            .summary-bar {
+                break-inside: avoid;
+            }
+            .eq-note {
+                break-inside: avoid;
+            }
+            .footnote {
+                break-inside: avoid;
+            }
+            .header .sub {
+                background: rgba(255, 255, 255, 0.03);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <div class="header">
+            <h1>📒 صورت‌های مالی گالری بیتا</h1>
+            <div class="sub">
+                شهریور ماه <span class="highlight">۱۴۰۱</span> &nbsp;|&nbsp; تاریخ گزارش: ۳۱ شهریور ۱۴۰۱
+            </div>
+        </div>
+
+        <!-- ===== INFO BANNER ===== -->
+        <div class="info-banner">
+            <div class="item">🏛️ <strong>گالری بیتا</strong></div>
+            <div class="item">👤 <strong>خانم امیری</strong> (مالک)</div>
+            <div class="item">💰 سرمایه اولیه: <span class="val">۱۲۰,۰۰۰,۰۰۰</span> ریال</div>
+            <div class="item">📅 شروع فعالیت: ۱ شهریور ۱۴۰۱</div>
+            <div class="item">🏦 برداشت شخصی: <span class="val red">۱۴,۰۰۰,۰۰۰</span> ریال</div>
+        </div>
+
+        <!-- ===== 1. INCOME STATEMENT ===== -->
+        <div class="section-title">
+            <span class="emoji">📈</span> صورت سود و زیان
+            <span class="badge">شهریور ۱۴۰۱</span>
+        </div>
+
+        <div class="fs-grid">
+            <!-- Revenues -->
+            <div class="fs-card">
+                <div class="fs-header revenue">📊 درآمدها</div>
+                <table>
+                    <thead>
+                        <tr><th style="text-align:right;">شرح</th><th>مبلغ (ریال)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="text-right">درآمد خدمات</td><td class="debit">۶۵,۰۰۰,۰۰۰</td></tr>
+                        <tr class="fs-total"><td class="text-right fw-bold">جمع درآمدها</td><td class="debit fw-bold">۶۵,۰۰۰,۰۰۰</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Expenses -->
+            <div class="fs-card">
+                <div class="fs-header expense">📉 هزینه‌ها</div>
+                <table>
+                    <thead>
+                        <tr><th style="text-align:right;">شرح</th><th>مبلغ (ریال)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="text-right">هزینه تبلیغات</td><td class="credit">۵,۰۰۰,۰۰۰</td></tr>
+                        <tr><td class="text-right">هزینه بهره</td><td class="credit">۱۶,۰۰۰,۰۰۰</td></tr>
+                        <tr><td class="text-right">هزینه اجاره</td><td class="credit">۲,۰۰۰,۰۰۰</td></tr>
+                        <tr><td class="text-right">هزینه آب، برق و گاز</td><td class="credit">۱,۵۰۰,۰۰۰</td></tr>
+                        <tr class="fs-total red-border"><td class="text-right fw-bold">جمع هزینه‌ها</td><td class="credit fw-bold">۲۴,۵۰۰,۰۰۰</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Net Income -->
+        <div class="eq-note">
+            <strong>📋 نتیجه عملیات:</strong>
+            درآمدها (۶۵,۰۰۰,۰۰۰) − هزینه‌ها (۲۴,۵۰۰,۰۰۰) =
+            <span class="green fw-800">سود خالص ۴۰,۵۰۰,۰۰۰ ریال</span>
+        </div>
+
+        <!-- ===== 2. STATEMENT OF CHANGES IN EQUITY ===== -->
+        <div class="section-title">
+            <span class="emoji">📋</span> صورت تغییرات در حقوق مالکانه
+            <span class="badge">شهریور ۱۴۰۱</span>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:right;">شرح</th>
+                        <th>مبلغ (ریال)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-right fw-bold">سرمایه اولیه (۱ شهریور ۱۴۰۱)</td>
+                        <td class="debit fw-bold">۱۲۰,۰۰۰,۰۰۰</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">➕ سود خالص شهریور</td>
+                        <td class="debit">۴۰,۵۰۰,۰۰۰</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">➖ برداشت شخصی (خانم امیری)</td>
+                        <td class="credit">(۱۴,۰۰۰,۰۰۰)</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td class="text-right fw-bold">سرمایه پایان دوره (۳۱ شهریور ۱۴۰۱)</td>
+                        <td class="debit fw-bold">۱۴۶,۵۰۰,۰۰۰</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== 3. BALANCE SHEET ===== -->
+        <div class="section-title">
+            <span class="emoji">📊</span> ترازنامه
+            <span class="badge">۳۱ شهریور ۱۴۰۱</span>
+        </div>
+
+        <div class="bs-grid">
+            <!-- Assets -->
+            <div class="fs-card">
+                <div class="fs-header assets">💰 دارایی‌ها</div>
+                <table>
+                    <thead>
+                        <tr><th style="text-align:right;">حساب</th><th>مبلغ (ریال)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="text-right">موجودی نقد</td><td class="balance-pos">۱۰۱,۵۰۰,۰۰۰</td></tr>
+                        <tr><td class="text-right">حساب‌های دریافتنی</td><td class="balance-pos">۲۸,۰۰۰,۰۰۰</td></tr>
+                        <tr><td class="text-right">ملزومات</td><td class="balance-pos">۲۰,۰۰۰,۰۰۰</td></tr>
+                        <tr><td class="text-right">تجهیزات</td><td class="balance-pos">۱۰۰,۰۰۰,۰۰۰</td></tr>
+                        <tr class="fs-total"><td class="text-right fw-bold">جمع دارایی‌ها</td><td class="balance-pos fw-bold">۲۴۹,۵۰۰,۰۰۰</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Liabilities -->
+            <div class="fs-card">
+                <div class="fs-header liabilities">📋 بدهی‌ها</div>
+                <table>
+                    <thead>
+                        <tr><th style="text-align:right;">حساب</th><th>مبلغ (ریال)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="text-right">حساب‌های پرداختی</td><td class="balance-neg">۹۰,۰۰۰,۰۰۰</td></tr>
+                        <tr><td class="text-right">وام پرداختی</td><td class="balance-neg">۱۲,۰۰۰,۰۰۰</td></tr>
+                        <tr class="fs-total red-border"><td class="text-right fw-bold">جمع بدهی‌ها</td><td class="balance-neg fw-bold">۱۰۲,۰۰۰,۰۰۰</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Equity -->
+            <div class="fs-card">
+                <div class="fs-header equity">👤 حقوق مالکانه</div>
+                <table>
+                    <thead>
+                        <tr><th style="text-align:right;">حساب</th><th>مبلغ (ریال)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="text-right fw-bold">سرمایه (خانم امیری)</td><td class="balance-pos fw-bold">۱۴۶,۵۰۰,۰۰۰</td></tr>
+                        <tr class="fs-total"><td class="text-right fw-bold">جمع حقوق مالکانه</td><td class="balance-pos fw-bold">۱۴۶,۵۰۰,۰۰۰</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== BALANCE SHEET SUMMARY ===== -->
+        <div class="summary-bar">
+            <div class="item">
+                <div class="label">جمع دارایی‌ها</div>
+                <div class="value green">۲۴۹,۵۰۰,۰۰۰ ریال</div>
+            </div>
+            <div class="item">
+                <div class="label">جمع بدهی‌ها</div>
+                <div class="value red">۱۰۲,۰۰۰,۰۰۰ ریال</div>
+            </div>
+            <div class="item">
+                <div class="label">جمع حقوق مالکانه</div>
+                <div class="value gold">۱۴۶,۵۰۰,۰۰۰ ریال</div>
+            </div>
+            <div class="item" style="min-width:120px;">
+                <div class="label">وضعیت معادله</div>
+                <div class="value green">✅ متوازن</div>
+            </div>
+        </div>
+
+        <!-- ===== EQUATION NOTE ===== -->
+        <div class="eq-note">
+            <strong>📐 معادله حسابداری:</strong>
+            دارایی‌ها (۲۴۹,۵۰۰,۰۰۰) = بدهی‌ها (۱۰۲,۰۰۰,۰۰۰) + حقوق مالکانه (۱۴۶,۵۰۰,۰۰۰)
+            &nbsp;|&nbsp; <span class="green">✅ معادله برقرار است.</span>
+            <br>
+            <small style="color:var(--text-muted);">
+                حقوق مالکانه = سرمایه اولیه + سود خالص − برداشت شخصی
+                = ۱۲۰,۰۰۰,۰۰۰ + ۴۰,۵۰۰,۰۰۰ − ۱۴,۰۰۰,۰۰۰ = ۱۴۶,۵۰۰,۰۰۰ ریال
+            </small>
+        </div>
+
+        <!-- ===== FOOTNOTE ===== -->
+        <div class="footnote">
+            <strong>یادداشت:</strong> کلیه مبالغ به ریال می‌باشد. گالری بیتا در تاریخ ۱ شهریور ۱۴۰۱ با سرمایه ۱۲۰,۰۰۰,۰۰۰ ریال توسط خانم امیری تأسیس شده است.
+            در طول شهریور ماه هیچ سرمایه‌گذاری مجدد انجام نشده و مبلغ ۱۴,۰۰۰,۰۰۰ ریال بابت برداشت شخصی از محل نقدینگی برداشت شده است.
+        </div>
+
+        <!-- ===== BALANCED BADGE ===== -->
+        <div style="text-align:center;margin-top:16px;">
+            <span class="balanced-badge">✅ ترازنامه متوازن — دارایی = بدهی + حقوق مالکانه</span>
+        </div>
+
+    </div>
+
+</body>
+</html>

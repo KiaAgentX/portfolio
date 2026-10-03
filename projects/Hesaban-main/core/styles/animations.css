@@ -1,0 +1,59 @@
+/* ===== گوی‌های شناور (Orbs) ===== */
+.orb { position:fixed; border-radius:50%; filter:blur(80px) brightness(1.2); animation:floatOrb 12s infinite alternate ease-in-out; z-index:-1; mix-blend-mode:screen; }
+.orb1 { width:350px; height:350px; background:var(--neon-cyan); top:-10%; left:10%; animation-duration:14s; }
+.orb2 { width:400px; height:400px; background:var(--neon-purple); bottom:-10%; right:5%; animation-duration:16s; }
+.orb3 { width:250px; height:250px; background:var(--gold); top:60%; left:20%; animation-duration:12s; }
+@keyframes floatOrb { 0% { transform:translate(0,0) scale(0.8); } 33% { transform:translate(40px,-50px) scale(1.1); } 66% { transform:translate(-20px,30px) scale(0.9); } 100% { transform:translate(10px,-20px) scale(1); } }
+
+/* ===== مکعب سه‌بعدی شفاف و شیشه‌ای (الهام از v1.1) ===== */
+.cube {
+    width: 250px;
+    height: 250px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: rotateCube 25s linear infinite;
+    margin: 0 auto;
+}
+@keyframes rotateCube {
+    0% { transform: rotateX(-15deg) rotateY(0deg); }
+    100% { transform: rotateX(-15deg) rotateY(360deg); }
+}
+.face {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(10, 10, 18, 0.6);
+    backdrop-filter: blur(12px) saturate(1.1);
+    box-shadow: inset 0 0 40px rgba(0, 240, 255, 0.1), 0 0 20px rgba(0, 240, 255, 0.05);
+    border-radius: 24px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    place-items: center;
+    font-size: 1.6rem;
+    font-weight: 900;
+    font-family: 'Courier New', monospace;
+    padding: 10px;
+}
+.front  { transform: translateZ(125px); }
+.back   { transform: rotateY(180deg) translateZ(125px); }
+.left   { transform: rotateY(-90deg) translateZ(125px); }
+.right  { transform: rotateY(90deg) translateZ(125px); }
+.top    { transform: rotateX(90deg) translateZ(125px); }
+.bottom { transform: rotateX(-90deg) translateZ(125px); }
+
+/* ===== افکت حرکت نمادها روی وجه‌ها ===== */
+.face span {
+    transition: all 0.3s var(--transition-smooth);
+    text-shadow: 0 0 15px currentColor;
+}
+.face:hover span {
+    transform: scale(1.3);
+    filter: drop-shadow(0 0 25px currentColor);
+    opacity: 0.8;
+}
+
+/* ===== انیمیشن ورود کارت‌ها ===== */
+.card3d { animation:fadeUp 0.6s ease-out both; }
+@keyframes fadeUp { 0% { opacity:0; transform:translateY(25px); } 100% { opacity:1; transform:translateY(0); } }

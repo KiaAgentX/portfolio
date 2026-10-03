@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>انبارک | مدیریت هوشمند انبار</title>
+    <style>
+        :root {
+            --bg: #02010a;
+            --surface: rgba(17, 15, 28, 0.75);
+            --surface2: rgba(30, 25, 50, 0.55);
+            --text: #f1f5f9;
+            --text2: #94a3b8;
+            --primary: #06b6d4;
+            --primary-glow: #22d3ee;
+            --gold: #f59e0b;
+            --danger: #ef4444;
+            --danger-glow: #f87171;
+            --success: #10b981;
+            --success-glow: #34d399;
+            --warning: #f59e0b;
+            --border: rgba(255, 255, 255, 0.07);
+            --glass-blur: blur(22px);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow: 0 8px 32px rgba(0,0,0,0.5);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.6);
+            --radius-sm: 12px;
+            --radius: 18px;
+            --radius-lg: 24px;
+            --font: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+            direction: rtl;
+            scroll-behavior: smooth;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font);
+            background: #02010a;
+            color: var(--text);
+            line-height: 1.75;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 18px;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .galaxy {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 25% 20%, #061e24 0%, transparent 55%),
+                radial-gradient(ellipse at 70% 70%, #100520 0%, transparent 50%);
+            z-index: 0; pointer-events: none;
+        }
+        .stars-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .nebula {
+            position: fixed; top: -8%; right: -6%; width: 340px; height: 340px;
+            background: radial-gradient(circle, rgba(6,182,212,0.10) 0%, transparent 70%);
+            border-radius: 50%; filter: blur(55px); animation: nebulaDrift 20s ease-in-out infinite;
+            pointer-events: none; z-index: 0;
+        }
+        @keyframes nebulaDrift {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(-20px,15px) scale(1.1); }
+            66% { transform: translate(25px,-18px) scale(0.9); }
+        }
+        .grid-pattern {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background-image: linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+            background-size: 45px 45px; pointer-events:none; z-index:0;
+        }
+
+        .container { position: relative; z-index: 1; max-width: 750px; width: 100%; display: flex; flex-direction: column; gap: 18px; }
+
+        .hero {
+            background: rgba(17,15,28,0.65); backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 24px 20px; text-align: center; box-shadow: var(--shadow-lg);
+        }
+        .hero h1 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 900; color: var(--primary-glow); }
+        .stats-row { display: flex; justify-content: center; gap: 20px; margin-top: 12px; flex-wrap: wrap; }
+        .stat-item { text-align: center; }
+        .stat-val { font-size: 1.4rem; font-weight: 900; }
+        .stat-val.cyan { color: var(--primary-glow); }
+        .stat-val.red { color: var(--danger); }
+        .stat-val.green { color: var(--success); }
+        .stat-val.gold { color: var(--gold); }
+        .stat-lbl { font-size: 0.75rem; color: var(--text2); }
+
+        .donut-container { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 12px; flex-wrap: wrap; }
+        .donut { width: 110px; height: 110px; border-radius: 50%; background: conic-gradient(var(--success) 0deg, var(--warning) 0deg, var(--danger) 0deg); }
+
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; }
+        .filter-bar input, .filter-bar select {
+            flex: 2; min-width: 120px; padding: 12px 16px; border-radius: 30px;
+            border: 2px solid var(--border); background: rgba(17,15,28,0.55);
+            backdrop-filter: blur(10px); color: #fff; font-family: inherit; font-size: 0.9rem;
+        }
+        .filter-bar input:focus, .filter-bar select:focus { border-color: var(--primary); outline: none; }
+        .btn {
+            padding: 11px 18px; border-radius: 30px; border: none; font-family: inherit;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease;
+            display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+        }
+        .btn.primary { background: var(--primary); color: #000; }
+        .btn.outline { background: transparent; border: 2px solid var(--primary); color: var(--primary-glow); }
+        .btn.warning { background: var(--warning); color: #000; }
+        .btn.back {
+            background: transparent; border: 2px solid var(--primary); color: var(--primary-glow);
+            text-decoration: none; width: fit-content; margin-top: 4px;
+        }
+        .btn:active { transform: scale(0.96); }
+
+        .product-grid { display: grid; gap: 10px; }
+        .product-card {
+            background: rgba(17,15,28,0.55); backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 16px; display: flex; align-items: center; gap: 12px;
+            box-shadow: var(--shadow-sm); transition: all 0.2s ease; flex-wrap: wrap;
+        }
+        .product-card.low-stock { border-right: 4px solid var(--danger); }
+        .product-card.out-of-stock { border-right: 4px solid #7f1d1d; opacity: 0.7; }
+        .prod-info { flex: 1; min-width: 130px; cursor: pointer; }
+        .prod-name { font-weight: 700; font-size: 1.05rem; display: flex; align-items: center; gap: 6px; }
+        .prod-category { font-size: 0.75rem; color: var(--primary-glow); background: rgba(6,182,212,0.15); padding: 2px 8px; border-radius: 10px; }
+        .prod-stock { font-size: 0.9rem; margin-top: 4px; }
+        .stock-ok { color: var(--success); }
+        .stock-low { color: var(--danger); font-weight: 700; }
+        .prod-meta { font-size: 0.8rem; color: var(--text2); margin-top: 2px; }
+        .actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .act-btn {
+            width: 40px; height: 40px; border-radius: 50%; border: none;
+            font-size: 1.3rem; font-weight: 700; color: #fff; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .act-btn.in { background: var(--success); }
+        .act-btn.in:hover { background: var(--success-glow); box-shadow: 0 0 15px rgba(16,185,129,0.4); }
+        .act-btn.out { background: var(--danger); }
+        .act-btn.out:hover { background: var(--danger-glow); box-shadow: 0 0 15px rgba(239,68,68,0.4); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.78); backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal {
+            background: rgba(24,22,36,0.95); backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 24px 20px; width: 92%; max-width: 460px; box-shadow: var(--shadow-lg);
+            max-height: 85vh; overflow-y: auto;
+        }
+        .modal h3 { color: var(--primary-glow); margin-bottom: 14px; text-align: center; font-size: 1.15rem; }
+        .form-row { margin: 8px 0; text-align: right; }
+        .form-row label { display: block; margin-bottom: 5px; color: var(--text2); font-size: 0.85rem; }
+        .form-row input { width: 100%; padding: 13px 14px; border-radius: var(--radius-sm); border: 2px solid var(--border); background: #0f0c1a; color: #fff; font-family: inherit; font-size: 0.9rem; }
+        .form-row input:focus { border-color: var(--primary); outline: none; }
+        .btn-row { display: flex; gap: 10px; margin-top: 16px; }
+        .btn-row .btn { flex: 1; justify-content: center; }
+
+        .history-item { background: rgba(30,25,50,0.5); padding: 10px; border-radius: var(--radius-sm); margin: 6px 0; font-size: 0.85rem; }
+        .toast {
+            position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--success);
+            color: #fff; padding: 15px 20px; border-radius: 30px; text-align: center;
+            font-weight: 700; z-index: 300; opacity: 0; transform: translateY(20px);
+            transition: all 0.3s ease; pointer-events: none;
+            box-shadow: 0 10px 30px rgba(16,185,129,0.4);
+            display: flex; justify-content: space-between; align-items: center; gap: 10px;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .toast.error { background: var(--danger); }
+        .toast .undo-btn {
+            background: rgba(255,255,255,0.2); border: none; color: #fff;
+            font-weight: 700; padding: 6px 14px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; font-size: 0.85rem;
+        }
+        .empty-state { text-align: center; color: var(--text2); padding: 40px 20px; }
+
+        @media (max-width: 400px) {
+            .act-btn { width: 36px; height: 36px; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="galaxy"></div>
+    <canvas class="stars-canvas" id="starsCanvas"></canvas>
+    <div class="nebula"></div>
+    <div class="grid-pattern"></div>
+
+    <div class="container">
+        <div class="hero">
+            <h1>📦 انبارک</h1>
+            <div class="stats-row">
+                <div class="stat-item"><div class="stat-val cyan" id="totalProducts">۰</div><div class="stat-lbl">کالا</div></div>
+                <div class="stat-item"><div class="stat-val red" id="lowStockCount">۰</div><div class="stat-lbl">هشدار</div></div>
+                <div class="stat-item"><div class="stat-val green" id="totalValue">۰</div><div class="stat-lbl">ارزش موجودی</div></div>
+                <div class="stat-item"><div class="stat-val gold" id="totalProfit">۰</div><div class="stat-lbl">سود کل</div></div>
+            </div>
+            <div class="donut-container">
+                <div class="donut" id="donutChart"></div>
+                <div style="font-size:0.85rem;">
+                    <div>🟢 کافی: <strong id="okCount">۰</strong></div>
+                    <div>🟡 کم: <strong id="warnCount">۰</strong></div>
+                    <div>🔴 اتمام: <strong id="outCount">۰</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+            <input type="text" id="searchInput" placeholder="🔍 جستجوی کالا یا دسته...">
+            <select id="filterStatus">
+                <option value="all">📋 همه</option>
+                <option value="low">🔴 موجودی کم/اتمام</option>
+                <option value="ok">🟢 موجودی کافی</option>
+            </select>
+            <button class="btn primary" id="btnAddProduct">➕ کالای جدید</button>
+            <button class="btn outline" id="btnExportCSV">📥 CSV</button>
+            <button class="btn warning" id="btnReorder">📋 سفارش خرید</button>
+        </div>
+
+        <div class="product-grid" id="productList"><div class="empty-state">📦 کالایی ثبت نشده است.</div></div>
+        <a href="../index.html" class="btn back">🏠 بازگشت به داشبورد</a>
+    </div>
+
+    <!-- MODAL: Add/Edit Product -->
+    <div class="modal-overlay" id="modalProduct">
+        <div class="modal">
+            <h3 id="modalTitle">➕ کالای جدید</h3>
+            <div class="form-row"><label>نام کالا:</label><input type="text" id="prodName"></div>
+            <div class="form-row"><label>دسته‌بندی:</label><input type="text" id="prodCategory" placeholder="مثلاً لبنیات"></div>
+            <div class="form-row"><label>موجودی فعلی:</label><input type="number" id="prodStock"></div>
+            <div class="form-row"><label>حداقل موجودی هشدار:</label><input type="number" id="prodMinStock" value="5"></div>
+            <div class="form-row"><label>قیمت خرید (تومان):</label><input type="number" id="prodBuyPrice"></div>
+            <div class="form-row"><label>قیمت فروش (تومان):</label><input type="number" id="prodSellPrice"></div>
+            <div class="btn-row"><button class="btn primary" id="saveProduct">💾 ذخیره</button><button class="btn outline" onclick="closeModal('modalProduct')">انصراف</button></div>
+        </div>
+    </div>
+
+    <!-- MODAL: Transaction -->
+    <div class="modal-overlay" id="modalTransaction">
+        <div class="modal">
+            <h3 id="txTitle">ورود/خروج کالا</h3>
+            <p id="txProductName" style="color:var(--gold);text-align:center;margin-bottom:10px;"></p>
+            <div class="form-row"><label>تعداد:</label><input type="number" id="txQty"></div>
+            <div class="form-row"><label>یادداشت:</label><input type="text" id="txNote" placeholder="اختیاری"></div>
+            <div class="btn-row"><button class="btn primary" id="saveTx">✅ ثبت</button><button class="btn outline" onclick="closeModal('modalTransaction')">انصراف</button></div>
+        </div>
+    </div>
+
+    <!-- MODAL: History -->
+    <div class="modal-overlay" id="modalHistory">
+        <div class="modal"><h3>📋 تاریخچه</h3><div id="historyContent"></div><button class="btn outline" onclick="closeModal('modalHistory')" style="width:100%;margin-top:12px;">بستن</button></div>
+    </div>
+
+    <div class="toast" id="toast"><span id="toastMsg"></span><button class="undo-btn" id="undoBtn" style="display:none;">↩ برگشت</button></div>
+
+    <script>
+        (function() {
+            const STORAGE = 'anbarak_products_v2_final';
+            let products = [];
+            let editingId = null, currentTxId = null, currentTxType = null, lastAction = null;
+            const fmt = v => (v||0).toLocaleString()+' تومان';
+            const toastEl = document.getElementById('toast'), toastMsg = document.getElementById('toastMsg'), undoBtn = document.getElementById('undoBtn');
+            function showToast(msg, isError=false, undoFn=null) {
+                toastMsg.textContent = msg; toastEl.className = 'toast ' + (isError?'error':'') + ' show';
+                if (undoFn) { undoBtn.style.display = 'block'; undoBtn.onclick = () => { undoFn(); toastEl.classList.remove('show'); }; }
+                else undoBtn.style.display = 'none';
+                setTimeout(() => toastEl.classList.remove('show'), 4000);
+            }
+            function save() { localStorage.setItem(STORAGE, JSON.stringify(products)); }
+            function load() { products = JSON.parse(localStorage.getItem(STORAGE) || '[]'); }
+            function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+            // Stars
+            const sc = document.getElementById('starsCanvas'), sctx = sc.getContext('2d');
+            sc.width = window.innerWidth; sc.height = window.innerHeight;
+            const stars = Array.from({length:200},()=>({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*1.6+0.3,a:Math.random(),sp:Math.random()*0.016+0.004}));
+            (function d(){sctx.clearRect(0,0,sc.width,sc.height);stars.forEach(s=>{s.a+=s.sp;if(s.a>1||s.a<0.07)s.sp*=-1;sctx.beginPath();sctx.arc(s.x,s.y,s.r,0,Math.PI*2);sctx.fillStyle=`rgba(255,255,255,${Math.abs(s.a)})`;sctx.fill();});requestAnimationFrame(d);})();
+
+            function render() {
+                const search = (document.getElementById('searchInput')?.value||'').trim().toLowerCase();
+                const filter = document.getElementById('filterStatus')?.value||'all';
+                let filtered = products.filter(p => p.name.toLowerCase().includes(search) || (p.category||'').toLowerCase().includes(search));
+                if (filter === 'low') filtered = filtered.filter(p => p.stock <= (p.minStock||5));
+                else if (filter === 'ok') filtered = filtered.filter(p => p.stock > (p.minStock||5));
+
+                const list = document.getElementById('productList');
+                if (filtered.length === 0) { list.innerHTML = '<div class="empty-state">📦 کالایی یافت نشد.</div>'; }
+                else {
+                    list.innerHTML = filtered.map(p => {
+                        const profit = (p.sellPrice||0) - (p.buyPrice||0);
+                        const totalProfit = profit * (p.soldQty||0);
+                        const lowClass = p.stock <= 0 ? 'out-of-stock' : (p.stock <= (p.minStock||5) ? 'low-stock' : '');
+                        const stockClass = p.stock <= 0 ? 'stock-low' : (p.stock <= (p.minStock||5) ? 'stock-low' : 'stock-ok');
+                        return `<div class="product-card ${lowClass}">
+                            <div class="prod-info" data-id="${p.id}">
+                                <div class="prod-name">${p.name} ${p.category ? '<span class="prod-category">'+p.category+'</span>' : ''}</div>
+                                <div class="prod-stock ${stockClass}">📦 موجودی: ${p.stock} عدد ${p.stock<=(p.minStock||5)?(p.stock<=0?'⚠️ اتمام':'⚠️ کم'):''}</div>
+                                <div class="prod-meta">💰 فروش: ${fmt(p.sellPrice||0)} | سود واحد: ${fmt(profit)} | سود کل: ${fmt(totalProfit)}</div>
+                            </div>
+                            <div class="actions">
+                                <button class="act-btn in" data-id="${p.id}" data-type="in">+</button>
+                                <button class="act-btn out" data-id="${p.id}" data-type="out">−</button>
+                            </div>
+                        </div>`;
+                    }).join('');
+                }
+                document.getElementById('totalProducts').textContent = products.length;
+                document.getElementById('lowStockCount').textContent = products.filter(p => p.stock <= (p.minStock||5)).length;
+                document.getElementById('totalValue').textContent = fmt(products.reduce((a,p)=>a+p.stock*(p.buyPrice||0),0));
+                document.getElementById('totalProfit').textContent = fmt(products.reduce((a,p)=>a+((p.sellPrice||0)-(p.buyPrice||0))*(p.soldQty||0),0));
+                const ok = products.filter(p => p.stock > (p.minStock||5)).length;
+                const low = products.filter(p => p.stock > 0 && p.stock <= (p.minStock||5)).length;
+                const out = products.filter(p => p.stock <= 0).length;
+                document.getElementById('okCount').textContent = ok;
+                document.getElementById('warnCount').textContent = low;
+                document.getElementById('outCount').textContent = out;
+                const total = ok+low+out||1;
+                document.getElementById('donutChart').style.background = `conic-gradient(var(--success) 0deg ${(ok/total)*360}deg, var(--warning) ${(ok/total)*360}deg ${((ok+low)/total)*360}deg, var(--danger) ${((ok+low)/total)*360}deg 360deg)`;
+            }
+
+            document.getElementById('btnAddProduct').addEventListener('click', () => {
+                editingId = null;
+                document.getElementById('modalTitle').textContent = '➕ کالای جدید';
+                ['prodName','prodCategory','prodStock','prodMinStock','prodBuyPrice','prodSellPrice'].forEach(id => document.getElementById(id).value = '');
+                document.getElementById('prodMinStock').value = '5';
+                document.getElementById('modalProduct').classList.add('active');
+            });
+
+            document.getElementById('saveProduct').addEventListener('click', () => {
+                const name = document.getElementById('prodName').value.trim();
+                if (!name) return showToast('نام کالا الزامی است.', true);
+                const data = {
+                    id: editingId || Date.now(),
+                    name,
+                    category: document.getElementById('prodCategory').value.trim(),
+                    stock: parseInt(document.getElementById('prodStock').value) || 0,
+                    minStock: parseInt(document.getElementById('prodMinStock').value) || 5,
+                    buyPrice: parseInt(document.getElementById('prodBuyPrice').value) || 0,
+                    sellPrice: parseInt(document.getElementById('prodSellPrice').value) || 0,
+                    soldQty: editingId ? (products.find(p=>p.id===editingId)?.soldQty||0) : 0,
+                    transactions: editingId ? (products.find(p=>p.id===editingId)?.transactions||[]) : []
+                };
+                if (editingId) { const idx = products.findIndex(p=>p.id===editingId); if(idx>=0) products[idx]=data; }
+                else products.push(data);
+                save(); render(); closeModal('modalProduct');
+                showToast('✅ کالا ذخیره شد.');
+            });
+
+            document.getElementById('productList').addEventListener('click', e => {
+                const btn = e.target.closest('.act-btn');
+                if (!btn) return;
+                const id = parseInt(btn.dataset.id);
+                const type = btn.dataset.type;
+                const prod = products.find(p => p.id === id);
+                if (!prod) return;
+                currentTxId = id; currentTxType = type;
+                document.getElementById('txTitle').textContent = type === 'in' ? '📥 ورود کالا (افزایش)' : '📤 خروج کالا (فروش/مصرف)';
+                document.getElementById('txProductName').textContent = prod.name + ' (موجودی: ' + prod.stock + ')';
+                document.getElementById('txQty').value = '';
+                document.getElementById('txNote').value = '';
+                document.getElementById('modalTransaction').classList.add('active');
+            });
+
+            document.getElementById('saveTx').addEventListener('click', () => {
+                const qty = parseInt(document.getElementById('txQty').value);
+                if (!qty || qty <= 0) return showToast('تعداد معتبر وارد کنید.', true);
+                const prod = products.find(p => p.id === currentTxId);
+                if (!prod) return;
+                if (currentTxType === 'out' && prod.stock < qty) return showToast('موجودی کافی نیست!', true);
+                const note = document.getElementById('txNote').value.trim() || (currentTxType==='in'?'ورود':'خروج');
+                const prevStock = prod.stock, prevSold = prod.soldQty||0;
+                prod.transactions.push({ type: currentTxType, qty, note, date: new Date().toLocaleDateString('fa-IR') });
+                if (currentTxType === 'in') prod.stock += qty;
+                else { prod.stock -= qty; prod.soldQty = (prod.soldQty||0) + qty; }
+                lastAction = { prodId: prod.id, prevStock, prevSold, type: currentTxType, qty };
+                save(); render(); closeModal('modalTransaction');
+                showToast('✅ تراکنش ثبت شد.', false, () => {
+                    if (!lastAction) return;
+                    const p = products.find(x => x.id === lastAction.prodId);
+                    if (!p) return;
+                    p.transactions.pop();
+                    p.stock = lastAction.prevStock;
+                    p.soldQty = lastAction.prevSold;
+                    save(); render();
+                    showToast('↩ برگشت خورد.');
+                    lastAction = null;
+                });
+            });
+
+            document.getElementById('productList').addEventListener('click', e => {
+                const info = e.target.closest('.prod-info');
+                if (!info) return;
+                const id = parseInt(info.dataset.id);
+                const prod = products.find(p => p.id === id);
+                if (!prod) return;
+                const container = document.getElementById('historyContent');
+                if (prod.transactions.length === 0) container.innerHTML = '<p style="text-align:center;color:var(--text2);">تراکنشی نیست.</p>';
+                else container.innerHTML = prod.transactions.slice().reverse().map(t => `<div class="history-item"><strong>${t.date}</strong> | ${t.type==='in'?'📥 ورود':'📤 خروج'}: ${t.qty} عدد | ${t.note||''}</div>`).join('');
+                document.getElementById('modalHistory').classList.add('active');
+            });
+
+            document.getElementById('btnExportCSV').addEventListener('click', () => {
+                if (products.length === 0) return showToast('داده‌ای نیست.', true);
+                let csv = 'نام,دسته,موجودی,حداقل,قیمت خرید,قیمت فروش,تعداد فروش,سود کل\n';
+                products.forEach(p => csv += `${p.name},${p.category||''},${p.stock},${p.minStock||5},${p.buyPrice||0},${p.sellPrice||0},${p.soldQty||0},${((p.sellPrice||0)-(p.buyPrice||0))*(p.soldQty||0)}\n`);
+                const blob = new Blob([csv],{type:'text/csv'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'anbarak.csv'; a.click();
+                showToast('📥 فایل CSV دانلود شد.');
+            });
+
+            document.getElementById('btnReorder').addEventListener('click', () => {
+                const low = products.filter(p => p.stock <= (p.minStock||5));
+                if (low.length === 0) return showToast('✅ همه کالاها موجودی کافی دارند.');
+                let list = '📋 لیست سفارش خرید:\n\n';
+                low.forEach(p => { const need = Math.max(0, (p.minStock||5)*2 - p.stock); list += `📦 ${p.name}: موجودی ${p.stock} ← سفارش ${need} عدد\n`; });
+                alert(list);
+            });
+
+            document.getElementById('searchInput').addEventListener('input', render);
+            document.getElementById('filterStatus').addEventListener('change', render);
+            document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', function(e){ if(e.target===this) this.classList.remove('active'); }));
+            load(); render();
+        })();
+    </script>
+</body>
+</html>

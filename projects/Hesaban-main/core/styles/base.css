@@ -1,0 +1,26 @@
+:root {
+  --neon-green: #00ff88;
+  --neon-red: #ff2255;
+  --neon-cyan: #00f0ff;
+  --neon-purple: #a855f7;
+  --neon-pink: #ec4899;
+  --neon-white: #f0f0ff;
+  --gold: #ffd700;
+  --dark-bg: #05050c;
+  --card-bg: rgba(18, 18, 35, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f0f4ff;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --shadow-glow: 0 15px 60px rgba(0, 0, 0, 0.6);
+  --radius: 24px;
+  --radius-sm: 12px;
+  --font: 'Vazirmatn', Tahoma, sans-serif;
+  --transition-smooth: cubic-bezier(0.23, 1, 0.32, 1);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:var(--font); background:var(--dark-bg); color:var(--text-primary); min-height:100vh; overflow-x:hidden; padding:0 1rem 3rem 1rem; perspective:2000px; line-height:1.6; }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:linear-gradient(180deg, var(--neon-green), var(--gold)); border-radius:10px; }

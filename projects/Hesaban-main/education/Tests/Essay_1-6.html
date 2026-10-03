@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>سوالات تشریحی جلسات ۱ تا ۶ | کیانوش کریمی</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --text: #f0f0f0;
+            --text2: #c0c0c0;
+            --primary: #fbbf24;
+            --accent: #2dd4bf;
+            --success: #22c55e;
+            --border: rgba(255,255,255,0.1);
+            --radius: 16px;
+            --radius-sm: 10px;
+            direction: rtl;
+            font-size: 15px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Vazirmatn','B Nazanin','Tahoma',sans-serif;
+            background: #0a0a0a; color: var(--text); line-height: 1.8;
+            min-height: 100vh; padding: 12px; display: flex; justify-content: center;
+            position: relative; overflow-x: hidden;
+        }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0.55; }
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1.4); opacity: 0; }
+        }
+        .container { position: relative; z-index: 1; max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 14px; }
+        .header {
+            background: rgba(24,24,24,0.7); backdrop-filter: blur(22px);
+            border: 1px solid var(--border); border-radius: 24px;
+            padding: 20px 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .header::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #fbbf24, #22c55e, #fbbf24);
+            background-size: 200% 100%; animation: headerBar 3s linear infinite;
+        }
+        @keyframes headerBar { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+        .glow-text {
+            font-size: 1.6rem; font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #22c55e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .card {
+            background: rgba(24,24,24,0.65); backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius);
+            padding: 18px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .card h2 { color: #fbbf24; font-size: 1.2rem; margin-bottom: 12px; }
+        details { margin: 10px 0; }
+        summary {
+            font-weight: 700; cursor: pointer; padding: 12px; color: #fbbf24;
+            background: rgba(40,40,40,0.4); border-radius: var(--radius-sm);
+            border: 1px solid rgba(255,255,255,0.1); outline: none;
+        }
+        .answer-content { padding: 14px; margin-top: 8px; background: rgba(34,197,94,0.05); border-radius: var(--radius-sm); border-right: 3px solid #22c55e; }
+        .footer { text-align: center; font-size: 0.75rem; color: #666; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div class="particles" id="pc"></div>
+    <div class="container">
+        <div class="header">
+            <h1 class="glow-text">📋 سوالات تشریحی: جلسات ۱ تا ۶</h1>
+            <p style="color:#c0c0c0;">۱۰ سوال — اصول اولیه، دفتر روزنامه، دفتر کل، تراز آزمایشی، صورت سود و زیان، ترازنامه</p>
+        </div>
+
+        <div class="card">
+            <h2>بخش اول: اصول اولیه (جلسه ۱)</h2>
+            <details><summary>۱. معادله اساسی حسابداری را توضیح دهید و یک مثال عددی بزنید.</summary><div class="answer-content">معادله: <strong>دارایی‌ها = بدهی‌ها + سرمایه</strong>. مثال: شرکتی ۱۰۰ میلیون دارایی (نقد) دارد که ۴۰ میلیون آن وام و ۶۰ میلیون آن سرمایه است. ۱۰۰ = ۴۰ + ۶۰.</div></details>
+            <details><summary>۲. ماهیت پنج حساب اصلی را مشخص کنید.</summary><div class="answer-content">دارایی: بدهکار | بدهی: بستانکار | سرمایه: بستانکار | درآمد: بستانکار | هزینه: بدهکار.</div></details>
+        </div>
+
+        <div class="card">
+            <h2>بخش دوم: دفتر روزنامه (جلسه ۲)</h2>
+            <details><summary>۳. ثبت خرید کالا به مبلغ ۸۰ میلیون (نصف نقد، نصف نسیه) را در دفتر روزنامه بنویسید.</summary><div class="answer-content">موجودی کالا ۸۰,۰۰۰,۰۰۰ (بد) / بانک ۴۰,۰۰۰,۰۰۰ (بس) / حساب پرداختنی ۴۰,۰۰۰,۰۰۰ (بس).</div></details>
+            <details><summary>۴. قوانین طلایی ثبت دفتر روزنامه را نام ببرید.</summary><div class="answer-content">۱. هر ثبت حداقل دو حساب را درگیر می‌کند. ۲. جمع بدهکاران = جمع بستانکاران. ۳. ابتدا حساب بدهکار نوشته می‌شود سپس بستانکار. ۴. توضیح کوتاه زیر ثبت نوشته می‌شود.</div></details>
+        </div>
+
+        <div class="card">
+            <h2>بخش سوم: دفتر کل (جلسه ۳)</h2>
+            <details><summary>۵. حساب T را تعریف کنید و بگویید بدهکار روزنامه به کدام سمت می‌رود.</summary><div class="answer-content">حساب T نمایش ساده‌شده دفتر کل است. سمت چپ = بدهکار، سمت راست = بستانکار. بدهکار روزنامه به سمت چپ T منتقل می‌شود.</div></details>
+            <details><summary>۶. مانده حساب بانک با مانده بدهکار ۲۰۰ و بستانکار ۵۰ را حساب کنید.</summary><div class="answer-content">مانده = جمع بدهکار − جمع بستانکار = ۲۰۰ − ۵۰ = ۱۵۰ (بدهکار).</div></details>
+        </div>
+
+        <div class="card">
+            <h2>بخش چهارم: تراز آزمایشی (جلسه ۴)</h2>
+            <details><summary>۷. تراز آزمایشی چیست و چه خطاهایی را کشف می‌کند؟</summary><div class="answer-content">فهرستی از مانده حساب‌های دفتر کل. خطاهای قابل کشف: ثبت یک‌طرفه، جمع نادرست، انتقال اشتباه. خطاهای غیرقابل کشف: ثبت در حساب اشتباه، فراموشی کامل ثبت، جبران خطاها.</div></details>
+        </div>
+
+        <div class="card">
+            <h2>بخش پنجم: صورت سود و زیان (جلسه ۵)</h2>
+            <details><summary>۸. صورت سود و زیان شرکت «نیکان» را با فروش ۵۰۰، بهای تمام‌شده ۲۰۰، حقوق ۸۰، اجاره ۴۰ و مالیات ۲۵٪ تهیه کنید.</summary><div class="answer-content">فروش خالص ۵۰۰ − بهای تمام‌شده ۲۰۰ = سود ناخالص ۳۰۰ | هزینه‌های عملیاتی ۱۲۰ = سود عملیاتی ۱۸۰ | سود قبل از مالیات ۱۸۰ | مالیات ۴۵ | سود خالص = ۱۳۵.</div></details>
+        </div>
+
+        <div class="card">
+            <h2>بخش ششم: ترازنامه (جلسه ۶)</h2>
+            <details><summary>۹. ترازنامه طبقه‌بندی‌شده چه تفاوتی با ترازنامه ساده دارد؟</summary><div class="answer-content">در ترازنامه طبقه‌بندی‌شده دارایی‌ها و بدهی‌ها به جاری و غیرجاری تفکیک می‌شوند تا قدرت نقدینگی شرکت بهتر دیده شود.</div></details>
+            <details><summary>۱۰. نسبت جاری چیست و از کجا محاسبه می‌شود؟</summary><div class="answer-content">دارایی‌های جاری ÷ بدهی‌های جاری. نشان‌دهنده توان پرداخت تعهدات کوتاه‌مدت. عدد بالای ۱.۵ معمولاً مطلوب است.</div></details>
+        </div>
+
+        <div class="footer">✍️ کیانوش کریمی | 📅 ۱۴۰۴</div>
+    </div>
+    <script>
+        const pc=document.getElementById('pc');
+        for(let i=0;i<50;i++){
+            const p=document.createElement('div');p.classList.add('particle');
+            const s=Math.random()*5+2;
+            p.style.width=s+'px';p.style.height=s+'px';
+            p.style.left=Math.random()*100+'%';
+            p.style.animationDuration=Math.random()*18+10+'s';
+            p.style.animationDelay=Math.random()*12+'s';
+            const colors=['#fbbf24','#22c55e','#ef4444','#2dd4bf','#f59e0b'];
+            p.style.background=colors[Math.floor(Math.random()*colors.length)];
+            pc.appendChild(p);
+        }
+    </script>
+</body>
+</html>
