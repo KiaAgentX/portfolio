@@ -139,8 +139,32 @@
   $("#search").addEventListener("input", e => { state.q = e.target.value; render(); });
   $("#sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
 
+  function renderRoadmap() {
+    const R = window.__ROADMAP__ || [];
+    const el = document.getElementById("roadmap");
+    if (!el) return;
+    el.innerHTML = R.map((r, i) => {
+      const color = CAT_COLORS[r.category] || "#a78bfa";
+      return `<article class="rm-card" style="--cc:${color};--i:${Math.min(i, 9)}">
+        <div class="rm-top">
+          <span class="cat">${esc(r.category)}</span>
+          <span class="badge planned">PLANNED</span>
+        </div>
+        <h3>${esc(r.name)}</h3>
+        <p class="tag">${esc(r.tagline)}</p>
+        <p class="signal">⌁ ${esc(r.signal)}</p>
+        <div class="meta">${r.stack.slice(0, 5).map(s => `<span class="badge">${esc(s)}</span>`).join("")}</div>
+        <div class="foot">
+          <div class="value">${money(r.value)}<small>EST. VALUE</small></div>
+          <span class="rm-status mono">v-next</span>
+        </div>
+      </article>`;
+    }).join("");
+  }
+
   renderChips();
   render();
+  renderRoadmap();
 
   /* ---- hero particles (KIA identity) ---- */
   try {
