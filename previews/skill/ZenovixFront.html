@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bot Environment Simulator</title>
+<!--
+  ═══════════════════════════════════════════════════════════════════
+  BOT-ENV SIM — شبیه‌سازی کل محیط بات (مشتری + مدیر) در یک فایل
+  • مشتری: چت با منو، کاتالوگ، سفارش (تعداد→تأیید)، استعلام قیمت، تیکت پشتیبانی
+  • مدیر (👔): صف تأیید سفارش/استعلام، پاسخ و وضعیت تیکت‌ها، حالت خودکار
+  • بک‌اند: CONFIG.apiBase → /site /catalog /chat /enquiry واقعی | خالی = شبیه‌ساز
+  • داده‌ها: سرویس‌های واقعی AGI (قیمت‌ها استعلامی، مثل حالت price=null بک‌اند)
+  • زبان: en/fa کامل (+ar برای منوها)، ?lang=fa
+  ═══════════════════════════════════════════════════════════════════
+-->
+<style>
+  :root{
+    --bg:#0E0A1E;--card:#16112A;--card-2:#1c1540;--ink:#F1ECFB;--muted:#A79FBE;--dim:#8A8794;
+    --line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.18);
+    --purple:#8A3FE6;--violet:#5B6BF0;--blue:#3B8DF5;--lilac:#C7A9F5;
+    --green:#25D366;--red:#ff5b74;--amber:#ffb84d;
+    --grad:linear-gradient(135deg,#8A3FE6 0%,#5B6BF0 50%,#3B8DF5 100%);
+    --ff:"Inter","Segoe UI",Tahoma,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:var(--ff);color:var(--ink);background:radial-gradient(900px 500px at 85% -5%,rgba(138,63,230,.25),transparent 60%),radial-gradient(700px 500px at 10% 110%,rgba(59,141,245,.18),transparent 60%),var(--bg);display:flex;align-items:center;justify-content:center;padding:14px}
+  .phone{width:min(430px,100%);height:min(760px,calc(100svh - 28px));background:var(--card);border:1px solid var(--line-2);border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden}
+  /* هدر */
+  .head{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--grad);color:#fff;flex:none}
+  .av{width:42px;height:42px;flex:none;border-radius:50%;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden}
+  .av img{width:100%;height:100%;object-fit:cover}
+  .head .nm{font-weight:700;font-size:.92rem;display:flex;align-items:center;gap:6px}
+  .head .nm .botbadge{font-size:.62rem;background:rgba(255,255,255,.25);border-radius:6px;padding:1px 6px}
+  .head .st{font-size:.74rem;color:rgba(255,255,255,.85)}
+  .head .icns{margin-inline-start:auto;display:flex;gap:6px}
+  .iconbtn{position:relative;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:10px;font-size:17px;padding:5px 9px;cursor:pointer;font-family:inherit}
+  .iconbtn .bdg{position:absolute;top:-7px;inset-inline-end:-7px;min-width:19px;height:19px;border-radius:10px;background:var(--red);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px}
+  /* صفحه‌ها */
+  .screen{flex:1;display:none;flex-direction:column;min-height:0}
+  .screen.on{display:flex}
+  .chat{flex:1;overflow-y:auto;padding:14px 10px;display:flex;flex-direction:column;gap:7px;background-color:var(--bg);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='rgba(199,169,245,0.10)' stroke-width='1'%3E%3Ccircle cx='15' cy='15' r='4'/%3E%3Cpath d='M40 10l6 6-6 6-6-6z'/%3E%3Ccircle cx='45' cy='45' r='3'/%3E%3Cpath d='M10 45h10M15 40v10'/%3E%3C/g%3E%3C/svg%3E")}
+  .date-chip{align-self:center;background:var(--card-2);border:1px solid var(--line);color:var(--muted);font-size:.7rem;padding:4px 12px;border-radius:8px}
+  .msg{max-width:85%;padding:7px 9px 5px;border-radius:10px;position:relative;font-size:.89rem;line-height:1.6;overflow-wrap:break-word;animation:pop .16s ease}
+  @keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+  .msg.me{background:var(--grad);color:#fff;align-self:flex-end;border-top-right-radius:0}
+  .msg.me::before{content:'';position:absolute;top:0;right:-8px;border:8px solid transparent;border-top-color:#5B6BF0;border-right:0}
+  [dir="rtl"] .msg.me{align-self:flex-start}
+  .msg.bot{background:var(--card-2);border:1px solid var(--line);align-self:flex-start;border-top-left-radius:0}
+  .msg.bot::before{content:'';position:absolute;top:0;left:-8px;border:8px solid transparent;border-top-color:var(--card-2);border-left:0}
+  [dir="rtl"] .msg.bot{align-self:flex-end}
+  .msg .txt{white-space:pre-wrap}
+  .msg .txt b.g{color:var(--lilac)}
+  .msg .meta{display:flex;justify-content:flex-end;gap:4px;align-items:center;font-size:.66rem;margin-top:3px;direction:ltr}
+  .msg.me .meta{color:rgba(255,255,255,.75)}
+  .msg.bot .meta{color:var(--dim)}
+  .msg .ticks{font-size:.7rem;color:rgba(255,255,255,.6)}
+  .msg .ticks.read{color:#7ee0ff}
+  .msg.typing{padding:12px 16px}
+  .msg.typing span{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--lilac);margin-right:4px;animation:blink 1.2s infinite}
+  .msg.typing span:nth-child(2){animation-delay:.2s}.msg.typing span:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+  /* کیبورد اینلاین (تلگرامی) */
+  .ikb{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+  .ikb .row{display:flex;gap:6px}
+  .ikb button{flex:1;background:rgba(139,63,230,.16);border:1px solid rgba(139,63,230,.45);color:var(--ink);border-radius:9px;padding:8px 6px;font-size:.8rem;cursor:pointer;font-family:inherit;transition:.15s}
+  .ikb button:hover{background:rgba(139,63,230,.32)}
+  .ikb button:disabled{opacity:.6;cursor:wait}
+  .ikb button.primary{background:var(--grad);border:0;color:#fff;font-weight:700}
+  .ikb button.danger{background:rgba(255,91,116,.14);border-color:rgba(255,91,116,.5)}
+  .ikb button.ok{background:rgba(37,211,102,.14);border-color:rgba(37,211,102,.5)}
+  .receipt{font-size:.76rem;color:var(--muted);margin-top:6px}
+  /* کیبورد پاسخ (منوی اصلی) */
+  .rkb{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px 0;background:var(--bg)}
+  .rkb button{background:var(--card-2);border:1px solid var(--line-2);color:var(--ink);border-radius:10px;padding:8px 10px;font-size:.78rem;cursor:pointer;font-family:inherit;flex:1 1 30%}
+  .rkb button:hover{border-color:var(--purple)}
+  /* ورودی */
+  .inbar{display:flex;gap:8px;padding:10px;background:var(--card);border-top:1px solid var(--line);flex:none}
+  .inbar .box{flex:1;min-width:0;display:flex;align-items:center;background:rgba(255,255,255,.04);border:1px solid var(--line-2);border-radius:999px;padding:0 14px}
+  .inbar input{flex:1;min-width:0;background:transparent;border:0;outline:none;padding:11px 0;font:inherit;color:var(--ink)}
+  .inbar input::placeholder{color:var(--dim)}
+  .inbar button{width:44px;height:44px;flex:none;border-radius:50%;border:0;background:var(--grad);color:#fff;cursor:pointer;font-size:17px}
+  .inbar button:disabled{opacity:.55;cursor:wait}
+  /* ویوهای اپ */
+  .appbar{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:700;flex:none}
+  .appbar .sub{font-weight:400;font-size:.74rem;color:var(--muted)}
+  .appbody{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+  .card{background:var(--card-2);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+  .card h4{font-size:.9rem;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+  .card p{font-size:.8rem;color:var(--muted);margin:0}
+  .card .rowb{display:flex;gap:6px;margin-top:10px}
+  .card .rowb button{flex:1;border-radius:9px;padding:8px 6px;font-size:.78rem;cursor:pointer;font-family:inherit;background:rgba(139,63,230,.16);border:1px solid rgba(139,63,230,.45);color:var(--ink)}
+  .pill{display:inline-block;font-size:.68rem;border-radius:999px;padding:2px 10px;margin-inline-start:6px}
+  .pill.pend{background:rgba(255,184,77,.15);color:var(--amber);border:1px solid rgba(255,184,77,.4)}
+  .pill.ok{background:rgba(37,211,102,.14);color:#7de9a8;border:1px solid rgba(37,211,102,.4)}
+  .pill.no{background:rgba(255,91,116,.14);color:#ff9dab;border:1px solid rgba(255,91,116,.4)}
+  .pill.info{background:rgba(59,141,245,.14);color:#8fc2ff;border:1px solid rgba(59,141,245,.4)}
+  .price{font-weight:700;color:var(--lilac)}
+  .empty{text-align:center;color:var(--dim);font-size:.85rem;padding:30px 10px}
+  .thread{display:flex;flex-direction:column;gap:8px}
+  .thread .t{max-width:88%;padding:8px 11px;border-radius:10px;font-size:.82rem;line-height:1.6}
+  .thread .t.me{background:var(--grad);color:#fff;align-self:flex-end}
+  .thread .t.them{background:var(--card);border:1px solid var(--line-2);align-self:flex-start}
+  [dir="rtl"] .thread .t.me{align-self:flex-start}
+  [dir="rtl"] .thread .t.them{align-self:flex-end}
+  .mini-in{display:flex;gap:6px;margin-top:8px}
+  .mini-in input{flex:1;min-width:0;background:rgba(255,255,255,.04);border:1px solid var(--line-2);border-radius:9px;padding:9px 10px;font:inherit;font-size:.82rem;color:var(--ink)}
+  .mini-in button{background:var(--grad);border:0;color:#fff;border-radius:9px;padding:0 14px;cursor:pointer;font-size:.85rem}
+  .toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--card-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:.82rem}
+  .toggle button{border-radius:999px;border:1px solid var(--line-2);background:transparent;color:var(--ink);padding:5px 14px;cursor:pointer;font-family:inherit;font-size:.78rem}
+  .toggle button.on{background:rgba(37,211,102,.2);border-color:var(--green)}
+  /* ناوبری پایین */
+  .nav{display:flex;border-top:1px solid var(--line);background:var(--card);flex:none}
+  .nav button{position:relative;flex:1;background:none;border:0;color:var(--muted);font-family:inherit;font-size:.68rem;padding:9px 2px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .nav button .e{font-size:19px}
+  .nav button.on{color:#fff}
+  .nav button .bdg{position:absolute;top:4px;inset-inline-end:calc(50% - 22px);min-width:18px;height:18px;border-radius:9px;background:var(--red);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px}
+  /* تست */
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card-2);border:1px solid var(--line-2);color:var(--ink);border-radius:12px;padding:10px 18px;font-size:.82rem;opacity:0;transition:.25s;z-index:99;max-width:calc(100vw - 40px);text-align:center;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .mgrbar{display:none;background:linear-gradient(135deg,#ff5b74,#8A3FE6);color:#fff;font-size:.76rem;text-align:center;padding:6px;font-weight:700}
+  body.mgr .mgrbar{display:block}
+  body.mgr .head{background:linear-gradient(135deg,#c81e4e,#8A3FE6)}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="mgrbar" id="mgrbar">👔 MANAGER MODE</div>
+  <div class="head">
+    <div class="av" id="av">🤖</div>
+    <div style="min-width:0">
+      <div class="nm"><span id="botname">Zenovix</span><span class="botbadge">bot</span></div>
+      <div class="st" id="status">online</div>
+    </div>
+    <div class="icns">
+      <button class="iconbtn" id="btnLang" title="Language">🌍</button>
+      <button class="iconbtn" id="btnMgr" title="Manager">👔<span class="bdg" id="mgrBdg" hidden>0</span></button>
+    </div>
+  </div>
+
+  <!-- چت -->
+  <div class="screen on" id="scr-chat">
+    <div class="chat" id="chat"></div>
+    <div class="rkb" id="rkb"></div>
+    <div class="inbar">
+      <div class="box"><input id="input" maxlength="2000" autocomplete="off"></div>
+      <button id="send" type="button">➤</button>
+    </div>
+  </div>
+
+  <!-- کاتالوگ -->
+  <div class="screen" id="scr-cat">
+    <div class="appbar"><span id="catTitle">Catalog</span><span class="sub" id="catSub"></span></div>
+    <div class="appbody" id="catBody"></div>
+  </div>
+
+  <!-- سفارش‌ها -->
+  <div class="screen" id="scr-orders">
+    <div class="appbar"><span id="ordTitle">Orders</span></div>
+    <div class="appbody" id="ordBody"></div>
+  </div>
+
+  <!-- پشتیبانی -->
+  <div class="screen" id="scr-sup">
+    <div class="appbar"><span id="supTitle">Support</span></div>
+    <div class="appbody" id="supBody"></div>
+  </div>
+
+  <!-- مدیر -->
+  <div class="screen" id="scr-mgr">
+    <div class="appbar"><span id="mgrTitle">Manager</span><span class="sub" id="mgrSub"></span></div>
+    <div class="appbody" id="mgrBody"></div>
+  </div>
+
+  <div class="nav" id="nav">
+    <button data-nav="chat" class="on"><span class="e">💬</span><span class="t">Chat</span><span class="bdg" id="bdgChat" hidden>0</span></button>
+    <button data-nav="cat"><span class="e">🛍</span><span class="t">Catalog</span></button>
+    <button data-nav="orders"><span class="e">📦</span><span class="t">Orders</span><span class="bdg" id="bdgOrd" hidden>0</span></button>
+    <button data-nav="sup"><span class="e">🎫</span><span class="t">Support</span><span class="bdg" id="bdgSup" hidden>0</span></button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═════════ CONFIG ═════════ */
+const CONFIG = {
+  apiBase: "",        // "https://<tenant>/api/public" = واقعی | "" = شبیه‌ساز کامل
+  lang: "en",         // 'en' | 'fa' | 'ar'(منوها) — یا ?lang=
+  brand: "Zenovix",
+  email: "studio@zenovix.com",
+  avatar: "",
+};
+try {
+  const q = new URLSearchParams(location.search);
+  if (q.get("api")) CONFIG.apiBase = q.get("api").replace(/\/+$/, "");
+  if (q.get("lang")) CONFIG.lang = q.get("lang");
+} catch (e) {}
+
+/* ---- رشته‌ها ---- */
+const STR = {
+  en: {
+    online: "online", typing: "typing…", inputPh: "Message",
+    nav: ["Chat", "Catalog", "Orders", "Support"],
+    catT: "Catalog", ordT: "Orders & Quotes", supT: "Support tickets", mgrT: "Manager",
+    menu: ["🛍 Products", "🧾 Quote", "🆘 Support", "📞 Contact", "🌍 Language", "❓ Help"],
+    askName: "👋 Welcome! I'm the studio's digital operations desk.\nWhat's your name?",
+    welcome: n => `Nice to meet you, ${n}! 🌹\nPick from the menu below — or just type your question.`,
+    back: n => `Welcome back, ${n}! 👋 How can I help?`,
+    menuHead: "Main menu 👇",
+    prodHead: "Our services — tap one for details 👇",
+    detailQ: "What would you like to do?",
+    btnQuote: "🧾 Request quote", btnOrder: "🛒 Order", btnBack: "◀ Back",
+    priceReq: "Price on request",
+    qty: "How many? (each unit = 1 project slot)",
+    qtyGo: n => `Quantity: ${n}`,
+    confirmOrder: (p, q) => `Confirm order?\n▪️ ${p}\n▪️ Qty: ${q}\nA manager will approve it, then we contact you.`,
+    yes: "✅ Confirm", no: "✖ Cancel",
+    orderMade: r => `🧾 Order request ${r} created!\nStatus: ⏳ waiting for manager.\nTrack it in 📦 Orders.`,
+    quoteSvc: "Which service is the quote for?",
+    quoteDesc: "Describe your project in one message (what, for whom, by when):",
+    quoteMade: r => `🧾 Quote request ${r} created!\nA manager reviews it and replies here.`,
+    supNew: "Open a ticket — how urgent?",
+    sev: ["🔥 Urgent", "⚠️ Normal", "💡 Question"],
+    supDesc: "Describe the issue in one message:",
+    supMade: r => `🎫 Ticket ${r} opened!\nTrack it in 🎫 Support. Urgent cases go straight to a person.`,
+    contact: "📞 Studio contacts:\n✉️ studio@zenovix.com\n📱 +971 4570 1100\n🕘 Mon–Fri 9:00–18:00 GST\n📍 Office 2703, Aspect Tower, Business Bay, Dubai",
+    help: "❓ Help\n• /start — restart\n• Tap menu buttons or type freely\n• 📦 Orders — track requests\n• 🎫 Support — tickets\n• 👔 (top) — manager side (simulation)",
+    langQ: "Choose language / اختر اللغة:",
+    langSet: "Language set to English ✅",
+    needName: "Please tell me your name first 🙂",
+    tooShort: "Please write a bit more 🙂",
+    emptyCat: "Catalog is syncing…",
+    emptyOrd: "No orders or quotes yet.\nStart from 🛍 Catalog.",
+    emptySup: "No tickets yet. Tap ＋ to open one.",
+    newTicket: "＋ New ticket",
+    status: { pending: "⏳ pending", approved: "✅ approved", rejected: "❌ rejected", open: "🟢 open", waiting: "🟡 waiting", resolved: "✅ resolved" },
+    mgrEmpty: "Queue is empty 🎉",
+    mgrAuto: "Auto-approve new requests (8s)",
+    mgrOn: "ON", mgrOff: "OFF",
+    approve: "✅ Approve", reject: "❌ Reject",
+    rejWhy: "Rejection reason:",
+    rejReasons: ["Out of scope", "Need more info", "Pricing — contact sales"],
+    approvedN: r => `✅ ${r} approved by manager! We'll contact you shortly.`,
+    rejectedN: (r, w) => `❌ ${r} was not approved.\nReason: ${w}\nReply here if you'd like to adjust it.`,
+    mgrReplyPh: "Reply to customer…",
+    ticketGot: r => `🎫 New reply on ${r} — check 🎫 Support.`,
+    thx: "You're welcome! 🌹",
+    bye: "See you soon! 👋",
+    sim: "SIM", live: "LIVE",
+  },
+  fa: {
+    online: "آنلاین", typing: "در حال نوشتن…", inputPh: "پیام…",
+    nav: ["چت", "کاتالوگ", "سفارش‌ها", "پشتیبانی"],
+    catT: "کاتالوگ", ordT: "سفارش‌ها و استعلام‌ها", supT: "تیکت‌های پشتیبانی", mgrT: "مدیر",
+    menu: ["🛍 محصولات", "🧾 استعلام قیمت", "🆘 پشتیبانی", "📞 تماس", "🌍 زبان", "❓ راهنما"],
+    askName: "👋 خوش اومدی! من میز عملیات دیجیتال استودیو هستم.\nاسمت چیه؟",
+    welcome: n => `${n} عزیز، خوشحالم! 🌹\nاز منوی پایین انتخاب کن — یا مستقیم سوالت رو بنویس.`,
+    back: n => `${n} برگشتی! 👋 چطور کمکت کنم؟`,
+    menuHead: "منوی اصلی 👇",
+    prodHead: "خدمات ما — برای جزئیات بزن روشون 👇",
+    detailQ: "چیکار کنم؟",
+    btnQuote: "🧾 استعلام قیمت", btnOrder: "🛒 سفارش", btnBack: "◀ برگشت",
+    priceReq: "قیمت: استعلامی",
+    qty: "چند تا؟ (هر واحد = یک ظرفیت پروژه)",
+    qtyGo: n => `تعداد: ${n}`,
+    confirmOrder: (p, q) => `سفارش تأیید بشه؟\n▪️ ${p}\n▪️ تعداد: ${q}\nمدیر تأیید می‌کنه، بعد باهات تماس می‌گیریم.`,
+    yes: "✅ تأیید", no: "✖ انصراف",
+    orderMade: r => `🧾 درخواست سفارش ${r} ثبت شد!\nوضعیت: ⏳ در انتظار مدیر.\nاز 📦 سفارش‌ها پیگیری کن.`,
+    quoteSvc: "استعلام برای کدوم خدمته؟",
+    quoteDesc: "پروژه‌ت رو توی یه پیام توصیف کن (چی، برای کی، تا کی):",
+    quoteMade: r => `🧾 استعلام ${r} ثبت شد!\nمدیر بررسی می‌کنه و همین‌جا جواب می‌ده.`,
+    supNew: "تیکت جدید — چقدر فوریه؟",
+    sev: ["🔥 فوری", "⚠️ عادی", "💡 سوال"],
+    supDesc: "مشکل رو توی یه پیام توضیح بده:",
+    supMade: r => `🎫 تیکت ${r} باز شد!\nاز 🎫 پشتیبانی پیگیری کن. موارد فوری مستقیم می‌ره پیش آدم.`,
+    contact: "📞 تماس با استودیو:\n✉️ studio@zenovix.com\n📱 +971 4570 1100\n🕘 شنبه تا پنجشنبه ۹ تا ۱۸\n📍 بیزینس بی، دبی",
+    help: "❓ راهنما\n• /start — شروع دوباره\n• دکمه‌های منو یا تایپ آزاد\n• 📦 سفارش‌ها — پیگیری\n• 🎫 پشتیبانی — تیکت‌ها\n• 👔 (بالا) — سمت مدیر (شبیه‌سازی)",
+    langQ: "Choose language / زبان رو انتخاب کن:",
+    langSet: "زبان فارسی شد ✅",
+    needName: "اول اسمت رو بگو 🙂",
+    tooShort: "یه کم بیشتر بنویس 🙂",
+    emptyCat: "کاتالوگ در حال سینک…",
+    emptyOrd: "هنوز سفارش یا استعلامی نداری.\nاز 🛍 کاتالوگ شروع کن.",
+    emptySup: "تیکتی نداری. ＋ بزن تا باز کنی.",
+    newTicket: "＋ تیکت جدید",
+    status: { pending: "⏳ در انتظار", approved: "✅ تأیید شد", rejected: "❌ رد شد", open: "🟢 باز", waiting: "🟡 منتظر", resolved: "✅ حل شد" },
+    mgrEmpty: "صف خالیه 🎉",
+    mgrAuto: "تأیید خودکار درخواست‌ها (۸ ثانیه)",
+    mgrOn: "روشن", mgrOff: "خاموش",
+    approve: "✅ تأیید", reject: "❌ رد",
+    rejWhy: "دلیل رد:",
+    rejReasons: ["خارج از اسکوپ", "اطلاعات ناقص", "قیمتی — تماس با فروش"],
+    approvedN: r => `✅ ${r} رو مدیر تأیید کرد! به‌زودی باهات تماس می‌گیریم.`,
+    rejectedN: (r, w) => `❌ ${r} تأیید نشد.\nدلیل: ${w}\nاگه می‌خوای اصلاحش کنی همین‌جا بگو.`,
+    mgrReplyPh: "پاسخ به مشتری…",
+    ticketGot: r => `🎫 جواب جدید روی ${r} — برو 🎫 پشتیبانی.`,
+    thx: "خواهش می‌کنم! 🌹",
+    bye: "به امید دیدار! 👋",
+    sim: "شبیه‌سازی", live: "متصل",
+  },
+  ar: { // chrome-only
+    online: "متصل", typing: "يكتب…", inputPh: "رسالة…",
+    nav: ["دردشة", "كتالوج", "طلبات", "دعم"],
+    catT: "كتالوج", ordT: "الطلبات", supT: "التذاكر", mgrT: "مدير",
+    menu: ["🛍 المنتجات", "🧾 عرض سعر", "🆘 دعم", "📞 اتصال", "🌍 اللغة", "❓ مساعدة"],
+    langSet: "تم ✅ (الردود: EN)",
+  }
+};
+/* سرویس‌های واقعی (EN عین سایت / FA ترجمه) */
+const SERVICES = [
+  { icon: "🤖", en: ["Artificial Intelligence", "Custom models, computer vision, and conversational AI trained on your data."], fa: ["هوش مصنوعی", "مدل اختصاصی، بینایی ماشین و هوش گفتگو روی داده خودت."] },
+  { icon: "☁️", en: ["Cloud & ICT", "Secure infrastructure, networks, and systems integration."], fa: ["کلاد و ICT", "زیرساخت امن، شبکه و یکپارچه‌سازی سیستم‌ها."] },
+  { icon: "🌐", en: ["Web & Mobile", "Fast websites and apps — bilingual EN/AR ready."], fa: ["وب و موبایل", "سایت و اپ سریع — آماده دوزبانه."] },
+  { icon: "⚙️", en: ["Intelligent Automation", "AI agents on WhatsApp, Telegram, e-mail and web, with human approvals."], fa: ["اتوماسیون هوشمند", "ایجنت روی واتس‌اپ و تلگرام و ایمیل با تأیید انسانی."] },
+  { icon: "📊", en: ["Data & Analytics", "Dashboards and pipelines that turn numbers into decisions."], fa: ["داده و تحلیل", "داشبورد و پایپ‌لاین؛ عددها تبدیل به تصمیم."] },
+  { icon: "🎬", en: ["Animation & 3D", "Brand films, AI video, and interactive 3D."], fa: ["انیمیشن و سه‌بعدی", "فیلم برند، ویدیوی AI و سه‌بعدی تعاملی."] },
+];
+/* ══════════════════════════════════════════ */
+
+const $ = id => document.getElementById(id);
+const chat = $("chat"), input = $("input"), sendBtn = $("send"), rkb = $("rkb"), statusEl = $("status");
+const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const rid = p => p + "-" + Math.random().toString(16).slice(2, 6).toUpperCase();
+const nowT = () => { try { return new Date().toLocaleTimeString(S.lang === "fa" ? "fa-IR" : "en-US", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
+
+/* ---- state ---- */
+let S = { lang: CONFIG.lang, name: "", capture: null, orders: [], tickets: [], screen: "chat",
+  mgrAuto: false, unreadSup: 0, unreadOrd: 0, session: "", catalog: null, backend: false, onboard: false };
+try {
+  const saved = JSON.parse(localStorage.getItem("zxenv") || "{}");
+  if (saved.lang) S.lang = saved.lang;
+  if (saved.name) { S.name = saved.name; S.onboard = true; }
+  S.orders = saved.orders || []; S.tickets = saved.tickets || [];
+  S.session = saved.session || "";
+  S.mgrAuto = !!saved.mgrAuto;
+} catch (e) {}
+function save() {
+  try { localStorage.setItem("zxenv", JSON.stringify({ lang: S.lang, name: S.name, orders: S.orders, tickets: S.tickets, session: S.session, mgrAuto: S.mgrAuto })); } catch (e) {}
+}
+const T = () => STR[S.lang] || STR.en;
+function svcName(i) { const s = SERVICES[i]; return s.icon + " " + (S.lang === "fa" ? s.fa[0] : s.en[0]); }
+function svcDesc(i) { const s = SERVICES[i]; return S.lang === "fa" ? s.fa[1] : s.en[1]; }
+
+/* ---- ui atoms ---- */
+let toastTimer = null;
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+}
+function setScreen(name) {
+  S.screen = name;
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("on"));
+  $("scr-" + name).classList.add("on");
+  document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.nav === name));
+  document.body.classList.toggle("mgr", name === "mgr");
+  if (name === "mgr") renderMgr();
+  if (name === "cat") renderCat();
+  if (name === "orders") { S.unreadOrd = 0; renderOrders(); paintBadges(); }
+  if (name === "sup") { S.unreadSup = 0; renderSup(); paintBadges(); }
+  if (name === "chat") chat.scrollTop = chat.scrollHeight;
+}
+function paintBadges() {
+  const pend = S.orders.filter(o => o.st === "pending").length;
+  setBdg("mgrBdg", pend);
+  setBdg("bdgOrd", S.unreadOrd);
+  setBdg("bdgSup", S.unreadSup);
+}
+function setBdg(id, n) { const e = $(id); e.hidden = !(n > 0); e.textContent = n > 9 ? "9+" : n; }
+function addMsg(who, text, kb) {
+  const d = document.createElement("div");
+  d.className = "msg " + who;
+  const txt = document.createElement("div");
+  txt.className = "txt"; txt.innerHTML = text;
+  d.appendChild(txt);
+  if (kb && kb.length) d.appendChild(paintKb(null, kb));
+  const meta = document.createElement("div");
+  meta.className = "meta";
+  meta.innerHTML = `<span>${nowT()}</span>` + (who === "me" ? '<span class="ticks">✓</span>' : "");
+  d.appendChild(meta);
+  chat.appendChild(d);
+  chat.scrollTop = chat.scrollHeight;
+  return d;
+}
+function paintKb(container, kb) {
+  const box = container || document.createElement("div");
+  box.className = "ikb"; box.innerHTML = "";
+  kb.forEach(row => {
+    const r = document.createElement("div");
+    r.className = "row";
+    row.forEach(b => {
+      const btn = document.createElement("button");
+      btn.textContent = b.t;
+      if (b.c) btn.className = b.c;
+      btn.dataset.cb = b.cb;
+      if (b.arg !== undefined) btn.dataset.arg = b.arg;
+      r.appendChild(btn);
+    });
+    box.appendChild(r);
+  });
+  return box;
+}
+function kbReceipt(box, note) {
+  const d = document.createElement("div");
+  d.className = "receipt"; d.textContent = note || "✓";
+  box.replaceWith(d);
+}
+function upgradeTicks(read) {
+  document.querySelectorAll(".msg.me .ticks").forEach(t => { t.textContent = "✓✓"; if (read) t.classList.add("read"); });
+}
+function showTyping() {
+  statusEl.textContent = T().typing;
+  const t = document.createElement("div");
+  t.className = "msg bot typing";
+  t.innerHTML = "<span></span><span></span><span></span>";
+  chat.appendChild(t); chat.scrollTop = chat.scrollHeight;
+  return t;
+}
+function hideTyping() { statusEl.textContent = T().online; }
+async function botSay(text, kb) {
+  const t = showTyping();
+  upgradeTicks(true);
+  await sleep(500 + Math.random() * 700);
+  t.remove(); hideTyping();
+  return addMsg("bot", text, kb);
+}
+function paintRkb() {
+  rkb.innerHTML = "";
+  T().menu.forEach(m => {
+    const b = document.createElement("button");
+    b.textContent = m;
+    b.onclick = () => { input.value = m; send(); };
+    rkb.appendChild(b);
+  });
+}
+function applyLang() {
+  const t = T();
+  document.documentElement.lang = S.lang === "fa" ? "fa" : S.lang === "ar" ? "ar" : "en";
+  document.documentElement.dir = S.lang === "fa" || S.lang === "ar" ? "rtl" : "ltr";
+  $("botname").textContent = CONFIG.brand;
+  statusEl.textContent = t.online;
+  input.placeholder = t.inputPh;
+  document.querySelectorAll("#nav button .t").forEach((el, i) => el.textContent = t.nav[i]);
+  $("catTitle").textContent = t.catT; $("ordTitle").textContent = t.ordT;
+  $("supTitle").textContent = t.supT; $("mgrTitle").textContent = t.mgrT;
+  const av = $("av");
+  if (CONFIG.avatar) { av.innerHTML = ""; const im = document.createElement("img"); im.src = CONFIG.avatar; av.appendChild(im); }
+  else av.textContent = "🤖";
+  paintRkb();
+  save();
+}
+
+/* ---- backend ---- */
+async function apiGet(path) {
+  const r = await fetch(CONFIG.apiBase + path, { credentials: "omit" });
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}
+async function apiPost(path, body, timeout) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeout || 25000);
+  try {
+    const r = await fetch(CONFIG.apiBase + path, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body), credentials: "omit", signal: ctrl.signal,
+    });
+    clearTimeout(timer);
+    return { status: r.status, json: await r.json().catch(() => ({})) };
+  } catch (e) { clearTimeout(timer); throw e; }
+}
+async function bootBackend() {
+  if (!CONFIG.apiBase) return false;
+  try {
+    await apiGet("/site");
+    const cat = await apiGet("/catalog?lang=" + encodeURIComponent(S.lang === "ar" ? "ar" : S.lang));
+    if (cat && Array.isArray(cat.items)) S.catalog = cat;
+    S.backend = true;
+    return true;
+  } catch (e) { S.backend = false; return false; }
+}
+
+/* ---- knowledge (sim) ---- */
+function simReply(raw) {
+  const m = " " + String(raw || "").toLowerCase() + " ";
+  const has = (...ws) => ws.some(w => m.indexOf(w) !== -1);
+  const fa = S.lang === "fa";
+  if (has("whatsapp", "واتس")) return fa ? "بله — ایجنت واتس‌اپ با تأیید انسانی می‌سازیم. برای شروع، 🧾 استعلام بزن." : "Yes — we build AI agents for WhatsApp with human approvals. Tap 🧾 Quote to start.";
+  if (has("bilingual", "arabic", "rtl", "دوزبانه", "عربی")) return fa ? "بله — سایت و اپ دوزبانه با راست‌به‌چپ کامل تخصص ماست." : "Yes — bilingual EN/AR websites and apps with full RTL are our specialty.";
+  if (has("price", "cost", "quote", "قیمت", "هزینه", "استعلام")) return fa ? "قیمت‌ها استعلامی‌ان — 🧾 استعلام بزن تا مدیر برآورد بده." : "Prices are on request — tap 🧾 Quote and a manager will scope it.";
+  if (has("order", "buy", "track", "سفارش", "خرید", "پیگیری")) return fa ? "از 🛍 محصولات انتخاب کن یا از 📦 سفارش‌ها پیگیری کن." : "Pick from 🛍 Products, or track in 📦 Orders.";
+  if (has("ticket", "support", "issue", "problem", "تیکت", "پشتیبانی", "مشکل")) return fa ? "🆘 پشتیبانی رو بزن تا تیکت باز کنم." : "Tap 🆘 Support and I'll open a ticket.";
+  if (has("contact", "email", "phone", "call", "address", "hour", "تماس", "تلفن", "ایمیل", "آدرس", "ساعت")) return T().contact;
+  if (has("thank", "merci", "مرسی", "ممنون")) return T().thx;
+  if (has("bye", "خداحافظ", "بای")) return T().bye;
+  if (has("hello", "hi", "hey", "salam", "سلام", "درود")) return fa ? "سلام! از منو انتخاب کن یا سوالت رو بپرس. 👋" : "Hello! Pick from the menu or just ask. 👋";
+  return fa ? "متوجه نشدم 🤔 — از منو انتخاب کن یا درباره خدمات، قیمت و سفارش بپرس." : "Not sure I follow 🤔 — pick from the menu, or ask about services, pricing and orders.";
+}
+
+/* ---- flows ---- */
+function mainMenuKb() {
+  return [
+    [{ t: "🛍", cb: "products" }, { t: "🧾", cb: "quote" }],
+    [{ t: "🆘", cb: "support" }, { t: "📞", cb: "contact" }],
+  ];
+}
+function productsKb() {
+  const rows = SERVICES.map((s, i) => [{ t: svcName(i), cb: "prod", arg: i }]);
+  rows.push([{ t: T().btnBack, cb: "menu" }]);
+  return rows;
+}
+async function showProducts(box) {
+  if (box) kbReceipt(box, "🛍");
+  await botSay(`<b class="g">🛍</b> ${esc(T().prodHead)}`, productsKb());
+}
+function productDetail(i) {
+  const price = T().priceReq;
+  return `<b class="g">${esc(svcName(i))}</b>\n${esc(svcDesc(i))}\n💰 <b>${esc(price)}</b>\n\n${esc(T().detailQ)}`;
+}
+function productKb(i) {
+  return [
+    [{ t: T().btnQuote, cb: "qstart", arg: i, c: "ok" }],
+    [{ t: T().btnOrder, cb: "ostart", arg: i, c: "primary" }],
+    [{ t: T().btnBack, cb: "products" }],
+  ];
+}
+function qtyKb(pid, q) {
+  return [
+    [{ t: "➖", cb: "qmin", arg: pid + ":" + q }, { t: String(q), cb: "noop" }, { t: "➕", cb: "qplus", arg: pid + ":" + q }],
+    [{ t: T().yes, cb: "oconfirm", arg: pid + ":" + q, c: "primary" }],
+    [{ t: T().no, cb: "products" }],
+  ];
+}
+async function placeOrder(pid, qty) {
+  const ref = rid("ORD");
+  const o = { ref, kind: "order", pid, qty, st: "pending", at: Date.now(), cust: S.name };
+  S.orders.unshift(o); save(); paintBadges();
+  if (S.backend) {
+    try {
+      const p = SERVICES[pid];
+      await apiPost("/enquiry", {
+        name: S.name || "customer", email: "n/a@local", phone: "", company: "", service: "Other",
+        message: `ORDER ${ref}: ${(S.lang === "fa" ? p.fa[0] : p.en[0])} x${qty} (sim client)`, website: "",
+      }, 15000);
+    } catch (e) {}
+  }
+  await botSay(esc(T().orderMade(ref)).replace(/\n/g, "<br>"));
+  if (S.mgrAuto) setTimeout(() => mgrDecide(ref, true, true), 8000);
+  if (S.screen === "orders") renderOrders();
+}
+async function startQuoteFlow(svcIdx) {
+  if (svcIdx === undefined || svcIdx === null || svcIdx === "") {
+    const rows = SERVICES.map((s, i) => [{ t: svcName(i), cb: "qstart", arg: i }]);
+    rows.push([{ t: T().btnBack, cb: "menu" }]);
+    await botSay(esc(T().quoteSvc), rows);
+    return;
+  }
+  S.capture = { type: "qdesc", svc: Number(svcIdx) };
+  await botSay(esc(T().quoteDesc));
+}
+async function placeQuote(desc) {
+  const ref = rid("QOT");
+  const o = { ref, kind: "quote", pid: S.capture.svc, desc: desc.slice(0, 500), st: "pending", at: Date.now(), cust: S.name };
+  S.orders.unshift(o); save(); paintBadges(); S.capture = null;
+  if (S.backend) {
+    try {
+      const p = SERVICES[o.pid];
+      const r = await apiPost("/enquiry", {
+        name: S.name || "customer", email: "n/a@local", phone: "", company: "", service: "Other",
+        message: `QUOTE ${ref} [${S.lang === "fa" ? p.fa[0] : p.en[0]}]: ${desc}`.slice(0, 2000), website: "",
+      }, 15000);
+      if (r.status === 201 && r.json && r.json.reference) o.ref = r.json.reference;
+      save();
+    } catch (e) {}
+  }
+  await botSay(esc(T().quoteMade(o.ref)).replace(/\n/g, "<br>"));
+  if (S.mgrAuto) setTimeout(() => mgrDecide(o.ref, true, true), 8000);
+  if (S.screen === "orders") renderOrders();
+}
+async function startTicketFlow(sev) {
+  if (!sev) {
+    await botSay(esc(T().supNew), [[{ t: T().sev[0], cb: "tstart", arg: "urgent", c: "danger" }], [{ t: T().sev[1], cb: "tstart", arg: "normal" }], [{ t: T().sev[2], cb: "tstart", arg: "question" }], [{ t: T().btnBack, cb: "menu" }]]);
+    return;
+  }
+  S.capture = { type: "tdesc", sev };
+  await botSay(esc(T().supDesc));
+}
+async function placeTicket(desc) {
+  const ref = rid("TKT");
+  const t = { ref, sev: S.capture.sev, st: "open", at: Date.now(), cust: S.name, thread: [{ me: true, text: desc.slice(0, 500), at: Date.now() }], unread: 0 };
+  S.tickets.unshift(t); save(); S.capture = null;
+  await botSay(esc(T().supMade(ref)).replace(/\n/g, "<br>"));
+  if (S.screen === "sup") renderSup();
+}
+
+/* ---- manager ---- */
+function mgrDecide(ref, approve, auto) {
+  const o = S.orders.find(x => x.ref === ref);
+  if (!o || o.st !== "pending") return;
+  o.st = approve ? "approved" : "rejected";
+  if (!approve && !o.why) o.why = T().rejReasons[1];
+  save(); paintBadges();
+  S.unreadOrd++;
+  paintBadges();
+  const msg = approve ? T().approvedN(ref) : T().rejectedN(ref, o.why);
+  botSay(esc(msg).replace(/\n/g, "<br>"));
+  if (!auto) toast(approve ? "✅" : "❌");
+  if (S.screen === "mgr") renderMgr();
+  if (S.screen === "orders") renderOrders();
+}
+function mgrTicketReply(ref, text, toStatus) {
+  const t = S.tickets.find(x => x.ref === ref);
+  if (!t) return;
+  t.thread.push({ me: false, text, at: Date.now() });
+  if (toStatus) t.st = toStatus;
+  t.unread = (t.unread || 0) + 1;
+  S.unreadSup++;
+  save(); paintBadges();
+  botSay(esc(T().ticketGot(ref)).replace(/\n/g, "<br>"));
+  if (S.screen === "mgr") renderMgr();
+  if (S.screen === "sup") renderSup();
+}
+
+/* ---- screens ---- */
+function pillCls(st) {
+  return st === "pending" || st === "waiting" || st === "open"
+    ? (st === "open" ? "ok" : st === "waiting" ? "info" : "pend")
+    : st === "approved" || st === "resolved" ? "ok" : "no";
+}
+function renderCat() {
+  const body = $("catBody");
+  $("catSub").textContent = S.backend && S.catalog ? `${(S.catalog.items || []).length} · ${(S.catalog.language || "").toUpperCase()}${S.backend ? " · LIVE" : ""}` : (S.backend ? "" : "· " + T().sim);
+  body.innerHTML = "";
+  let items = [];
+  if (S.backend && S.catalog && S.catalog.items && S.catalog.items.length) {
+    items = S.catalog.items.map(p => ({ name: p.name, desc: p.title || "", price: p.price_text || T().priceReq, code: p.code, img: p.image }));
+  } else {
+    items = SERVICES.map((s, i) => ({ name: (S.lang === "fa" ? s.fa[0] : s.en[0]), desc: (S.lang === "fa" ? s.fa[1] : s.en[1]), price: T().priceReq, code: "SVC-0" + (i + 1), icon: s.icon }));
+  }
+  if (!items.length) { body.innerHTML = `<div class="empty">${esc(T().emptyCat)}</div>`; return; }
+  items.forEach((p, i) => {
+    const d = document.createElement("div");
+    d.className = "card";
+    d.innerHTML = `<h4>${esc(p.icon || "📦")} ${esc(p.name)}</h4><p>${esc(p.desc || "")}</p><p style="margin-top:6px"><span class="price">${esc(p.price || "")}</span> <span style="color:var(--dim);font-size:.72rem">${esc(p.code || "")}</span></p><div class="rowb"></div>`;
+    const row = d.querySelector(".rowb");
+    const bq = document.createElement("button"); bq.textContent = T().btnQuote;
+    bq.onclick = () => { setScreen("chat"); startQuoteFlow(S.backend ? "" : i); };
+    const bo = document.createElement("button"); bo.textContent = T().btnOrder;
+    bo.onclick = () => { setScreen("chat"); botSay(productDetail(S.backend ? 0 : i).replace(/\n/g, "<br>"), S.backend ? [[{ t: T().btnBack, cb: "menu" }]] : productKb(i)); };
+    row.appendChild(bq); row.appendChild(bo);
+    body.appendChild(d);
+  });
+}
+function renderOrders() {
+  const body = $("ordBody");
+  body.innerHTML = "";
+  if (!S.orders.length) { body.innerHTML = `<div class="empty">${esc(T().emptyOrd).replace(/\n/g, "<br>")}</div>`; return; }
+  S.orders.forEach(o => {
+    const nm = o.kind === "order"
+      ? `${esc(svcName(o.pid))} × ${o.qty}`
+      : `${esc(svcName(o.pid))} — “${esc((o.desc || "").slice(0, 60))}…”`;
+    const d = document.createElement("div");
+    d.className = "card";
+    d.innerHTML = `<h4>${o.kind === "order" ? "🛒" : "🧾"} ${esc(o.ref)}<span class="pill ${pillCls(o.st)}">${esc(T().status[o.st] || o.st)}</span></h4><p>${nm}</p>`;
+    body.appendChild(d);
+  });
+}
+function renderSup(listMode, openRef) {
+  const body = $("supBody");
+  body.innerHTML = "";
+  if (openRef) {
+    const t = S.tickets.find(x => x.ref === openRef);
+    if (!t) return;
+    t.unread = 0; save(); S.unreadSup = 0; paintBadges();
+    const d = document.createElement("div");
+    d.className = "card";
+    d.innerHTML = `<h4>🎫 ${esc(t.ref)}<span class="pill ${pillCls(t.st)}">${esc(T().status[t.st] || t.st)}</span></h4><div class="thread"></div><div class="mini-in"><input maxlength="500"><button>➤</button></div>`;
+    const th = d.querySelector(".thread");
+    t.thread.forEach(m => {
+      const b = document.createElement("div");
+      b.className = "t " + (m.me ? "me" : "them");
+      b.textContent = m.text;
+      th.appendChild(b);
+    });
+    const inp = d.querySelector("input"), btn = d.querySelector("button");
+    const sendM = () => {
+      const v = inp.value.trim();
+      if (!v) return;
+      t.thread.push({ me: true, text: v.slice(0, 500), at: Date.now() });
+      if (t.st === "resolved") t.st = "open";
+      save(); renderSup(false, openRef);
+      if (S.screen === "mgr") renderMgr();
+    };
+    btn.onclick = sendM;
+    inp.onkeydown = e => { if (e.key === "Enter") sendM(); };
+    const back = document.createElement("button");
+    back.textContent = T().btnBack; back.style.cssText = "margin-top:10px;width:100%;background:transparent;border:1px solid var(--line-2);color:var(--ink);border-radius:9px;padding:8px;cursor:pointer;font-family:inherit";
+    back.onclick = () => renderSup(true);
+    d.appendChild(back);
+    body.appendChild(d);
+    return;
+  }
+  const nb = document.createElement("button");
+  nb.textContent = T().newTicket;
+  nb.style.cssText = "background:var(--grad);border:0;color:#fff;border-radius:12px;padding:11px;cursor:pointer;font-family:inherit;font-weight:700";
+  nb.onclick = () => { setScreen("chat"); startTicketFlow(); };
+  body.appendChild(nb);
+  if (!S.tickets.length) {
+    const e = document.createElement("div");
+    e.className = "empty"; e.innerHTML = esc(T().emptySup).replace(/\n/g, "<br>");
+    body.appendChild(e);
+    return;
+  }
+  S.tickets.forEach(t => {
+    const d = document.createElement("div");
+    d.className = "card"; d.style.cursor = "pointer";
+    d.innerHTML = `<h4>🎫 ${esc(t.ref)}<span class="pill ${pillCls(t.st)}">${esc(T().status[t.st] || t.st)}</span>${t.unread ? ` <span class="pill no">${t.unread}</span>` : ""}</h4><p>${esc((t.thread[0] || {}).text || "").slice(0, 80)}…</p>`;
+    d.onclick = () => renderSup(false, t.ref);
+    body.appendChild(d);
+  });
+}
+function renderMgr(openTicket) {
+  const body = $("mgrBody");
+  $("mgrSub").textContent = S.backend ? "· LIVE" : "· " + T().sim;
+  body.innerHTML = "";
+  const tg = document.createElement("div");
+  tg.className = "toggle";
+  tg.innerHTML = `<span>${esc(T().mgrAuto)}</span>`;
+  const tb = document.createElement("button");
+  tb.textContent = S.mgrAuto ? T().mgrOn : T().mgrOff;
+  tb.className = S.mgrAuto ? "on" : "";
+  tb.onclick = () => { S.mgrAuto = !S.mgrAuto; save(); renderMgr(); };
+  tg.appendChild(tb);
+  body.appendChild(tg);
+
+  const pend = S.orders.filter(o => o.st === "pending");
+  const h1 = document.createElement("div");
+  h1.innerHTML = `<b>📥 Queue (${pend.length})</b>`;
+  h1.style.cssText = "margin-top:4px";
+  body.appendChild(h1);
+  if (!pend.length) {
+    const e = document.createElement("div");
+    e.className = "empty"; e.textContent = T().mgrEmpty;
+    body.appendChild(e);
+  }
+  pend.forEach(o => {
+    const nm = o.kind === "order" ? `${svcName(o.pid)} × ${o.qty}` : `${svcName(o.pid)} — ${(o.desc || "").slice(0, 80)}`;
+    const d = document.createElement("div");
+    d.className = "card";
+    d.innerHTML = `<h4>${o.kind === "order" ? "🛒" : "🧾"} ${esc(o.ref)}</h4><p>👤 ${esc(o.cust || "-")}<br>${esc(nm)}</p><div class="rowb"></div>`;
+    const row = d.querySelector(".rowb");
+    const ba = document.createElement("button"); ba.textContent = T().approve; ba.className = "ok";
+    ba.style.cssText = "background:rgba(37,211,102,.16);border:1px solid rgba(37,211,102,.5)";
+    ba.onclick = () => mgrDecide(o.ref, true, false);
+    const br = document.createElement("button"); br.textContent = T().reject;
+    br.style.cssText = "background:rgba(255,91,116,.14);border:1px solid rgba(255,91,116,.5)";
+    br.onclick = () => {
+      row.innerHTML = "";
+      const lbl = document.createElement("div");
+      lbl.textContent = T().rejWhy; lbl.style.cssText = "font-size:.78rem;color:var(--muted);width:100%";
+      row.appendChild(lbl);
+      T().rejReasons.forEach(w => {
+        const b = document.createElement("button");
+        b.textContent = w; b.style.flex = "1 1 100%";
+        b.onclick = () => { o.why = w; mgrDecide(o.ref, false, false); };
+        row.appendChild(b);
+      });
+    };
+    row.appendChild(ba); row.appendChild(br);
+    body.appendChild(d);
+  });
+
+  const h2 = document.createElement("div");
+  h2.innerHTML = `<b>🎫 Tickets (${S.tickets.filter(t => t.st !== "resolved").length} open)</b>`;
+  h2.style.cssText = "margin-top:6px";
+  body.appendChild(h2);
+  if (!S.tickets.length) {
+    const e = document.createElement("div");
+    e.className = "empty"; e.textContent = "—";
+    body.appendChild(e);
+    return;
+  }
+  S.tickets.forEach(t => {
+    const d = document.createElement("div");
+    d.className = "card";
+    d.innerHTML = `<h4>🎫 ${esc(t.ref)}<span class="pill ${pillCls(t.st)}">${esc(T().status[t.st] || t.st)}</span></h4>`;
+    if (openTicket === t.ref) {
+      const th = document.createElement("div");
+      th.className = "thread"; th.style.margin = "8px 0";
+      t.thread.forEach(m => {
+        const b = document.createElement("div");
+        b.className = "t " + (m.me ? "them" : "me");
+        b.textContent = (m.me ? "👤 " : "👔 ") + m.text;
+        th.appendChild(b);
+      });
+      d.appendChild(th);
+      const pr = document.createElement("div");
+      pr.className = "rowb";
+      [["✓ " + T().status.resolved, "resolved"], ["⏳ " + T().status.waiting, "waiting"], ["🟢 " + T().status.open, "open"]].forEach(([label, st]) => {
+        const b = document.createElement("button");
+        b.textContent = label;
+        b.onclick = () => mgrTicketReply(t.ref, `— ${label} —`, st);
+        pr.appendChild(b);
+      });
+      d.appendChild(pr);
+      const mi = document.createElement("div");
+      mi.className = "mini-in";
+      mi.innerHTML = `<input maxlength="500" placeholder="${esc(T().mgrReplyPh)}"><button>➤</button>`;
+      const inp = mi.querySelector("input");
+      const go = () => { const v = inp.value.trim(); if (v) mgrTicketReply(t.ref, v); };
+      mi.querySelector("button").onclick = go;
+      inp.onkeydown = e => { if (e.key === "Enter") go(); };
+      d.appendChild(mi);
+    } else {
+      const p = document.createElement("p");
+      p.textContent = ((t.thread[t.thread.length - 1] || {}).text || "").slice(0, 90);
+      d.appendChild(p);
+      d.style.cursor = "pointer";
+      d.onclick = () => renderMgr(t.ref);
+    }
+    body.appendChild(d);
+  });
+}
+
+/* ---- callbacks ---- */
+document.addEventListener("click", async e => {
+  const b = e.target.closest && e.target.closest("[data-cb]");
+  if (!b || b.disabled) return;
+  const box = b.closest(".ikb");
+  const cb = b.dataset.cb, arg = b.dataset.arg;
+  if (box) box.querySelectorAll("button").forEach(x => x.disabled = true);
+  const orig = b.textContent;
+  b.textContent = "…";
+  try { await onCb(cb, arg, box, b, orig); }
+  finally { if (box && box.isConnected) box.querySelectorAll("button").forEach(x => { if (x.isConnected) { x.disabled = false; } }); }
+});
+const QTY = {};
+async function onCb(cb, arg, box) {
+  if (cb === "noop") return;
+  switch (cb) {
+    case "menu": kbReceipt(box, "🏠"); await botSay(esc(T().menuHead), mainMenuKb()); break;
+    case "products": await showProducts(box); break;
+    case "prod": kbReceipt(box, "▸"); await botSay(productDetail(Number(arg)).replace(/\n/g, "<br>"), productKb(Number(arg))); break;
+    case "ostart": {
+      kbReceipt(box, "🛒");
+      const pid = Number(arg);
+      QTY[pid] = 1;
+      await botSay(`${esc(T().qty)}<br><b>${esc(T().qtyGo(1))}</b>`, qtyKb(pid, 1));
+      break;
+    }
+    case "qplus": case "qmin": {
+      const [pid, q] = String(arg).split(":").map(Number);
+      let n = cb === "qplus" ? Math.min(9, q + 1) : Math.max(1, q - 1);
+      paintKb(box, qtyKb(pid, n));
+      const msg = box.closest(".msg");
+      if (msg) msg.querySelector(".txt").innerHTML = `${esc(T().qty)}<br><b>${esc(T().qtyGo(n))}</b>`;
+      chat.scrollTop = chat.scrollHeight;
+      break;
+    }
+    case "oconfirm": {
+      const [pid, q] = String(arg).split(":").map(Number);
+      kbReceipt(box, "✅");
+      await placeOrder(pid, q);
+      break;
+    }
+    case "qstart": kbReceipt(box, "🧾"); await startQuoteFlow(arg); break;
+    case "tstart": kbReceipt(box, "🎫"); await startTicketFlow(arg); break;
+    case "quote": kbReceipt(box, "🧾"); await startQuoteFlow(""); break;
+    case "support": kbReceipt(box, "🎫"); await startTicketFlow(); break;
+    case "contact": kbReceipt(box, "📞"); await botSay(esc(T().contact).replace(/\n/g, "<br>")); break;
+    case "help": kbReceipt(box, "❓"); await botSay(esc(T().help).replace(/\n/g, "<br>")); break;
+    case "lang": {
+      kbReceipt(box, "🌍");
+      await botSay(esc(T().langQ), [[{ t: "English", cb: "setlang", arg: "en" }, { t: "فارسی", cb: "setlang", arg: "fa" }, { t: "العربية", cb: "setlang", arg: "ar" }]]);
+      break;
+    }
+    case "setlang": {
+      S.lang = arg; save(); applyLang();
+      kbReceipt(box, "🌍 " + arg.toUpperCase());
+      await botSay(esc(T().langSet), mainMenuKb());
+      break;
+    }
+  }
+}
+
+/* ---- input ---- */
+async function routeText(raw) {
+  const text = raw.trim();
+  // onboarding: name
+  if (!S.onboard) {
+    if (text.replace(/\/start/g, "").trim().length < 2) { await botSay(esc(T().askName)); return; }
+    S.name = text.replace(/\/start/g, "").trim().slice(0, 40);
+    S.onboard = true; save();
+    await botSay(esc(T().welcome(S.name)).replace(/\n/g, "<br>"), mainMenuKb());
+    return;
+  }
+  // capture steps
+  if (S.capture) {
+    if (text.length < 3) { await botSay(esc(T().tooShort)); return; }
+    if (S.capture.type === "qdesc") { await placeQuote(text); return; }
+    if (S.capture.type === "tdesc") { await placeTicket(text); return; }
+  }
+  const n = text.toLowerCase();
+  const has = (...ws) => ws.some(w => n.indexOf(w) !== -1);
+  // menu shortcuts (both langs)
+  if (text === "/start") { await botSay(esc(T().back(S.name)).replace(/\n/g, "<br>"), mainMenuKb()); return; }
+  if (has("🛍") || has("product", "محصول", "کاتالوگ", "catalog", "المنتج")) { await showProducts(null); return; }
+  if (has("🧾") || has("quote", "استعلام", "عرض")) { await startQuoteFlow(""); return; }
+  if (has("🆘") || has("support", "ticket", "پشتیبانی", "تیکت", "دعم")) { await startTicketFlow(); return; }
+  if (has("📞") || has("contact", "تماس", "اتصال")) { await botSay(esc(T().contact).replace(/\n/g, "<br>")); return; }
+  if (has("🌍") || has("language", "زبان", "اللغة")) { await botSay(esc(T().langQ), [[{ t: "English", cb: "setlang", arg: "en" }, { t: "فارسی", cb: "setlang", arg: "fa" }, { t: "العربية", cb: "setlang", arg: "ar" }]]); return; }
+  if (has("❓") || has("help", "/help", "راهنما", "مساعدة")) { await botSay(esc(T().help).replace(/\n/g, "<br>")); return; }
+  // free text → backend or sim
+  if (S.backend) {
+    const t = showTyping();
+    upgradeTicks(true);
+    try {
+      const r = await apiPost("/chat", { message: text.slice(0, 2000), session: S.session || "" });
+      t.remove(); hideTyping();
+      if (r.json && r.json.session) { S.session = r.json.session; save(); }
+      if (r.status === 200 && r.json && r.json.reply) { addMsg("bot", esc(r.json.reply)); }
+      else if (r.status === 429) { addMsg("bot", esc(T().fast || "⏳")); }
+      else { addMsg("bot", esc(simReply(text))); }
+    } catch (e) { t.remove(); hideTyping(); addMsg("bot", esc(simReply(text))); }
+    return;
+  }
+  const t = showTyping();
+  upgradeTicks(true);
+  await sleep(500 + Math.random() * 700);
+  t.remove(); hideTyping();
+  addMsg("bot", esc(simReply(text)));
+}
+function send() {
+  const text = input.value.trim();
+  if (!text) return;
+  addMsg("me", esc(text));
+  input.value = "";
+  setTimeout(() => upgradeTicks(false), 300);
+  routeText(text);
+}
+sendBtn.addEventListener("click", send);
+input.addEventListener("keydown", e => { if (e.key === "Enter") send(); });
+
+/* ---- nav & header ---- */
+document.querySelectorAll("#nav button").forEach(b => b.onclick = () => setScreen(b.dataset.nav));
+$("btnMgr").onclick = () => setScreen(S.screen === "mgr" ? "chat" : "mgr");
+$("btnLang").onclick = async () => {
+  const order = ["en", "fa", "ar"];
+  S.lang = order[(order.indexOf(S.lang) + 1) % order.length];
+  save(); applyLang();
+  setScreen("chat");
+  await botSay(esc(T().langSet || T().menuHead), mainMenuKb());
+};
+
+/* ---- init ---- */
+(async function init() {
+  applyLang();
+  paintBadges();
+  setScreen("chat");
+  const live = await bootBackend();
+  if (S.backend && S.catalog === null) { try { S.catalog = await apiGet("/catalog?lang=en"); } catch (e) {} }
+  addMsg("bot", `<b class="g">🤖 ${esc(CONFIG.brand)}</b> · ${live ? "LIVE" : (T().sim || "SIM")}`);
+  if (!S.onboard) {
+    await botSay(esc(T().askName));
+  } else {
+    await botSay(esc(T().back(S.name)).replace(/\n/g, "<br>"), mainMenuKb());
+  }
+})();
+</script>
+</body>
+</html>
