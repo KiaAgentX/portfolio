@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>نمونه‌گیری آماری | حسابداران</title>
+    <style>
+        /* ============================================================
+                   RESET & BASE – همانند داشبورد
+                   ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-red: #ff2255;
+            --neon-white: #f0f0ff;
+            --dark-bg: #0a0a12;
+            --card-bg: rgba(18, 18, 30, 0.88);
+            --glass-border: rgba(0, 255, 136, 0.12);
+            --shadow-green: 0 0 40px rgba(0, 255, 136, 0.08);
+            --shadow-red: 0 0 40px rgba(255, 34, 85, 0.08);
+            --radius: 18px;
+            --font: 'Vazirmatn', Tahoma, sans-serif;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--dark-bg);
+            color: var(--neon-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 0 1rem 3rem 1rem;
+            position: relative;
+        }
+
+        /* ============================================================
+                   CANVAS – ذرات معلق (زنده)
+                   ============================================================ */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ============================================================
+                   WRAPPER اصلی
+                   ============================================================ */
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.2rem 0 0 0;
+        }
+
+        /* ============================================================
+                   HEADER – لوگو + نویگیشن
+                   ============================================================ */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.9rem 1.8rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(16px);
+            margin-bottom: 2.2rem;
+            box-shadow: var(--shadow-green), inset 0 0 60px rgba(0, 255, 136, 0.02);
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-red), transparent);
+            opacity: 0.3;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--neon-white);
+            font-weight: 300;
+            font-size: 1.2rem;
+        }
+
+        .logo .badge {
+            background: var(--neon-red);
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.3);
+            margin-right: 0.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.4rem 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(240, 240, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-white);
+            border-color: rgba(0, 255, 136, 0.15);
+            background: rgba(0, 255, 136, 0.03);
+        }
+
+        .nav-links a.active {
+            color: var(--neon-green);
+            border-color: rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .nav-links .sep {
+            color: rgba(240, 240, 255, 0.1);
+            font-size: 1.2rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .header-actions a {
+            color: var(--neon-white);
+            text-decoration: none;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid rgba(240, 240, 255, 0.06);
+            font-size: 0.75rem;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+        }
+
+        .header-actions a:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.08);
+        }
+
+        /* ============================================================
+                   HERO – معرفی نمونه‌گیری آماری
+                   ============================================================ */
+        .hero {
+            text-align: center;
+            padding: 2.8rem 2rem 2.4rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(14px);
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-green), inset 0 0 80px rgba(0, 255, 136, 0.01);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(circle at 20% 40%, rgba(0, 255, 136, 0.04), transparent 70%);
+            animation: heroGlow 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes heroGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(8%, 10%) scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        .hero .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .green {
+            color: var(--neon-green);
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .hero h1 .red {
+            color: var(--neon-red);
+            text-shadow: 0 0 40px rgba(255, 34, 85, 0.15);
+        }
+
+        .hero h1 .white {
+            color: var(--neon-white);
+        }
+
+        .hero .subtitle {
+            font-size: 1rem;
+            color: rgba(240, 240, 255, 0.6);
+            max-width: 700px;
+            margin: 0.6rem auto 1rem auto;
+            line-height: 1.8;
+        }
+
+        .hero .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 2rem 3rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .hero .stat-item {
+            text-align: center;
+        }
+
+        .hero .stat-item .num {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            display: block;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .hero .stat-item .label {
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.35);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.1rem;
+        }
+
+        .hero .stat-item .num.red {
+            color: var(--neon-red);
+            text-shadow: 0 0 20px rgba(255, 34, 85, 0.1);
+        }
+
+        .hero .stat-item .num.gold {
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+
+        /* ============================================================
+                   بخش : روش‌های نمونه‌گیری
+                   ============================================================ */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 2.2rem 0 1.5rem 0;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.06);
+        }
+
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section-header h2 .green {
+            color: var(--neon-green);
+        }
+
+        .section-header h2 .red {
+            color: var(--neon-red);
+        }
+
+        .section-header .sub {
+            color: rgba(240, 240, 255, 0.3);
+            font-size: 0.8rem;
+            font-weight: 300;
+        }
+
+        .section-header .badge-count {
+            background: rgba(0, 255, 136, 0.06);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: var(--neon-green);
+        }
+
+        /* ============================================================
+                   GRID – روش‌های نمونه‌گیری
+                   ============================================================ */
+        .sampling-methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .sampling-methods-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .method-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 1.5rem 1.8rem 1.5rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .method-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-red), var(--neon-green));
+            opacity: 0.3;
+            transition: 0.4s;
+        }
+
+        .method-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(0, 255, 136, 0.25);
+            box-shadow: 0 12px 50px rgba(0, 255, 136, 0.08), 0 0 80px rgba(255, 34, 85, 0.03);
+        }
+
+        .method-card:hover::before {
+            opacity: 1;
+            height: 3px;
+        }
+
+        .method-card .icon-wrap {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .method-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--neon-white);
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .method-card h3 .tag {
+            font-weight: 300;
+            font-size: 0.6rem;
+            color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.06);
+            padding: 0.1rem 0.7rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.08);
+        }
+
+        .method-card .desc {
+            color: rgba(240, 240, 255, 0.55);
+            font-size: 0.85rem;
+            line-height: 1.7;
+            margin: 0.4rem 0 0.6rem 0;
+        }
+
+        .method-card .formula {
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            background: rgba(0, 255, 136, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.05);
+            font-size: 0.8rem;
+            color: rgba(240, 240, 255, 0.4);
+            font-family: monospace;
+            margin-top: 0.3rem;
+            text-align: center;
+        }
+
+        .method-card .formula .highlight {
+            color: var(--neon-green);
+        }
+
+        /* ============================================================
+                   بخش : محاسبه حجم نمونه
+                   ============================================================ */
+        .sample-size-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 992px) {
+            .sample-size-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .size-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.8rem 2rem 1.8rem;
+            box-shadow: var(--shadow-green);
+            transition: var(--transition);
+        }
+
+        .size-card:hover {
+            border-color: rgba(0, 255, 136, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .size-card .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .size-card .card-title .green {
+            color: var(--neon-green);
+        }
+
+        .size-card .card-title .red {
+            color: var(--neon-red);
+        }
+
+        .size-card .card-title .gold {
+            color: #ffd700;
+        }
+
+        .form-group {
+            margin-bottom: 0.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: rgba(240, 240, 255, 0.5);
+            margin-bottom: 0.2rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem 0.7rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            color: var(--neon-white);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.05);
+            background: rgba(0, 255, 136, 0.02);
+        }
+
+        .form-group select option {
+            background: #1a1a2e;
+            color: var(--neon-white);
+        }
+
+        .btn-calc {
+            background: rgba(0, 255, 136, 0.06);
+            border: 1px solid var(--glass-border);
+            color: var(--neon-green);
+            padding: 0.6rem 1.8rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: var(--font);
+            font-weight: 700;
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+            width: 100%;
+            margin-top: 0.3rem;
+        }
+
+        .btn-calc:hover {
+            background: rgba(0, 255, 136, 0.12);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.08);
+        }
+
+        .btn-calc.red {
+            color: var(--neon-red);
+            border-color: rgba(255, 34, 85, 0.15);
+        }
+
+        .btn-calc.red:hover {
+            background: rgba(255, 34, 85, 0.08);
+            border-color: var(--neon-red);
+            box-shadow: 0 0 30px rgba(255, 34, 85, 0.08);
+        }
+
+        .btn-calc.gold {
+            color: #ffd700;
+            border-color: rgba(255, 215, 0, 0.15);
+        }
+
+        .btn-calc.gold:hover {
+            background: rgba(255, 215, 0, 0.08);
+            border-color: #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.08);
+        }
+
+        .result-display {
+            margin-top: 1rem;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            min-height: 40px;
+            font-size: 0.85rem;
+            color: rgba(240, 240, 255, 0.6);
+        }
+
+        .result-display .highlight {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .result-display .highlight.red {
+            color: var(--neon-red);
+        }
+
+        .result-display .highlight.gold {
+            color: #ffd700;
+        }
+
+        /* ============================================================
+                   بخش : نمونه‌گیری در عمل
+                   ============================================================ */
+        .practical-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.5rem 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+        }
+
+        .practical-section .practical-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .practical-section .practical-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .practical-section .practical-header .badge {
+            background: rgba(255, 215, 0, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            color: #ffd700;
+        }
+
+        .practical-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .practical-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .practical-card {
+            padding: 1.2rem 1.2rem 1.5rem 1.2rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .practical-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .practical-card h4 .green {
+            color: var(--neon-green);
+        }
+
+        .practical-card .steps {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .practical-card .steps li {
+            padding: 0.3rem 0 0.3rem 1.5rem;
+            position: relative;
+            font-size: 0.8rem;
+            color: rgba(240, 240, 255, 0.65);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            line-height: 1.5;
+        }
+
+        .practical-card .steps li:last-child {
+            border-bottom: none;
+        }
+
+        .practical-card .steps li::before {
+            content: '▸';
+            position: absolute;
+            right: 0;
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+                   بخش : جداول و فرمول‌ها
+                   ============================================================ */
+        .formula-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.5rem 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+            overflow-x: auto;
+        }
+
+        .formula-section h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .formula-section h3 .green {
+            color: var(--neon-green);
+        }
+
+        .formula-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .formula-table th {
+            background: rgba(0, 255, 136, 0.04);
+            border-bottom: 2px solid rgba(0, 255, 136, 0.08);
+            padding: 0.7rem 0.5rem;
+            text-align: center;
+            color: var(--neon-white);
+            font-weight: 700;
+        }
+
+        .formula-table td {
+            padding: 0.6rem 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            text-align: center;
+        }
+
+        .formula-table tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .formula-table .formula-cell {
+            font-family: monospace;
+            color: var(--neon-green);
+            font-size: 0.8rem;
+        }
+
+        .formula-table .highlight-row td {
+            color: var(--neon-white);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+                   بخش : ریسک و اطمینان
+                   ============================================================ */
+        .risk-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .risk-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .risk-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 1.5rem 1.8rem 1.5rem;
+            box-shadow: var(--shadow-green);
+            transition: var(--transition);
+        }
+
+        .risk-card:hover {
+            border-color: rgba(0, 255, 136, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .risk-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .risk-card h4 .green {
+            color: var(--neon-green);
+        }
+
+        .risk-card h4 .red {
+            color: var(--neon-red);
+        }
+
+        .risk-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .risk-card ul li {
+            padding: 0.3rem 0 0.3rem 1.5rem;
+            position: relative;
+            font-size: 0.85rem;
+            color: rgba(240, 240, 255, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            line-height: 1.5;
+        }
+
+        .risk-card ul li:last-child {
+            border-bottom: none;
+        }
+
+        .risk-card ul li::before {
+            content: '▸';
+            position: absolute;
+            right: 0;
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .risk-card ul li .highlight {
+            color: var(--neon-white);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 1rem 0.5rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 1rem;
+        }
+
+        .footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+        }
+
+        .footer .links a {
+            color: rgba(240, 240, 255, 0.25);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .footer .links a:hover {
+            color: var(--neon-green);
+        }
+
+        .footer .copyright {
+            color: rgba(240, 240, 255, 0.12);
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer .copyright .green {
+            color: rgba(0, 255, 136, 0.2);
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero .stats-row {
+                gap: 1.2rem;
+            }
+            .sample-size-section {
+                grid-template-columns: 1fr;
+            }
+            .risk-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0 0.6rem 2rem 0.6rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 0.8rem 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .hero {
+                padding: 2rem 1.2rem;
+            }
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+            .hero .subtitle {
+                font-size: 0.85rem;
+            }
+            .hero .stats-row {
+                gap: 0.8rem 1.5rem;
+            }
+            .hero .stat-item .num {
+                font-size: 1.2rem;
+            }
+            .sampling-methods-grid {
+                grid-template-columns: 1fr;
+            }
+            .practical-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer .links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.1rem;
+            }
+            .method-card {
+                padding: 1rem;
+            }
+            .size-card {
+                padding: 1.2rem;
+            }
+            .practical-section {
+                padding: 1rem;
+            }
+            .formula-section {
+                padding: 1rem;
+            }
+            .risk-card {
+                padding: 1rem;
+            }
+        }
+
+        /* ============================================================
+                   UTILS & ANIMATIONS
+                   ============================================================ */
+        .text-green {
+            color: var(--neon-green);
+        }
+        .text-red {
+            color: var(--neon-red);
+        }
+        .text-white {
+            color: var(--neon-white);
+        }
+        .text-gold {
+            color: #ffd700;
+        }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+        .fw-700 {
+            font-weight: 700;
+        }
+        .fs-small {
+            font-size: 0.75rem;
+        }
+        .op-5 {
+            opacity: 0.5;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #10101a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00cc6a;
+        }
+
+        .hero,
+        .method-card,
+        .size-card,
+        .practical-section,
+        .formula-section,
+        .risk-card {
+            animation: fadeUp 0.7s ease-out both;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glow-text {
+            animation: glowPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.05);
+            }
+            100% {
+                text-shadow: 0 0 50px rgba(0, 255, 136, 0.15), 0 0 80px rgba(0, 255, 136, 0.05);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    CANVAS – ذرات معلق
+    ============================================================ -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ============================================================
+    WRAPPER
+    ============================================================ -->
+    <div class="main-wrapper">
+
+        <!-- ========== HEADER ========== -->
+        <header class="header">
+            <a href="index.html" class="logo">
+                🧾 حسابداران
+                <span>|</span>
+                <span style="font-weight:300;font-size:1rem;color:rgba(240,240,255,0.6);">نمونه‌گیری آماری</span>
+                <span class="badge">v2.0</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="trial_balance.html">📊 تراز</a>
+                <a href="tax.html">💰 مالیات</a>
+                <a href="substantive.html">📋 آزمون</a>
+                <a href="#" class="active">🎲 نمونه</a>
+                <a href="report.html" style="color:var(--neon-red);border-color:rgba(255,34,85,0.1);">📝 گزارش</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" onclick="generateSample();">🎯 تولید</a>
+                <a href="index.html">🚀 بازگشت</a>
+            </div>
+        </header>
+
+        <!-- ========== HERO ========== -->
+        <section class="hero">
+            <div class="content">
+                <h1>
+                    <span class="green glow-text">🎲</span>
+                    <span class="white">نمونه‌گیری آماری</span>
+                    <span class="green glow-text">·</span>
+                    <span class="red glow-text">حسابرسی</span>
+                </h1>
+                <p class="subtitle">
+                    ابزار کامل نمونه‌گیری آماری برای حسابرسان. شامل روش‌های تصادفی، سیستماتیک،
+                    طبقه‌بندی شده و MUS. محاسبه حجم نمونه با فرمول‌های استاندارد.
+                </p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="num">۴</span>
+                        <span class="label">روش نمونه‌گیری</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num red">۹۵٪</span>
+                        <span class="label">سطح اطمینان</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num gold">۵٪</span>
+                        <span class="label">ریسک قابل تحمل</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SECTION HEADER ========== -->
+        <div class="section-header">
+            <h2>
+                <span>🎯</span>
+                <span class="green">روش‌های نمونه‌گیری</span>
+                <span class="sub">— انتخاب مناسب برای هر موقعیت</span>
+            </h2>
+            <span class="badge-count">۴ روش</span>
+        </div>
+
+        <!-- ========== SAMPLING METHODS GRID ========== -->
+        <div class="sampling-methods-grid">
+
+            <!-- 1. تصادفی ساده -->
+            <div class="method-card">
+                <span class="icon-wrap">🎲</span>
+                <h3>تصادفی ساده <span class="tag">بدون بازگشت</span></h3>
+                <div class="desc">هر عضو جامعه شانس مساوی برای انتخاب دارد. مناسب برای جوامع همگن.</div>
+                <div class="formula">
+                    <span class="highlight">P(x) = 1/N</span> · بدون تورش
+                </div>
+            </div>
+
+            <!-- 2. سیستماتیک -->
+            <div class="method-card">
+                <span class="icon-wrap">📏</span>
+                <h3>سیستماتیک <span class="tag">فاصله ثابت</span></h3>
+                <div class="desc">انتخاب اعضا با فاصله ثابت از یک شروع تصادفی. کارآمد برای جوامع بزرگ.</div>
+                <div class="formula">
+                    <span class="highlight">k = N/n</span> · شروع تصادفی
+                </div>
+            </div>
+
+            <!-- 3. طبقه‌بندی شده -->
+            <div class="method-card">
+                <span class="icon-wrap">📊</span>
+                <h3>طبقه‌بندی شده <span class="tag">Stratified</span></h3>
+                <div class="desc">تقسیم جامعه به طبقات همگن و نمونه‌گیری از هر طبقه. دقت بالاتر.</div>
+                <div class="formula">
+                    <span class="highlight">n = Σ nᵢ</span> · تخصیص متناسب
+                </div>
+            </div>
+
+            <!-- 4. MUS (واحد پولی) -->
+            <div class="method-card">
+                <span class="icon-wrap">💰</span>
+                <h3>MUS <span class="tag">واحد پولی</span></h3>
+                <div class="desc">نمونه‌گیری بر اساس مبالغ پولی، مناسب برای حساب‌های با ارزش بالا.</div>
+                <div class="formula">
+                    <span class="highlight">MUS</span> · نمونه‌گیری با احتمال пропорциональ
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========== SECTION HEADER – حجم نمونه ========== -->
+        <div class="section-header">
+            <h2>
+                <span>🧮</span>
+                <span class="green">محاسبه حجم نمونه</span>
+                <span class="sub">— فرمول‌های استاندارد</span>
+            </h2>
+            <span class="badge-count">مهم</span>
+        </div>
+
+        <!-- ========== SAMPLE SIZE SECTION ========== -->
+        <div class="sample-size-section">
+
+            <!-- کارت محاسبه حجم -->
+            <div class="size-card">
+                <div class="card-title">
+                    <span>📥</span>
+                    <span class="green">ورودی‌های تعیین حجم</span>
+                </div>
+                <div class="form-group">
+                    <label>سطح اطمینان (Z):</label>
+                    <select id="confidenceLevel">
+                        <option value="1.96">۹۵٪ (Z=1.96)</option>
+                        <option value="1.645">۹۰٪ (Z=1.645)</option>
+                        <option value="2.576">۹۹٪ (Z=2.576)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>انحراف معیار تخمینی (σ):</label>
+                    <input type="number" id="stdDevInput" value="0.1" step="0.01" min="0.01" max="0.5" />
+                </div>
+                <div class="form-group">
+                    <label>دقت مورد نیاز (d):</label>
+                    <input type="number" id="precisionInput" value="0.05" step="0.005" min="0.01" max="0.2" />
+                </div>
+                <div class="form-group">
+                    <label>اندازه جامعه (N):</label>
+                    <input type="number" id="popSizeInput" value="1000" min="1" />
+                </div>
+                <button class="btn-calc" onclick="calcSampleSizeFull()">🧮 محاسبه حجم نمونه</button>
+                <div class="result-display" id="sampleSizeResult">
+                    <span style="color:rgba(240,240,255,0.2);">حجم نمونه محاسبه نشده</span>
+                </div>
+            </div>
+
+            <!-- کارت انتخاب عملی -->
+            <div class="size-card">
+                <div class="card-title">
+                    <span>🎯</span>
+                    <span class="red">انتخاب نمونه عملی</span>
+                </div>
+                <div class="form-group">
+                    <label>روش نمونه‌گیری:</label>
+                    <select id="methodSelect">
+                        <option value="random" selected>تصادفی ساده</option>
+                        <option value="systematic">سیستماتیک</option>
+                        <option value="stratified">طبقه‌بندی شده</option>
+                        <option value="mus">MUS (واحد پولی)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>تعداد نمونه (n):</label>
+                    <input type="number" id="sampleSizeSelect" value="30" min="1" max="1000" />
+                </div>
+                <div class="form-group">
+                    <label>جامعه (N):</label>
+                    <input type="number" id="populationSelect" value="1000" min="1" />
+                </div>
+                <button class="btn-calc red" onclick="generateSampleFull()">🎲 تولید نمونه</button>
+                <div class="result-display" id="sampleResult">
+                    <span style="color:rgba(240,240,255,0.2);">برای تولید نمونه کلیک کنید</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========== SECTION HEADER – نمونه‌گیری در عمل ========== -->
+        <div class="section-header">
+            <h2>
+                <span>⚙️</span>
+                <span class="green">نمونه‌گیری در عمل</span>
+                <span class="sub">— گام‌های اجرایی</span>
+            </h2>
+            <span class="badge-count">مراحل</span>
+        </div>
+
+        <!-- ========== PRACTICAL SECTION ========== -->
+        <div class="practical-section">
+            <div class="practical-header">
+                <h3>
+                    <span>📋</span>
+                    <span class="green">مراحل اجرای نمونه‌گیری</span>
+                    <span class="badge">طبق استانداردهای حسابرسی</span>
+                </h3>
+                <div style="display:flex;gap:0.5rem;">
+                    <button onclick="alert('مرحله ۱: تعیین هدف و جامعه آماری')" style="background:rgba(0,255,136,0.04);border:1px solid var(--glass-border);color:var(--neon-green);padding:0.3rem 1rem;border-radius:20px;cursor:pointer;font-family:var(--font);font-size:0.7rem;">۱</button>
+                    <button onclick="alert('مرحله ۲: انتخاب روش نمونه‌گیری مناسب')" style="background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.1);color:#ffd700;padding:0.3rem 1rem;border-radius:20px;cursor:pointer;font-family:var(--font);font-size:0.7rem;">۲</button>
+                    <button onclick="alert('مرحله ۳: محاسبه حجم نمونه')" style="background:rgba(255,34,85,0.04);border:1px solid rgba(255,34,85,0.1);color:var(--neon-red);padding:0.3rem 1rem;border-radius:20px;cursor:pointer;font-family:var(--font);font-size:0.7rem;">۳</button>
+                    <button onclick="alert('مرحله ۴: اجرای انتخاب نمونه')" style="background:rgba(0,255,136,0.04);border:1px solid var(--glass-border);color:var(--neon-white);padding:0.3rem 1rem;border-radius:20px;cursor:pointer;font-family:var(--font);font-size:0.7rem;">۴</button>
+                </div>
+            </div>
+            <div class="practical-grid">
+                <div class="practical-card">
+                    <h4>
+                        <span>📌</span>
+                        <span class="green">مراحل اصلی</span>
+                    </h4>
+                    <ul class="steps">
+                        <li>تعیین هدف نمونه‌گیری (آزمون محتوا یا کنترل)</li>
+                        <li>شناسایی جامعه آماری و واحدهای نمونه</li>
+                        <li>انتخاب روش نمونه‌گیری مناسب</li>
+                        <li>محاسبه حجم نمونه با فرمول</li>
+                        <li>اجرای انتخاب نمونه</li>
+                        <li>تفسیر نتایج و تعمیم به جامعه</li>
+                    </ul>
+                </div>
+                <div class="practical-card">
+                    <h4>
+                        <span>⚠️</span>
+                        <span class="red">ملاحظات مهم</span>
+                    </h4>
+                    <ul class="steps">
+                        <li>ریسک نمونه‌گیری و ریسک غیرنمونه‌گیری</li>
+                        <li>سطح اطمینان و دقت مورد نیاز</li>
+                        <li>انحراف معیار و واریانس جامعه</li>
+                        <li>تازگی و کامل بودن چارچوب نمونه</li>
+                        <li>قابلیت تعمیم نتایج</li>
+                        <li>مستندسازی کامل</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SECTION HEADER – فرمول‌ها ========== -->
+        <div class="section-header">
+            <h2>
+                <span>📐</span>
+                <span class="green">فرمول‌های نمونه‌گیری</span>
+                <span class="sub">— مرجع سریع</span>
+            </h2>
+            <span class="badge-count">مهم</span>
+        </div>
+
+        <!-- ========== FORMULA SECTION ========== -->
+        <div class="formula-section">
+            <h3>
+                <span>📊</span>
+                <span class="green">فرمول‌های کلیدی</span>
+                <span style="font-size:0.8rem;font-weight:300;color:rgba(240,240,255,0.3);">— برای حسابرسان</span>
+            </h3>
+            <table class="formula-table">
+                <thead>
+                    <tr>
+                        <th>روش</th>
+                        <th>فرمول</th>
+                        <th>کاربرد</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>تصادفی ساده</td>
+                        <td class="formula-cell">n = (Z² × σ²) / d²</td>
+                        <td>جوامع همگن و کوچک</td>
+                    </tr>
+                    <tr>
+                        <td>سیستماتیک</td>
+                        <td class="formula-cell">k = N / n</td>
+                        <td>جوامع بزرگ و منظم</td>
+                    </tr>
+                    <tr>
+                        <td>طبقه‌بندی شده</td>
+                        <td class="formula-cell">nᵢ = (Nᵢ / N) × n</td>
+                        <td>جوامع ناهمگن</td>
+                    </tr>
+                    <tr>
+                        <td>MUS</td>
+                        <td class="formula-cell">n = (N × Z × σ) / d</td>
+                        <td>حساب‌های پولی با ارزش</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>ضریب اطمینان</td>
+                        <td class="formula-cell" style="color:#ffd700;">Z = ۱.۹۶ (۹۵٪)</td>
+                        <td>استاندارد حسابرسی</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ========== SECTION HEADER – ریسک ========== -->
+        <div class="section-header">
+            <h2>
+                <span>🛡️</span>
+                <span class="green">ریسک و اطمینان</span>
+                <span class="sub">— مفاهیم پایه</span>
+            </h2>
+            <span class="badge-count">کلیدی</span>
+        </div>
+
+        <!-- ========== RISK SECTION ========== -->
+        <div class="risk-section">
+            <div class="risk-card">
+                <h4>
+                    <span>📉</span>
+                    <span class="green">ریسک نمونه‌گیری</span>
+                </h4>
+                <ul>
+                    <li>ریسک پذیرش نادرست: <span class="highlight">پذیرش کنترل ضعیف</span></li>
+                    <li>ریسک رد نادرست: <span class="highlight">رد کنترل قوی</span></li>
+                    <li>ریسک عدم کشف: <span class="highlight">عدم شناسایی تحریف</span></li>
+                    <li>ریسک بیش از حد: <span class="highlight">نمونه بزرگتر از نیاز</span></li>
+                    <li>کنترل ریسک: <span class="highlight">تنظیم سطح اطمینان</span></li>
+                </ul>
+            </div>
+            <div class="risk-card">
+                <h4>
+                    <span>📊</span>
+                    <span class="red">سطح اطمینان و دقت</span>
+                </h4>
+                <ul>
+                    <li>سطح اطمینان ۹۵٪: <span class="highlight">Z = ۱.۹۶</span></li>
+                    <li>سطح اطمینان ۹۰٪: <span class="highlight">Z = ۱.۶۴۵</span></li>
+                    <li>سطح اطمینان ۹۹٪: <span class="highlight">Z = ۲.۵۷۶</span></li>
+                    <li>دقت مورد نیاز: <span class="highlight">d = ۰.۰۵ (۵٪)</span></li>
+                    <li>انحراف معیار: <span class="highlight">σ = ۰.۱ (معمول)</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="#" onclick="alert('تمام ابزارها رایگان و بدون نیاز به اینترنت هستند');">🔒 حریم خصوصی</a>
+                <a href="#" onclick="alert('برای گزارش مشکل یا پیشنهاد، از طریق Issues اقدام کنید.');">🐛 گزارش مشکل</a>
+                <a href="#" onclick="alert('نسخه ۲.۰ – کاملاً متن‌باز و رایگان');">📌 نسخه ۲.۰</a>
+            </div>
+            <div class="copyright">
+                <span class="green">حسابداران</span> · نمونه‌گیری آماری · ۱۴۰۴
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    SCRIPT – ذرات معلق + منطق نمونه‌گیری
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // ۱. ذرات معلق – canvas
+            // ============================================================
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let W, H;
+            let particles = [];
+            const PARTICLE_COUNT = 80;
+
+            const COLORS = [
+                'rgba(0, 255, 136, ',
+                'rgba(255, 34, 85, ',
+                'rgba(240, 240, 255, ',
+            ];
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H;
+                    this.size = Math.random() * 2.0 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    this.speedY = (Math.random() - 0.5) * 0.5;
+                    this.opacity = Math.random() * 0.4 + 0.1;
+                    this.colorIdx = Math.floor(Math.random() * COLORS.length);
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = 0.006 + Math.random() * 0.012;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < 0 || this.x > W) { this.speedX *= -1;
+                        this.x = Math.max(0, Math.min(W, this.x)); }
+                    if (this.y < 0 || this.y > H) { this.speedY *= -1;
+                        this.y = Math.max(0, Math.min(H, this.y)); }
+                    this.currentOpacity = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                }
+                draw() {
+                    const alpha = Math.max(0.03, Math.min(0.8, this.currentOpacity));
+                    const color = COLORS[this.colorIdx] + alpha + ')';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 8;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function resizeCanvas() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, W, H);
+                const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
+                grad.addColorStop(0, '#0d0d18');
+                grad.addColorStop(1, '#05050a');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, W, H);
+
+                particles.forEach(p => { p.update();
+                    p.draw(); });
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = 130;
+                        if (dist < maxDist) {
+                            const alpha = (1 - dist / maxDist) * 0.12;
+                            const color = COLORS[0] + alpha + ')';
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = color;
+                            ctx.lineWidth = 0.4;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            function setupParticles() {
+                resizeCanvas();
+                initParticles();
+                drawParticles();
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                particles.forEach(p => {
+                    p.x = Math.min(p.x, W);
+                    p.y = Math.min(p.y, H);
+                });
+            });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupParticles);
+            } else {
+                setupParticles();
+            }
+
+            // ============================================================
+            // ۲. محاسبه حجم نمونه کامل
+            // ============================================================
+            window.calcSampleSizeFull = function() {
+                const z = parseFloat(document.getElementById('confidenceLevel').value) || 1.96;
+                const sigma = parseFloat(document.getElementById('stdDevInput').value) || 0.1;
+                const d = parseFloat(document.getElementById('precisionInput').value) || 0.05;
+                const N = parseInt(document.getElementById('popSizeInput').value) || 1000;
+
+                // فرمول: n = (Z² * σ²) / d²
+                const numerator = Math.pow(z, 2) * Math.pow(sigma, 2);
+                const denominator = Math.pow(d, 2);
+                let n = Math.ceil(numerator / denominator);
+                if (n < 2) n = 2;
+                if (n > N) n = N;
+                if (n > 500) n = 500;
+
+                const resultDiv = document.getElementById('sampleSizeResult');
+                resultDiv.innerHTML = `
+                    <span class="highlight">حجم نمونه پیشنهادی: ${n}</span><br>
+                    <span style="color:rgba(240,240,255,0.3);font-size:0.75rem;">
+                        سطح اطمینان: ${z === 1.96 ? '۹۵٪' : z === 1.645 ? '۹۰٪' : '۹۹٪'} 
+                        · دقت: ${(d*100).toFixed(1)}% 
+                        · جامعه: ${N}
+                    </span>
+                `;
+            };
+
+            // ============================================================
+            // ۳. تولید نمونه کامل
+            // ============================================================
+            window.generateSampleFull = function() {
+                const method = document.getElementById('methodSelect').value;
+                const n = parseInt(document.getElementById('sampleSizeSelect').value) || 30;
+                const N = parseInt(document.getElementById('populationSelect').value) || 1000;
+
+                if (n > N) {
+                    alert('حجم نمونه نباید از جامعه بیشتر باشد');
+                    return;
+                }
+
+                let sample = [];
+                const arr = Array.from({ length: N }, (_, i) => i + 1);
+
+                if (method === 'random') {
+                    const shuffled = [...arr];
+                    for (let i = shuffled.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                    }
+                    sample = shuffled.slice(0, n).sort((a, b) => a - b);
+                } else if (method === 'systematic') {
+                    const interval = Math.floor(N / n);
+                    const start = Math.floor(Math.random() * interval) + 1;
+                    for (let i = 0; i < n; i++) {
+                        const val = start + i * interval;
+                        if (val <= N) sample.push(val);
+                    }
+                } else if (method === 'stratified') {
+                    const strata = 5;
+                    const perStrata = Math.floor(n / strata);
+                    const remainder = n % strata;
+                    for (let s = 0; s < strata; s++) {
+                        const size = s < remainder ? perStrata + 1 : perStrata;
+                        const startIdx = Math.floor((s / strata) * N);
+                        const endIdx = Math.floor(((s + 1) / strata) * N);
+                        const pool = arr.slice(startIdx, endIdx);
+                        const shuffled = [...pool];
+                        for (let i = shuffled.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                        }
+                        const selected = shuffled.slice(0, size);
+                        sample.push(...selected);
+                    }
+                    sample.sort((a, b) => a - b);
+                } else if (method === 'mus') {
+                    const amounts = arr.map(() => Math.floor(Math.random() * 100) + 1);
+                    const total = amounts.reduce((s, v) => s + v, 0);
+                    const interval = Math.floor(total / n);
+                    let cumulative = 0;
+                    let selected = [];
+                    let idx = 0;
+                    for (let i = 0; i < n && idx < N; i++) {
+                        const target = i * interval + Math.floor(Math.random() * interval);
+                        while (cumulative + amounts[idx] <= target && idx < N - 1) {
+                            cumulative += amounts[idx];
+                            idx++;
+                        }
+                        selected.push(idx + 1);
+                        idx++;
+                        if (idx >= N) break;
+                    }
+                    sample = [...new Set(selected)].sort((a, b) => a - b);
+                    if (sample.length === 0) sample = [1];
+                }
+
+                const resultDiv = document.getElementById('sampleResult');
+                if (sample.length === 0) {
+                    resultDiv.innerHTML = `<span style="color:var(--neon-red);">خطا: نمونه تولید نشد</span>`;
+                } else {
+                    resultDiv.innerHTML = `
+                        <span style="color:rgba(240,240,255,0.3);">روش: ${method === 'random' ? 'تصادفی ساده' : method === 'systematic' ? 'سیستماتیک' : method === 'stratified' ? 'طبقه‌بندی شده' : 'MUS'}</span><br>
+                        <span class="highlight">تعداد انتخاب شده: ${sample.length}</span><br>
+                        <span style="color:rgba(240,240,255,0.5);font-size:0.75rem;">شماره‌ها: ${sample.join('، ')}</span>
+                    `;
+                }
+            };
+
+            // ============================================================
+            // ۴. کپی نمونه گزارش در فوتر
+            // ============================================================
+            const footer = document.querySelector('.footer .copyright');
+            if (footer) {
+                const copyBtn = document.createElement('span');
+                copyBtn.textContent = '📋 کپی نمونه گزارش';
+                copyBtn.style.cssText = `
+                    display: inline-block;
+                    margin-top: 0.4rem;
+                    padding: 0.2rem 1rem;
+                    border: 1px solid rgba(0,255,136,0.08);
+                    border-radius: 30px;
+                    color: rgba(240,240,255,0.2);
+                    font-size: 0.6rem;
+                    cursor: pointer;
+                    transition: 0.3s;
+                    background: rgba(0,255,136,0.01);
+                `;
+                copyBtn.addEventListener('mouseenter', () => {
+                    copyBtn.style.color = 'var(--neon-green)';
+                    copyBtn.style.borderColor = 'rgba(0,255,136,0.2)';
+                });
+                copyBtn.addEventListener('mouseleave', () => {
+                    copyBtn.style.color = 'rgba(240,240,255,0.2)';
+                    copyBtn.style.borderColor = 'rgba(0,255,136,0.08)';
+                });
+                copyBtn.addEventListener('click', () => {
+                    const reportSample = `
+        گزارش حسابرس مستقل
+        ———————————————
+        به مجمع عمومی صاحبان سهام
+        شرکت نمونه
+
+        ما صورت‌های مالی شرکت را حسابرسی کرده‌ایم.
+        به نظر ما، صورت‌های مالی وضعیت مالی و نتایج عملکرد را
+        به‌طور مطلوب و طبق استانداردهای حسابداری نشان می‌دهند.
+
+        تاریخ: ۱۴۰۴/۰۲/۲۰
+        حسابرس: امیرحسین
+        `;
+                    navigator.clipboard.writeText(reportSample).then(() => {
+                        const orig = copyBtn.textContent;
+                        copyBtn.textContent = '✅ کپی شد!';
+                        copyBtn.style.color = 'var(--neon-green)';
+                        setTimeout(() => {
+                            copyBtn.textContent = orig;
+                            copyBtn.style.color = 'rgba(240,240,255,0.2)';
+                        }, 2200);
+                    }).catch(() => {
+                        alert('مشکل در کپی کردن متن');
+                    });
+                });
+                footer.appendChild(document.createElement('br'));
+                footer.appendChild(copyBtn);
+            }
+
+            // محاسبه اولیه
+            setTimeout(calcSampleSizeFull, 300);
+
+            console.log('🎲 نمونه‌گیری آماری · بارگذاری کامل شد');
+        })();
+    </script>
+
+</body>
+</html>

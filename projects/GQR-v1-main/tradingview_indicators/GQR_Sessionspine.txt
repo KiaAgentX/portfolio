@@ -1,0 +1,38 @@
+//@version=5
+indicator('GQR Sessions [NexusDigitalArtShop]', overlay=true)
+
+// ───────────────────────────────
+// Inputs
+// ───────────────────────────────
+showNY      = input.bool(true, 'New York')
+showLondon  = input.bool(true, 'London')
+showTokyo   = input.bool(true, 'Tokyo')
+showSydney  = input.bool(true, 'Sydney')
+nyColor     = input.color(#ff5d00, 'NY Color')
+londonColor = input.color(#2157f3, 'London Color')
+tokyoColor  = input.color(#e91e63, 'Tokyo Color')
+sydneyColor = input.color(#ffeb3b, 'Sydney Color')
+showLabels  = input.bool(true, 'Show Session Names')
+
+// ───────────────────────────────
+// Session times (UTC-5)
+// ───────────────────────────────
+inNY      = not na(time('1', '0830-1100', 'UTC-5')) and showNY
+inLondon  = not na(time('1', '0300-0600', 'UTC-5')) and showLondon
+inTokyo   = not na(time('1', '1900-2200', 'UTC-5')) and showTokyo
+inSydney  = not na(time('1', '1600-1900', 'UTC-5')) and showSydney
+
+bgcolor(inNY ? nyColor : inLondon ? londonColor : inTokyo ? tokyoColor : inSydney ? sydneyColor : na)
+
+// ───────────────────────────────
+// Session labels
+// ───────────────────────────────
+if showLabels
+    if inNY and not inNY[1]
+        label.new(bar_index, high, 'NY', style=label.style_label_down, color=nyColor)
+    if inLondon and not inLondon[1]
+        label.new(bar_index, high, 'London', style=label.style_label_down, color=londonColor)
+    if inTokyo and not inTokyo[1]
+        label.new(bar_index, high, 'Tokyo', style=label.style_label_down, color=tokyoColor)
+    if inSydney and not inSydney[1]
+        label.new(bar_index, high, 'Sydney', style=label.style_label_down, color=sydneyColor)

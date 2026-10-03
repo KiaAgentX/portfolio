@@ -1,0 +1,64 @@
+//@version=5
+indicator('GQR Elliott Wave [NexusDigitalArtShop]', overlay=true, max_lines_count=500, max_labels_count=500)
+
+// ───────────────────────────────
+// Inputs
+// ───────────────────────────────
+swingLen  = input.int(5, 'Swing Length', minval=3)
+waveColor = input.color(#ffeb3b, 'Wave Color')
+showABC   = input.bool(true, 'Show Corrections (ABC)')
+
+// ───────────────────────────────
+// Swing detection
+// ───────────────────────────────
+getSwings(len)=>
+    upper = ta.highest(len)
+    lower = ta.lowest(len)
+    var int os = 0
+    os := high[len] > upper ? 0 : low[len] < lower ? 1 : os[1]
+    [os == 0 and os[1] != 0, os == 1 and os[1] != 1]
+
+[newHigh, newLow] = getSwings(swingLen)
+
+var float[] swingPts  = array.new_float()
+var int[]   swingBars = array.new_int()
+
+if newHigh
+    array.unshift(swingPts, high[swingLen])
+    array.unshift(swingBars, bar_index - swingLen)
+if newLow
+    array.unshift(swingPts, low[swingLen])
+    array.unshift(swingBars, bar_index - swingLen)
+
+// ───────────────────────────────
+// Elliott Wave detection (5-wave motive)
+// ───────────────────────────────
+if array.size(swingPts) >= 6
+    p1 = array.get(swingPts, 5)
+    p2 = array.get(swingPts, 4)
+    p3 = array.get(swingPts, 3)
+    p4 = array.get(swingPts, 2)
+    p5 = array.get(swingPts, 1)
+    p6 = array.get(swingPts, 0)
+
+    // Simple motive wave check: higher highs and higher lows in impulse
+    if p2 > p1 and p3 > p2 and p4 > p3 and p5 > p4 and p6 > p5
+        // Draw impulse labels
+        label.new(array.get(swingBars, 4), p2, '1', style=label.style_label_up, color=waveColor, textcolor=color.white)
+        label.new(array.get(swingBars, 3), p3, '2', style=label.style_label_down, color=waveColor, textcolor=color.white)
+        label.new(array.get(swingBars, 2), p4, '3', style=label.style_label_up, color=waveColor, textcolor=color.white)
+        label.new(array.get(swingBars, 1), p5, '4', style=label.style_label_down, color=waveColor, textcolor=color.white)
+        label.new(array.get(swingBars, 0), p6, '5', style=label.style_label_up, color=waveColor, textcolor=color.white)
+        
+        if showABC and array.size(swingPts) >= 9
+            a = array.get(swingPts, 2)
+            b = array.get(swingPts, 1)
+            c = array.get(swingPts, 0)
+            label.new(array.get(swingBars, 2), a, 'A', style=label.style_label_down, color=color.red, textcolor=color.white)
+            label.new(array.get(swingBars, 1), b, 'B', style=label.style_label_up, color=color.red, textcolor=color.white)
+            label.new(array.get(swingBars, 0), c, 'C', style=label.style_label_down, color=color.red, textcolor=color.white)
+
+// Limit array size
+while array.size(swingPts) > 50
+    array.pop(swingPts)
+    array.pop(swingBars)

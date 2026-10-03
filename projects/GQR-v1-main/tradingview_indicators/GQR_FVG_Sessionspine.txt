@@ -1,0 +1,40 @@
+//@version=5
+indicator('GQR Depth of Market [NexusDigitalArtShop]', overlay=true, max_boxes_count=1000)
+
+// ───────────────────────────────
+// Inputs
+// ───────────────────────────────
+numLevels    = input.int(30, 'Number of Price Levels', minval=10, maxval=100)
+profileWidth = input.int(15, 'Profile Width %', minval=5, maxval=50) / 100
+bidColor     = input.color(#089981, 'Bid Volume')
+askColor     = input.color(#f23645, 'Ask Volume')
+
+// ───────────────────────────────
+// DOM data accumulation
+// ───────────────────────────────
+var float[] volBid = array.new_float(numLevels, 0.0)
+var float[] volAsk = array.new_float(numLevels, 0.0)
+
+// Track cumulative volume at price levels (simplified)
+priceStep = syminfo.mintick * 10
+for i = 0 to numLevels - 1
+    level = close - i * priceStep
+    if high >= level and low <= level + priceStep
+        if close > open
+            array.set(volBid, i, array.get(volBid, i) + volume)
+        else
+            array.set(volAsk, i, array.get(volAsk, i) + volume)
+
+// ───────────────────────────────
+// Draw DOM profile
+// ───────────────────────────────
+if barstate.islast
+    maxVol = math.max(array.max(volBid), array.max(volAsk))
+    for i = 0 to numLevels - 1
+        level = close - i * priceStep
+        // Bid bar
+        bidWidth = array.get(volBid, i) / maxVol * profileWidth * 100
+        box.new(bar_index, level, bar_index + bidWidth, level + priceStep, bgcolor=bidColor, border_color=na)
+        // Ask bar (mirrored)
+        askWidth = array.get(volAsk, i) / maxVol * profileWidth * 100
+        box.new(bar_index, level, bar_index - askWidth, level + priceStep, bgcolor=askColor, border_color=na)

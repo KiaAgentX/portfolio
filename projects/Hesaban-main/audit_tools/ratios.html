@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>نسبت‌های مالی | حسابداران</title>
+    <style>
+        /* ============================================================
+                   RESET & BASE – همانند داشبورد
+                   ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-red: #ff2255;
+            --neon-white: #f0f0ff;
+            --dark-bg: #0a0a12;
+            --card-bg: rgba(18, 18, 30, 0.88);
+            --glass-border: rgba(0, 255, 136, 0.12);
+            --shadow-green: 0 0 40px rgba(0, 255, 136, 0.08);
+            --shadow-red: 0 0 40px rgba(255, 34, 85, 0.08);
+            --radius: 18px;
+            --font: 'Vazirmatn', Tahoma, sans-serif;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--dark-bg);
+            color: var(--neon-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 0 1rem 3rem 1rem;
+            position: relative;
+        }
+
+        /* ============================================================
+                   CANVAS – ذرات معلق (زنده)
+                   ============================================================ */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ============================================================
+                   WRAPPER اصلی
+                   ============================================================ */
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.2rem 0 0 0;
+        }
+
+        /* ============================================================
+                   HEADER – لوگو + نویگیشن
+                   ============================================================ */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.9rem 1.8rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(16px);
+            margin-bottom: 2.2rem;
+            box-shadow: var(--shadow-green), inset 0 0 60px rgba(0, 255, 136, 0.02);
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-red), transparent);
+            opacity: 0.3;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--neon-white);
+            font-weight: 300;
+            font-size: 1.2rem;
+        }
+
+        .logo .badge {
+            background: var(--neon-red);
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.3);
+            margin-right: 0.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.4rem 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(240, 240, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-white);
+            border-color: rgba(0, 255, 136, 0.15);
+            background: rgba(0, 255, 136, 0.03);
+        }
+
+        .nav-links a.active {
+            color: var(--neon-green);
+            border-color: rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .nav-links .sep {
+            color: rgba(240, 240, 255, 0.1);
+            font-size: 1.2rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .header-actions a {
+            color: var(--neon-white);
+            text-decoration: none;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid rgba(240, 240, 255, 0.06);
+            font-size: 0.75rem;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+        }
+
+        .header-actions a:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.08);
+        }
+
+        /* ============================================================
+                   HERO – معرفی نسبت‌های مالی
+                   ============================================================ */
+        .hero {
+            text-align: center;
+            padding: 2.8rem 2rem 2.4rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(14px);
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-green), inset 0 0 80px rgba(0, 255, 136, 0.01);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(circle at 20% 40%, rgba(0, 255, 136, 0.04), transparent 70%);
+            animation: heroGlow 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes heroGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(8%, 10%) scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        .hero .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .green {
+            color: var(--neon-green);
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .hero h1 .red {
+            color: var(--neon-red);
+            text-shadow: 0 0 40px rgba(255, 34, 85, 0.15);
+        }
+
+        .hero h1 .white {
+            color: var(--neon-white);
+        }
+
+        .hero .subtitle {
+            font-size: 1rem;
+            color: rgba(240, 240, 255, 0.6);
+            max-width: 700px;
+            margin: 0.6rem auto 1rem auto;
+            line-height: 1.8;
+        }
+
+        .hero .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 2rem 3rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .hero .stat-item {
+            text-align: center;
+        }
+
+        .hero .stat-item .num {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            display: block;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .hero .stat-item .label {
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.35);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.1rem;
+        }
+
+        .hero .stat-item .num.red {
+            color: var(--neon-red);
+            text-shadow: 0 0 20px rgba(255, 34, 85, 0.1);
+        }
+
+        .hero .stat-item .num.gold {
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+        }
+
+        /* ============================================================
+                   بخش : دسته‌بندی نسبت‌ها
+                   ============================================================ */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 2.2rem 0 1.5rem 0;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.06);
+        }
+
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section-header h2 .green {
+            color: var(--neon-green);
+        }
+
+        .section-header h2 .red {
+            color: var(--neon-red);
+        }
+
+        .section-header .sub {
+            color: rgba(240, 240, 255, 0.3);
+            font-size: 0.8rem;
+            font-weight: 300;
+        }
+
+        .section-header .badge-count {
+            background: rgba(0, 255, 136, 0.06);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: var(--neon-green);
+        }
+
+        /* ============================================================
+                   GRID – کارت‌های نسبت‌های مالی
+                   ============================================================ */
+        .ratios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 992px) {
+            .ratios-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .ratios-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ratio-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 1.5rem 1.8rem 1.5rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ratio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-red), var(--neon-green));
+            opacity: 0.3;
+            transition: 0.4s;
+        }
+
+        .ratio-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(0, 255, 136, 0.25);
+            box-shadow: 0 12px 50px rgba(0, 255, 136, 0.08), 0 0 80px rgba(255, 34, 85, 0.03);
+        }
+
+        .ratio-card:hover::before {
+            opacity: 1;
+            height: 3px;
+        }
+
+        .ratio-card .icon-wrap {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .ratio-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--neon-white);
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .ratio-card h3 .tag {
+            font-weight: 300;
+            font-size: 0.6rem;
+            color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.06);
+            padding: 0.1rem 0.7rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.08);
+        }
+
+        .ratio-card .desc {
+            color: rgba(240, 240, 255, 0.55);
+            font-size: 0.85rem;
+            line-height: 1.7;
+            margin: 0.4rem 0 0.6rem 0;
+        }
+
+        .ratio-card .formula {
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            background: rgba(0, 255, 136, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.05);
+            font-size: 0.8rem;
+            color: rgba(240, 240, 255, 0.4);
+            font-family: monospace;
+            margin: 0.3rem 0;
+            text-align: center;
+        }
+
+        .ratio-card .formula .highlight {
+            color: var(--neon-green);
+        }
+
+        .ratio-card .ratio-value {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .ratio-card .ratio-value .value {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--neon-white);
+        }
+
+        .ratio-card .ratio-value .value.green {
+            color: var(--neon-green);
+        }
+
+        .ratio-card .ratio-value .value.red {
+            color: var(--neon-red);
+        }
+
+        .ratio-card .ratio-value .value.gold {
+            color: #ffd700;
+        }
+
+        .ratio-card .ratio-value .status {
+            font-size: 0.7rem;
+            padding: 0.1rem 0.8rem;
+            border-radius: 20px;
+            background: rgba(0, 255, 136, 0.04);
+            border: 1px solid rgba(0, 255, 136, 0.06);
+            color: var(--neon-green);
+        }
+
+        .ratio-card .ratio-value .status.red {
+            background: rgba(255, 34, 85, 0.04);
+            border-color: rgba(255, 34, 85, 0.06);
+            color: var(--neon-red);
+        }
+
+        .ratio-card .ratio-value .status.gold {
+            background: rgba(255, 215, 0, 0.04);
+            border-color: rgba(255, 215, 0, 0.06);
+            color: #ffd700;
+        }
+
+        /* ============================================================
+                   بخش : ورودی‌ها و محاسبه
+                   ============================================================ */
+        .input-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 992px) {
+            .input-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.8rem 2rem 1.8rem;
+            box-shadow: var(--shadow-green);
+            transition: var(--transition);
+        }
+
+        .input-card:hover {
+            border-color: rgba(0, 255, 136, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .input-card .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .input-card .card-title .green {
+            color: var(--neon-green);
+        }
+
+        .input-card .card-title .red {
+            color: var(--neon-red);
+        }
+
+        .input-card .card-title .gold {
+            color: #ffd700;
+        }
+
+        .form-group {
+            margin-bottom: 0.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: rgba(240, 240, 255, 0.5);
+            margin-bottom: 0.2rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem 0.7rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            color: var(--neon-white);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.05);
+            background: rgba(0, 255, 136, 0.02);
+        }
+
+        .form-group select option {
+            background: #1a1a2e;
+            color: var(--neon-white);
+        }
+
+        .btn-calc {
+            background: rgba(0, 255, 136, 0.06);
+            border: 1px solid var(--glass-border);
+            color: var(--neon-green);
+            padding: 0.6rem 1.8rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: var(--font);
+            font-weight: 700;
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+            width: 100%;
+            margin-top: 0.3rem;
+        }
+
+        .btn-calc:hover {
+            background: rgba(0, 255, 136, 0.12);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.08);
+        }
+
+        .btn-calc.red {
+            color: var(--neon-red);
+            border-color: rgba(255, 34, 85, 0.15);
+        }
+
+        .btn-calc.red:hover {
+            background: rgba(255, 34, 85, 0.08);
+            border-color: var(--neon-red);
+            box-shadow: 0 0 30px rgba(255, 34, 85, 0.08);
+        }
+
+        .btn-calc.gold {
+            color: #ffd700;
+            border-color: rgba(255, 215, 0, 0.15);
+        }
+
+        .btn-calc.gold:hover {
+            background: rgba(255, 215, 0, 0.08);
+            border-color: #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.08);
+        }
+
+        /* ============================================================
+                   بخش : نتایج جامع
+                   ============================================================ */
+        .results-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.5rem 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+        }
+
+        .results-section .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .results-section .results-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .results-section .results-header .badge {
+            background: rgba(255, 215, 0, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            color: #ffd700;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .result-item {
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .result-item:hover {
+            border-color: rgba(0, 255, 136, 0.1);
+            background: rgba(0, 255, 136, 0.02);
+        }
+
+        .result-item .ri-label {
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-item .ri-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--neon-white);
+            margin-top: 0.2rem;
+        }
+
+        .result-item .ri-value.green {
+            color: var(--neon-green);
+        }
+
+        .result-item .ri-value.red {
+            color: var(--neon-red);
+        }
+
+        .result-item .ri-value.gold {
+            color: #ffd700;
+        }
+
+        .result-item .ri-status {
+            font-size: 0.65rem;
+            margin-top: 0.2rem;
+            color: rgba(240, 240, 255, 0.2);
+        }
+
+        /* ============================================================
+                   بخش : استانداردهای صنعت
+                   ============================================================ */
+        .industry-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.5rem 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+            overflow-x: auto;
+        }
+
+        .industry-section h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .industry-section h3 .green {
+            color: var(--neon-green);
+        }
+
+        .industry-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .industry-table th {
+            background: rgba(0, 255, 136, 0.04);
+            border-bottom: 2px solid rgba(0, 255, 136, 0.08);
+            padding: 0.7rem 0.5rem;
+            text-align: center;
+            color: var(--neon-white);
+            font-weight: 700;
+        }
+
+        .industry-table td {
+            padding: 0.6rem 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            text-align: center;
+        }
+
+        .industry-table tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .industry-table .highlight-row td {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+                   بخش : تحلیل و تفسیر
+                   ============================================================ */
+        .analysis-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .analysis-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .analysis-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 1.5rem 1.8rem 1.5rem;
+            box-shadow: var(--shadow-green);
+            transition: var(--transition);
+        }
+
+        .analysis-card:hover {
+            border-color: rgba(0, 255, 136, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .analysis-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .analysis-card h4 .green {
+            color: var(--neon-green);
+        }
+
+        .analysis-card h4 .red {
+            color: var(--neon-red);
+        }
+
+        .analysis-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .analysis-card ul li {
+            padding: 0.3rem 0 0.3rem 1.5rem;
+            position: relative;
+            font-size: 0.85rem;
+            color: rgba(240, 240, 255, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            line-height: 1.5;
+        }
+
+        .analysis-card ul li:last-child {
+            border-bottom: none;
+        }
+
+        .analysis-card ul li::before {
+            content: '▸';
+            position: absolute;
+            right: 0;
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .analysis-card ul li .highlight {
+            color: var(--neon-white);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 1rem 0.5rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 1rem;
+        }
+
+        .footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+        }
+
+        .footer .links a {
+            color: rgba(240, 240, 255, 0.25);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .footer .links a:hover {
+            color: var(--neon-green);
+        }
+
+        .footer .copyright {
+            color: rgba(240, 240, 255, 0.12);
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer .copyright .green {
+            color: rgba(0, 255, 136, 0.2);
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero .stats-row {
+                gap: 1.2rem;
+            }
+            .input-section {
+                grid-template-columns: 1fr;
+            }
+            .analysis-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0 0.6rem 2rem 0.6rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 0.8rem 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .hero {
+                padding: 2rem 1.2rem;
+            }
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+            .hero .subtitle {
+                font-size: 0.85rem;
+            }
+            .hero .stats-row {
+                gap: 0.8rem 1.5rem;
+            }
+            .hero .stat-item .num {
+                font-size: 1.2rem;
+            }
+            .ratios-grid {
+                grid-template-columns: 1fr;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer .links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.1rem;
+            }
+            .ratio-card {
+                padding: 1rem;
+            }
+            .input-card {
+                padding: 1.2rem;
+            }
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            .industry-section {
+                padding: 1rem;
+            }
+            .analysis-card {
+                padding: 1rem;
+            }
+        }
+
+        /* ============================================================
+                   UTILS & ANIMATIONS
+                   ============================================================ */
+        .text-green {
+            color: var(--neon-green);
+        }
+        .text-red {
+            color: var(--neon-red);
+        }
+        .text-white {
+            color: var(--neon-white);
+        }
+        .text-gold {
+            color: #ffd700;
+        }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+        .fw-700 {
+            font-weight: 700;
+        }
+        .fs-small {
+            font-size: 0.75rem;
+        }
+        .op-5 {
+            opacity: 0.5;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #10101a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00cc6a;
+        }
+
+        .hero,
+        .ratio-card,
+        .input-card,
+        .results-section,
+        .industry-section,
+        .analysis-card {
+            animation: fadeUp 0.7s ease-out both;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glow-text {
+            animation: glowPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.05);
+            }
+            100% {
+                text-shadow: 0 0 50px rgba(0, 255, 136, 0.15), 0 0 80px rgba(0, 255, 136, 0.05);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    CANVAS – ذرات معلق
+    ============================================================ -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ============================================================
+    WRAPPER
+    ============================================================ -->
+    <div class="main-wrapper">
+
+        <!-- ========== HEADER ========== -->
+        <header class="header">
+            <a href="index.html" class="logo">
+                🧾 حسابداران
+                <span>|</span>
+                <span style="font-weight:300;font-size:1rem;color:rgba(240,240,255,0.6);">نسبت‌های مالی</span>
+                <span class="badge">v2.0</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="trial_balance.html">📊 تراز</a>
+                <a href="tax.html">💰 مالیات</a>
+                <a href="substantive.html">📋 آزمون</a>
+                <a href="sampling.html">🎲 نمونه</a>
+                <a href="report.html">📝 گزارش</a>
+                <a href="#" class="active">📈 نسبت‌ها</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" onclick="calculateRatios();">🧮 محاسبه</a>
+                <a href="#" onclick="resetInputs();">🔄 بازنشانی</a>
+                <a href="index.html">🚀 بازگشت</a>
+            </div>
+        </header>
+
+        <!-- ========== HERO ========== -->
+        <section class="hero">
+            <div class="content">
+                <h1>
+                    <span class="green glow-text">📈</span>
+                    <span class="white">نسبت‌های مالی</span>
+                    <span class="green glow-text">·</span>
+                    <span class="red glow-text">تحلیل حرفه‌ای</span>
+                </h1>
+                <p class="subtitle">
+                    تحلیل جامع نسبت‌های مالی شامل نقدینگی، سودآوری، کارایی، اهرم و بازار.
+                    ابزاری قدرتمند برای حسابرسان، تحلیلگران و مدیران مالی.
+                </p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="num">۱۵</span>
+                        <span class="label">نسبت تخصصی</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num red">۵</span>
+                        <span class="label">دسته اصلی</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num gold">۱۰۰٪</span>
+                        <span class="label">تحلیل خودکار</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SECTION HEADER ========== -->
+        <div class="section-header">
+            <h2>
+                <span>🧩</span>
+                <span class="green">دسته‌های نسبت‌های مالی</span>
+                <span class="sub">— ۵ دسته اصلی</span>
+            </h2>
+            <span class="badge-count">۵ دسته</span>
+        </div>
+
+        <!-- ========== RATIOS GRID ========== -->
+        <div class="ratios-grid">
+
+            <!-- 1. نسبت جاری -->
+            <div class="ratio-card">
+                <span class="icon-wrap">💧</span>
+                <h3>نسبت جاری <span class="tag">نقدینگی</span></h3>
+                <div class="desc">توانایی شرکت در پرداخت بدهی‌های جاری با دارایی‌های جاری.</div>
+                <div class="formula">
+                    <span class="highlight">دارایی‌های جاری / بدهی‌های جاری</span>
+                </div>
+                <div class="ratio-value">
+                    <span class="value green" id="currentRatioVal">۲.۵</span>
+                    <span class="status">مطلوب &gt; ۱.۵</span>
+                </div>
+            </div>
+
+            <!-- 2. نسبت آنی -->
+            <div class="ratio-card">
+                <span class="icon-wrap">⚡</span>
+                <h3>نسبت آنی <span class="tag">نقدینگی</span></h3>
+                <div class="desc">توانایی پرداخت بدهی‌های جاری بدون فروش موجودی کالا.</div>
+                <div class="formula">
+                    <span class="highlight">(نقد + دریافتنی) / بدهی‌های جاری</span>
+                </div>
+                <div class="ratio-value">
+                    <span class="value gold" id="quickRatioVal">۱.۲</span>
+                    <span class="status gold">مطلوب &gt; ۰.۸</span>
+                </div>
+            </div>
+
+            <!-- 3. نسبت بدهی -->
+            <div class="ratio-card">
+                <span class="icon-wrap">🏗️</span>
+                <h3>نسبت بدهی <span class="tag">اهرم</span></h3>
+                <div class="desc">درصدی از دارایی‌ها که از طریق بدهی تأمین شده است.</div>
+                <div class="formula">
+                    <span class="highlight">کل بدهی‌ها / کل دارایی‌ها</span>
+                </div>
+                <div class="ratio-value">
+                    <span class="value" id="debtRatioVal">۴۰٪</span>
+                    <span class="status">مطلوب &lt; ۶۰٪</span>
+                </div>
+            </div>
+
+            <!-- 4. گردش موجودی -->
+            <div class="ratio-card">
+                <span class="icon-wrap">🔄</span>
+                <h3>گردش موجودی <span class="tag">کارایی</span></h3>
+                <div class="desc">تعداد بار گردش موجودی کالا در یک دوره.</div>
+                <div class="formula">
+                    <span class="highlight">بهای تمام شده / متوسط موجودی</span>
+                </div>
+                <div class="ratio-value">
+                    <span class="value green" id="inventoryTurnoverVal">۴.۲</span>
+                    <span class="status">مطلوب &gt; ۳</span>
+                </div>
+            </div>
+
+            <!-- 5. حاشیه سود خالص -->
+            <div class="ratio-card">
+                <span class="icon-wrap">💰</span>
+                <h3>حاشیه سود خالص <span class="tag">سودآوری</span></h3>
+                <div class="desc">درصدی از فروش که به سود خالص تبدیل می‌شود.</div>
+                <div class="formula">
+                    <span class="highlight">سود خالص / فروش خالص</span>
+                </div>
+                <div class="ratio-value">
+                    <span class="value gold" id="netMarginVal">۱۲.۵٪</span>
+                    <span class="status gold">مطلوب &gt; ۱۰٪</span>
+                </div>
+            </div>
+
+            <!-- 6. بازده دارایی‌ها -->
+            <div class="ratio-card">
+                <span class="icon-wrap">📊</span>
+                <h3>بازده دارایی‌ها <span class="tag">سودآوری</span></h3>
+                <div class="desc">کارایی شرکت در استفاده از دارایی‌ها برای ایجاد سود.</div>
+                <div class="formula">
+                    <span class="highlight">سود خالص / کل دارایی‌ها</span>
+                </div>
+                <div class="ratio-value">
+                    <span class="value green" id="roaVal">۸.۳٪</span>
+                    <span class="status">مطلوب &gt; ۵٪</span>
+                </div>
+            </div>
+
+            <!-- 7. بازده حقوق صاحبان سهام -->
+            <div class="ratio-card">
+                <span class="icon-wrap">📈</span>
+                <h3>بازده حقوق صاحبان سهام <span class="tag">سودآوری</span></h3>
+                <div class="desc">بازده سرمایه سهامداران در شرکت.</div>
+                <div class="formula">
+                    <span class="highlight">سود خالص / حقوق صاحبان سهام</span>
+                </div>
+                <div class="ratio-value">
+                    <span class="value red" id="roeVal">۱۸.۷٪</span>
+                    <span class="status red">مطلوب &gt; ۱۵٪</span>
+                </div>
+            </div>
+
+            <!-- 8. گردش حساب دریافتنی -->
+            <div class="ratio-card">
+                <span class="icon-wrap">📨</span>
+                <h3>گردش دریافتنی <span class="tag">کارایی</span></h3>
+                <div class="desc">تعداد بار وصول حساب‌های دریافتنی در دوره.</div>
+                <div class="formula">
+                    <span class="highlight">فروش نسیه / متوسط دریافتنی</span>
+                </div>
+                <div class="ratio-value">
+                    <span class="value gold" id="receivableTurnoverVal">۶.۸</span>
+                    <span class="status gold">مطلوب &gt; ۵</span>
+                </div>
+            </div>
+
+            <!-- 9. نسبت پوشش بهره -->
+            <div class="ratio-card">
+                <span class="icon-wrap">💳</span>
+                <h3>نسبت پوشش بهره <span class="tag">اهرم</span></h3>
+                <div class="desc">توانایی شرکت در پرداخت هزینه‌های بهره.</div>
+                <div class="formula">
+                    <span class="highlight">سود قبل از بهره و مالیات / هزینه بهره</span>
+                </div>
+                <div class="ratio-value">
+                    <span class="value green" id="interestCoverVal">۷.۲</span>
+                    <span class="status">مطلوب &gt; ۳</span>
+                </div>
+            </div>
+
+            <!-- 10. نسبت حقوق صاحبان سهام -->
+            <div class="ratio-card">
+                <span class="icon-wrap">🏛️</span>
+                <h3>نسبت حقوق صاحبان سهام <span class="tag">اهرم</span></h3>
+                <div class="desc">درصدی از دارایی‌ها که توسط سهامداران تأمین شده است.</div>
+                <div class="formula">
+                    <span class="highlight">حقوق صاحبان سهام / کل دارایی‌ها</span>
+                </div>
+                <div class="ratio-value">
+                    <span class="value" id="equityRatioVal">۶۰٪</span>
+                    <span class="status">مطلوب &gt; ۴۰٪</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========== SECTION HEADER – ورودی‌ها ========== -->
+        <div class="section-header">
+            <h2>
+                <span>📥</span>
+                <span class="green">ورودی‌های مالی</span>
+                <span class="sub">— داده‌های اصلی برای محاسبه</span>
+            </h2>
+            <span class="badge-count">۱۱ متغیر</span>
+        </div>
+
+        <!-- ========== INPUT SECTION ========== -->
+        <div class="input-section">
+
+            <!-- کارت : ورودی‌های ترازنامه -->
+            <div class="input-card">
+                <div class="card-title">
+                    <span>📋</span>
+                    <span class="green">ترازنامه</span>
+                </div>
+                <div class="form-group">
+                    <label>دارایی‌های جاری (ریال)</label>
+                    <input type="number" id="currentAssets" value="5000000000" step="1000000" />
+                </div>
+                <div class="form-group">
+                    <label>بدهی‌های جاری (ریال)</label>
+                    <input type="number" id="currentLiabilities" value="2000000000" step="1000000" />
+                </div>
+                <div class="form-group">
+                    <label>نقد و بانک (ریال)</label>
+                    <input type="number" id="cash" value="800000000" step="1000000" />
+                </div>
+                <div class="form-group">
+                    <label>حساب‌های دریافتنی (ریال)</label>
+                    <input type="number" id="receivables" value="1500000000" step="1000000" />
+                </div>
+                <div class="form-group">
+                    <label>کل دارایی‌ها (ریال)</label>
+                    <input type="number" id="totalAssets" value="10000000000" step="1000000" />
+                </div>
+                <div class="form-group">
+                    <label>کل بدهی‌ها (ریال)</label>
+                    <input type="number" id="totalLiabilities" value="4000000000" step="1000000" />
+                </div>
+                <div class="form-group">
+                    <label>حقوق صاحبان سهام (ریال)</label>
+                    <input type="number" id="equity" value="6000000000" step="1000000" />
+                </div>
+                <button class="btn-calc" onclick="calculateRatios();">🧮 محاسبه نسبت‌ها</button>
+            </div>
+
+            <!-- کارت : ورودی‌های صورت سود و زیان -->
+            <div class="input-card">
+                <div class="card-title">
+                    <span>📊</span>
+                    <span class="red">صورت سود و زیان</span>
+                </div>
+                <div class="form-group">
+                    <label>فروش خالص (ریال)</label>
+                    <input type="number" id="sales" value="8000000000" step="1000000" />
+                </div>
+                <div class="form-group">
+                    <label>بهای تمام‌شده فروش (ریال)</label>
+                    <input type="number" id="cogs" value="5000000000" step="1000000" />
+                </div>
+                <div class="form-group">
+                    <label>متوسط موجودی کالا (ریال)</label>
+                    <input type="number" id="avgInventory" value="1200000000" step="1000000" />
+                </div>
+                <div class="form-group">
+                    <label>سود خالص (ریال)</label>
+                    <input type="number" id="netIncome" value="600000000" step="1000000" />
+                </div>
+                <div class="form-group">
+                    <label>سود قبل از بهره و مالیات (ریال)</label>
+                    <input type="number" id="ebit" value="900000000" step="1000000" />
+                </div>
+                <div class="form-group">
+                    <label>هزینه بهره (ریال)</label>
+                    <input type="number" id="interestExpense" value="125000000" step="1000000" />
+                </div>
+                <div class="form-group">
+                    <label>متوسط حساب دریافتنی (ریال)</label>
+                    <input type="number" id="avgReceivables" value="1200000000" step="1000000" />
+                </div>
+                <button class="btn-calc red" onclick="resetInputs();">🔄 بازنشانی</button>
+            </div>
+
+        </div>
+
+        <!-- ========== SECTION HEADER – نتایج ========== -->
+        <div class="section-header">
+            <h2>
+                <span>📊</span>
+                <span class="green">نتایج تحلیل</span>
+                <span class="sub">— خلاصه نسبت‌ها</span>
+            </h2>
+            <span class="badge-count">زنده</span>
+        </div>
+
+        <!-- ========== RESULTS SECTION ========== -->
+        <div class="results-section">
+            <div class="results-header">
+                <h3>
+                    <span>📈</span>
+                    <span class="green">خلاصه نسبت‌های مالی</span>
+                    <span class="badge">مقایسه با استاندارد</span>
+                </h3>
+                <div style="display:flex;gap:0.5rem;">
+                    <button onclick="calculateRatios();" style="background:rgba(0,255,136,0.04);border:1px solid var(--glass-border);color:var(--neon-green);padding:0.3rem 1.2rem;border-radius:20px;cursor:pointer;font-family:var(--font);font-size:0.7rem;">🔄 بروزرسانی</button>
+                </div>
+            </div>
+            <div class="results-grid" id="resultsGrid">
+                <!-- توسط JS تولید می‌شود -->
+            </div>
+        </div>
+
+        <!-- ========== SECTION HEADER – استانداردها ========== -->
+        <div class="section-header">
+            <h2>
+                <span>📏</span>
+                <span class="green">استانداردهای صنعت</span>
+                <span class="sub">— معیارهای مرجع</span>
+            </h2>
+            <span class="badge-count">مرجع</span>
+        </div>
+
+        <!-- ========== INDUSTRY SECTION ========== -->
+        <div class="industry-section">
+            <h3>
+                <span>📊</span>
+                <span class="green">جدول استاندارد نسبت‌های مالی</span>
+                <span style="font-size:0.8rem;font-weight:300;color:rgba(240,240,255,0.3);">— معیارهای عمومی</span>
+            </h3>
+            <table class="industry-table">
+                <thead>
+                    <tr>
+                        <th>نسبت</th>
+                        <th>فرمول</th>
+                        <th>استاندارد مطلوب</th>
+                        <th>وضعیت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>نسبت جاری</td>
+                        <td>CA / CL</td>
+                        <td>&gt; ۱.۵</td>
+                        <td style="color:var(--neon-green);">مقبول</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت آنی</td>
+                        <td>(نقد + دریافتنی) / CL</td>
+                        <td>&gt; ۰.۸</td>
+                        <td style="color:var(--neon-green);">مقبول</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت بدهی</td>
+                        <td>کل بدهی / کل دارایی</td>
+                        <td>&lt; ۰.۶</td>
+                        <td style="color:var(--neon-green);">مقبول</td>
+                    </tr>
+                    <tr>
+                        <td>گردش موجودی</td>
+                        <td>COGS / متوسط موجودی</td>
+                        <td>&gt; ۳</td>
+                        <td style="color:var(--neon-green);">مقبول</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه سود خالص</td>
+                        <td>سود خالص / فروش</td>
+                        <td>&gt; ۱۰٪</td>
+                        <td style="color:var(--neon-green);">مقبول</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>بازده دارایی‌ها (ROA)</td>
+                        <td>سود خالص / کل دارایی</td>
+                        <td>&gt; ۵٪</td>
+                        <td style="color:#ffd700;">خوب</td>
+                    </tr>
+                    <tr>
+                        <td>بازده حقوق صاحبان سهام (ROE)</td>
+                        <td>سود خالص / حقوق صاحبان</td>
+                        <td>&gt; ۱۵٪</td>
+                        <td style="color:var(--neon-green);">مقبول</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top:1rem;font-size:0.7rem;color:rgba(240,240,255,0.15);text-align:center;">
+                بر اساس استانداردهای مالی و معیارهای عمومی صنعت
+            </div>
+        </div>
+
+        <!-- ========== SECTION HEADER – تحلیل ========== -->
+        <div class="section-header">
+            <h2>
+                <span>🧠</span>
+                <span class="green">تحلیل و تفسیر</span>
+                <span class="sub">— راهنمایی برای تصمیم‌گیری</span>
+            </h2>
+            <span class="badge-count">کلیدی</span>
+        </div>
+
+        <!-- ========== ANALYSIS SECTION ========== -->
+        <div class="analysis-section">
+
+            <!-- کارت : تفسیر نسبت‌ها -->
+            <div class="analysis-card">
+                <h4>
+                    <span>📖</span>
+                    <span class="green">تفسیر نسبت‌ها</span>
+                </h4>
+                <ul>
+                    <li><span class="highlight">نسبت جاری</span> بالا نشان‌دهنده نقدینگی قوی</li>
+                    <li><span class="highlight">نسبت آنی</span> بالا نشان‌دهنده توانایی پرداخت سریع</li>
+                    <li><span class="highlight">نسبت بدهی</span> بالا نشان‌دهنده اهرم بالا و ریسک</li>
+                    <li><span class="highlight">گردش موجودی</span> بالا نشان‌دهنده کارایی در فروش</li>
+                    <li><span class="highlight">حاشیه سود</span> بالا نشان‌دهنده سودآوری مطلوب</li>
+                    <li><span class="highlight">ROA و ROE</span> بالا نشان‌دهنده بازدهی مناسب</li>
+                </ul>
+            </div>
+
+            <!-- کارت : توصیه‌های عملی -->
+            <div class="analysis-card">
+                <h4>
+                    <span>💡</span>
+                    <span class="red">توصیه‌های عملی</span>
+                </h4>
+                <ul>
+                    <li><span class="highlight">نسبت جاری &lt; ۱</span> = نیاز به تقویت نقدینگی</li>
+                    <li><span class="highlight">نسبت بدهی &gt; ۰.۶</span> = کاهش اهرم توصیه می‌شود</li>
+                    <li><span class="highlight">گردش موجودی &lt; ۳</span> = بهبود مدیریت موجودی</li>
+                    <li><span class="highlight">حاشیه سود &lt; ۵٪</span> = بررسی هزینه‌ها</li>
+                    <li><span class="highlight">ROE &lt; ۱۰٪</span> = تحلیل ساختار سرمایه</li>
+                    <li><span class="highlight">مقایسه با صنعت</span> برای ارزیابی رقابتی</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="#" onclick="alert('تمام ابزارها رایگان و بدون نیاز به اینترنت هستند');">🔒 حریم خصوصی</a>
+                <a href="#" onclick="alert('برای گزارش مشکل یا پیشنهاد، از طریق Issues اقدام کنید.');">🐛 گزارش مشکل</a>
+                <a href="#" onclick="alert('نسخه ۲.۰ – کاملاً متن‌باز و رایگان');">📌 نسخه ۲.۰</a>
+            </div>
+            <div class="copyright">
+                <span class="green">حسابداران</span> · نسبت‌های مالی · ۱۴۰۴
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    SCRIPT – ذرات معلق + منطق نسبت‌ها
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // ۱. ذرات معلق – canvas
+            // ============================================================
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let W, H;
+            let particles = [];
+            const PARTICLE_COUNT = 80;
+
+            const COLORS = [
+                'rgba(0, 255, 136, ',
+                'rgba(255, 34, 85, ',
+                'rgba(240, 240, 255, ',
+            ];
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H;
+                    this.size = Math.random() * 2.0 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    this.speedY = (Math.random() - 0.5) * 0.5;
+                    this.opacity = Math.random() * 0.4 + 0.1;
+                    this.colorIdx = Math.floor(Math.random() * COLORS.length);
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = 0.006 + Math.random() * 0.012;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < 0 || this.x > W) { this.speedX *= -1;
+                        this.x = Math.max(0, Math.min(W, this.x)); }
+                    if (this.y < 0 || this.y > H) { this.speedY *= -1;
+                        this.y = Math.max(0, Math.min(H, this.y)); }
+                    this.currentOpacity = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                }
+                draw() {
+                    const alpha = Math.max(0.03, Math.min(0.8, this.currentOpacity));
+                    const color = COLORS[this.colorIdx] + alpha + ')';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 8;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function resizeCanvas() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, W, H);
+                const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
+                grad.addColorStop(0, '#0d0d18');
+                grad.addColorStop(1, '#05050a');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, W, H);
+
+                particles.forEach(p => { p.update();
+                    p.draw(); });
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = 130;
+                        if (dist < maxDist) {
+                            const alpha = (1 - dist / maxDist) * 0.12;
+                            const color = COLORS[0] + alpha + ')';
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = color;
+                            ctx.lineWidth = 0.4;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            function setupParticles() {
+                resizeCanvas();
+                initParticles();
+                drawParticles();
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                particles.forEach(p => {
+                    p.x = Math.min(p.x, W);
+                    p.y = Math.min(p.y, H);
+                });
+            });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupParticles);
+            } else {
+                setupParticles();
+            }
+
+            // ============================================================
+            // ۲. منطق محاسبه نسبت‌ها
+            // ============================================================
+            function getVal(id) {
+                return parseFloat(document.getElementById(id).value) || 0;
+            }
+
+            function calculateRatios() {
+                const ca = getVal('currentAssets');
+                const cl = getVal('currentLiabilities');
+                const cash = getVal('cash');
+                const rec = getVal('receivables');
+                const ta = getVal('totalAssets');
+                const tl = getVal('totalLiabilities');
+                const eq = getVal('equity');
+                const sales = getVal('sales');
+                const cogs = getVal('cogs');
+                const avgInv = getVal('avgInventory');
+                const ni = getVal('netIncome');
+                const ebit = getVal('ebit');
+                const interest = getVal('interestExpense');
+                const avgRec = getVal('avgReceivables');
+
+                // محاسبه نسبت‌ها
+                const currentRatio = cl ? (ca / cl).toFixed(2) : 'N/A';
+                const quickRatio = cl ? ((cash + rec) / cl).toFixed(2) : 'N/A';
+                const debtRatio = ta ? ((tl / ta) * 100).toFixed(1) + '%' : 'N/A';
+                const inventoryTurnover = avgInv ? (cogs / avgInv).toFixed(2) : 'N/A';
+                const netMargin = sales ? ((ni / sales) * 100).toFixed(1) + '%' : 'N/A';
+                const roa = ta ? ((ni / ta) * 100).toFixed(1) + '%' : 'N/A';
+                const roe = eq ? ((ni / eq) * 100).toFixed(1) + '%' : 'N/A';
+                const receivableTurnover = avgRec ? (sales / avgRec).toFixed(2) : 'N/A';
+                const interestCover = interest ? (ebit / interest).toFixed(2) : 'N/A';
+                const equityRatio = ta ? ((eq / ta) * 100).toFixed(1) + '%' : 'N/A';
+
+                // به‌روزرسانی کارت‌ها
+                document.getElementById('currentRatioVal').textContent = currentRatio;
+                document.getElementById('quickRatioVal').textContent = quickRatio;
+                document.getElementById('debtRatioVal').textContent = debtRatio;
+                document.getElementById('inventoryTurnoverVal').textContent = inventoryTurnover;
+                document.getElementById('netMarginVal').textContent = netMargin;
+                document.getElementById('roaVal').textContent = roa;
+                document.getElementById('roeVal').textContent = roe;
+                document.getElementById('receivableTurnoverVal').textContent = receivableTurnover;
+                document.getElementById('interestCoverVal').textContent = interestCover;
+                document.getElementById('equityRatioVal').textContent = equityRatio;
+
+                // به‌روزرسانی نتایج
+                const resultsGrid = document.getElementById('resultsGrid');
+                const ratios = [
+                    { name: 'نسبت جاری', value: currentRatio, unit: '', standard: '> 1.5', status: parseFloat(currentRatio) >= 1.5 ? '✅' : '⚠️' },
+                    { name: 'نسبت آنی', value: quickRatio, unit: '', standard: '> 0.8', status: parseFloat(quickRatio) >= 0.8 ? '✅' : '⚠️' },
+                    { name: 'نسبت بدهی', value: debtRatio, unit: '', standard: '< 60%', status: parseFloat(debtRatio) <= 60 ? '✅' : '⚠️' },
+                    { name: 'گردش موجودی', value: inventoryTurnover, unit: ' بار', standard: '> 3', status: parseFloat(inventoryTurnover) >= 3 ? '✅' : '⚠️' },
+                    { name: 'حاشیه سود', value: netMargin, unit: '', standard: '> 10%', status: parseFloat(netMargin) >= 10 ? '✅' : '⚠️' },
+                    { name: 'بازده دارایی‌ها', value: roa, unit: '', standard: '> 5%', status: parseFloat(roa) >= 5 ? '✅' : '⚠️' },
+                    { name: 'بازده حقوق صاحبان', value: roe, unit: '', standard: '> 15%', status: parseFloat(roe) >= 15 ? '✅' : '⚠️' },
+                    { name: 'گردش دریافتنی', value: receivableTurnover, unit: ' بار', standard: '> 5', status: parseFloat(receivableTurnover) >= 5 ? '✅' : '⚠️' },
+                    { name: 'پوشش بهره', value: interestCover, unit: '', standard: '> 3', status: parseFloat(interestCover) >= 3 ? '✅' : '⚠️' },
+                    { name: 'نسبت حقوق صاحبان', value: equityRatio, unit: '', standard: '> 40%', status: parseFloat(equityRatio) >= 40 ? '✅' : '⚠️' }
+                ];
+
+                resultsGrid.innerHTML = ratios.map(r => `
+                    <div class="result-item">
+                        <div class="ri-label">${r.name}</div>
+                        <div class="ri-value ${r.status === '✅' ? 'green' : 'red'}">${r.value} ${r.unit}</div>
+                        <div class="ri-status">${r.status} استاندارد: ${r.standard}</div>
+                    </div>
+                `).join('');
+            }
+
+            window.calculateRatios = calculateRatios;
+
+            function resetInputs() {
+                document.getElementById('currentAssets').value = '5000000000';
+                document.getElementById('currentLiabilities').value = '2000000000';
+                document.getElementById('cash').value = '800000000';
+                document.getElementById('receivables').value = '1500000000';
+                document.getElementById('totalAssets').value = '10000000000';
+                document.getElementById('totalLiabilities').value = '4000000000';
+                document.getElementById('equity').value = '6000000000';
+                document.getElementById('sales').value = '8000000000';
+                document.getElementById('cogs').value = '5000000000';
+                document.getElementById('avgInventory').value = '1200000000';
+                document.getElementById('netIncome').value = '600000000';
+                document.getElementById('ebit').value = '900000000';
+                document.getElementById('interestExpense').value = '125000000';
+                document.getElementById('avgReceivables').value = '1200000000';
+                calculateRatios();
+            }
+
+            window.resetInputs = resetInputs;
+
+            // محاسبه اولیه
+            setTimeout(calculateRatios, 300);
+
+            // ============================================================
+            // ۳. کپی نمونه گزارش در فوتر
+            // ============================================================
+            const footer = document.querySelector('.footer .copyright');
+            if (footer) {
+                const copyBtn = document.createElement('span');
+                copyBtn.textContent = '📋 کپی نمونه گزارش';
+                copyBtn.style.cssText = `
+                    display: inline-block;
+                    margin-top: 0.4rem;
+                    padding: 0.2rem 1rem;
+                    border: 1px solid rgba(0,255,136,0.08);
+                    border-radius: 30px;
+                    color: rgba(240,240,255,0.2);
+                    font-size: 0.6rem;
+                    cursor: pointer;
+                    transition: 0.3s;
+                    background: rgba(0,255,136,0.01);
+                `;
+                copyBtn.addEventListener('mouseenter', () => {
+                    copyBtn.style.color = 'var(--neon-green)';
+                    copyBtn.style.borderColor = 'rgba(0,255,136,0.2)';
+                });
+                copyBtn.addEventListener('mouseleave', () => {
+                    copyBtn.style.color = 'rgba(240,240,255,0.2)';
+                    copyBtn.style.borderColor = 'rgba(0,255,136,0.08)';
+                });
+                copyBtn.addEventListener('click', () => {
+                    const reportSample = `
+        گزارش حسابرس مستقل
+        ———————————————
+        به مجمع عمومی صاحبان سهام
+        شرکت نمونه
+
+        ما صورت‌های مالی شرکت را حسابرسی کرده‌ایم.
+        به نظر ما، صورت‌های مالی وضعیت مالی و نتایج عملکرد را
+        به‌طور مطلوب و طبق استانداردهای حسابداری نشان می‌دهند.
+
+        تاریخ: ۱۴۰۴/۰۲/۲۰
+        حسابرس: امیرحسین
+        `;
+                    navigator.clipboard.writeText(reportSample).then(() => {
+                        const orig = copyBtn.textContent;
+                        copyBtn.textContent = '✅ کپی شد!';
+                        copyBtn.style.color = 'var(--neon-green)';
+                        setTimeout(() => {
+                            copyBtn.textContent = orig;
+                            copyBtn.style.color = 'rgba(240,240,255,0.2)';
+                        }, 2200);
+                    }).catch(() => {
+                        alert('مشکل در کپی کردن متن');
+                    });
+                });
+                footer.appendChild(document.createElement('br'));
+                footer.appendChild(copyBtn);
+            }
+
+            console.log('📈 نسبت‌های مالی · بارگذاری کامل شد');
+        })();
+    </script>
+
+</body>
+</html>

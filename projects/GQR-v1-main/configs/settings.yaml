@@ -1,0 +1,46 @@
+# GQR Institutional V3.3 — optional YAML overrides.
+# Section names must match GQRConfig attributes; values merge over env/defaults.
+data_feeder:
+  symbols: ["XAUUSD", "EURUSD", "DXY"]
+  timeframe: M1
+  lookback_bars: 500
+  backtest_csv_path: data/raw
+  precomputed_features_path: data/processed
+execution_engine:
+  magic_number: 888888
+  slippage_tolerance: 10
+  commission_per_lot: 7.0
+  risk_per_trade_pct: 0.01
+risk_management:
+  max_daily_drawdown: 0.05
+  max_weekly_drawdown: 0.10
+  spread_filter: 30.0
+  max_volatility: 0.05
+  fixed_lot_size: 0.01
+  use_dynamic_lot: true
+  max_correlation_exposure: 0.7
+model:
+  embed_dim: 256
+  n_heads: 8
+  n_layers: 4
+  dropout: 0.1
+  max_seq_len: 200
+rl:
+  learning_rate: 0.00003
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.2
+  entropy_coeff: 0.01
+  value_coeff: 0.5
+  epochs: 5
+  batch_size: 256
+  train_every_n_steps: 1024
+backtest:
+  initial_capital: 10000.0
+  start_date: "2020-01-01"
+  end_date: "2023-12-31"
+  output_report_path: reports/backtest_report.html
+monitoring:
+  dashboard_port: 8501
+  alert_on_drawdown: true
+  alert_on_order: false

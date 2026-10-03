@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Secrets — never commit live credentials
+.env
+
+# Runtime data (created by init_config / engine runs)
+data/
+models/
+logs/
+reports/
+*.db
+
+# Frontend
+node_modules/
+dashboard-ui/dist/
+dist/
+
+# OS / editors
+.DS_Store
+*.log

@@ -1,0 +1,59 @@
+//@version=5
+indicator('GQR Liquidity Pools [NexusDigitalArtShop]', overlay=true, max_lines_count=500, max_boxes_count=500, max_labels_count=500)
+
+// ───────────────────────────────
+// Inputs
+// ───────────────────────────────
+contactCount   = input.int(2, 'Contacts Required', minval=2)
+gapBars        = input.int(5, 'Bars Between Contacts')
+confirmBars    = input.int(10, 'Confirmation Bars')
+bullColor      = input.color(#089981, 'Buyside Pool')
+bearColor      = input.color(#f23645, 'Sellside Pool')
+showVolume     = input.bool(true, 'Show Volume')
+
+// ───────────────────────────────
+// Track high/low contacts
+// ───────────────────────────────
+var float highest      = 0.0
+var float lowest       = 1000000.0
+var int   highContacts = 0
+var int   lowContacts  = 0
+var int   lastHighContact = 0
+var int   lastLowContact  = 0
+
+// Detect new swing highs/lows
+swingHigh = ta.pivothigh(5, 5)
+swingLow  = ta.pivotlow(5, 5)
+
+if not na(swingHigh)
+    if math.abs(swingHigh - highest) < 0.05 * highest and bar_index - lastHighContact > gapBars
+        highContacts += 1
+    else
+        highest := swingHigh
+        highContacts := 1
+    lastHighContact := bar_index
+
+if not na(swingLow)
+    if math.abs(swingLow - lowest) < 0.05 * lowest and bar_index - lastLowContact > gapBars
+        lowContacts += 1
+    else
+        lowest := swingLow
+        lowContacts := 1
+    lastLowContact := bar_index
+
+// ───────────────────────────────
+// Draw liquidity pools after confirmation
+// ───────────────────────────────
+if highContacts >= contactCount and bar_index - lastHighContact > confirmBars
+    box.new(lastHighContact, highest, bar_index, highest * 0.998,
+      bgcolor=bearColor, border_color=na)
+
+if lowContacts >= contactCount and bar_index - lastLowContact > confirmBars
+    box.new(lastLowContact, lowest, bar_index, lowest * 1.002,
+      bgcolor=bullColor, border_color=na)
+
+// Reset contacts if price breaks pool
+if close > highest * 1.05
+    highContacts := 0
+if close < lowest * 0.95
+    lowContacts := 0

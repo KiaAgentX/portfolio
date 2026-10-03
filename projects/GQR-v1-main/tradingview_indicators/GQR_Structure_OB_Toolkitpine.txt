@@ -1,0 +1,152 @@
+//@version=5
+indicator('GQR Structure & OB Toolkit [NexusDigitalArtShop]', overlay=true, max_lines_count=500, max_boxes_count=500, max_labels_count=500)
+
+// ───────────────────────────────────────────────
+// Inputs
+// ───────────────────────────────────────────────
+swingLen        = input.int(10, 'Swing Detection Length', minval=3)
+showMSS         = input.bool(true, 'Show MSS/CHoCH')
+showBOS         = input.bool(true, 'Show BOS')
+showOB          = input.bool(true, 'Show Order Blocks')
+showLiq         = input.bool(true, 'Show Liquidity Levels')
+useBodyOB       = input.bool(true, 'OB: Use Candle Body')
+maxOBs          = input.int(5, 'Max OBs Shown', minval=1, maxval=20)
+bullColor       = input.color(#00e676, 'Bullish')
+bearColor       = input.color(#ff1744, 'Bearish')
+liqColor        = input.color(#9b59b6, 'Liquidity')
+
+// ───────────────────────────────────────────────
+// Swing detection
+// ───────────────────────────────────────────────
+upper = ta.highest(swingLen)
+lower = ta.lowest(swingLen)
+
+var int dir = 0
+dir := high[swingLen] > upper ? 0 : low[swingLen] < lower ? 1 : dir[1]
+
+ph = dir == 0 and dir[1] != 0 ? high[swingLen] : na
+pl = dir == 1 and dir[1] != 1 ? low[swingLen]  : na
+
+var float[] swingHighs = array.new_float()
+var int[]   swingBarsH = array.new_int()
+var float[] swingLows  = array.new_float()
+var int[]   swingBarsL = array.new_int()
+
+if not na(ph)
+    array.unshift(swingHighs, ph)
+    array.unshift(swingBarsH, bar_index - swingLen)
+if not na(pl)
+    array.unshift(swingLows, pl)
+    array.unshift(swingBarsL, bar_index - swingLen)
+
+// ───────────────────────────────────────────────
+// Market Structure (MSS, BOS, CHoCH)
+// ───────────────────────────────────────────────
+var int trend = 0
+
+if showMSS and array.size(swingHighs) >= 2 and array.size(swingLows) >= 2
+    // Bullish MSS (close above last valid swing high)
+    if close > array.get(swingHighs, 0) and trend != 1
+        trend := 1
+        label.new(bar_index, array.get(swingHighs, 0), 'MSS', style=label.style_label_down,
+          color=#00000000, textcolor=bullColor, size=size.small)
+    // Bearish MSS (close below last valid swing low)
+    if close < array.get(swingLows, 0) and trend != -1
+        trend := -1
+        label.new(bar_index, array.get(swingLows, 0), 'MSS', style=label.style_label_up,
+          color=#00000000, textcolor=bearColor, size=size.small)
+
+// BOS lines (extend until next BOS)
+if showBOS and array.size(swingHighs) >= 1 and array.size(swingLows) >= 1
+    if trend == 1
+        line.new(array.get(swingBarsH, 0), array.get(swingHighs, 0), bar_index, array.get(swingHighs, 0),
+          color=bullColor, style=line.style_dashed)
+    else if trend == -1
+        line.new(array.get(swingBarsL, 0), array.get(swingLows, 0), bar_index, array.get(swingLows, 0),
+          color=bearColor, style=line.style_dashed)
+
+// ───────────────────────────────────────────────
+// Order Blocks
+// ───────────────────────────────────────────────
+var float[] obTop    = array.new_float()
+var float[] obBtm    = array.new_float()
+var int[]   obTime   = array.new_int()
+var int[]   obDir    = array.new_int()   // 1 = bullish OB, -1 = bearish OB
+
+// Function to find the last opposite candle before a swing
+findOrderBlock(int fromBar, int direction)=>
+    float top = na, btm = na
+    int   timeOB = na
+    for i = fromBar to bar_index - 1
+        if direction == 1  // looking for bearish candle
+            if close[i] < open[i]
+                top   := useBodyOB ? math.max(close[i], open[i]) : high[i]
+                btm   := useBodyOB ? math.min(close[i], open[i]) : low[i]
+                timeOB := time[i]
+                break
+        else                // looking for bullish candle
+            if close[i] > open[i]
+                top   := useBodyOB ? math.max(close[i], open[i]) : high[i]
+                btm   := useBodyOB ? math.min(close[i], open[i]) : low[i]
+                timeOB := time[i]
+                break
+    [top, btm, timeOB]
+
+// Add new OBs when swings form
+if showOB
+    if not na(ph) and array.size(swingHighs) > 0
+        startIdx = array.get(swingBarsH, 0)
+        [top, btm, t] = findOrderBlock(startIdx, -1)  // bearish OB before a high
+        if not na(top) and not na(btm)
+            array.unshift(obTop, top)
+            array.unshift(obBtm, btm)
+            array.unshift(obTime, t)
+            array.unshift(obDir, -1)
+    if not na(pl) and array.size(swingLows) > 0
+        startIdx = array.get(swingBarsL, 0)
+        [top, btm, t] = findOrderBlock(startIdx, 1)   // bullish OB before a low
+        if not na(top) and not na(btm)
+            array.unshift(obTop, top)
+            array.unshift(obBtm, btm)
+            array.unshift(obTime, t)
+            array.unshift(obDir, 1)
+
+// Draw OBs (most recent first)
+for i = 0 to math.min(array.size(obTop) - 1, maxOBs - 1)
+    direction = array.get(obDir, i)
+    col = direction == 1 ? bullColor : bearColor
+    box.new(array.get(obTime, i), array.get(obTop, i), bar_index, array.get(obBtm, i),
+      bgcolor=color.new(col, 85), border_color=col)
+
+// Keep arrays from growing excessively
+while array.size(obTop) > 50
+    array.pop(obTop)
+    array.pop(obBtm)
+    array.pop(obTime)
+    array.pop(obDir)
+
+// ───────────────────────────────────────────────
+// Liquidity (Equal Highs / Lows)
+// ───────────────────────────────────────────────
+if showLiq
+    tolerance = 10 * syminfo.mintick
+    // Equal highs
+    for i = 0 to math.min(array.size(swingHighs) - 2, 10)
+        for j = i+1 to math.min(array.size(swingHighs) - 1, 10)
+            if math.abs(array.get(swingHighs, i) - array.get(swingHighs, j)) <= tolerance
+                line.new(array.get(swingBarsH, i), array.get(swingHighs, i),
+                  array.get(swingBarsH, j), array.get(swingHighs, j),
+                  color=liqColor, style=line.style_dotted)
+    // Equal lows
+    for i = 0 to math.min(array.size(swingLows) - 2, 10)
+        for j = i+1 to math.min(array.size(swingLows) - 1, 10)
+            if math.abs(array.get(swingLows, i) - array.get(swingLows, j)) <= tolerance
+                line.new(array.get(swingBarsL, i), array.get(swingLows, i),
+                  array.get(swingBarsL, j), array.get(swingLows, j),
+                  color=liqColor, style=line.style_dotted)
+
+// ───────────────────────────────────────────────
+// Alerts
+// ───────────────────────────────────────────────
+alertcondition(trend == 1 and trend[1] != 1, 'MSS Bullish', 'GQR: Bullish MSS')
+alertcondition(trend == -1 and trend[1] != -1, 'MSS Bearish', 'GQR: Bearish MSS')

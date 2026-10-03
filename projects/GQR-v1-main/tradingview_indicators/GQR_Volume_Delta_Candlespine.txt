@@ -1,0 +1,41 @@
+//@version=5
+indicator('GQR Volume Delta Candles [NexusDigitalArtShop]', overlay=true, max_labels_count=500)
+
+// ───────────────────────────────
+// Lower timeframe for delta calculation
+// ───────────────────────────────
+ltfRes = input.timeframe('1', 'Lower Timeframe')
+buyColor = input.color(#089981, 'Bullish Delta')
+sellColor = input.color(#f23645, 'Bearish Delta')
+
+// ───────────────────────────────
+// Fetch buy and sell volume from LTF
+// ───────────────────────────────
+[buyVol, sellVol] = request.security_lower_tf(syminfo.tickerid, ltfRes,
+  [close > open ? volume : 0,
+   close < open ? volume : 0])
+
+totalBuy  = buyVol.sum()
+totalSell = sellVol.sum()
+delta     = totalBuy - totalSell
+totalVol  = totalBuy + totalSell
+norm      = totalVol != 0 ? delta / totalVol : 0
+
+// ───────────────────────────────
+// Candle coloring based on delta strength
+// ───────────────────────────────
+barcolor(norm > 0.5 ? buyColor : norm < -0.5 ? sellColor : na)
+
+// Delta body overlay
+float base = na
+float value = na
+if norm > 0
+    base  := math.min(open, close)
+    value := base + math.abs(norm) * math.abs(open - close)
+else if norm < 0
+    base  := math.max(open, close)
+    value := base - math.abs(norm) * math.abs(open - close)
+
+plotcandle(base, value, value, base,
+  color = norm > 0 ? color.new(buyColor, 70) : norm < 0 ? color.new(sellColor, 70) : na,
+  wickcolor = na, bordercolor = na)

@@ -1,0 +1,6 @@
+{
+  "name": "GQR Institutional V3.3 Platform",
+  "description": "An interactive showcase of the GQR Institutional V3.3 algorithmic trading engine, featuring an online RL agent trading simulator, 14 TradingView indicators, a Monte Carlo backtester, and interactive code explorer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

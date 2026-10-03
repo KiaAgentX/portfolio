@@ -1,0 +1,56 @@
+//@version=5
+indicator('GQR ICT Killzones Toolkit [NexusDigitalArtShop]', overlay=true, max_lines_count=500, max_boxes_count=500, max_labels_count=500)
+
+// ───────────────────────────────
+// Inputs
+// ───────────────────────────────
+showNY    = input.bool(true, 'New York')
+nySession = input.session('0830-1100', 'NY Time')
+nyColor   = input.color(color.new(#ff5d00, 90), 'NY Color')
+
+showLDN   = input.bool(true, 'London')
+ldnSession= input.session('0300-0600', 'LDN Time')
+ldnColor  = input.color(color.new(#00bcd4, 90), 'LDN Color')
+
+showAsia  = input.bool(true, 'Asia')
+asiaSession=input.session('2000-0000', 'Asia Time')
+asiaColor = input.color(color.new(#e91e63, 90), 'Asia Color')
+
+showLines = input.bool(true, 'Session High/Low Lines')
+showMid   = input.bool(true, 'Session Mid Lines')
+showOpen  = input.bool(true, 'Session Open Price')
+
+// ───────────────────────────────
+// Session highlighting & lines
+// ───────────────────────────────
+processSession(string session, color col, bool show)=>
+    inSession = not na(time('1', session, 'UTC-5')) and show
+    bgcolor(inSession ? col : na)
+    // Session high/low/mid
+    var float sesHigh = na
+    var float sesLow  = na
+    var int   sesStart = na
+    if inSession and not inSession[1]
+        sesHigh := high
+        sesLow  := low
+        sesStart := bar_index
+    if inSession
+        sesHigh := math.max(high, sesHigh)
+        sesLow  := math.min(low, sesLow)
+        if showLines
+            line.new(sesStart, sesHigh, bar_index, sesHigh, color=col, style=line.style_dashed)
+            line.new(sesStart, sesLow, bar_index, sesLow, color=col, style=line.style_dashed)
+            if showMid
+                sesMid = math.avg(sesHigh, sesLow)
+                line.new(sesStart, sesMid, bar_index, sesMid, color=color.new(col, 80), style=line.style_dotted)
+            if showOpen
+                line.new(sesStart, open, bar_index, open, color=color.new(col, 50), style=line.style_dotted)
+
+processSession(nySession, nyColor, showNY)
+processSession(ldnSession, ldnColor, showLDN)
+processSession(asiaSession, asiaColor, showAsia)
+
+// Daily dividers
+if ta.change(dayofweek)
+    line.new(bar_index, high + syminfo.mintick, bar_index, low - syminfo.mintick,
+      color=color.gray, style=line.style_dashed, extend=extend.both)

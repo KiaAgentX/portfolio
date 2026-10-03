@@ -1,0 +1,62 @@
+//@version=5
+indicator('GQR Liquidity Swings [NexusDigitalArtShop]', overlay=true, max_lines_count=500, max_boxes_count=500)
+
+// ───────────────────────────────
+// Inputs
+// ───────────────────────────────
+swingLen   = input.int(14, 'Swing Length', minval=3)
+showHigh   = input.bool(true, 'Swing Highs')
+showLow    = input.bool(true, 'Swing Lows')
+highColor  = input.color(color.red, 'High Color')
+lowColor   = input.color(color.teal, 'Low Color')
+
+// ───────────────────────────────
+// Swing Detection
+// ───────────────────────────────
+upper = ta.highest(swingLen)
+lower = ta.lowest(swingLen)
+
+var int dir = 0
+dir := high[swingLen] > upper ? 0 : low[swingLen] < lower ? 1 : dir[1]
+
+ph = dir == 0 and dir[1] != 0 ? high[swingLen] : na
+pl = dir == 1 and dir[1] != 1 ? low[swingLen]  : na
+
+// ───────────────────────────────
+// Store swings
+// ───────────────────────────────
+var float[] swingHighs = array.new_float()
+var int[]   barsHigh   = array.new_int()
+var float[] swingLows  = array.new_float()
+var int[]   barsLow    = array.new_int()
+
+if not na(ph)
+    array.unshift(swingHighs, ph)
+    array.unshift(barsHigh, bar_index - swingLen)
+if not na(pl)
+    array.unshift(swingLows, pl)
+    array.unshift(barsLow, bar_index - swingLen)
+
+// ───────────────────────────────
+// Draw Liquidity Swings (zones)
+// ───────────────────────────────
+if showHigh
+    for i = 0 to math.min(array.size(swingHighs) - 1, 5)
+        box.new(array.get(barsHigh, i), array.get(swingHighs, i), bar_index, array.get(swingHighs, i),
+          bgcolor=color.new(highColor, 85), border_color=na)
+    // Drawing lines
+    if array.size(swingHighs) >= 1
+        line.new(array.get(barsHigh, 0), array.get(swingHighs, 0), bar_index, array.get(swingHighs, 0), color=highColor)
+
+if showLow
+    for i = 0 to math.min(array.size(swingLows) - 1, 5)
+        box.new(array.get(barsLow, i), array.get(swingLows, i), bar_index, array.get(swingLows, i),
+          bgcolor=color.new(lowColor, 85), border_color=na)
+    if array.size(swingLows) >= 1
+        line.new(array.get(barsLow, 0), array.get(swingLows, 0), bar_index, array.get(swingLows, 0), color=lowColor)
+
+// Keep arrays reasonably sized
+while array.size(swingHighs) > 50
+    array.pop(swingHighs)
+while array.size(swingLows) > 50
+    array.pop(swingLows)

@@ -1,0 +1,6 @@
+{
+  "name": "GhostVault",
+  "description": "An AI-powered digital products marketplace with automated Solana settlements.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

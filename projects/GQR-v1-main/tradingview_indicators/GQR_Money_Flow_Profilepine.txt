@@ -1,0 +1,72 @@
+//@version=5
+indicator('GQR Money Flow Profile [NexusDigitalArtShop]', overlay=true, max_boxes_count=500, max_lines_count=500)
+
+// ───────────────────────────────
+// Inputs
+// ───────────────────────────────
+lookback     = input.int(200, 'Lookback Length', minval=10)
+numRows      = input.int(25, 'Number of Rows', minval=10, maxval=100)
+profileWidth = input.int(13, 'Profile Width %', minval=10, maxval=50) / 100
+bullColor    = input.color(#26a69a, 'Bullish Sentiment')
+bearColor    = input.color(#ef5350, 'Bearish Sentiment')
+volColor     = input.color(#ffeb3b, 'High Volume Node')
+
+// ───────────────────────────────
+// Determine price range over lookback
+// ───────────────────────────────
+var float pHigh = na
+var float pLow  = na
+if bar_index == last_bar_index - lookback
+    pHigh := high
+    pLow  := low
+else if bar_index > last_bar_index - lookback
+    pHigh := math.max(high, pHigh)
+    pLow  := math.min(low, pLow)
+
+pStep = (pHigh - pLow) / numRows
+
+// ───────────────────────────────
+// Volume & Money Flow accumulation
+// ───────────────────────────────
+var float[] volRows = array.new_float(numRows, 0.0)
+var float[] buyRows = array.new_float(numRows, 0.0)
+
+if barstate.islast and pStep > 0
+    for i = 0 to lookback
+        for row = 0 to numRows - 1
+            levelLow  = pLow  + row * pStep
+            levelHigh = pLow  + (row + 1) * pStep
+            if high[lookback - i] >= levelLow and low[lookback - i] < levelHigh
+                overlap = math.min(high[lookback - i], levelHigh) - math.max(low[lookback - i], levelLow)
+                frac = overlap / (high[lookback - i] - low[lookback - i])
+                array.set(volRows, row, array.get(volRows, row) + volume[lookback - i] * frac)
+                if close[lookback - i] > open[lookback - i]
+                    array.set(buyRows, row, array.get(buyRows, row) + volume[lookback - i] * frac)
+
+    // Find max volume for scaling
+    maxVol = array.max(volRows)
+    
+    // Draw profile boxes
+    for row = 0 to numRows - 1
+        vol = array.get(volRows, row)
+        buy = array.get(buyRows, row)
+        sell = vol - buy
+        sentiment = buy - sell
+        
+        // Volume bar
+        barWidth = vol / maxVol * profileWidth * lookback
+        if barWidth > 0
+            box.new(bar_index, pLow + row * pStep, bar_index + barWidth, pLow + (row + 1) * pStep,
+              bgcolor=color.from_gradient(vol/maxVol, 0, 1, color.new(volColor, 30), color.new(volColor, 90)),
+              border_color=na)
+        
+        // Sentiment indicator (small rectangle on the right)
+        if buy + sell > 0
+            sentimentNorm = sentiment / (buy + sell)
+            sentimentBar = sentimentNorm * profileWidth * lookback * 0.5
+            if sentimentBar > 0
+                box.new(bar_index, pLow + row * pStep, bar_index + sentimentBar, pLow + (row + 1) * pStep,
+                  bgcolor=bullColor, border_color=na)
+            else if sentimentBar < 0
+                box.new(bar_index + sentimentBar, pLow + row * pStep, bar_index, pLow + (row + 1) * pStep,
+                  bgcolor=bearColor, border_color=na)

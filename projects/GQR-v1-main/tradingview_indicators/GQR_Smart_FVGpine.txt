@@ -1,0 +1,134 @@
+//@version=5
+indicator('GQR Smart Money Toolkit [NexusDigitalArtShop]', overlay=true, max_lines_count=500, max_boxes_count=500, max_labels_count=500)
+
+// ───────────────────────────────
+// Inputs
+// ───────────────────────────────
+swingLen      = input.int(10, 'Swing Detection Length', minval=3)
+useBodyOB     = input.bool(true, 'OB: Use Candle Body')
+showMSS       = input.bool(true, 'Show Market Structure')
+showBOS       = input.bool(true, 'Show BOS')
+showCHoCH     = input.bool(true, 'Show CHoCH')
+showOB        = input.bool(true, 'Show Order Blocks')
+showFVG       = input.bool(true, 'Show Fair Value Gaps')
+showLiq       = input.bool(true, 'Show Liquidity Levels')
+showBreakers  = input.bool(true, 'Show Breaker Blocks')
+showKillzones = input.bool(false, 'Show Killzones Background')
+
+bullColor     = input.color(#00e676, 'Bullish Color')
+bearColor     = input.color(#ff1744, 'Bearish Color')
+liqColor      = input.color(#9b59b6, 'Liquidity Color')
+
+nySession     = input.session('0830-1100', 'New York (UTC-5)')
+ldnSession    = input.session('0300-0600', 'London (UTC-5)')
+
+// ───────────────────────────────
+// Swing Detection
+// ───────────────────────────────
+upper = ta.highest(swingLen)
+lower = ta.lowest(swingLen)
+var int dir = 0
+dir := high[swingLen] > upper ? 0 : low[swingLen] < lower ? 1 : dir[1]
+ph = dir == 0 and dir[1] != 0 ? high[swingLen] : na
+pl = dir == 1 and dir[1] != 1 ? low[swingLen]  : na
+
+var float[] swingHighs = array.new_float()
+var int[]   swingBarsH = array.new_int()
+var float[] swingLows  = array.new_float()
+var int[]   swingBarsL = array.new_int()
+
+if not na(ph)
+    array.unshift(swingHighs, ph)
+    array.unshift(swingBarsH, bar_index - swingLen)
+if not na(pl)
+    array.unshift(swingLows, pl)
+    array.unshift(swingBarsL, bar_index - swingLen)
+
+// ───────────────────────────────
+// Market Structure (MSS, BOS, CHoCH)
+// ───────────────────────────────
+var int trend = 0
+if showMSS and array.size(swingHighs) >= 2 and array.size(swingLows) >= 2
+    // Bullish shift
+    if close > array.get(swingHighs, 1) and trend != 1
+        if showCHoCH
+            label.new(array.get(swingBarsH, 1), array.get(swingHighs, 1), 'MSS',
+              style=label.style_label_down, color=#00000000, textcolor=bullColor, size=size.small)
+        trend := 1
+    // Bearish shift
+    if close < array.get(swingLows, 1) and trend != -1
+        if showCHoCH
+            label.new(array.get(swingBarsL, 1), array.get(swingLows, 1), 'MSS',
+              style=label.style_label_up, color=#00000000, textcolor=bearColor, size=size.small)
+        trend := -1
+
+    // BOS
+    if trend == 1 and showBOS
+        line.new(array.get(swingBarsH, 0), array.get(swingHighs, 0), bar_index, array.get(swingHighs, 0),
+          color=bullColor, style=line.style_dashed)
+    if trend == -1 and showBOS
+        line.new(array.get(swingBarsL, 0), array.get(swingLows, 0), bar_index, array.get(swingLows, 0),
+          color=bearColor, style=line.style_dashed)
+
+// ───────────────────────────────
+// Order Blocks
+// ───────────────────────────────
+if showOB and array.size(swingHighs) >= 1 and array.size(swingLows) >= 1
+    // Bullish OB: last bearish candle before a swing low
+    if trend == 1 and close > open and close[1] < open[1]
+        obTop = useBodyOB ? math.max(close[1], open[1]) : high[1]
+        obBtm = useBodyOB ? math.min(close[1], open[1]) : low[1]
+        box.new(bar_index[1], obTop, bar_index, obBtm, bgcolor=color.new(bullColor, 85), border_color=bullColor)
+    // Bearish OB: last bullish candle before a swing high
+    if trend == -1 and close < open and close[1] > open[1]
+        obTop = useBodyOB ? math.max(close[1], open[1]) : high[1]
+        obBtm = useBodyOB ? math.min(close[1], open[1]) : low[1]
+        box.new(bar_index[1], obTop, bar_index, obBtm, bgcolor=color.new(bearColor, 85), border_color=bearColor)
+
+// ───────────────────────────────
+// Fair Value Gaps (FVG)
+// ───────────────────────────────
+if showFVG
+    bullFVG = low > high[2]
+    bearFVG = high < low[2]
+    plotshape(bullFVG, style=shape.triangleup, location=location.belowbar, color=bullColor, size=size.tiny)
+    plotshape(bearFVG, style=shape.triangledown, location=location.abovebar, color=bearColor, size=size.tiny)
+    bgcolor(bullFVG ? color.new(bullColor, 90) : na)
+    bgcolor(bearFVG ? color.new(bearColor, 90) : na)
+
+// ───────────────────────────────
+// Liquidity Levels (Double Tops/Bottoms)
+// ───────────────────────────────
+if showLiq
+    for i = 1 to math.min(array.size(swingHighs), array.size(swingLows)) - 1
+        if array.size(swingHighs) > i and math.abs(array.get(swingHighs, i) - array.get(swingHighs, 0)) < 10 * syminfo.mintick
+            line.new(array.get(swingBarsH, i), array.get(swingHighs, i),
+              array.get(swingBarsH, 0), array.get(swingHighs, 0), color=liqColor, style=line.style_dotted)
+        if array.size(swingLows) > i and math.abs(array.get(swingLows, i) - array.get(swingLows, 0)) < 10 * syminfo.mintick
+            line.new(array.get(swingBarsL, i), array.get(swingLows, i),
+              array.get(swingBarsL, 0), array.get(swingLows, 0), color=liqColor, style=line.style_dotted)
+
+// ───────────────────────────────
+// Breaker Blocks (simplified)
+// ───────────────────────────────
+if showBreakers
+    // (logic for breaker blocks can be expanded – place holder)
+    // Price must break an OB then rally/drop back inside
+    // This would require storing OB data and checking mitigation, then re-entry
+    // For brevity, left as placeholder
+
+// ───────────────────────────────
+// Killzones Background
+// ───────────────────────────────
+if showKillzones
+    inNY = not na(time('1', nySession, 'UTC-5'))
+    inLDN = not na(time('1', ldnSession, 'UTC-5'))
+    bgcolor(inNY ? color.new(color.orange, 90) : inLDN ? color.new(color.blue, 90) : na)
+
+// ───────────────────────────────
+// Alerts
+// ───────────────────────────────
+alertcondition(trend == 1 and trend[1] != 1, 'Bullish MSS', 'GQR: Bullish market structure shift')
+alertcondition(trend == -1 and trend[1] != -1, 'Bearish MSS', 'GQR: Bearish market structure shift')
+alertcondition(bullFVG, 'Bull FVG', 'GQR: Bullish FVG formed')
+alertcondition(bearFVG, 'Bear FVG', 'GQR: Bearish FVG formed')

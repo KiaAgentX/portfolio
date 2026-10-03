@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GQR Institutional V3.3 — Quick Start Guide | Kianoosh Karimi</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: radial-gradient(ellipse at 80% 20%, #1c140a 0%, #050302 100%);
+            color: #d6d3d1;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; padding: 30px 20px; line-height: 1.8;
+        }
+        .container {
+            max-width: 1050px; width: 100%;
+            background: rgba(23,20,15,0.85);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(245,158,11,0.25);
+            border-radius: 32px;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.9), 0 0 0 1px rgba(245,158,11,0.15);
+            overflow: hidden;
+        }
+        .maker-badge {
+            background: linear-gradient(90deg, #1c140a, #2e2616, #1c140a);
+            border-bottom: 1px solid rgba(245,158,11,0.3);
+            padding: 14px 30px; display: flex; justify-content: space-between;
+            align-items: center; color: #d4a853; font-size: 0.95rem;
+        }
+        .maker-badge .brand {
+            font-weight: 700;
+            background: linear-gradient(to right, #f59e0b, #fbbf24);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        header {
+            background: linear-gradient(135deg, #1c150b 0%, #2b2112 50%, #1a1208 100%);
+            padding: 45px 40px 30px; text-align: center;
+            border-bottom: 1px solid rgba(245,158,11,0.2);
+        }
+        .glow-text {
+            font-size: 2.8rem; font-weight: 800;
+            background: linear-gradient(to bottom, #fef3c7, #f59e0b, #b45309);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 18px rgba(245,158,11,0.5));
+            margin-bottom: 10px;
+        }
+        .subtitle { font-size: 1.4rem; color: #a8a29e; margin-bottom: 10px; }
+        .author {
+            font-size: 1.1rem; color: #fbbf24;
+            background: rgba(245,158,11,0.1); display: inline-block;
+            padding: 6px 24px; border-radius: 30px;
+            border: 1px solid rgba(245,158,11,0.3);
+        }
+        .content { padding: 40px 50px; background: rgba(18,15,10,0.6); }
+        h2 {
+            color: #fcd34d; font-size: 1.9rem; margin: 45px 0 20px;
+            padding-bottom: 10px; border-bottom: 2px solid rgba(245,158,11,0.4);
+            display: flex; align-items: center; gap: 12px;
+        }
+        h2::before {
+            content: ""; display: inline-block;
+            width: 8px; height: 36px; background: #f59e0b;
+            border-radius: 8px; box-shadow: 0 0 20px #f59e0b;
+        }
+        h3 { color: #fde68a; font-size: 1.3rem; margin: 30px 0 12px; font-weight: 600; }
+        .step {
+            background: rgba(40,30,15,0.6); backdrop-filter: blur(10px);
+            border: 1px solid rgba(245,158,11,0.2); border-radius: 16px;
+            padding: 20px 25px; margin: 20px 0;
+        }
+        .step p { margin: 8px 0; }
+        code, pre {
+            background: #1c150b; color: #fbbf24; border-radius: 8px;
+            padding: 2px 8px; font-family: 'Fira Code', monospace; font-size: 0.95rem;
+        }
+        pre {
+            padding: 16px 20px; overflow-x: auto; margin: 12px 0;
+            border: 1px solid rgba(245,158,11,0.3);
+        }
+        .note {
+            background: rgba(58,42,17,0.5); border-left: 5px solid #f59e0b;
+            padding: 18px 24px; margin: 25px 0; border-radius: 12px;
+            backdrop-filter: blur(8px); color: #fde68a;
+        }
+        .footer {
+            background: #0a0805; text-align: center; padding: 25px 20px;
+            color: #78716c; font-size: 0.95rem;
+            border-top: 1px solid rgba(245,158,11,0.3);
+        }
+        .footer .signature {
+            font-size: 1.2rem; font-weight: 700;
+            background: linear-gradient(to right, #f59e0b, #fbbf24);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        @media (max-width:768px) {
+            .content { padding: 25px 20px; }
+            .glow-text { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="maker-badge">
+            <span>📗 <span class="brand">Kianoosh Karimi</span> | Institutional Platform</span>
+            <span>⚡ GQR V3.3</span>
+        </div>
+        <header>
+            <h1 class="glow-text">GQR Institutional V3.3</h1>
+            <p class="subtitle">Your Complete Roadmap from Purchase to Launch – All Platforms, All Tools</p>
+            <p class="author">👤 Creator: Kianoosh Karimi</p>
+        </header>
+        <div class="content">
+
+            <div class="note">
+                <strong>Welcome!</strong> The most advanced AI trading foundation is now yours. Follow each section in order to have your own RL trading engine, live dashboard, and professional indicators running in under an hour.
+            </div>
+
+            <h2>1. What’s Inside Your ZIP</h2>
+            <div class="step">
+                <pre>
+gqr_institutional/
+├── src/                 ← Python source (RL agent, backtester, API)
+├── dashboard-ui/        ← React frontend
+├── scripts/             ← Data preparation tools
+├── configs/             ← Server & YAML configuration
+├── tradingview_indicators/  ← 14 exclusive TradingView indicators (.txt, Pine v5)
+└── tests/               ← Automated validation
+                </pre>
+            </div>
+
+            <h2>2. Prerequisites</h2>
+            <div class="step">
+                <ul style="padding-left:20px;">
+                    <li><strong>Python 3.10+</strong> – runs the main engine</li>
+                    <li><strong>Node.js 18+</strong> – needed only for the React dashboard</li>
+                    <li><strong>TradingView account</strong> (free) – to load the 14 GQR indicators</li>
+                    <li><strong>Docker</strong> (optional) – simplifies cloud deployment</li>
+                </ul>
+            </div>
+
+            <h2>3. Setting Up the Python Engine</h2>
+            <div class="step">
+                <p><strong>Step 1:</strong> Terminal inside <code>gqr_institutional</code> folder.</p>
+                <p><strong>Step 2:</strong> Create virtual environment:</p>
+                <pre>python -m venv .venv
+# macOS / Linux
+source .venv/bin/activate
+# Windows
+.venv\Scripts\activate</pre>
+                <p><strong>Step 3:</strong> Install dependencies:</p>
+                <pre>pip install -r requirements.txt</pre>
+                <p><strong>Step 4:</strong> Create required folders:</p>
+                <pre>mkdir -p data/memory data/raw data/processed models/weights reports logs certs</pre>
+                <p><strong>Step 5:</strong> Configure environment:</p>
+                <pre>cp .env.example .env</pre>
+                <p>Edit <code>.env</code> (defaults work for simulation). Add Telegram/Discord tokens if desired.</p>
+                <p><strong>Step 6:</strong> Run your first agent:</p>
+                <pre>python -m src.main</pre>
+                <p>You’ll see <code>[XAUUSD] Agent initialised</code> and <code>Starting live loop</code>.</p>
+            </div>
+
+            <h2>4. Launching the Real‑Time Dashboard</h2>
+            <div class="step">
+                <p><strong>Backend (API):</strong> In a second terminal:</p>
+                <pre>uvicorn src.api.dashboard_server:app --host 0.0.0.0 --port 8000</pre>
+                <p><strong>Frontend (React):</strong> In a third terminal:</p>
+                <pre>cd dashboard-ui
+npm install
+npm run dev</pre>
+                <p>Open <code>http://localhost:3000</code> — live equity, balance, drawdown & emergency stop.</p>
+                <p>Alternative: a Streamlit dashboard is included at <code>src/monitoring/dashboard.py</code>.</p>
+            </div>
+
+            <h2>5. Running a Backtest (Historical Data)</h2>
+            <div class="step">
+                <p><strong>Prepare:</strong> Place CSV files (<code>time,open,high,low,close</code>) in <code>data/raw/</code>.</p>
+                <p><strong>Convert to Parquet:</strong></p>
+                <pre>python scripts/convert_csv_to_parquet.py --input data/raw --output data/processed</pre>
+                <p><strong>Pre‑compute SMC features (optional):</strong></p>
+                <pre>python scripts/precompute_features.py --input data/processed/XAUUSD.parquet --output data/processed/XAUUSD.features.parquet</pre>
+                <p>Then run the backtester from your script/notebook using <code>BacktestEngine</code>.</p>
+            </div>
+
+            <h2>6. Loading the 14 GQR Indicators into TradingView</h2>
+            <div class="step">
+                <p><strong>Step 1:</strong> Log into TradingView (free account).</p>
+                <p><strong>Step 2:</strong> Open Pine Editor (bottom panel).</p>
+                <p><strong>Step 3:</strong> Copy & paste each <code>.txt</code> file from <code>tradingview_indicators/</code> and click “Add to chart”.</p>
+                <p>Indicators include: Market Structure, Order Blocks, Breaker Blocks, Volume Delta, Adaptive SuperTrend, Money Flow Profile, Killzones, Liquidity Swings, Elliott Wave, and more.</p>
+            </div>
+
+            <h2>7. Key Configuration (.env)</h2>
+            <div class="step">
+                <ul style="padding-left:20px;">
+                    <li><code>GQR_DATA_FEEDER_SYMBOLS</code> – Assets to trade (default <code>["XAUUSD","EURUSD","DXY"]</code>)</li>
+                    <li><code>GQR_RISK_MANAGEMENT_MAX_DAILY_RAWDOWN</code> – 0.05 (5%)</li>
+                    <li><code>GQR_RL_LEARNING_RATE</code> – 0.00003</li>
+                    <li><code>GQR_RL_TRAIN_EVERY_N_STEPS</code> – 1024</li>
+                </ul>
+            </div>
+
+            <h2>8. One‑Click Docker Deployment (Cloud / VPS)</h2>
+            <div class="step">
+                <pre>openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+   -keyout certs/server.key -out certs/server.crt \
+   -subj "/CN=localhost"
+htpasswd -c .htpasswd admin</pre>
+                <p>Then run with <code>docker-compose up -d</code>.</p>
+            </div>
+
+            <h2>9. Troubleshooting</h2>
+            <div class="step">
+                <p><strong>ModuleNotFoundError:</strong> Activate venv and reinstall requirements.</p>
+                <p><strong>Dashboard no data:</strong> Ensure <code>python -m src.main</code> is running.</p>
+                <p><strong>Indicators not showing:</strong> Click “Add to chart” and check Pine console for errors.</p>
+                <p><strong>Port in use:</strong> Change port in config or stop conflicting app.</p>
+            </div>
+
+            <div class="note">
+                Your journey as a quant starts here. Build your own AI trading firm, present to investors, and combine visual Smart Money analysis with machine learning. We built the engine – you provide the fuel.
+            </div>
+        </div>
+        <div class="footer">
+            <div class="signature">✍️ Prepared by: Kianoosh Karimi</div>
+            <div>📅 GQR Institutional V3.3 — Quick Start Guide © 2025</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+//@version=5
+indicator('GQR Adaptive SuperTrend [NexusDigitalArtShop]', overlay=true)
+
+// ───────────────────────────────
+// Inputs
+// ───────────────────────────────
+atrLen      = input.int(10, 'ATR Length', minval=1)
+factorMin   = input.float(1.0, 'Factor Min', minval=0.5, step=0.1)
+factorMax   = input.float(5.0, 'Factor Max', minval=1.0, step=0.1)
+factorStep  = input.float(0.5, 'Factor Step', minval=0.1, step=0.1)
+bullColor   = input.color(#00e676, 'Uptrend')
+bearColor   = input.color(#ff1744, 'Downtrend')
+showSignals = input.bool(true, 'Show Entry Signals')
+
+// ───────────────────────────────
+// Generate factor list
+// ───────────────────────────────
+var float[] factors = array.new_float()
+if barstate.isfirst
+    f = factorMin
+    while f <= factorMax
+        array.push(factors, f)
+        f += factorStep
+
+// ───────────────────────────────
+// ATR
+// ───────────────────────────────
+atr = ta.atr(atrLen)
+
+// ───────────────────────────────
+// Track multiple SuperTrends and their performance
+// ───────────────────────────────
+var float bestFactor = array.get(factors, 0)
+var float bestPerf   = -1e10
+var float[] perfArray  = array.new_float(array.size(factors), 0.0)
+var int[]   trendArray = array.new_int(array.size(factors), 0)
+var float[] upperArray = array.new_float(array.size(factors), 0.0)
+var float[] lowerArray = array.new_float(array.size(factors), 0.0)
+
+for i = 0 to array.size(factors) - 1
+    factor = array.get(factors, i)
+    up = hl2 + atr * factor
+    dn = hl2 - atr * factor
+    prevTrend = array.get(trendArray, i)
+    prevUpper = array.get(upperArray, i)
+    prevLower = array.get(lowerArray, i)
+
+    newTrend = close > prevUpper ? 1 : close < prevLower ? -1 : prevTrend
+    if newTrend == 1
+        newLower := math.max(dn, prevLower)
+        newUpper := up
+    else
+        newUpper := math.min(up, prevUpper)
+        newLower := dn
+
+    array.set(trendArray, i, newTrend)
+    array.set(upperArray, i, newUpper)
+    array.set(lowerArray, i, newLower)
+
+    // Performance tracking (cumulative returns)
+    prevPerf = array.get(perfArray, i)
+    tradeRet = 0.0
+    if prevTrend != newTrend
+        tradeRet := prevTrend == 1 ? close - prevLower : prevUpper - close
+    else if newTrend == 1
+        tradeRet := close - close[1]
+    else if newTrend == -1
+        tradeRet := close[1] - close
+    array.set(perfArray, i, prevPerf + tradeRet)
+
+// ───────────────────────────────
+// Select best factor based on performance
+// ───────────────────────────────
+for i = 0 to array.size(factors) - 1
+    if array.get(perfArray, i) > bestPerf
+        bestPerf   := array.get(perfArray, i)
+        bestFactor := array.get(factors, i)
+
+// ───────────────────────────────
+// Final SuperTrend using best factor
+// ───────────────────────────────
+up = hl2 + atr * bestFactor
+dn = hl2 - atr * bestFactor
+var int trend = 0
+var float trail = na
+if trend == 1
+    if close < trail
+        trend := -1
+        trail := up
+    else
+        trail := math.max(dn, trail)
+else if trend == -1
+    if close > trail
+        trend := 1
+        trail := dn
+    else
+        trail := math.min(up, trail)
+else
+    trend := close > up ? 1 : -1
+    trail := trend == 1 ? dn : up
+
+plot(trail, 'SuperTrend', trend == 1 ? bullColor : bearColor, 2)
+
+// Signals
+if showSignals
+    if trend == 1 and trend[1] != 1
+        label.new(bar_index, low, '▲', style=label.style_label_up, color=#00000000, textcolor=bullColor, size=size.normal)
+    if trend == -1 and trend[1] != -1
+        label.new(bar_index, high, '▼', style=label.style_label_down, color=#00000000, textcolor=bearColor, size=size.normal)
+
+// Alerts
+alertcondition(trend == 1 and trend[1] != 1, 'SuperTrend Long', 'GQR ST: Uptrend started')
+alertcondition(trend == -1 and trend[1] != -1, 'SuperTrend Short', 'GQR ST: Downtrend started')

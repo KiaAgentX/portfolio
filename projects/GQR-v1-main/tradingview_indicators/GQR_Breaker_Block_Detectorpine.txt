@@ -1,0 +1,176 @@
+//@version=5
+indicator('GQR Breaker Block Detector [NexusDigitalArtShop]', overlay=true, max_lines_count=500, max_boxes_count=500, max_labels_count=500)
+
+// ───────────────────────────────
+// Inputs
+// ───────────────────────────────
+swingLen        = input.int(5, 'Swing Detection Length', minval=3)
+useBody         = input.bool(true, 'Use Candle Body for OB')
+mitigationSrc   = input.string('Close', 'Mitigation Source', options=['Close', 'Wick'])
+enableTP        = input.bool(true, 'Show Take Profit Levels')
+riskReward1     = input.float(2.0, 'R:R 1', minval=0.5)   
+riskReward2     = input.float(3.0, 'R:R 2', minval=0.5)
+showSignals     = input.bool(true, 'Show Entry Signals')
+bullColor       = input.color(#00c853, 'Bullish Breaker')
+bearColor       = input.color(#ff1744, 'Bearish Breaker')
+tpColor         = input.color(#2157f3, 'Take Profit')
+
+// ───────────────────────────────
+// Functions
+// ───────────────────────────────
+// Detect swing points
+getSwings(len) =>
+    upper = ta.highest(len)
+    lower = ta.lowest(len)
+    var int os = 0
+    os := high[len] > upper ? 0 : low[len] < lower ? 1 : os[1]
+    top = os == 0 and os[1] != 0 ? high[len] : na
+    btm = os == 1 and os[1] != 1 ? low[len]  : na
+    [top, btm]
+
+// ───────────────────────────────
+// Track swing arrays
+// ───────────────────────────────
+[ph, pl] = getSwings(swingLen)
+
+var float[] swingHighs = array.new_float()
+var int[]   swingBarsH = array.new_int()
+var float[] swingLows  = array.new_float()
+var int[]   swingBarsL = array.new_int()
+
+if not na(ph)
+    array.unshift(swingHighs, ph)
+    array.unshift(swingBarsH, bar_index - swingLen)
+if not na(pl)
+    array.unshift(swingLows, pl)
+    array.unshift(swingBarsL, bar_index - swingLen)
+
+// ───────────────────────────────
+// Order Block data storage (last known bullish/bearish OB)
+// ───────────────────────────────
+var float lastBullOBTop  = na
+var float lastBullOBBtm  = na
+var int   lastBullOBTime = na
+var float lastBearOBTop  = na
+var float lastBearOBBtm  = na
+var int   lastBearOBTime = na
+
+// Update bullish OB when a swing low forms (bottom of a move)
+if not na(pl) and array.size(swingLows) >= 1
+    // Look back from the swing low to find the last bearish candle before it
+    startIdx = array.get(swingBarsL, 0)
+    for i = startIdx to bar_index - 1
+        if close[i] < open[i]
+            top = useBody ? math.max(close[i], open[i]) : high[i]
+            btm = useBody ? math.min(close[i], open[i]) : low[i]
+            lastBullOBTop  := top
+            lastBullOBBtm  := btm
+            lastBullOBTime := time[i]
+            break
+
+// Update bearish OB when a swing high forms (top of a move)
+if not na(ph) and array.size(swingHighs) >= 1
+    startIdx = array.get(swingBarsH, 0)
+    for i = startIdx to bar_index - 1
+        if close[i] > open[i]
+            top = useBody ? math.max(close[i], open[i]) : high[i]
+            btm = useBody ? math.min(close[i], open[i]) : low[i]
+            lastBearOBTop  := top
+            lastBearOBBtm  := btm
+            lastBearOBTime := time[i]
+            break
+
+// ───────────────────────────────
+// Breaker Block Logic
+// ───────────────────────────────
+// Bullish breaker: price first breaks below a bearish OB (mitigation), 
+// then closes back inside it. Entry: long.
+var bool bullBreakerActive = false
+var box bullBB = na
+var line bullTP1 = na, bullTP2 = na
+var label bullSignal = na
+
+// Check if price broke below the last bearish OB bottom
+if not na(lastBearOBTop)
+    breakBelow = mitigationSrc == 'Close' ? close[1] < lastBearOBBtm : low[1] < lastBearOBBtm
+    // If breaker not yet active and price re‑enters the OB (close > bottom)
+    if breakBelow and not bullBreakerActive and close > lastBearOBBtm and close > lastBearOBBtm
+        bullBreakerActive := true
+        // Draw breaker box
+        bullBB := box.new(lastBearOBTime, lastBearOBTop, bar_index, lastBearOBBtm,
+          bgcolor=color.new(bullColor, 90), border_color=bullColor, text='+BB',
+          text_color=bullColor, text_size=size.small)
+        // Take profit levels from top of OB (risk = OB height)
+        obHeight = lastBearOBTop - lastBearOBBtm
+        if enableTP
+            bullTP1 := line.new(bar_index, lastBearOBTop + obHeight * riskReward1,
+              bar_index+20, lastBearOBTop + obHeight * riskReward1,
+              color=tpColor, style=line.style_dotted)
+            bullTP2 := line.new(bar_index, lastBearOBTop + obHeight * riskReward2,
+              bar_index+20, lastBearOBTop + obHeight * riskReward2,
+              color=tpColor, style=line.style_dotted)
+        if showSignals
+            bullSignal := label.new(bar_index, lastBearOBBtm, 'LONG',
+              style=label.style_label_up, color=bullColor, textcolor=color.white, size=size.small)
+
+// Cancel bullish breaker if price closes below the OB bottom again
+if bullBreakerActive
+    if close < lastBearOBBtm
+        bullBreakerActive := false
+        box.delete(bullBB)
+        line.delete(bullTP1)
+        line.delete(bullTP2)
+        label.delete(bullSignal)
+    else
+        box.set_right(bullBB, bar_index)
+        if enableTP
+            line.set_x2(bullTP1, bar_index+20)
+            line.set_x2(bullTP2, bar_index+20)
+
+// Bearish breaker: price first breaks above a bullish OB (mitigation),
+// then closes back inside it. Entry: short.
+var bool bearBreakerActive = false
+var box bearBB = na
+var line bearTP1 = na, bearTP2 = na
+var label bearSignal = na
+
+if not na(lastBullOBTop)
+    breakAbove = mitigationSrc == 'Close' ? close[1] > lastBullOBTop : high[1] > lastBullOBTop
+    if breakAbove and not bearBreakerActive and close < lastBullOBTop and close < lastBullOBTop
+        bearBreakerActive := true
+        // Draw breaker box
+        bearBB := box.new(lastBullOBTime, lastBullOBTop, bar_index, lastBullOBBtm,
+          bgcolor=color.new(bearColor, 90), border_color=bearColor, text='-BB',
+          text_color=bearColor, text_size=size.small)
+        obHeight = lastBullOBTop - lastBullOBBtm
+        if enableTP
+            bearTP1 := line.new(bar_index, lastBullOBBtm - obHeight * riskReward1,
+              bar_index+20, lastBullOBBtm - obHeight * riskReward1,
+              color=tpColor, style=line.style_dotted)
+            bearTP2 := line.new(bar_index, lastBullOBBtm - obHeight * riskReward2,
+              bar_index+20, lastBullOBBtm - obHeight * riskReward2,
+              color=tpColor, style=line.style_dotted)
+        if showSignals
+            bearSignal := label.new(bar_index, lastBullOBTop, 'SHORT',
+              style=label.style_label_down, color=bearColor, textcolor=color.white, size=size.small)
+
+if bearBreakerActive
+    if close > lastBullOBTop
+        bearBreakerActive := false
+        box.delete(bearBB)
+        line.delete(bearTP1)
+        line.delete(bearTP2)
+        label.delete(bearSignal)
+    else
+        box.set_right(bearBB, bar_index)
+        if enableTP
+            line.set_x2(bearTP1, bar_index+20)
+            line.set_x2(bearTP2, bar_index+20)
+
+// ───────────────────────────────
+// Alerts
+// ───────────────────────────────
+alertcondition(bullBreakerActive and not bullBreakerActive[1], 'Bullish Breaker',
+  'GQR Breaker: Bullish breaker block formed')
+alertcondition(bearBreakerActive and not bearBreakerActive[1], 'Bearish Breaker',
+  'GQR Breaker: Bearish breaker block formed')

@@ -1,0 +1,49 @@
+//@version=5
+indicator('GQR ZigZag Channels [NexusDigitalArtShop]', overlay=true, max_lines_count=500, max_labels_count=500)
+
+// ───────────────────────────────
+// Inputs
+// ───────────────────────────────
+length        = input.int(100, 'Channel Length', minval=10)
+showUpper     = input.bool(true, 'Upper Channel')
+showLower     = input.bool(true, 'Lower Channel')
+showMid       = input.bool(true, 'Mid Line')
+upperColor    = input.color(#ff1100, 'Upper')
+midColor      = input.color(#ff5d00, 'Mid')
+lowerColor    = input.color(#2157f3, 'Lower')
+
+// ───────────────────────────────
+// ZigZag detection
+// ───────────────────────────────
+upper = ta.highest(close, length)
+lower = ta.lowest(close, length)
+
+var int os = 0
+os := close[length] > upper ? 0 : close[length] < lower ? 1 : os[1]
+
+btm = os == 1 and os[1] != 1
+top = os == 0 and os[1] != 0
+
+var float valtop = na
+var float valbtm = na
+
+if btm
+    valbtm := low[length]
+    valtop := high[length]
+if top
+    valtop := high[length]
+    valbtm := low[length]
+
+// ───────────────────────────────
+// Draw channels
+// ───────────────────────────────
+if not na(valtop) and not na(valbtm)
+    mid = math.avg(valtop, valbtm)
+    diff = valtop - valbtm
+    
+    if showUpper
+        line.new(bar_index, valtop + diff, bar_index + 50, valtop + diff, color=upperColor, style=line.style_dotted)
+    if showMid
+        line.new(bar_index, mid, bar_index + 50, mid, color=midColor, style=line.style_dashed)
+    if showLower
+        line.new(bar_index, valbtm - diff, bar_index + 50, valbtm - diff, color=lowerColor, style=line.style_dotted)

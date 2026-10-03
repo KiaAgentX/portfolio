@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  engine:
+    build: .
+    container_name: gqr_engine
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+      - ./certs:/etc/nginx/certs:ro
+      - ./.htpasswd:/etc/nginx/.htpasswd:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - gqr_net
+
+  dashboard:
+    image: python:3.10-slim
+    container_name: gqr_dashboard
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./src/api:/app
+      - ./data:/app/data
+    command: >
+      sh -c "pip install fastapi uvicorn aiofiles && uvicorn dashboard_server:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+    networks:
+      - gqr_net
+
+  nginx:
+    image: nginx:alpine
+    container_name: gqr_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./configs/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+      - ./.htpasswd:/etc/nginx/.htpasswd:ro
+      - ./dashboard-ui/dist:/usr/share/nginx/html:ro
+    depends_on:
+      - dashboard
+    networks:
+      - gqr_net
+
+networks:
+  gqr_net:
+    driver: bridge
