@@ -7,7 +7,7 @@
 <meta name="description" content="Open-world island fishing game for the browser.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../assets/style.css">
 <link rel="stylesheet" href="../../assets/highlight.min.css">
 </head>
@@ -15,14 +15,17 @@
 <header class="nav"><div class="container nav-inner">
     <a class="brand" href="../../"><span class="dot"></span>Kia</a>
     <nav class="nav-links">
-      <a href="../../#projects">Projects</a>
+      <a href="../../#projects">Work</a>
+      <a href="../../#roadmap-section">Roadmap</a>
       <a href="https://github.com/KiaAgentX" target="_blank" rel="noopener">GitHub</a>
+      
       <a class="nav-cta" href="../../#projects">Explore Work</a>
     </nav>
-  </div></header>
+  </div><div class="nav-progress" id="nav-progress"></div></header>
 <main class="container">
   <div class="phead">
     <a class="back" href="../../#projects">← All projects</a>
+    <div class="p-banner"><img src="gallery/screenshot.jpg" alt="Tidewater banner" loading="eager"><span class="b-label">Games &amp; 3D · JavaScript · 82,746 LOC</span></div>
     <h1>Tidewater</h1>
     <p class="tag">Open-world island fishing game for the browser.</p>
     <div class="pmeta">
@@ -80,9 +83,10 @@
       <div class="src-main">
         <div class="src-head">
           <span id="src-path">Select a file</span>
-          <span>
+          <span class="grp">
             <button class="btn ghost" id="src-prev">‹</button>
             <button class="btn ghost" id="src-next">›</button>
+            <button class="btn ghost" id="src-copy" type="button">copy</button>
             <a class="btn ghost" href="https://github.com/KiaAgentX/portfolio/tree/main/projects/tidewater-main" target="_blank" rel="noopener">GitHub</a>
           </span>
         </div>
