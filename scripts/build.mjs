@@ -148,6 +148,10 @@ function navHtml(base) {
   </div></header>`;
 }
 
+const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">`;
+
 function buildIndex(stats, cards) {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -159,30 +163,36 @@ function buildIndex(stats, cards) {
 <meta property="og:title" content="${esc(config.site.title)}">
 <meta property="og:description" content="${esc(config.site.description)}">
 <meta property="og:type" content="website">
+${FONTS}
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 ${navHtml('.')}
 <main>
-  <section class="hero"><div class="container">
+  <section class="hero"><canvas id="particles"></canvas><div class="container hero-inner">
+    <div class="eyebrow">KIA · SOFTWARE PORTFOLIO · ${stats.projects} PROJECTS</div>
     <h1>Engineering <span class="grad">production software</span><br>across AI, fintech &amp; 3D.</h1>
     <p class="lead">${esc(config.site.description)}</p>
-    <div class="stats">
-      <div class="stat"><div class="v green">${stats.projects}</div><div class="k">Projects shipped</div></div>
-      <div class="stat"><div class="v cyan">${fmt(stats.loc)}</div><div class="k">Lines of code</div></div>
-      <div class="stat"><div class="v gold">${money(stats.value)}</div><div class="k">Est. portfolio value</div></div>
-      <div class="stat"><div class="v">${stats.previews}</div><div class="k">Live previews</div></div>
+    <div class="spec">
+      <div class="cell"><span class="v green">${stats.projects}</span><span class="k">Projects shipped</span></div>
+      <div class="cell"><span class="v cyan">${fmt(stats.loc)}</span><span class="k">Lines of code</span></div>
+      <div class="cell"><span class="v gold">${money(stats.value)}</span><span class="k">Est. portfolio value</span></div>
+      <div class="cell"><span class="v">${stats.previews}</span><span class="k">Live previews</span></div>
     </div>
     <div class="toolbar" id="projects">
       <div class="search"><input id="search" type="search" placeholder="Search projects, stacks, categories…" autocomplete="off"></div>
       <div class="sort"><select id="sort">
-        <option value="value">Sort: value</option>
-        <option value="loc">Sort: lines of code</option>
-        <option value="name">Sort: name</option>
+        <option value="value">sort: value</option>
+        <option value="loc">sort: lines of code</option>
+        <option value="name">sort: name</option>
       </select></div>
     </div>
     <div class="chips" id="chips"></div>
     <div class="grid" id="grid"></div>
+    <section class="docs-section" id="docs-section" style="display:none">
+      <div class="docs-head"><h2>Docs &amp; Strategy</h2><span>architecture · roadmap · company</span></div>
+      <div class="grid" id="docs-grid" style="padding-bottom:0"></div>
+    </section>
   </div></section>
 </main>
 <footer class="footer"><div class="container row">
@@ -231,6 +241,7 @@ function buildProjectPage(p, ctx) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(p.name)} — ${esc(config.site.title)}</title>
 <meta name="description" content="${esc(p.tagline)}">
+${FONTS}
 <link rel="stylesheet" href="${base}/assets/style.css">
 <link rel="stylesheet" href="${base}/assets/highlight.min.css">
 </head>
@@ -350,6 +361,7 @@ for (const p of projects) {
     category: p.category, language: p.language, stack: p.stack,
     value: p.value, status: p.status, preview: p.preview,
     previewReady: preview.ready, loc: s.loc, fileCount: s.fileCount,
+    thumb: gallery.length ? `projects/${p.id}/${gallery[0]}` : null,
   });
 
   const srcSize = Math.round(JSON.stringify(source).length / 1024);
