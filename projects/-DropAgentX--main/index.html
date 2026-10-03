@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DropAgentX — Brand Identity System</title>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══ DropAgentX Brand Identity System v1.0 ═══ */
+:root{
+  /* ── CORE COLORS ── */
+  --void:#030505;         /* deepest background */
+  --ink:#050505;          /* main background */
+  --coal:#0B0F0D;         /* surface */
+  --graphite:#101613;     /* elevated surface */
+  --slate:#161d19;        /* cards */
+  --line:#1c2420;         /* borders */
+  --line2:#232d28;        /* strong borders */
+
+  /* ── BRAND ── */
+  --emerald:#00FF88;      /* PRIMARY — action, success, energy */
+  --emerald-soft:#00FF8822;
+  --emerald-glow:#00FF8844;
+  --cyan:#39D7FF;         /* SECONDARY — links, info, discovery */
+  --gold:#FFD166;         /* ACCENT — rewards, achievements, premium */
+  --coral:#FF5C7A;        /* DANGER — errors, warnings, destructive */
+  --violet:#A78BFA;       /* TERTIARY — AI features, Hermesa */
+
+  /* ── TEXT ── */
+  --white:#F4F7F5;        /* primary text */
+  --mist:#C3CAD8;         /* secondary text */
+  --fog:#8B94A8;          /* muted text */
+  --ghost:#5C6862;        /* placeholder/disabled */
+
+  /* ── TYPOGRAPHY ── */
+  --font:'Vazirmatn',Tahoma,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',Consolas,monospace;
+
+  /* ── SPACING (8px grid) ── */
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s6:24px;--s8:32px;--s12:48px;
+
+  /* ── RADIUS ── */
+  --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:22px;--r-full:99px;
+
+  /* ── SHADOWS ── */
+  --glow-em:0 0 20px rgba(0,255,136,.25);
+  --shadow:0 4px 20px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--void);color:var(--white);font-family:var(--font);overflow-x:hidden}
+::selection{background:var(--emerald-soft)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--void)}::-webkit-scrollbar-thumb{background:#00ff8830;border-radius:3px}
+
+section{max-width:1100px;margin:0 auto;padding:50px clamp(16px,4vw,48px)}
+h2.sec-title{font-size:clamp(20px,3vw,28px);font-weight:900;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+h2.sec-title::before{content:'';width:4px;height:26px;border-radius:99px;background:var(--emerald)}
+.sec-sub{color:var(--fog);font-size:13px;margin-bottom:28px;line-height:2}
+
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+
+.card{background:var(--coal);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:22px;transition:.2s}
+.card:hover{border-color:#00ff8830}
+
+/* ═══ HERO ═══ */
+#hero{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#00ff880a,transparent 60%)}
+#heroCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1}
+.hero-inner{position:relative;z-index:2;text-align:center}
+.hero-inner .logo-3d{
+  font-size:clamp(42px,8vw,84px);font-weight:900;letter-spacing:-2px;line-height:1.1;
+  font-family:var(--font);
+}
+.hero-inner .logo-3d .drop{color:var(--emerald);text-shadow:0 0 60px rgba(0,255,136,.4)}
+.hero-inner .logo-3d .agent{color:var(--white)}
+.hero-inner .logo-3d .x{color:var(--cyan);text-shadow:0 0 40px rgba(57,215,255,.4);
+  font-style:italic;font-weight:900}
+.hero-tagline{margin-top:14px;color:var(--mist);font-size:clamp(13px,2vw,17px);font-weight:300;line-height:2}
+.hero-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(0,255,136,.08);
+  border:1px solid rgba(0,255,136,.2);border-radius:99px;padding:7px 20px;
+  color:var(--emerald);font-size:11.5px;font-weight:700;margin-top:18px}
+.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  color:var(--ghost);font-size:10px;animation:bob 2s ease-in-out infinite;z-index:2}
+@keyframes bob{50%{transform:translateX(-50%) translateY(8px)}}
+
+/* ═══ NAME BREAKDOWN ═══ */
+.name-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.name-card{text-align:center;padding:28px 18px;border-radius:var(--r-lg);
+  border:1px solid var(--line);transition:.3s;position:relative;overflow:hidden}
+.name-card:hover{transform:translateY(-4px)}
+.name-card .word{font-size:34px;font-weight:900;margin-bottom:8px}
+.name-card .meaning{color:var(--fog);font-size:12px;line-height:2}
+.nc-drop{background:linear-gradient(135deg,#00ff8812,#00ff8804);border-color:#00ff8830}
+.nc-drop:hover{border-color:var(--emerald);box-shadow:var(--glow-em)}
+.nc-drop .word{color:var(--emerald)}
+.nc-agent{background:linear-gradient(135deg,#ffffff08,#ffffff04);border-color:var(--line2)}
+.nc-agent .word{color:var(--white)}
+.nc-x{background:linear-gradient(135deg,#39d7ff12,#39d7ff04);border-color:#39d7ff30}
+.nc-x:hover{border-color:var(--cyan);box-shadow:0 0 20px rgba(57,215,255,.2)}
+.nc-x .word{color:var(--cyan);font-style:italic}
+
+/* ═══ COLOR SWATCHES ═══ */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.swatch{border-radius:14px;overflow:hidden;border:1px solid var(--line);cursor:pointer;transition:.2s}
+.swatch:hover{transform:scale(1.03);box-shadow:var(--shadow)}
+.swatch .color-block{height:72px;display:flex;align-items:flex-end;padding:8px 12px}
+.swatch .color-block span{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+  font-family:var(--mono);direction:ltr}
+.swatch .sw-info{padding:10px 12px;background:var(--coal)}
+.swatch .sw-name{font-size:12px;font-weight:700}
+.swatch .sw-use{font-size:10px;color:var(--fog);margin-top:2px}
+.swatch .sw-hex{font-size:9.5px;color:var(--ghost);font-family:var(--mono);direction:ltr;margin-top:3px}
+
+/* ═══ TYPOGRAPHY SCALE ═══ */
+.type-row{display:flex;align-items:baseline;gap:16px;padding:14px 0;
+  border-bottom:1px solid var(--line)}
+.type-row .t-label{width:90px;flex:none;font-size:10px;color:var(--ghost);
+  font-family:var(--mono);direction:ltr;text-align:left}
+.type-sample{line-height:1.4}
+
+/* ═══ TONE CARDS ═══ */
+.tone-do,.tone-dont{padding:18px;border-radius:14px;line-height:2.2;font-size:12.5px}
+.tone-do{background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.15)}
+.tone-dont{background:rgba(255,92,122,.06);border:1px solid rgba(255,92,122,.15)}
+.tone-example{background:var(--void);border-radius:10px;padding:10px 14px;margin:6px 0;
+  font-family:var(--mono);direction:rtl;text-align:right;font-size:11px;color:var(--mist)}
+
+/* ═══ COMPONENT SHOWCASE ═══ */
+.comp-preview{background:var(--coal);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:20px;position:relative}
+.comp-phone{width:280px;margin:0 auto;background:var(--ink);border:2px solid var(--line2);
+  border-radius:32px;overflow:hidden;box-shadow:var(--shadow)}
+.comp-screen{padding:14px;min-height:400px}
+.mini-nav{position:absolute;bottom:0;left:0;right:0;background:#070907f2;
+  display:flex;border-top:1px solid var(--line);padding:8px 0}
+.mini-nav-item{flex:1;text-align:center;font-size:8px;color:var(--ghost)}
+.mini-post{background:var(--sf);border-radius:14px;overflow:hidden;margin-bottom:10px;
+  border:1px solid var(--line)}
+
+footer{text-align:center;padding:50px;color:var(--fog);font-size:11px;
+  border-top:1px solid var(--line);margin-top:40px;line-height:2.5}
+footer b{color:var(--emerald)}
+.badge-v{display:inline-flex;align-items:center;gap:5px;background:rgba(0,255,136,.08);
+  border:1px solid rgba(0,255,136,.2);border-radius:99px;padding:5px 16px;
+  color:var(--emerald);font-size:11px;font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<div id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-inner">
+    <div class="badge-v">🎨 Brand Identity System · v1.0</div>
+    <div class="logo-3d" style="margin-top:24px">
+      <span class="drop">Drop</span><span class="agent">Agent</span><span class="x">X</span>
+    </div>
+    <p class="hero-tagline">آپلود کن · ایجنتت کار می‌کنه · تو X هستی<br>
+    <small>مارکت‌پلیس دیجیتال ایرانی‌های سراسر جهان</small></p>
+    <br>
+    <span class="hero-pill">@DropAgentXBot · Telegram Mini App</span>
+  </div>
+  <div class="scroll-hint">↓ اسکرول برای کاوش در هویت برند</div>
+</div>
+
+<!-- ═══════════ NAME STORY ═══════════ -->
+<section>
+  <h2 class="sec-title">📖 داستان نام — چرا DropAgentX؟</h2>
+  <p class="sec-sub">هر بخش از اسم یک لایهٔ معنایی داره که با هم قصهٔ پلتفرم رو تعریف می‌کنن.</p>
+  <div class="name-grid">
+    <div class="name-card nc-drop">
+      <div class="word">Drop</div>
+      <div class="meaning">
+        آپلود و دانلود فایل.<br>
+        مثل Dropbox ولی برای محصولات دیجیتال.<br>
+        حس «رها کردن» — بذارش اینجا، بقیه‌ش با ما.
+      </div>
+    </div>
+    <div class="name-card nc-agent">
+      <div class="word">Agent</div>
+      <div class="meaning">
+        نمایندهٔ هوشمند هرمس.<br>
+        هرمسا کار می‌کنه تا ایده‌ات محصول بشه،<br>
+        تو فقط خلاق باش.
+      </div>
+    </div>
+    <div class="name-card nc-x">
+      <div class="word">X</div>
+      <div class="meaning">
+        ضریب مجهول. آدرنالین.<br>
+        حس اینکه چیزی خاص در توئه.<br>
+        مثل X-Games، SpaceX، Generation X.
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:20px;background:var(--coal);border:1px solid var(--line);border-radius:14px;padding:20px;text-align:center">
+    <p style="font-size:14px;line-height:2.4;color:var(--mist)">
+      «Drop فایلت، Agent کارت رو انجام میده، X یعنی تو خاصی.»<br>
+      <small style="color:var(--fog)">— Brand Manifesto, Line 1</small>
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ COLOR PALETTE ═══════════ -->
+<section>
+  <h2 class="sec-title">🎨 پالت رنگ</h2>
+  <p class="sec-sub">سبز نئونی روی مشکی عمیق = انرژی Web3 + اعتماد. رنگ طلایی فقط برای جایزه و ویژه.</p>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="color-block" style="background:#00FF88"><span style="color:#03130a">#00FF88</span></div><div class="sw-info"><div class="sw-name">Emerald Pulse</div><div class="sw-use">CTA اصلی · موفقیت · لایک</div><div class="sw-hex">#00FF88</div></div></div>
+    <div class="swatch"><div class="color-block" style="background:#39D7FF"><span style="color:#03130a">#39D7FF</span></div><div class="sw-info"><div class="sw-name">Cyber Cyan</div><div class="sw-use">لینک · کشف · اطلاعات</div><div class="sw-hex">#39D7FF</div></div></div>
+    <div class="swatch"><div class="color-block" style="background:#FFD166"><span style="color:#03130a">#FFD166</span></div><div class="sw-info"><div class="sw-name">Gold Rush</div><div class="sw-use">جایزه · ویژه · دستاورد</div><div class="sw-hex">#FFD166</div></div></div>
+    <div class="swatch"><div class="color-block" style="background:#FF5C7A"><span style="color:#fff">#FF5C7A</span></div><div class="sw-info"><div class="sw-name">Coral Alert</div><div class="sw-use">خطا · حذف · هشدار</div><div class="sw-hex">#FF5C7A</div></div></div>
+    <div class="swatch"><div class="color-block" style="background:#A78BFA"><span style="color:#03130a">#A78BFA</span></div><div class="sw-info"><div class="sw-name">AI Violet</div><div class="sw-use">هرمسا · هوش مصنوعی</div><div class="sw-hex">#A78BFA</div></div></div>
+    <div class="swatch"><div class="color-block" style="background:#050505"><span style="color:#00FF88">#050505</span></div><div class="sw-info"><div class="sw-name">Deep Void</div><div class="sw-use">پس‌زمینه اصلی</div><div class="sw-hex">#050505</div></div></div>
+    <div class="swatch"><div class="color-block" style="background:#0B0F0D;border-bottom:1px solid #1c2420"><span style="color:#39d7ff">#0B0F0D</span></div><div class="sw-info"><div class="sw-name">Carbon Surface</div><div class="sw-use">کارت · پنل</div><div class="sw-hex">#0B0F0D</div></div></div>
+    <div class="swatch"><div class="color-block" style="background:#F4F7F5"><span style="color:#050505">#F4F7F5</span></div><div class="sw-info"><div class="sw-name">Pure Text</div><div class="sw-use">متن اصلی</div><div class="sw-hex">#F4F7F5</div></div></div>
+  </div>
+  <div style="margin-top:14px;background:var(--coal);border:1px solid var(--line);border-radius:12px;padding:14px 18px;font-size:11.5px;color:var(--fog);line-height:2">
+    ⚠️ <b style="color:var(--gold)">قانون:</b> سبز Emerald فقط برای اکشن مثبت و CTA استفاده بشه.
+    Cyan برای اطلاعات و ناوبری. Gold فقط برای جایزه و ویژه. هیچ‌وقت سبز رو برای خطا استفاده نکن.
+  </div>
+</section>
+
+<!-- ═══════════ TYPOGRAPHY ═══════════ -->
+<section>
+  <h2 class="sec-title">📝 تایپوگرافی — Vazirmatn Scale</h2>
+  <p class="sec-sub">فقط یک فونت فارسی: Vazirmatn. وزن‌ها معنا دارند.</p>
+  <div style="background:var(--coal);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px 24px">
+    <div class="type-row"><span class="t-label">H1 · 900</span>
+      <span class="type-sample" style="font-size:32px;font-weight:900">خوش اومدی به DropAgentX</span></div>
+    <div class="type-row"><span class="t-label">H2 · 800</span>
+      <span class="type-sample" style="font-size:24px;font-weight:800">موجودی: ۲٬۵۰۰ کردیت</span></div>
+    <div class="type-row"><span class="t-label">Title · 700</span>
+      <span class="type-sample" style="font-size:17px;font-weight:700">آموزش ساخت اکسپرت MT5</span></div>
+    <div class="type-row"><span class="t-label">Body · 400</span>
+      <span class="type-sample" style="font-size:14px;font-weight:400;color:var(--mist)">این محصول شامل آموزش کامل MQL5 است که به شما کمک می‌کند...</span></div>
+    <div class="type-row"><span class="t-label">Caption · 300</span>
+      <span class="type-sample" style="font-size:11.5px;font-weight:300;color:var(--fog)">۳ ساعت پیش · ۱۲ فروش · ⭐ ۴٫۸</span></div>
+    <div class="type-row"><span class="t-label">Price · 800</span>
+      <span class="type-sample" style="font-size:18px;font-weight:800;color:var(--emerald);direction:ltr">2,500 <span style="font-size:11px;font-weight:400">کردیت ≈ $2.50</span></span></div>
+  </div>
+</section>
+
+<!-- ═══════════ VOICE & TONE ═══════════ -->
+<section>
+  <h2 class="sec-title">🗣 لحن برند — هرمسا چطور حرف می‌زنه؟</h2>
+  <p class="sec-sub">دختر ۱۹ سالهٔ تهران‌نشین. صمیمی ولی حرفه‌ای. شیطون ولی قابل اعتماد.</p>
+  <div class="grid g2">
+    <div class="tone-do">
+      <b style="color:var(--emerald)">✅ اینطوری بنویس</b><br><br>
+      «سلام عزیزم! چه خبر؟ 😊»<br>
+      «آفرین! +۵ کردیت گرفتی 🎉»<br>
+      «فقط ۳۰۰ کردیت مونده تا برداشت 💪»<br>
+      «این محصول فایرِ 🔥 حتماً ببینش»<br>
+      «اوپس! یه مشکلی پیش اومد 🙈 چند ثانیه دیگه امتحان کن»
+
+      <div class="tone-example">
+        ✅ GOOD: «سلام عزیزم! خوش اومدی 😊 ۵۰ کردیت هدیه گرفتی — همین الان می‌تونی شروع کنی!»
+      </div>
+    </div>
+    <div class="tone-dont">
+      <b style="color:var(--red)">❌ اینطوری ننویس</b><br><br>
+      «کاربر گرامی، لطفاً توجه فرمایید...»<br>
+      «عملیات با موفقیت انجام گردید.»<br>
+      «خطا: کد 401 Unauthorized»<br>
+      «لطفاً موجودی حساب خود را بررسی فرمایید»<br>
+      «سیستم قادر به پردازش درخواست شما نمی‌باشد»
+
+      <div class="tone-example">
+        ❌ BAD: «کاربر محترم، موجودی حساب شما کافی نمی‌باشد. لطفاً اقدام به شارژ نمایید.»
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:14px;background:var(--coal);border:1px solid var(--line);border-radius:12px;padding:14px 18px;font-size:11.5px;color:var(--fog);line-height:2">
+    💡 <b style="color:var(--emerald)">قانون طلایی:</b> هر متن باید طوری نوشته بشه که انگار یه دوست ۱۹ ساله‌ات
+    داره باهات تو تلگرام چت می‌کنه — نه یه بانک داره بهت فرم می‌ده.
+  </div>
+</section>
+
+<!-- ═══════════ LOGO USAGE ═══════════ -->
+<section>
+  <h2 class="sec-title">🖼 لوگو و استفاده</h2>
+  <div class="grid g3">
+    <div class="card" style="text-align:center;padding:30px">
+      <div style="font-size:36px;font-weight:900;margin-bottom:10px">
+        <span style="color:var(--emerald)">Drop</span><span>Agent</span><span style="color:var(--cyan);font-style:italic">X</span>
+      </div>
+      <p style="font-size:11px;color:var(--fog)">لوگوی متنی اصلی<br>روی پس‌زمینه تیره</p>
+      <span class="tag em">Primary</span>
+    </div>
+    <div class="card" style="text-align:center;padding:30px;background:var(--white)">
+      <div style="font-size:36px;font-weight:900;margin-bottom:10px">
+        <span style="color:#00c46a">Drop</span><span style="color:#050505">Agent</span><span style="color:#0ea5e9;font-style:italic">X</span>
+      </div>
+      <p style="font-size:11px;color:var(--dm)">نسخه روشن<br>روی پس‌زمینه سفید</p>
+      <span class="tag cy">Light Mode</span>
+    </div>
+    <div class="card" style="text-align:center;padding:30px">
+      <div style="width:80px;height:80px;border-radius:20px;background:var(--emerald);
+           margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;color:#03130a">D</div>
+      <p style="font-size:11px;color:var(--fog);margin-top:10px">لوگوی تصویری<br>آواتار و favicon</p>
+      <span class="tag gd">Icon</span>
+    </div>
+  </div>
+  <div style="margin-top:14px;display:flex;gap:14px;flex-wrap:wrap">
+    <div style="flex:1;min-width:200px;background:rgba(255,92,122,.05);border:1px dashed #ff5c7a33;border-radius:12px;padding:14px">
+      <b style="color:var(--rd)">❌ نکن:</b><br>
+      <small style="color:var(--dm)">· لوگو رو rotate یا skew نکن<br>
+      · رنگ سبز رو تغییر نده<br>
+      · روی پس‌زمینه شلوغ نذار<br>
+      · فونت رو عوض نکن</small>
+    </div>
+    <div style="flex:1;min-width:200px;background:rgba(0,255,136,.05);border:1px dashed #00ff8833;border-radius:12px;padding:14px">
+      <b style="color:var(--emerald)">✅ کن:</b><br>
+      <small style="color:var(--dm)">· حداقل ۱۶px فاصله دور لوگو<br>
+      · نسخه تک‌رنگ وقتی رنگ محدوده<br>
+      · همیشه روی پس‌زمینه تمیز<br>
+      · Vazirmatn برای همه متن‌ها</small>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ UI PREVIEW ═══════════ -->
+<section>
+  <h2 class="sec-title">📱 نمونه UI — Mini App Home Screen</h2>
+  <p class="sec-sub">این همون چیزیه که کاربر موقع باز کردن ☰ می‌بینه.</p>
+  <div class="comp-preview">
+    <div class="comp-phone">
+      <div class="comp-screen" style="position:relative;padding-top:44px">
+        <!-- fake status bar -->
+        <div style="position:absolute;top:0;left:0;right:0;background:#050505;padding:8px 14px;
+             display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--dim)">
+          <span style="width:22px;height:22px;border-radius:6px;background:var(--emerald);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#03130a">D</span>
+          <span style="font-weight:800;font-size:12px">Drop<span style="color:var(--emerald)">Agent</span>X</span>
+          <span>🔔 🔍</span>
+        </div>
+        <!-- greeting -->
+        <div style="margin-top:36px;padding:0 2px">
+          <div style="font-size:13px;font-weight:800">👋 سلام ImX!</div>
+          <div style="font-size:10px;color:var(--dim)">💰 موجودی: <b style="color:var(--emerald)">۲٬۵۰۰ کردیت ≈ $2.50</b></div>
+        </div>
+        <!-- post card -->
+        <div class="mini-post" style="margin-top:10px">
+          <div style="padding:8px 10px;display:flex;align-items:center;gap:8px">
+            <div style="width:26px;height:26px;border-radius:99px;background:var(--emerald-soft)"></div>
+            <div><div style="font-size:10px;font-weight:700">KIA Studio ✔</div>
+                 <div style="font-size:8px;color:var(--dim)">@kiastudio</div></div>
+            <div style="margin-inline-start:auto;font-size:9px;color:var(--gold)">⭐ ویژه</div>
+          </div>
+          <div style="height:120px;background:linear-gradient(135deg,#0e2018,#071009);
+               display:flex;align-items:center;justify-content:center;font-size:36px">📊</div>
+          <div style="padding:8px 10px">
+            <div style="font-size:11px;font-weight:700">پکیج پرامپت سینمایی AI</div>
+            <div style="font-size:9px;color:var(--dim)">بهترین پرامپت‌ها برای تولید ویدیو</div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px;align-items:center">
+              <span style="color:var(--emerald);font-weight:800;font-size:12px">۲٬۵۰۰ 💰</span>
+              <span style="font-size:9px;color:var(--dim)">🛒 ۴۲ فروش · ❤️ ۱۸۹</span>
+            </div>
+          </div>
+          <div style="padding:0 8px 8px;display:flex;gap:6px">
+            <button style="flex:1;background:linear-gradient(135deg,#00ff88,#00c46a);color:#03130a;
+              border:0;border-radius:10px;padding:8px;font-weight:800;font-size:10px;
+              cursor:pointer;font-family:inherit">🛒 خرید فوری</button>
+            <button style="background:var(--surface2);color:var(--txt);border:1px solid var(--line);
+              border-radius:10px;padding:8px 14px;font-size:10px;cursor:pointer;font-family:inherit">جزئیات</button>
+          </div>
+        </div>
+        <!-- bottom nav mockup -->
+        <div style="position:absolute;bottom:0;left:0;right:0;background:#070907f2;
+             display:flex;border-top:1px solid var(--line);padding:8px 0 6px">
+          <div style="flex:1;text-align:center;color:var(--emerald);font-size:8px">🏠<br>خانه</div>
+          <div style="flex:1;text-align:center;color:var(--ghost);font-size:8px">🧭<br>کشف</div>
+          <div style="flex:1;text-align:center"><span style="display:inline-block;background:var(--emerald);
+            color:#03130a;width:28px;height:18px;border-radius:7px;font-size:14px;font-weight:800;
+            line-height:18px">+</span></div>
+          <div style="flex:1;text-align:center;color:var(--ghost);font-size:8px">✨<br>هرمسا</div>
+          <div style="flex:1;text-align:center;color:var(--ghost);font-size:8px">👤<br>من</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="badge-v">DropAgentX Brand Identity v1.0</span><br><br>
+  <b>Drop</b> فایلت را رها کن · <b>Agent</b> هرمسا کارت را انجام می‌دهد · <b>X</b> یعنی تو خاصی<br>
+  ساخته‌شده با 💗 برای ایرانی‌های سراسر جهان<br><br>
+  © ۲۰۲۶ DropAgentX · @DropAgentXBot
+</footer>
+
+<script>
+/* Hero 3D — rotating logo particles forming "X" shape */
+(function(){
+  const cv=document.getElementById('heroCanvas');
+  if(!cv||typeof THREE==='undefined')return; // CDN failed: skip hero 3D, page still works
+  const r=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
+  r.setSize(innerWidth,innerHeight);r.setPixelRatio(Math.min(devicePixelRatio,2));
+  const s=new THREE.Scene();
+  const cam=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,100);
+  cam.position.z=15;
+
+  // particle X shape
+  const N=600,pos=new Float32Array(N*3),col=new Float32Array(N*3);
+  const cEm=new THREE.Color('#00FF88'),cCy=new THREE.Color('#39D7FF');
+  for(let i=0;i<N;i++){
+    // two crossing bars forming "X"
+    const bar=Math.random()>.5?1:-1;
+    const t=(Math.random()-.5)*16;
+    const spread=Math.random()*1.5;
+    pos[i*3]=bar*t+(Math.random()-.5)*spread;
+    pos[i*3+1]=t+(Math.random()-.5)*spread;
+    pos[i*3+2]=(Math.random()-.5)*2;
+    const c=Math.random()>.5?cEm:cCy;
+    col[i*3]=c.r;col[i*3+1]=c.g;col[i*3+2]=c.b;
+  }
+  const g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  g.setAttribute('color',new THREE.BufferAttribute(col,3));
+  const p=new THREE.Points(g,new THREE.PointsMaterial({size:.09,vertexColors:true,
+    transparent:true,opacity:.8}));
+  s.add(p);
+
+  let mx=0,my=0;
+  addEventListener('mousemove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+  addEventListener('resize',()=>{r.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()});
+
+  (function anim(t){
+    requestAnimationFrame(anim);
+    p.rotation.z=t*.0001;
+    p.rotation.y=.3+mx*.5;t
+    cam.position.x+=(mx*3-cam.position.x)*.02;
+    cam.position.y+=(-my*2-cam.position.y)*.02;
+    cam.lookAt(0,0,0);
+    r.render(s,cam);
+  })(0);
+})();
+</script>
+</body>
+</html>
