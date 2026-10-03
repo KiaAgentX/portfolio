@@ -1,0 +1,17 @@
+# FISHKAL — Robots.txt
+# https://fishkal.ae/
+
+User-agent: *
+Allow: /
+Allow: /deep-catch/
+
+# Do not index source or tools
+Disallow: /assets/js/
+Disallow: /assets/data/
+Disallow: /tools/
+
+# Sitemap
+Sitemap: https://fishkal.ae/sitemap.xml
+
+# Crawl-delay (be gentle to small hosting)
+Crawl-delay: 1

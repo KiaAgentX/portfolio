@@ -1,0 +1,885 @@
+/* ============================================================
+   FISHKAL — DEEP CATCH
+   Main stylesheet
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. DESIGN TOKENS
+   ------------------------------------------------------------ */
+:root {
+  color-scheme: dark;
+
+  /* Palette */
+  --abyss: #03121a;
+  --deep:  #062a35;
+  --teal:  #0d5d63;
+  --turq:  #1a8f8a;
+  --gold:  #d9a45c;
+  --brass: #8a6a33;
+  --sand:  #efe6d6;
+  --aqua:  #63d8d2;
+  --ink:   #02090d;
+
+  /* Foreground */
+  --fg:        #efe6d6;
+  --fg-dim:    rgba(239, 230, 214, .62);
+  --fg-faint:  rgba(239, 230, 214, .34);
+  --line:      rgba(239, 230, 214, .18);
+
+  /* Typography */
+  --font:  'Archivo', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  --track: .34em;
+
+  /* Motion */
+  --ease:  cubic-bezier(.22, .61, .36, 1);
+}
+
+:root:not([data-theme="light"]) { --fg: #efe6d6; }
+:root[data-theme="dark"]        { --fg: #efe6d6; }
+
+/* ------------------------------------------------------------
+   2. RESET
+   ------------------------------------------------------------ */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--ink);
+  color: var(--fg);
+  font-family: var(--font);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+/* ------------------------------------------------------------
+   3. STAGE
+   ------------------------------------------------------------ */
+#stage {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--ink);
+  z-index: 1;
+}
+
+#world {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#ov {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+#ui {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+#spacer {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+}
+
+/* Letterbox scrims — cinematic framing, not decoration */
+.scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.scrim.top {
+  top: 0;
+  height: 30vh;
+  background: linear-gradient(to bottom, rgba(2, 9, 13, .62), rgba(2, 9, 13, 0));
+}
+
+.scrim.bot {
+  bottom: 0;
+  height: 34vh;
+  background: linear-gradient(to top, rgba(2, 9, 13, .72), rgba(2, 9, 13, 0));
+}
+
+/* ------------------------------------------------------------
+   4. TYPOGRAPHY
+   ------------------------------------------------------------ */
+.label {
+  font-size: clamp(9px, 2.5vw, 11px);
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  font-weight: 500;
+}
+
+.wordmark {
+  font-weight: 600;
+  letter-spacing: .42em;
+  text-indent: .42em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* ------------------------------------------------------------
+   5. HERO
+   ------------------------------------------------------------ */
+#hero {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 0 24px;
+  text-align: center;
+}
+
+#hero .mark {
+  font-size: clamp(34px, 11.5vw, 84px);
+}
+
+#hero .sub {
+  font-size: clamp(10px, 2.9vw, 13px);
+  letter-spacing: .5em;
+  text-indent: .5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+#hero .meta {
+  color: var(--fg-faint);
+}
+
+#hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5.5vh;
+  text-align: center;
+  color: var(--fg-faint);
+  font-size: 10px;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+}
+
+#hint .chev {
+  display: block;
+  margin: 10px auto 0;
+  width: 14px;
+  height: 14px;
+  border-right: 1px solid var(--fg-faint);
+  border-bottom: 1px solid var(--fg-faint);
+  transform: rotate(45deg);
+  animation: drift 2.6s var(--ease) infinite;
+}
+
+@keyframes drift {
+  0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: .35; }
+  50%      { transform: rotate(45deg) translate(3px, 3px); opacity: .85; }
+}
+
+/* ------------------------------------------------------------
+   6. SCENE CAPTION
+   ------------------------------------------------------------ */
+#caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(env(safe-area-inset-top, 0px) + 8vh);
+  text-align: center;
+  opacity: 0;
+  transition: opacity .9s var(--ease);
+}
+
+#caption .big {
+  font-size: clamp(17px, 5.4vw, 28px);
+  font-weight: 500;
+  letter-spacing: .3em;
+  text-indent: .3em;
+  text-transform: uppercase;
+}
+
+#caption .small {
+  margin-top: 9px;
+  color: var(--fg-faint);
+}
+
+/* ------------------------------------------------------------
+   7. GAME CUE
+   ------------------------------------------------------------ */
+#cue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 13vh;
+  text-align: center;
+  opacity: 0;
+  transition: opacity .7s var(--ease);
+  color: var(--fg-dim);
+  font-size: 10px;
+  letter-spacing: .36em;
+  text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------
+   8. RESULT CARD
+   ------------------------------------------------------------ */
+#result {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -46%) scale(.965);
+  width: min(86vw, 360px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .8s var(--ease), transform .9s var(--ease);
+  padding: 26px 22px 24px;
+  text-align: center;
+  overflow: hidden;
+  pointer-events: auto;  /* #ui is pointer-events:none — the card must opt back in */
+}
+
+#result.on {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#result .frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#result .kicker {
+  color: var(--gold);
+  font-size: 9.5px;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+}
+
+#result .name {
+  margin: 13px 0 6px;
+  font-size: clamp(21px, 6.4vw, 30px);
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-indent: .2em;
+  text-transform: uppercase;
+}
+
+#result .latin {
+  font-style: italic;
+  font-size: 12px;
+  color: var(--fg-faint);
+  letter-spacing: .04em;
+}
+
+#result .line {
+  margin-top: 17px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--fg-dim);
+  max-width: 30ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#result .sig {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: var(--fg-faint);
+  font-size: 9px;
+  letter-spacing: .4em;
+  text-transform: uppercase;
+}
+
+#result .sig i {
+  display: block;
+  width: 26px;
+  height: 1px;
+  background: var(--line);
+}
+
+/* Dismiss button on the result card */
+#resClose {
+  position: absolute;
+  top: 10px;
+  inset-inline-end: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: rgba(3, 20, 27, .6);
+  border: 1px solid rgba(239, 230, 214, .25);
+  color: var(--fg-dim);
+  display: grid;
+  place-items: center;
+  font: 400 14px/1 'Archivo', sans-serif;
+  z-index: 2;
+  transition: border-color .3s var(--ease), color .3s var(--ease);
+}
+
+#resClose:hover,
+#resClose:focus-visible {
+  border-color: var(--gold);
+  color: #fff;
+  outline: none;
+}
+
+/* ------------------------------------------------------------
+   9. BRAND END
+   ------------------------------------------------------------ */
+#brand {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  padding: 0 26px;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s var(--ease);
+}
+
+#brand.on {
+  opacity: 1;
+  visibility: visible;
+}
+
+#brand .mark {
+  font-size: clamp(30px, 9.5vw, 64px);
+}
+
+#brand .tag {
+  color: var(--fg-dim);
+  font-size: clamp(12px, 3.4vw, 14px);
+  line-height: 1.7;
+  max-width: 34ch;
+}
+
+#cta {
+  pointer-events: auto;
+  margin-top: 6px;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  border: 1px solid rgba(217, 164, 92, .5);
+  color: var(--sand);
+  font-family: var(--font);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  padding: 15px 30px;
+  border-radius: 2px;
+  transition:
+    border-color .45s var(--ease),
+    background-color .45s var(--ease),
+    color .45s var(--ease);
+}
+
+#cta:hover,
+#cta:focus-visible {
+  border-color: var(--gold);
+  background: rgba(217, 164, 92, .10);
+  color: #fff;
+  outline: none;
+}
+
+/* ------------------------------------------------------------
+   10. CONTROLS
+   ------------------------------------------------------------ */
+#sound {
+  position: absolute;
+  pointer-events: auto;
+  right: calc(env(safe-area-inset-right, 0px) + 16px);
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  background: rgba(3, 18, 26, .42);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: border-color .4s var(--ease);
+  z-index: 6;
+}
+
+#sound:hover,
+#sound:focus-visible {
+  border-color: rgba(217, 164, 92, .55);
+  outline: none;
+}
+
+#sound svg {
+  width: 17px;
+  height: 17px;
+  stroke: var(--fg-dim);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#sound[aria-pressed="true"] .x { opacity: 0; }
+#sound[aria-pressed="false"] .x { opacity: 1; }
+#sound[aria-pressed="true"] .w { opacity: 1; }
+#sound[aria-pressed="false"] .w { opacity: 0; }
+
+/* Full-bleed strike target: real button, generous tap area */
+#strike {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 5;
+  font: inherit;
+  color: transparent;
+}
+
+#strike.live {
+  pointer-events: auto;
+}
+
+#strike:focus-visible {
+  opacity: 1;
+  outline: none;
+  box-shadow: inset 0 0 0 2px rgba(99, 216, 210, .5);
+}
+
+/* Screen-reader only */
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Continue chevron after unlock */
+#continue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6vh;
+  text-align: center;
+  opacity: 0;
+  transition: opacity .8s var(--ease);
+  color: var(--fg-faint);
+  font-size: 9.5px;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+}
+
+#continue .chev {
+  display: block;
+  margin: 9px auto 0;
+  width: 12px;
+  height: 12px;
+  border-right: 1px solid var(--fg-faint);
+  border-bottom: 1px solid var(--fg-faint);
+  transform: rotate(45deg);
+  animation: drift 2.6s var(--ease) infinite;
+}
+
+/* ------------------------------------------------------------
+   11. REDUCED MOTION
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  #hint .chev,
+  #continue .chev {
+    animation: none;
+  }
+  * {
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   12. LAYOUT ADJUSTMENTS
+   ------------------------------------------------------------ */
+
+/* On a tall frame the plate sits low, so the title lives in the open sky */
+@media (max-aspect-ratio: 11/10) {
+  #hero {
+    bottom: auto;
+    top: 9.5vh;
+  }
+  #hint {
+    bottom: 4vh;
+  }
+}
+
+@media (max-width: 360px) {
+  #hero {
+    bottom: 14vh;
+    gap: 14px;
+  }
+  #result {
+    padding: 22px 16px 20px;
+  }
+}
+
+/* ------------------------------------------------------------
+   13. BUSINESS LAYER
+   ------------------------------------------------------------ */
+
+/* Language dropdown */
+#langDrop {
+  position: absolute;
+  top: 18px;
+  inset-inline-start: 18px;
+  z-index: 9;
+  pointer-events: auto;
+}
+
+#langBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  background: rgba(3, 20, 27, .55);
+  border: 1px solid rgba(239, 230, 214, .18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--fg-dim);
+  font: 500 10px/1 'Archivo', sans-serif;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  transition: border-color .3s var(--ease);
+}
+
+#langBtn:hover,
+#langBtn:focus-visible {
+  border-color: rgba(217, 164, 92, .5);
+  outline: none;
+}
+
+#langBtn .lf {
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+#langMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  inset-inline-start: 0;
+  min-width: 150px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(3, 20, 27, .92);
+  border: 1px solid rgba(239, 230, 214, .16);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity .25s var(--ease), transform .25s var(--ease);
+}
+
+#langDrop.open #langMenu {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+#langMenu button {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 11px 16px;
+  border: none;
+  cursor: pointer;
+  background: none;
+  color: var(--fg-dim);
+  font: 500 11px 'Archivo', sans-serif;
+  letter-spacing: .14em;
+  text-align: start;
+  transition: background-color .2s var(--ease), color .2s var(--ease);
+}
+
+#langMenu button:hover,
+#langMenu button:focus-visible {
+  background: rgba(99, 216, 210, .08);
+  color: var(--fg);
+  outline: none;
+}
+
+/* Countdown chip */
+#cdChip {
+  margin: 14px auto 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 164, 92, .5);
+  color: var(--gold);
+  font: 600 11px/1 'Archivo', sans-serif;
+  letter-spacing: .22em;
+}
+
+/* WhatsApp CTA */
+#waCta {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 30px;
+  border-radius: 999px;
+  text-decoration: none;
+  background: linear-gradient(135deg, #10B6A8, #0a8c81);
+  color: #03272b;
+  font: 700 12px/1 'Archivo', sans-serif;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  box-shadow: 0 14px 40px rgba(16, 182, 168, .35);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+
+#waCta:hover,
+#waCta:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 48px rgba(16, 182, 168, .45);
+  outline: none;
+}
+
+#waCta svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Contact line */
+#contactLine {
+  margin-top: 12px;
+  color: var(--fg-faint);
+  font: 400 10px/1.8 'Archivo', sans-serif;
+  letter-spacing: .18em;
+}
+
+/* ------------------------------------------------------------
+   14. RTL
+   ------------------------------------------------------------ */
+[dir="rtl"] #ui *:not(.wordmark):not(.latin) {
+  letter-spacing: 0 !important;
+  text-indent: 0 !important;
+  text-transform: none !important;
+  font-family: 'Tajawal', 'Archivo', sans-serif !important;
+}
+
+[dir="rtl"] #ui .label,
+[dir="rtl"] #hint,
+[dir="rtl"] #continue,
+[dir="rtl"] #cue {
+  font-size: 12px !important;
+}
+
+[dir="rtl"] #caption .big {
+  font-size: clamp(15px, 4.4vw, 22px) !important;
+  font-weight: 700;
+}
+
+[dir="rtl"] #result .name {
+  font-size: clamp(22px, 6.4vw, 32px) !important;
+  font-weight: 800;
+}
+
+[dir="rtl"] #langBtn,
+[dir="rtl"] #cdChip,
+[dir="rtl"] #waCta,
+[dir="rtl"] #contactLine {
+  font-family: 'Tajawal', sans-serif !important;
+  font-size: 12px !important;
+  letter-spacing: .02em !important;
+}
+
+/* Controls: never overlap the language chip */
+[dir="rtl"] #sound {
+  right: auto;
+  left: calc(env(safe-area-inset-left, 0px) + 16px);
+}
+
+/* ------------------------------------------------------------
+   15. AMBIENT LAYERS
+   ------------------------------------------------------------ */
+
+/* Depth veil — the sea gets darker the deeper you go */
+#depthVeil {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(1, 8, 12, 0) 0%,
+    rgba(0, 5, 9, .55) 55%,
+    rgba(0, 3, 6, .9) 100%
+  );
+  transition: opacity .8s var(--ease);
+}
+
+/* Ambient school of fish */
+#amb {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ------------------------------------------------------------
+   16. BOOT SCREEN
+   ------------------------------------------------------------ */
+#boot {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: #04161d;
+  display: grid;
+  place-items: center;
+  transition: opacity .9s ease;
+}
+
+#boot.off {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#boot .w {
+  font: 600 clamp(20px, 5vw, 34px)/1 'Archivo', sans-serif;
+  letter-spacing: .6em;
+  text-indent: .6em;
+  color: #efe6d6;
+  text-transform: uppercase;
+}
+
+#boot .l {
+  margin-top: 14px;
+  height: 1px;
+  width: 120px;
+  background: linear-gradient(90deg, transparent, #d9a45c, transparent);
+  animation: bootP 1.4s ease-in-out infinite;
+}
+
+@keyframes bootP {
+  0%, 100% { opacity: .25; }
+  50%      { opacity: 1; }
+}
+
+/* ------------------------------------------------------------
+   17. ALWAYS-ON BUSINESS BAR
+   ------------------------------------------------------------ */
+#bizBar {
+  position: fixed;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(3, 20, 27, .62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(239, 230, 214, .14);
+}
+
+#bizBar .cd {
+  color: var(--gold);
+  font: 600 10px/1 'Archivo', sans-serif;
+  letter-spacing: .18em;
+  white-space: nowrap;
+}
+
+#bizBar a {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  background: linear-gradient(135deg, #10B6A8, #0a8c81);
+  color: #03272b;
+  font: 700 10px/1 'Archivo', sans-serif;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  transition: transform .3s var(--ease);
+}
+
+#bizBar a:hover,
+#bizBar a:focus-visible {
+  transform: translateY(-1px);
+  outline: none;
+}
+
+#bizBar a svg {
+  width: 13px;
+  height: 13px;
+}
+
+[dir="rtl"] #bizBar * {
+  font-family: 'Tajawal', sans-serif !important;
+  letter-spacing: .02em !important;
+  font-size: 11px !important;
+}

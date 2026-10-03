@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Home -->
+  <url>
+    <loc>https://fishkal.ae/</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fishkal.ae/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://fishkal.ae/ar/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fishkal.ae/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fishkal.ae/es/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://fishkal.ae/tr/"/>
+    <image:image>
+      <image:loc>https://fishkal.ae/assets/img/og-deep-catch.jpg</image:loc>
+      <image:title>FISHKAL — Deep Catch</image:title>
+    </image:image>
+  </url>
+
+  <!-- Experience -->
+  <url>
+    <loc>https://fishkal.ae/deep-catch/</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fishkal.ae/deep-catch/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://fishkal.ae/ar/deep-catch/"/>
+    <image:image>
+      <image:loc>https://fishkal.ae/assets/img/hero.webp</image:loc>
+      <image:title>Dubai coast at sunset</image:title>
+    </image:image>
+  </url>
+
+</urlset>
