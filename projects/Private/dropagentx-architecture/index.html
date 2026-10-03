@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DropAgentX — معماری پروژه</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--cyan:#22d3ee;--purple:#a78bfa;--green:#34d399;--gold:#fbbf24;--pink:#f472b6;--red:#f87171;--orange:#fb923c;--bg:#06060e;--s:rgba(12,12,24,.92);--b:rgba(255,255,255,.06);--t:#e4e4e7;--d:#71717a}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Vazirmatn','Inter',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse at 20% 0%,rgba(34,211,238,.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 100%,rgba(167,139,250,.04) 0%,transparent 50%)}
+
+.hero{padding:60px 20px 40px;text-align:center;max-width:1100px;margin:0 auto}
+.hero-badge{display:inline-block;padding:5px 16px;border-radius:20px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);color:var(--purple);font-size:.72rem;font-weight:600;margin-bottom:20px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.hero h1{font-size:clamp(2rem,5.5vw,3.5rem);font-weight:900;line-height:1.1;margin-bottom:12px}
+.hero h1 .g{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero .sub{font-size:.95rem;color:var(--d);max-width:620px;margin:0 auto 24px;line-height:1.8}
+
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--b);border-radius:14px;overflow:hidden;margin:0 auto 40px;max-width:1100px}
+.kpi{background:var(--s);padding:18px 8px;text-align:center}
+.kpi .v{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
+.kpi .l{font-size:.62rem;color:var(--d);margin-top:3px}
+.kpi.c .v{color:var(--cyan)}.kpi.p .v{color:var(--purple)}.kpi.g .v{color:var(--green)}.kpi.o .v{color:var(--orange)}.kpi.pk .v{color:var(--pink)}
+
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* ── ARCHITECTURE DIAGRAM ── */
+.arch{margin:50px 0}
+.arch>h2{text-align:center;font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.arch>.sub-h{text-align:center;color:var(--d);margin-bottom:32px;font-size:.85rem}
+
+/* Layer blocks */
+.layer{background:var(--s);border:1px solid var(--b);border-radius:18px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden}
+.layer::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%;border-radius:0 0 0 4px}
+.layer.l-entry::before{background:var(--cyan)}
+.layer.l-core::before{background:var(--purple)}
+.layer.l-handler::before{background:var(--green)}
+.layer.l-service::before{background:var(--gold)}
+.layer.l-shared::before{background:var(--pink)}
+.layer.l-web::before{background:var(--orange)}
+.layer.l-test::before{background:var(--red)}
+
+.layer-head{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.layer-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.l-entry .layer-icon{background:rgba(34,211,238,.1);color:var(--cyan)}
+.l-core .layer-icon{background:rgba(167,139,250,.1);color:var(--purple)}
+.l-handler .layer-icon{background:rgba(52,211,153,.1);color:var(--green)}
+.l-service .layer-icon{background:rgba(251,191,36,.1);color:var(--gold)}
+.l-shared .layer-icon{background:rgba(244,114,182,.1);color:var(--pink)}
+.l-web .layer-icon{background:rgba(251,146,60,.1);color:var(--orange)}
+.l-test .layer-icon{background:rgba(248,113,113,.1);color:var(--red)}
+
+.layer-title{font-weight:700;font-size:1rem}
+.layer-count{font-size:.68rem;color:var(--d);font-family:'JetBrains Mono',monospace}
+
+/* File grid */
+.file-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.file{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.03);font-size:.78rem;transition:border-color .2s}
+.file:hover{border-color:rgba(167,139,250,.15)}
+.file .fi{font-size:.85rem;flex-shrink:0}
+.file .fn{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#a1a1aa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file .fd{font-size:.62rem;color:var(--d);margin-right:auto}
+
+/* ── TREE VIEW ── */
+.tree-section{margin:50px 0}
+.tree-section>h2{text-align:center;font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.tree-section>.sub-h{text-align:center;color:var(--d);margin-bottom:28px;font-size:.85rem}
+
+.tree{background:var(--s);border:1px solid var(--b);border-radius:18px;padding:28px 24px;font-family:'JetBrains Mono',monospace;font-size:.72rem;line-height:2;direction:ltr;text-align:left;overflow-x:auto}
+.tree .dir{color:var(--cyan);font-weight:700}
+.tree .file-py{color:var(--green)}
+.tree .file-js{color:var(--gold)}
+.tree .file-css{color:var(--pink)}
+.tree .file-other{color:var(--d)}
+.tree .comment{color:#52525b;font-style:italic}
+.tree .highlight{background:rgba(167,139,250,.08);padding:2px 6px;border-radius:4px}
+
+/* ── DATA FLOW ── */
+.flow-section{margin:50px 0}
+.flow-section>h2{text-align:center;font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.flow-section>.sub-h{text-align:center;color:var(--d);margin-bottom:28px;font-size:.85rem}
+
+.flow{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;padding:20px 0}
+.flow-node{background:var(--s);border:1px solid var(--b);border-radius:14px;padding:16px 18px;text-align:center;min-width:120px;position:relative}
+.flow-node .fi{font-size:1.4rem;margin-bottom:6px}
+.flow-node .fn{font-size:.78rem;font-weight:600}
+.flow-node .fd{font-size:.62rem;color:var(--d);margin-top:2px}
+.flow-arrow{color:var(--d);font-size:1.2rem;padding:0 6px;flex-shrink:0}
+.flow-wrap{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;max-width:900px;margin:0 auto}
+.flow-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0}
+
+/* ── STATS BOX ── */
+.stats-box{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:40px 0}
+.stat-card{background:var(--s);border:1px solid var(--b);border-radius:14px;padding:20px;text-align:center}
+.stat-card .sn{font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700}
+.stat-card .sl{font-size:.75rem;color:var(--d);margin-top:4px}
+.stat-card.s1 .sn{color:var(--cyan)}.stat-card.s2 .sn{color:var(--purple)}.stat-card.s3 .sn{color:var(--green)}.stat-card.s4 .sn{color:var(--gold)}.stat-card.s5 .sn{color:var(--pink)}.stat-card.s6 .sn{color:var(--orange)}
+
+/* ── SKILLS GRID ── */
+.skills-section{margin:40px 0}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:8px}
+.skill-chip{padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.03);font-size:.75rem;text-align:center;transition:border-color .2s}
+.skill-chip:hover{border-color:rgba(52,211,153,.2)}
+.skill-chip .sfi{font-size:1.1rem;margin-bottom:4px}
+.skill-chip .sfn{font-weight:600}
+
+.footer{text-align:center;padding:40px 20px;color:#3f3f46;font-size:.72rem;border-top:1px solid rgba(255,255,255,.04);margin-top:40px}
+.footer a{color:var(--cyan);text-decoration:none}
+
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.rv.vis{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+@media(max-width:768px){
+  .hero{padding:40px 16px 30px}
+  .hero h1{font-size:1.7rem}
+  .kpi-strip{grid-template-columns:repeat(3,1fr)}
+  .kpi .v{font-size:1rem}
+  .file-grid{grid-template-columns:1fr 1fr}
+  .flow-row{gap:4px}
+  .flow-node{min-width:90px;padding:10px 8px}
+  .flow-arrow{font-size:.9rem;padding:0 2px}
+  .tree{font-size:.62rem;line-height:1.8}
+  .stats-box{grid-template-columns:1fr 1fr}
+  .skills-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:420px){
+  .kpi-strip{grid-template-columns:1fr 1fr}
+  .file-grid{grid-template-columns:1fr}
+  .skills-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">ARCHITECTURE OVERVIEW</div>
+  <h1><span class="g">DropAgentX</span><br>معماری کامل پروژه</h1>
+  <p class="sub">۸۵ فایل Python · ۲۵ فایل JS · ۲۲۷ فایل کل · ۳۸ جدول دیتابیس · ۹۲ تست خودکار</p>
+</div>
+
+<div class="kpi-strip rv">
+  <div class="kpi c"><div class="v">85</div><div class="l">فایل Python</div></div>
+  <div class="kpi p"><div class="v">25</div><div class="l">فایل JavaScript</div></div>
+  <div class="kpi g"><div class="v">227</div><div class="l">فایل کل</div></div>
+  <div class="kpi o"><div class="v">38</div><div class="l">جدول دیتابیس</div></div>
+  <div class="kpi pk"><div class="v">92</div><div class="l">تست خودکار</div></div>
+</div>
+
+<div class="wrap">
+
+<!-- ═══ ARCHITECTURE DIAGRAM ═══ -->
+<div class="arch rv">
+  <h2>🏗️ دیاگرام معماری سیستم</h2>
+  <p class="sub-h">لایه‌های مختلف پروژه از Entry Point تا Database</p>
+
+  <!-- LAYER 1: Entry -->
+  <div class="layer l-entry">
+    <div class="layer-head">
+      <div class="layer-icon">🚀</div>
+      <div><div class="layer-title">Entry Layer — نقطه ورود</div><div class="layer-count">3 files</div></div>
+    </div>
+    <div class="file-grid">
+      <div class="file"><span class="fi">🟢</span><span class="fn">run.py</span><span class="fd">Entry point</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">config.py</span><span class="fd">Pydantic config</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">cron_scheduler.py</span><span class="fd">Task scheduler</span></div>
+    </div>
+  </div>
+
+  <!-- LAYER 2: Core -->
+  <div class="layer l-core">
+    <div class="layer-head">
+      <div class="layer-icon">🧠</div>
+      <div><div class="layer-title">Core Layer — هوش مصنوعی و موتور اصلی</div><div class="layer-count">12 files</div></div>
+    </div>
+    <div class="file-grid">
+      <div class="file"><span class="fi">🟣</span><span class="fn">hermes_engine.py</span><span class="fd">AI Engine</span></div>
+      <div class="file"><span class="fi">🟣</span><span class="fn">ai_agent.py</span><span class="fd">Agent logic</span></div>
+      <div class="file"><span class="fi">🟣</span><span class="fn">tools.py</span><span class="fd">Tool registry</span></div>
+      <div class="file"><span class="fi">🟣</span><span class="fn">identity_rl.py</span><span class="fd">RL identity</span></div>
+      <div class="file"><span class="fi">🟣</span><span class="fn">memory.py</span><span class="fd">Memory store</span></div>
+      <div class="file"><span class="fi">🟣</span><span class="fn">prompt_cache.py</span><span class="fd">Prompt cache</span></div>
+      <div class="file"><span class="fi">🟣</span><span class="fn">token_saver.py</span><span class="fd">Token optimizer</span></div>
+      <div class="file"><span class="fi">🟣</span><span class="fn">moderation.py</span><span class="fd">Content filter</span></div>
+      <div class="file"><span class="fi">🟣</span><span class="fn">approval.py</span><span class="fd">Human approval</span></div>
+      <div class="file"><span class="fi">🟣</span><span class="fn">batch_runner.py</span><span class="fd">Batch tasks</span></div>
+      <div class="file"><span class="fi">🟣</span><span class="fn">fleet.py</span><span class="fd">Multi-bot mgmt</span></div>
+      <div class="file"><span class="fi">🟣</span><span class="fn">i18n.py</span><span class="fd">Internationalization</span></div>
+    </div>
+  </div>
+
+  <!-- LAYER 3: Handlers -->
+  <div class="layer l-handler">
+    <div class="layer-head">
+      <div class="layer-icon">📋</div>
+      <div><div class="layer-title">Handler Layer — مدیریت درخواست‌ها</div><div class="layer-count">17 files · handlers/</div></div>
+    </div>
+    <div class="file-grid">
+      <div class="file"><span class="fi">🟢</span><span class="fn">start.py</span><span class="fd">/onboarding</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">ai_chat.py</span><span class="fd">AI chat</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">marketplace.py</span><span class="fd">marketplace</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">products.py</span><span class="fd">product CRUD</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">wallet.py</span><span class="fd">USDT wallet</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">tasks.py</span><span class="fd">daily tasks</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">support.py</span><span class="fd">support tickets</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">profile.py</span><span class="fd">user profile</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">admin.py</span><span class="fd">admin panel</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">admin_v2.py</span><span class="fd">admin v2</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">referral.py</span><span class="fd">referral system</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">quests.py</span><span class="fd">quests/gamification</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">growth.py</span><span class="fd">growth loops</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">leaderboard.py</span><span class="fd">leaderboard</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">org.py</span><span class="fd">organizations</span></div>
+      <div class="file"><span class="fi">🟢</span><span class="fn">help.py</span><span class="fd">help system</span></div>
+    </div>
+  </div>
+
+  <!-- LAYER 4: Services -->
+  <div class="layer l-service">
+    <div class="layer-head">
+      <div class="layer-icon">⚙️</div>
+      <div><div class="layer-title">Service Layer — سرویس‌ها و یکپارچه‌سازی</div><div class="layer-count">18 files</div></div>
+    </div>
+    <div class="file-grid">
+      <div class="file"><span class="fi">🟡</span><span class="fn">database.py</span><span class="fd">SQLite ORM</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">commerce.py</span><span class="fd">commerce engine</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">blockchain.py</span><span class="fd">USDT/TRC20</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">skills.py</span><span class="fd">skill loader</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">skills_catalog.py</span><span class="fd">skill registry</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">media_ai.py</span><span class="fd">AI media</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">media_v2.py</span><span class="fd">media v2</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">browser_tools.py</span><span class="fd">web scraping</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">webtools.py</span><span class="fd">web utilities</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">file_tools.py</span><span class="fd">file operations</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">a2a_server.py</span><span class="fd">agent-to-agent</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">a2a_v2.py</span><span class="fd">A2A v2</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">mcp_lite.py</span><span class="fd">MCP protocol</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">mcp_bridge.py</span><span class="fd">MCP bridge</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">app_api.py</span><span class="fd">REST API</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">web_admin.py</span><span class="fd">admin dashboard</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">platforms.py</span><span class="fd">multi-platform</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">platform_settings.py</span><span class="fd">settings</span></div>
+    </div>
+  </div>
+
+  <!-- LAYER 5: Tools & Infra -->
+  <div class="layer l-service">
+    <div class="layer-head">
+      <div class="layer-icon">🔧</div>
+      <div><div class="layer-title">Tools & Infra — ابزارها و زیرساخت</div><div class="layer-count">7 files</div></div>
+    </div>
+    <div class="file-grid">
+      <div class="file"><span class="fi">🟡</span><span class="fn">utils.py</span><span class="fd">utilities</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">cron_jobs.py</span><span class="fd">scheduled jobs</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">treasury_worker.py</span><span class="fd">treasury ops</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">tools_seed_skills.py</span><span class="fd">skill seeding</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">tools_seed_demo.py</span><span class="fd">demo data</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">tools_capacity_sim.py</span><span class="fd">capacity sim</span></div>
+      <div class="file"><span class="fi">🟡</span><span class="fn">tools_db_doctor.py</span><span class="fd">DB health</span></div>
+    </div>
+  </div>
+
+  <!-- LAYER 6: Shared -->
+  <div class="layer l-shared">
+    <div class="layer-head">
+      <div class="layer-icon">🔗</div>
+      <div><div class="layer-title">Shared Layer — ماژول‌های مشترک</div><div class="layer-count">3 modules · shared/</div></div>
+    </div>
+    <div class="file-grid">
+      <div class="file"><span class="fi">🩷</span><span class="fn">context_compressor.py</span><span class="fd">shared/context/</span></div>
+      <div class="file"><span class="fi">🩷</span><span class="fn">router_client.py</span><span class="fd">shared/llm/</span></div>
+      <div class="file"><span class="fi">🩷</span><span class="fn">skills_guard.py</span><span class="fd">shared/security/</span></div>
+    </div>
+  </div>
+
+  <!-- LAYER 7: Web Frontend -->
+  <div class="layer l-web">
+    <div class="layer-head">
+      <div class="layer-icon">🌐</div>
+      <div><div class="layer-title">Web Frontend — رابط کاربری وب</div><div class="layer-count">17 files · web/</div></div>
+    </div>
+    <div class="file-grid">
+      <div class="file"><span class="fi">🟠</span><span class="fn">api.js</span><span class="fd">core/api.js</span></div>
+      <div class="file"><span class="fi">🟠</span><span class="fn">router.js</span><span class="fd">core/router.js</span></div>
+      <div class="file"><span class="fi">🟠</span><span class="fn">tg.js</span><span class="fd">core/tg.js</span></div>
+      <div class="file"><span class="fi">🟠</span><span class="fn">ui.js</span><span class="fd">core/ui.js</span></div>
+      <div class="file"><span class="fi">🟠</span><span class="fn">home.js</span><span class="fd">pages/home.js</span></div>
+      <div class="file"><span class="fi">🟠</span><span class="fn">explore.js</span><span class="fd">pages/explore.js</span></div>
+      <div class="file"><span class="fi">🟠</span><span class="fn">feed2.js</span><span class="fd">pages/feed2.js</span></div>
+      <div class="file"><span class="fi">🟠</span><span class="fn">social.js</span><span class="fd">pages/social.js</span></div>
+      <div class="file"><span class="fi">🟠</span><span class="fn">commerce.js</span><span class="fd">pages/commerce.js</span></div>
+      <div class="file"><span class="fi">🟠</span><span class="fn">wallet.js</span><span class="fd">pages/wallet.js</span></div>
+      <div class="file"><span class="fi">🟠</span><span class="fn">agent.js</span><span class="fd">pages/agent.js</span></div>
+      <div class="file"><span class="fi">🟠</span><span class="fn">app.js</span><span class="fd">senpai/app.js</span></div>
+    </div>
+  </div>
+
+  <!-- LAYER 8: Tests -->
+  <div class="layer l-test">
+    <div class="layer-head">
+      <div class="layer-icon">🧪</div>
+      <div><div class="layer-title">Test Layer — تست‌ها</div><div class="layer-count">12 files · tests/</div></div>
+    </div>
+    <div class="file-grid">
+      <div class="file"><span class="fi">🔴</span><span class="fn">test_core.py</span><span class="fd">core tests</span></div>
+      <div class="file"><span class="fi">🔴</span><span class="fn">test_v051.py</span><span class="fd">v0.5.1 tests</span></div>
+      <div class="file"><span class="fi">🔴</span><span class="fn">test_v052.py</span><span class="fd">v0.5.2 tests</span></div>
+      <div class="file"><span class="fi">🔴</span><span class="fn">test_v060.py</span><span class="fd">v0.6.0 tests</span></div>
+      <div class="file"><span class="fi">🔴</span><span class="fn">test_v099.py</span><span class="fd">v0.9.9 tests</span></div>
+      <div class="file"><span class="fi">🔴</span><span class="fn">test_v100.py</span><span class="fd">v1.0.0 tests</span></div>
+      <div class="file"><span class="fi">🔴</span><span class="fn">test_v3_glue.py</span><span class="fd">v3 glue tests</span></div>
+      <div class="file"><span class="fi">🔴</span><span class="fn">test_v3_infra.py</span><span class="fd">v3 infra tests</span></div>
+      <div class="file"><span class="fi">🔴</span><span class="fn">test_v3_tools.py</span><span class="fd">v3 tools tests</span></div>
+      <div class="file"><span class="fi">🔴</span><span class="fn">test_v4_modules.py</span><span class="fd">v4 module tests</span></div>
+      <div class="file"><span class="fi">🔴</span><span class="fn">test_sessions.py</span><span class="fd">session tests</span></div>
+      <div class="file"><span class="fi">🔴</span><span class="fn">conftest.py</span><span class="fd">fixtures</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FILE TREE ═══ -->
+<div class="tree-section rv">
+  <h2>📂 درخت ساختار فایل‌ها</h2>
+  <p class="sub-h">ساختار کامل دایرکتوری پروژه</p>
+  <div class="tree">
+<span class="dir">DropAgentXBot/</span>
+├── <span class="file-py highlight">run.py</span> <span class="comment"># 🚀 Entry Point — نقطه ورود اصلی</span>
+├── <span class="file-py highlight">config.py</span> <span class="comment"># ⚙️ Pydantic Settings — تنظیمات محیطی</span>
+├── <span class="file-py highlight">database.py</span> <span class="comment"># 📊 SQLite ORM — ۳۸ جدول</span>
+├── <span class="file-py highlight">hermes_engine.py</span> <span class="comment"># 🧠 موتور هوش مصنوعی — ۳ حالت اجرا</span>
+├── <span class="file-py">ai_agent.py</span> <span class="comment"># 🤖 منطق Agent</span>
+├── <span class="file-py">tools.py</span> <span class="comment"># 🔧 ثبت ابزارها + run_shell</span>
+├── <span class="file-py">identity_rl.py</span> <span class="comment"># 🎭 هویت RL کاربران</span>
+├── <span class="file-py">memory.py</span> <span class="comment"># 💾 حافظه مکالمه</span>
+├── <span class="file-py">commerce.py</span> <span class="comment"># 🛒 موتور تجارت</span>
+├── <span class="file-py">blockchain.py</span> <span class="comment"># ⛓️ USDT/TRC20 Wallet</span>
+├── <span class="file-py">moderation.py</span> <span class="comment"># 🛡️ فیلتر محتوا</span>
+├── <span class="file-py">approval.py</span> <span class="comment"># ✅ Human-in-the-loop</span>
+├── <span class="file-py">skills.py</span> <span class="comment"># 📦 بارگذاری Skill</span>
+├── <span class="file-py">skills_catalog.py</span> <span class="comment"># 📚 رجیستری Skill</span>
+├── <span class="file-py">media_ai.py</span> <span class="comment"># 🖼️ AI Media Generation</span>
+├── <span class="file-py">media_v2.py</span> <span class="comment"># 🖼️ Media v2</span>
+├── <span class="file-py">browser_tools.py</span> <span class="comment"># 🌐 Web Scraping</span>
+├── <span class="file-py">webtools.py</span> <span class="comment"># 🌍 Web Utilities</span>
+├── <span class="file-py">file_tools.py</span> <span class="comment"># 📁 File Operations</span>
+├── <span class="file-py">a2a_server.py</span> <span class="comment"># 🔄 Agent-to-Agent Server</span>
+├── <span class="file-py">a2a_v2.py</span> <span class="comment"># 🔄 A2A Protocol v2</span>
+├── <span class="file-py">mcp_lite.py</span> <span class="comment"># 🔌 MCP Protocol</span>
+├── <span class="file-py">mcp_bridge.py</span> <span class="comment"># 🔌 MCP Bridge</span>
+├── <span class="file-py">app_api.py</span> <span class="comment"># 📡 REST API</span>
+├── <span class="file-py">web_admin.py</span> <span class="comment"># 📊 Admin Dashboard</span>
+├── <span class="file-py">platforms.py</span> <span class="comment"># 📱 Multi-Platform</span>
+├── <span class="file-py">platform_settings.py</span> <span class="comment"># ⚙️ Platform Settings</span>
+├── <span class="file-py">prompt_cache.py</span> <span class="comment"># 🧮 Prompt Cache</span>
+├── <span class="file-py">token_saver.py</span> <span class="comment"># 💰 Token Optimizer</span>
+├── <span class="file-py">batch_runner.py</span> <span class="comment"># ⚡ Batch Processing</span>
+├── <span class="file-py">fleet.py</span> <span class="comment"># 🚢 Multi-Bot Fleet</span>
+├── <span class="file-py">treasury_worker.py</span> <span class="comment"># 💎 Treasury Operations</span>
+├── <span class="file-py">cron_jobs.py</span> <span class="comment"># ⏰ Scheduled Jobs</span>
+├── <span class="file-py">cron_scheduler.py</span> <span class="comment"># ⏰ Cron Scheduler</span>
+├── <span class="file-py">i18n.py</span> <span class="comment"># 🌍 Internationalization</span>
+├── <span class="file-py">utils.py</span> <span class="comment"># 🛠️ Utilities</span>
+├── <span class="file-py">tools_seed_skills.py</span> <span class="comment"># 🌱 Skill Seeding</span>
+├── <span class="file-py">tools_seed_demo.py</span> <span class="comment"># 🎭 Demo Data</span>
+├── <span class="file-py">tools_capacity_sim.py</span> <span class="comment"># 📈 Capacity Simulation</span>
+├── <span class="file-py">tools_db_doctor.py</span> <span class="comment"># 🔍 DB Health Check</span>
+│
+├── <span class="dir">handlers/</span> <span class="comment"># 📋 ۱۷ handler — مدیریت درخواست‌ها</span>
+│   ├── <span class="file-py">start.py</span> <span class="comment"># 🚀 Onboarding + Launch Bonus</span>
+│   ├── <span class="file-py">ai_chat.py</span> <span class="comment"># 💬 چت AI با حافظه</span>
+│   ├── <span class="file-py">marketplace.py</span> <span class="comment"># 🛒 مارکت‌پلیس</span>
+│   ├── <span class="file-py">products.py</span> <span class="comment"># 📦 CRUD محصولات</span>
+│   ├── <span class="file-py">wallet.py</span> <span class="comment"># 💰 کیف پول USDT</span>
+│   ├── <span class="file-py">tasks.py</span> <span class="comment"># 📋 تسک‌های روزانه</span>
+│   ├── <span class="file-py">support.py</span> <span class="comment"># 🎫 تیکت پشتیبانی</span>
+│   ├── <span class="file-py">profile.py</span> <span class="comment"># 👤 پروفایل کاربر</span>
+│   ├── <span class="file-py">admin.py</span> <span class="comment"># 🔐 پنل ادمین</span>
+│   ├── <span class="file-py">admin_v2.py</span> <span class="comment"># 🔐 پنل ادمین v2</span>
+│   ├── <span class="file-py">referral.py</span> <span class="comment"># 🔗 سیستم ارجاع</span>
+│   ├── <span class="file-py">quests.py</span> <span class="comment"># 🏆 Quests + Gamification</span>
+│   ├── <span class="file-py">growth.py</span> <span class="comment"># 📈 Growth Loops</span>
+│   ├── <span class="file-py">leaderboard.py</span> <span class="comment"># 🥇 Leaderboard</span>
+│   ├── <span class="file-py">org.py</span> <span class="comment"># 🏢 Organizations</span>
+│   └── <span class="file-py">help.py</span> <span class="comment"># ❓ Help System</span>
+│
+├── <span class="dir">shared/</span> <span class="comment"># 🔗 ماژول‌های مشترک</span>
+│   ├── <span class="dir">context/</span>
+│   │   └── <span class="file-py">context_compressor.py</span> <span class="comment"># 🗜️ فشرده‌سازی Context</span>
+│   ├── <span class="dir">llm/</span>
+│   │   └── <span class="file-py">router_client.py</span> <span class="comment"># 🔀 LLM Router</span>
+│   └── <span class="dir">security/</span>
+│       └── <span class="file-py">skills_guard.py</span> <span class="comment"># 🛡️ Security Guard</span>
+│
+├── <span class="dir">skills_builtin/</span> <span class="comment"># 🎓 ۱۶ Skill از پیش نصب‌شده</span>
+│   ├── <span class="file-other">analytics-basics/</span>
+│   ├── <span class="file-other">content-calendar/</span>
+│   ├── <span class="file-other">copywriting-formulas/</span>
+│   ├── <span class="file-other">customer-retention/</span>
+│   ├── <span class="file-other">customer-support/</span>
+│   ├── <span class="file-other">launch-checklist/</span>
+│   ├── <span class="file-other">pricing-strategy/</span>
+│   ├── <span class="file-other">product-ideas/</span>
+│   ├── <span class="file-other">product-listing/</span>
+│   ├── <span class="file-other">prompt-master/</span>
+│   ├── <span class="file-other">sales-psychology/</span>
+│   ├── <span class="file-other">seo-basics/</span>
+│   ├── <span class="file-other">telegram-ads/</span>
+│   ├── <span class="file-other">telegram-marketing/</span>
+│   ├── <span class="file-other">upsell-crosssell/</span>
+│   └── <span class="file-other">usdt-basics/</span>
+│
+├── <span class="dir">web/</span> <span class="comment"># 🌐 رابط کاربری وب</span>
+│   ├── <span class="dir">app/js/core/</span>
+│   │   ├── <span class="file-js">api.js</span> <span class="comment"># API Client</span>
+│   │   ├── <span class="file-js">router.js</span> <span class="comment"># SPA Router</span>
+│   │   ├── <span class="file-js">tg.js</span> <span class="comment"># Telegram WebApp</span>
+│   │   └── <span class="file-js">ui.js</span> <span class="comment"># UI Components</span>
+│   ├── <span class="dir">app/js/pages/</span>
+│   │   ├── <span class="file-js">home.js</span> · <span class="file-js">explore.js</span> · <span class="file-js">feed2.js</span>
+│   │   ├── <span class="file-js">social.js</span> · <span class="file-js">commerce.js</span>
+│   │   ├── <span class="file-js">wallet.js</span> · <span class="file-js">agent.js</span>
+│   ├── <span class="dir">senpai/</span>
+│   │   └── <span class="file-js">app.js</span>
+│   ├── <span class="file-other">sw.js</span> <span class="comment"># Service Worker</span>
+│   ├── <span class="dir">app/css/</span> · <span class="dir">app/assets/</span> · <span class="dir">fonts/</span>
+│   └── <span class="dir">vendor/</span>
+│
+├── <span class="dir">tests/</span> <span class="comment"># 🧪 ۱۲ فایل تست — ۹۲ تست خودکار</span>
+│   ├── <span class="file-py">test_core.py</span> · <span class="file-py">test_v051.py</span> · <span class="file-py">test_v052.py</span>
+│   ├── <span class="file-py">test_v060.py</span> · <span class="file-py">test_v099.py</span> · <span class="file-py">test_v100.py</span>
+│   ├── <span class="file-py">test_v3_glue.py</span> · <span class="file-py">test_v3_infra.py</span> · <span class="file-py">test_v3_tools.py</span>
+│   ├── <span class="file-py">test_v4_modules.py</span> · <span class="file-py">test_sessions.py</span>
+│   └── <span class="file-py">conftest.py</span>
+│
+├── <span class="dir">router/</span> <span class="comment"># 🔀 Model Router</span>
+├── <span class="dir">gateway/</span> <span class="comment"># 🚪 API Gateway</span>
+├── <span class="dir">locales/</span> <span class="comment"># 🌍 ترجمه‌ها</span>
+├── <span class="dir">deploy/</span> <span class="comment"># 🐳 Docker Deploy</span>
+├── <span class="dir">docs/</span> <span class="comment"># 📝 مستندات</span>
+├── <span class="dir">.github/workflows/</span> <span class="comment"># 🔄 CI/CD</span>
+│
+├── <span class="file-other">Dockerfile</span> <span class="comment"># 🐳 Container Build</span>
+├── <span class="file-other">.dockerignore</span>
+├── <span class="file-other">requirements.txt</span> <span class="comment"># 📦 Dependencies</span>
+└── <span class="file-other">.env.example</span> <span class="comment"># ⚙️ Environment Template</span>
+  </div>
+</div>
+
+<!-- ═══ DATA FLOW ═══ -->
+<div class="flow-section rv">
+  <h2>🔄 جریان داده — Request Flow</h2>
+  <p class="sub-h">از درخواست کاربر تا پاسخ AI و ذخیره دیتابیس</p>
+  <div class="flow-wrap">
+    <div class="flow-row">
+      <div class="flow-node"><div class="fi">📱</div><div class="fn">کاربر</div><div class="fd">Telegram / Web</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fi">🚀</div><div class="fn">run.py</div><div class="fd">Entry Point</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fi">📋</div><div class="fn">Handlers</div><div class="fd">Route & Process</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fi">🛡️</div><div class="fn">Guard</div><div class="fd">Auth + Moderation</div></div>
+    </div>
+    <div style="color:var(--d);font-size:1.2rem">↓</div>
+    <div class="flow-row">
+      <div class="flow-node"><div class="fi">🧠</div><div class="fn">Hermes Engine</div><div class="fd">AI Processing</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fi">🔧</div><div class="fn">Tools</div><div class="fd">Execute Actions</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fi">🗄️</div><div class="fn">Database</div><div class="fd">SQLite · 38 Tables</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fi">💬</div><div class="fn">پاسخ</div><div class="fd">Return to User</div></div>
+    </div>
+    <div style="color:var(--d);font-size:1.2rem">↓</div>
+    <div class="flow-row">
+      <div class="flow-node"><div class="fi">⛓️</div><div class="fn">Blockchain</div><div class="fd">USDT/TRC20</div></div>
+      <div class="flow-arrow">↔</div>
+      <div class="flow-node"><div class="fi">🛒</div><div class="fn">Commerce</div><div class="fd">Product Sales</div></div>
+      <div class="flow-arrow">↔</div>
+      <div class="flow-node"><div class="fi">🎭</div><div class="fn">Identity RL</div><div class="fd">User Learning</div></div>
+      <div class="flow-arrow">↔</div>
+      <div class="flow-node"><div class="fi">📊</div><div class="fn">Analytics</div><div class="fd">Metrics & Logs</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SKILLS ═══ -->
+<div class="skills-section rv">
+  <h2 style="text-align:center;font-size:1.5rem;font-weight:800;margin-bottom:20px">🎓 ۱۶ Skill از پیش نصب‌شده</h2>
+  <div class="skills-grid">
+    <div class="skill-chip"><div class="sfi">📊</div><div class="sfn">analytics-basics</div></div>
+    <div class="skill-chip"><div class="sfi">📅</div><div class="sfn">content-calendar</div></div>
+    <div class="skill-chip"><div class="sfi">✍️</div><div class="sfn">copywriting-formulas</div></div>
+    <div class="skill-chip"><div class="sfi">🔄</div><div class="sfn">customer-retention</div></div>
+    <div class="skill-chip"><div class="sfi">🎫</div><div class="sfn">customer-support</div></div>
+    <div class="skill-chip"><div class="sfi">🚀</div><div class="sfn">launch-checklist</div></div>
+    <div class="skill-chip"><div class="sfi">💰</div><div class="sfn">pricing-strategy</div></div>
+    <div class="skill-chip"><div class="sfi">💡</div><div class="sfn">product-ideas</div></div>
+    <div class="skill-chip"><div class="sfi">📦</div><div class="sfn">product-listing</div></div>
+    <div class="skill-chip"><div class="sfi">🤖</div><div class="sfn">prompt-master</div></div>
+    <div class="skill-chip"><div class="sfi">🧠</div><div class="sfn">sales-psychology</div></div>
+    <div class="skill-chip"><div class="sfi">🔍</div><div class="sfn">seo-basics</div></div>
+    <div class="skill-chip"><div class="sfi">📢</div><div class="sfn">telegram-ads</div></div>
+    <div class="skill-chip"><div class="sfi">📣</div><div class="sfn">telegram-marketing</div></div>
+    <div class="skill-chip"><div class="sfi">⬆️</div><div class="sfn">upsell-crosssell</div></div>
+    <div class="skill-chip"><div class="sfi">⛓️</div><div class="sfn">usdt-basics</div></div>
+  </div>
+</div>
+
+<!-- ═══ SUMMARY STATS ═══ -->
+<div class="stats-box rv">
+  <div class="stat-card s1"><div class="sn">85</div><div class="sl">فایل Python</div></div>
+  <div class="stat-card s2"><div class="sn">17</div><div class="sl">Handler</div></div>
+  <div class="stat-card s3"><div class="sn">16</div><div class="sl">Skill Built-in</div></div>
+  <div class="stat-card s4"><div class="sn">38</div><div class="sl">جدول دیتابیس</div></div>
+  <div class="stat-card s5"><div class="sn">92</div><div class="sl">تست خودکار</div></div>
+  <div class="stat-card s6"><div class="sn">7</div><div class="sl">لایه معماری</div></div>
+</div>
+
+</div>
+
+<div class="footer">Built by <a href="https://github.com/ImXforever">@ImXforever</a> · DropAgentX · 2025<br><span style="margin-top:6px;display:inline-block">Confidential — Architecture Overview</span></div>
+
+<script>
+var obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('vis');obs.unobserve(x.target)}})},{threshold:.1});
+document.querySelectorAll('.rv').forEach(function(el){obs.observe(el)});
+</script>
+</body>
+</html>

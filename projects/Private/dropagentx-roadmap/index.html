@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DropAgentX — نقشه راه سرمایه‌گذاری</title>
+<meta name="description" content="DropAgentX — پلتفرم هوشمند تجارت دیجیتال. نقشه راه فازها، عملکرد کنونی و چشم‌انداز آینده.">
+<meta property="og:title" content="DropAgentX — نقشه راه سرمایه‌گذاری">
+<meta property="og:description" content="پلتفرم هوشمند تجارت دیجیتال مبتنی بر AI Agent">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cyan: #22d3ee; --purple: #a78bfa; --green: #34d399; --gold: #fbbf24;
+  --pink: #f472b6; --red: #f87171; --orange: #fb923c;
+  --bg: #06060e; --surface: rgba(12,12,24,.92); --border: rgba(255,255,255,.06);
+  --text: #e4e4e7; --dim: #71717a;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'Vazirmatn','Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+body::before { content:''; position:fixed; inset:0; z-index:-1; background:radial-gradient(ellipse at 20% 0%,rgba(34,211,238,.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 100%,rgba(167,139,250,.04) 0%,transparent 50%); }
+
+/* ── HERO ── */
+.hero { padding:70px 20px 50px; text-align:center; max-width:960px; margin:0 auto; }
+.hero-badge { display:inline-block; padding:6px 18px; border-radius:20px; background:rgba(167,139,250,.1); border:1px solid rgba(167,139,250,.25); color:var(--purple); font-size:.78rem; font-weight:600; margin-bottom:24px; font-family:'JetBrains Mono',monospace; letter-spacing:1px; }
+.hero h1 { font-size:clamp(2.2rem,6vw,3.8rem); font-weight:900; line-height:1.1; margin-bottom:14px; }
+.hero h1 .g { background:linear-gradient(135deg,var(--cyan),var(--purple)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.hero .sub { font-size:1.05rem; color:var(--dim); max-width:600px; margin:0 auto 30px; line-height:1.9; }
+
+/* ── KPI STRIP ── */
+.kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border-radius:16px; overflow:hidden; margin:0 auto 40px; max-width:960px; }
+.kpi { background:var(--surface); padding:22px 10px; text-align:center; }
+.kpi .v { font-family:'JetBrains Mono',monospace; font-size:1.6rem; font-weight:700; }
+.kpi .l { font-size:.68rem; color:var(--dim); margin-top:4px; }
+.kpi.c .v { color:var(--cyan); }
+.kpi.p .v { color:var(--purple); }
+.kpi.g .v { color:var(--green); }
+.kpi.o .v { color:var(--orange); }
+
+.wrap { max-width:960px; margin:0 auto; padding:0 20px; }
+
+/* ── PHASES TIMELINE ── */
+.phases { margin:50px 0 60px; position:relative; }
+.phases > h2 { text-align:center; font-size:1.8rem; font-weight:800; margin-bottom:8px; }
+.phases > .sub-h { text-align:center; color:var(--dim); margin-bottom:40px; font-size:.9rem; }
+
+.tl-line { position:absolute; right:32px; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--cyan),var(--purple),var(--green),var(--gold)); border-radius:2px; opacity:.25; }
+@media(max-width:768px){ .tl-line { display:none; } }
+
+.phase { position:relative; padding:0 0 50px 0; }
+.phase:last-child { padding-bottom:0; }
+
+.phase-marker { position:absolute; right:18px; top:8px; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.8rem; font-weight:800; z-index:2; border:3px solid var(--bg); }
+.phase.done .phase-marker { background:var(--green); color:#000; }
+.phase.active .phase-marker { background:var(--cyan); color:#000; animation:glow 2s infinite; }
+.phase.future .phase-marker { background:rgba(255,255,255,.08); color:var(--dim); border-color:rgba(255,255,255,.1); }
+.phase.vision .phase-marker { background:linear-gradient(135deg,var(--purple),var(--gold)); color:#000; }
+
+@keyframes glow { 0%,100%{box-shadow:0 0 8px rgba(34,211,238,.4)} 50%{box-shadow:0 0 20px rgba(34,211,238,.7)} }
+
+.phase-card { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:26px 28px; margin-right:64px; transition:border-color .3s,box-shadow .3s; }
+.phase-card:hover { border-color:rgba(167,139,250,.2); box-shadow:0 4px 30px rgba(0,0,0,.3); }
+.phase-head { display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+.phase-tag { padding:3px 12px; border-radius:8px; font-size:.68rem; font-weight:700; font-family:'JetBrains Mono',monospace; }
+.phase.done .phase-tag { background:rgba(52,211,153,.12); color:var(--green); }
+.phase.active .phase-tag { background:rgba(34,211,238,.12); color:var(--cyan); }
+.phase.future .phase-tag { background:rgba(167,139,250,.1); color:var(--purple); }
+.phase.vision .phase-tag { background:rgba(251,191,36,.1); color:var(--gold); }
+.phase-title { font-size:1.15rem; font-weight:700; }
+.phase-desc { color:var(--dim); font-size:.88rem; line-height:1.8; margin-bottom:16px; }
+
+.feature-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin-bottom:16px; }
+.feature-chip { display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:10px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.04); font-size:.78rem; }
+.feature-chip .icon { font-size:.9rem; }
+.feature-chip.done-f { color:var(--green); }
+.feature-chip.active-f { color:var(--cyan); }
+.feature-chip.future-f { color:var(--purple); }
+
+.metric-row { display:flex; gap:12px; flex-wrap:wrap; }
+.metric-pill { padding:5px 14px; border-radius:8px; background:rgba(255,255,255,.04); font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--dim); }
+.metric-pill strong { color:var(--text); font-weight:600; }
+
+/* ── REVENUE PROJECTION ── */
+.revenue { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:32px; margin:50px auto; }
+.revenue h3 { font-size:1.2rem; font-weight:700; margin-bottom:24px; text-align:center; }
+.rev-bars { display:flex; align-items:flex-end; justify-content:space-around; gap:12px; height:200px; padding:0 10px; margin-bottom:10px; }
+.rev-bar-wrap { display:flex; flex-direction:column; align-items:center; gap:8px; flex:1; }
+.rev-bar { width:100%; max-width:60px; border-radius:8px 8px 0 0; transition:height 1s cubic-bezier(.22,1,.36,1); position:relative; }
+.rev-bar .rv { position:absolute; top:-22px; left:50%; transform:translateX(-50%); font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:700; white-space:nowrap; }
+.rev-label { font-size:.7rem; color:var(--dim); text-align:center; }
+.rev-axis { display:flex; justify-content:space-around; padding:8px 10px 0; border-top:1px solid rgba(255,255,255,.06); }
+
+/* ── TECH STACK ── */
+.tech { margin:50px auto; }
+.tech > h2 { text-align:center; font-size:1.5rem; font-weight:800; margin-bottom:28px; }
+.tech-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; }
+.tech-item { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px 14px; text-align:center; transition:border-color .3s; }
+.tech-item:hover { border-color:rgba(167,139,250,.2); }
+.tech-icon { font-size:1.6rem; margin-bottom:8px; }
+.tech-name { font-size:.82rem; font-weight:600; margin-bottom:2px; }
+.tech-detail { font-size:.65rem; color:var(--dim); }
+
+/* ── FAQ ── */
+.faq { margin:50px auto; max-width:960px; padding:0 20px; }
+.faq > h2 { text-align:center; font-size:1.5rem; font-weight:800; margin-bottom:24px; }
+.fqi { background:var(--surface); border:1px solid var(--border); border-radius:14px; margin-bottom:10px; overflow:hidden; }
+.fqi-q { padding:18px 20px; cursor:pointer; font-weight:600; font-size:.92rem; display:flex; justify-content:space-between; align-items:center; }
+.fqi-q:hover { background:rgba(255,255,255,.015); }
+.fqi-a { display:none; padding:0 20px 18px; font-size:.85rem; color:var(--dim); line-height:1.8; }
+.fqi.open .fqi-a { display:block; }
+.fqi-q .arr { transition:transform .3s; color:var(--dim); font-size:.8rem; }
+.fqi.open .fqi-q .arr { transform:rotate(180deg); }
+
+/* ── CTA ── */
+.cta-box { text-align:center; padding:60px 20px; }
+.cta-box h2 { font-size:1.6rem; font-weight:800; margin-bottom:12px; }
+.cta-box p { color:var(--dim); margin-bottom:24px; font-size:.92rem; }
+.cta-btn { display:inline-block; padding:14px 40px; border-radius:14px; background:linear-gradient(135deg,var(--cyan),var(--purple)); color:#000; font-weight:700; font-size:1rem; text-decoration:none; transition:transform .2s,box-shadow .2s; }
+.cta-btn:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(34,211,238,.3); }
+
+.footer { text-align:center; padding:40px 20px; color:#3f3f46; font-size:.72rem; border-top:1px solid rgba(255,255,255,.04); }
+.footer a { color:var(--cyan); text-decoration:none; }
+
+/* ── SCROLL ANIM ── */
+.rv { opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1); }
+.rv.vis { opacity:1; transform:translateY(0); }
+@media(prefers-reduced-motion:reduce){ .rv{opacity:1;transform:none;transition:none} }
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .hero { padding:48px 16px 36px; }
+  .hero h1 { font-size:1.9rem; }
+  .kpi-strip { grid-template-columns:1fr 1fr; }
+  .phase-card { margin-right:0; padding:20px 18px; }
+  .phase-marker { position:relative; right:auto; top:auto; margin-bottom:10px; }
+  .feature-grid { grid-template-columns:1fr; }
+  .rev-bar-wrap { flex:1; }
+  .tech-grid { grid-template-columns:repeat(3,1fr); }
+  .metric-row { gap:6px; }
+  .metric-pill { font-size:.65rem; padding:4px 10px; }
+}
+@media(max-width:420px){
+  .kpi-strip { grid-template-columns:1fr 1fr; }
+  .kpi .v { font-size:1.2rem; }
+  .tech-grid { grid-template-columns:1fr 1fr; }
+  .rev-bars { height:140px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-badge">INVESTOR ROADMAP 2025–2027</div>
+  <h1><span class="g">DropAgentX</span><br>پلتفرم هوشمند تجارت دیجیتال</h1>
+  <p class="sub">ترکیب AI Agent + Marketplace + USDT Wallet در یک اکوسیستم واحد.<br>از ربات تلگرامی تا پلتفرم جهانی.</p>
+</div>
+
+<!-- ═══ KPI ═══ -->
+<div class="kpi-strip rv">
+  <div class="kpi c"><div class="v">۳۰۱</div><div class="l">کاربر ثبت‌شده</div></div>
+  <div class="kpi p"><div class="v">۸۸</div><div class="l">فعال هفتگی</div></div>
+  <div class="kpi g"><div class="v">$3,600</div><div class="l">درآمد تجمعی</div></div>
+  <div class="kpi o"><div class="v">$5</div><div class="l">هزینه سرور/ماه</div></div>
+</div>
+
+<div class="wrap">
+
+<!-- ═══ PHASES TIMELINE ═══ -->
+<div class="phases rv">
+  <h2>🗺️ نقشه راه فازها</h2>
+  <p class="sub-h">از MVP تا پلتفرم جهانی — ۴ فاز اصلی</p>
+  <div class="tl-line"></div>
+
+  <!-- PHASE 0 ✅ -->
+  <div class="phase done">
+    <div class="phase-marker">✓</div>
+    <div class="phase-card">
+      <div class="phase-head">
+        <span class="phase-tag">COMPLETED</span>
+        <span class="phase-title">فاز ۰ — MVP و راه‌اندازی</span>
+      </div>
+      <p class="phase-desc">ساخت و راه‌اندازی ربات هوشمند تلگرام با قابلیت فروش محصولات دیجیتال، چت AI و کیف پول USDT. تست بازار با ۳۰۱ کاربر واقعی.</p>
+      <div class="feature-grid">
+        <div class="feature-chip done-f"><span class="icon">🤖</span> ربات تلگرام هوشمند</div>
+        <div class="feature-chip done-f"><span class="icon">💬</span> چت AI با حافظه</div>
+        <div class="feature-chip done-f"><span class="icon">🛒</span> مارکت‌پلیس محصولات</div>
+        <div class="feature-chip done-f"><span class="icon">💰</span> کیف پول USDT</div>
+        <div class="feature-chip done-f"><span class="icon">👤</span> هویت و پروفایل</div>
+        <div class="feature-chip done-f"><span class="icon">🔐</span> سیستم احراز هویت</div>
+        <div class="feature-chip done-f"><span class="icon">📊</span> داشبورد آنالیتیکس</div>
+        <div class="feature-chip done-f"><span class="icon">🧪</span> ۹۲ تست خودکار</div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-pill"><strong>۳۰۱</strong> کاربر</div>
+        <div class="metric-pill"><strong>۸۸</strong> فعال/هفته</div>
+        <div class="metric-pill"><strong>۷۲</strong> فروش</div>
+        <div class="metric-pill"><strong>۲۴</strong> ویژگی</div>
+        <div class="metric-pill"><strong>۳۸</strong> جدول دیتابیس</div>
+        <div class="metric-pill"><strong>۸,۵۰۰</strong> ظرفیت</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 1 🔵 -->
+  <div class="phase active">
+    <div class="phase-marker">۱</div>
+    <div class="phase-card">
+      <div class="phase-head">
+        <span class="phase-tag">IN PROGRESS</span>
+        <span class="phase-title">فاز ۱ — رشد و بهینه‌سازی</span>
+      </div>
+      <p class="phase-desc">تقویت زیرساخت، رفع باگ‌های امنیتی، بهینه‌سازی عملکرد و آماده‌سازی برای رشد سریع. افزایش نرخ تبدیل کاربر و کاهش هزینه عملیاتی.</p>
+      <div class="feature-grid">
+        <div class="feature-chip active-f"><span class="icon">🛡️</span> Hardening امنیتی</div>
+        <div class="feature-chip active-f"><span class="icon">⚡</span> بهینه‌سازی سرعت</div>
+        <div class="feature-chip active-f"><span class="icon">📱</span> رابط کاربری وب</div>
+        <div class="feature-chip active-f"><span class="icon">🔄</span> CI/CD Pipeline</div>
+        <div class="feature-chip active-f"><span class="icon">📈</span> سیستم ارجاع</div>
+        <div class="feature-chip active-f"><span class="icon">🎯</span> بهینه‌سازی تبدیل</div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-pill">هدف: <strong>۱,۰۰۰</strong> کاربر</div>
+        <div class="metric-pill">هدف: <strong>$1,200</strong> MRR</div>
+        <div class="metric-pill">هدف: <strong>۳۰%</strong> نرخ هفتگی</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 🟣 -->
+  <div class="phase future">
+    <div class="phase-marker">۲</div>
+    <div class="phase-card">
+      <div class="phase-head">
+        <span class="phase-tag">Q3 2025</span>
+        <span class="phase-title">فاز ۲ — اکوسیستم هوشمند</span>
+      </div>
+      <p class="phase-desc">تبدیل ربات به پلتفرم جامع با API باز، سیستم Skill Marketplace، AI Agent قابل برنامه‌ریزی و یکپارچه‌سازی با درگاه‌های پرداخت.</p>
+      <div class="feature-grid">
+        <div class="feature-chip future-f"><span class="icon">🔌</span> Open API</div>
+        <div class="feature-chip future-f"><span class="icon">🧩</span> Skill Marketplace</div>
+        <div class="feature-chip future-f"><span class="icon">🧠</span> AI Agent قابل برنامه‌ریزی</div>
+        <div class="feature-chip future-f"><span class="icon">💳</span> درگاه پرداخت</div>
+        <div class="feature-chip future-f"><span class="icon">🌐</span> رابط وب کامل</div>
+        <div class="feature-chip future-f"><span class="icon">📦</span> Multi-platform support</div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-pill">هدف: <strong>۱۰,۰۰۰</strong> کاربر</div>
+        <div class="metric-pill">هدف: <strong>$8,000</strong> MRR</div>
+        <div class="metric-pill">هدف: <strong>۳</strong> پلتفرم</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 🟡 -->
+  <div class="phase future">
+    <div class="phase-marker">۳</div>
+    <div class="phase-card">
+      <div class="phase-head">
+        <span class="phase-tag">Q1 2026</span>
+        <span class="phase-title">فاز ۳ — مقیاس‌پذیری جهانی</span>
+      </div>
+      <p class="phase-desc">بازار چندزبانه، سیستم affiliate، مدل‌های AI اختصاصی و زیرساخت multi-tenant برای SaaS. ترکیب DeFi + AI Commerce.</p>
+      <div class="feature-grid">
+        <div class="feature-chip future-f"><span class="icon">🌍</span> بازار چندزبانه</div>
+        <div class="feature-chip future-f"><span class="icon">🤝</span> Affiliate Program</div>
+        <div class="feature-chip future-f"><span class="icon">🤖</span> مدل AI اختصاصی</div>
+        <div class="feature-chip future-f"><span class="icon">🏢</span> Multi-tenant SaaS</div>
+        <div class="feature-chip future-f"><span class="icon">⛓️</span> DeFi Integration</div>
+        <div class="feature-chip future-f"><span class="icon">📊</span> Analytics Enterprise</div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-pill">هدف: <strong>۱۰۰,۰۰۰</strong> کاربر</div>
+        <div class="metric-pill">هدف: <strong>$50,000</strong> MRR</div>
+        <div class="metric-pill">هدف: <strong>۱۰+</strong> کشور</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 👁️ -->
+  <div class="phase vision">
+    <div class="phase-marker">∞</div>
+    <div class="phase-card">
+      <div class="phase-head">
+        <span class="phase-tag">VISION</span>
+        <span class="phase-title">چشم‌انداز — اکوسیستم کامل</span>
+      </div>
+      <p class="phase-desc">پلتفرمی که در آن هر کسی می‌تواند AI Agent اختصاصی خود را بسازد، محصولات دیجیتال بفروشد و درآمد غیرفعال ایجاد کند — بدون نیاز به تیم فنی.</p>
+      <div class="feature-grid">
+        <div class="feature-chip future-f"><span class="icon">🏗️</span> AI Agent Builder</div>
+        <div class="feature-chip future-f"><span class="icon">💰</span> Passive Income Engine</div>
+        <div class="feature-chip future-f"><span class="icon">🌐</span> Global Digital Economy</div>
+        <div class="feature-chip future-f"><span class="icon">🎓</span> Education Platform</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ REVENUE PROJECTION ═══ -->
+<div class="revenue rv">
+  <h3>📈 پیش‌بینی درآمد (MRR)</h3>
+  <div class="rev-bars">
+    <div class="rev-bar-wrap">
+      <div class="rev-bar" style="height:8%;background:var(--green)"><span class="rv" style="color:var(--green)">$1,200</span></div>
+      <div class="rev-label">اکنون</div>
+    </div>
+    <div class="rev-bar-wrap">
+      <div class="rev-bar" style="height:20%;background:var(--cyan)"><span class="rv" style="color:var(--cyan)">$3,000</span></div>
+      <div class="rev-label">Q4 2025</div>
+    </div>
+    <div class="rev-bar-wrap">
+      <div class="rev-bar" style="height:40%;background:var(--purple)"><span class="rv" style="color:var(--purple)">$8,000</span></div>
+      <div class="rev-label">Q1 2026</div>
+    </div>
+    <div class="rev-bar-wrap">
+      <div class="rev-bar" style="height:65%;background:var(--pink)"><span class="rv" style="color:var(--pink)">$15,000</span></div>
+      <div class="rev-label">Q2 2026</div>
+    </div>
+    <div class="rev-bar-wrap">
+      <div class="rev-bar" style="height:85%;background:var(--orange)"><span class="rv" style="color:var(--orange)">$30,000</span></div>
+      <div class="rev-label">Q4 2026</div>
+    </div>
+    <div class="rev-bar-wrap">
+      <div class="rev-bar" style="height:100%;background:linear-gradient(180deg,var(--gold),var(--orange))"><span class="rv" style="color:var(--gold)">$50,000</span></div>
+      <div class="rev-label">2027</div>
+    </div>
+  </div>
+  <div class="rev-axis">
+    <div class="rev-label">اکنون</div>
+    <div class="rev-label">+6 ماه</div>
+    <div class="rev-label">+12 ماه</div>
+    <div class="rev-label">+18 ماه</div>
+    <div class="rev-label">+24 ماه</div>
+    <div class="rev-label">+36 ماه</div>
+  </div>
+</div>
+
+<!-- ═══ TECH STACK ═══ -->
+<div class="tech rv">
+  <h2>⚙️ Tech Stack</h2>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-icon">🐍</div><div class="tech-name">Python</div><div class="tech-detail">Backend Core</div></div>
+    <div class="tech-item"><div class="tech-icon">🤖</div><div class="tech-name">Telegram Bot</div><div class="tech-detail">python-telegram-bot</div></div>
+    <div class="tech-item"><div class="tech-icon">🧠</div><div class="tech-name">Hermes AI</div><div class="tech-detail">AI Engine</div></div>
+    <div class="tech-item"><div class="tech-icon">🗄️</div><div class="tech-name">SQLite</div><div class="tech-detail">38 جدول</div></div>
+    <div class="tech-item"><div class="tech-icon">🐳</div><div class="tech-name">Docker</div><div class="tech-detail">Containerized</div></div>
+    <div class="tech-item"><div class="tech-icon">🔐</div><div class="tech-name">JWT Auth</div><div class="tech-detail">Token-based</div></div>
+    <div class="tech-item"><div class="tech-icon">⛓️</div><div class="tech-name">USDT/TRC20</div><div class="tech-detail">Crypto Wallet</div></div>
+    <div class="tech-item"><div class="tech-icon">🧪</div><div class="tech-name">pytest</div><div class="tech-detail">۹۲ تست</div></div>
+    <div class="tech-item"><div class="tech-icon">🌐</div><div class="tech-name">HTML/JS</div><div class="tech-detail">Dashboard</div></div>
+    <div class="tech-item"><div class="tech-icon">📊</div><div class="tech-name">OpenTelemetry</div><div class="tech-detail">Observability</div></div>
+    <div class="tech-item"><div class="tech-icon">🔒</div><div class="tech-name">RL Guard</div><div class="tech-detail">Model Safety</div></div>
+    <div class="tech-item"><div class="tech-icon">⚡</div><div class="tech-name">Async I/O</div><div class="tech-detail">Non-blocking</div></div>
+  </div>
+</div>
+
+</div><!-- .wrap -->
+
+<!-- ═══ FAQ ═══ -->
+<div class="faq rv">
+  <h2>❓ سوالات سرمایه‌گذاران</h2>
+  <div class="fqi" onclick="tf(this)"><div class="fqi-q">مدل درآمدی چیه؟ <span class="arr">▾</span></div><div class="fqi-a">سیستم کردیت مصرفی (credits) + فروش محصولات دیجیتال + کمیسیون تراکنش‌ها. کاربران برای هر پیام AI و هر خرید پرداخت می‌کنند. MRR فعلی ~$1,200.</div></div>
+  <div class="fqi" onclick="tf(this)"><div class="fqi-q">هزینه عملیاتی چقدره؟ <span class="arr">▾</span></div><div class="fqi-a">سرور $5/ماه. هزینه API هوش مصنوعی متغیر بر اساس مصرف. حاشیه سود خالص بالا به دلیل زیرساخت سبک و کارآمد.</div></div>
+  <div class="fqi" onclick="tf(this)"><div class="fqi-q">مزیت رقابتی چیه؟ <span class="arr">▾</span></div><div class="fqi-a">ترکیب منحصربفرد AI + Marketplace + Wallet در یک پلتفرم. رقبا یا AI دارن یا مارکت‌پلیس — ما هر دو رو یکجا داریم با هزینه اجرایی ناچیز.</div></div>
+  <div class="fqi" onclick="tf(this)"><div class="fqi-q">تیم چند نفره؟ <span class="arr">▾</span></div><div class="fqi-a">بنیان‌گذار: KIA (@ImXforever) — مهندس RL با تجربه ساخت ۳۰+ پروژه و مدیریت تیم‌های فنی. تمام کد توسط یک نفر ساخته شده.</div></div>
+  <div class="fqi" onclick="tf(this)"><div class="fqi-q">چه سرمایه‌ای نیاز دارید؟ <span class="arr">▾</span></div><div class="fqi-a">در حال حاضر bootstrap اجرا می‌شه. برای فاز ۲ (اکوسیستم هوشمند) به سرمایه‌گذاری اولیه برای زیرساخت و بازاریابی نیاز هست.</div></div>
+</div>
+
+<!-- ═══ CTA ═══ -->
+<div class="cta-box rv">
+  <h2>آماده سرمایه‌گذاری هستید؟</h2>
+  <p>با ما تماس بگیرید — بیایید آینده تجارت دیجیتال رو بسازیم.</p>
+  <a href="https://t.me/ImXforever" class="cta-btn">💬 ارتباط مستقیم</a>
+</div>
+
+<div class="footer">Built by <a href="https://github.com/ImXforever">@ImXforever</a> · DropAgentX · 2025<br><span style="margin-top:6px;display:inline-block">Confidential — Investor Roadmap</span></div>
+
+<script>
+function tf(el){el.classList.toggle('open')}
+var obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('vis');obs.unobserve(x.target)}})},{threshold:.1});
+document.querySelectorAll('.rv').forEach(function(el){obs.observe(el)});
+</script>
+</body>
+</html>

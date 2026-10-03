@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ImXforever — Portfolio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+  :root {
+    --cyan: #22d3ee;
+    --purple: #a78bfa;
+    --green: #34d399;
+    --gold: #fbbf24;
+    --pink: #f472b6;
+    --orange: #fb923c;
+    --bg: #06060e;
+    --surface: rgba(12,12,24,0.85);
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: #e4e4e7;
+    overflow-x: hidden;
+    cursor: default;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ─── Three.js canvas ─── */
+  #bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* ─── Scroll container ─── */
+  .scroll-container {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── Sections ─── */
+  section {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    position: relative;
+  }
+
+  /* ─── Hero ─── */
+  .hero { flex-direction: column; text-align: center; }
+
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(0.65rem, 2vw, 0.85rem);
+    color: var(--cyan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s ease forwards;
+  }
+
+  .hero h1 {
+    font-size: clamp(3.5rem, 12vw, 7rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -3px;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s ease forwards;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-sub {
+    font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+    color: #71717a;
+    max-width: 500px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.7s ease forwards;
+    padding: 0 16px;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.9s ease forwards;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 32px;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+    cursor: pointer;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    will-change: transform;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    color: #06060e;
+    box-shadow: 0 0 40px rgba(34,211,238,0.25);
+  }
+  .btn-primary:hover, .btn-primary:active {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 0 60px rgba(34,211,238,0.4);
+  }
+
+  .btn-ghost {
+    background: rgba(255,255,255,0.05);
+    color: #e4e4e7;
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+  }
+  .btn-ghost:hover, .btn-ghost:active {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-3px);
+    border-color: var(--cyan);
+  }
+
+  .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    animation: fadeUp 0.8s 1.2s ease forwards;
+  }
+  .scroll-hint .mouse {
+    display: block;
+    width: 24px;
+    height: 40px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    position: relative;
+    margin: 0 auto 8px;
+  }
+  .scroll-hint .mouse::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 10px;
+    background: var(--cyan);
+    border-radius: 2px;
+    animation: scrollDot 1.5s ease infinite;
+  }
+  @keyframes scrollDot {
+    0%,100% { opacity:1; top:8px; }
+    50% { opacity:0.3; top:20px; }
+  }
+
+  /* ─── Stats section ─── */
+  .stats-section { flex-direction: column; gap: 50px; }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .section-header h2 {
+    font-size: clamp(1.6rem, 5vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+  }
+  .section-header p {
+    color: #71717a;
+    font-size: clamp(0.85rem, 2vw, 1rem);
+    margin-top: 8px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 28px 16px;
+    text-align: center;
+    backdrop-filter: blur(20px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(34,211,238,0.3);
+    box-shadow: 0 20px 60px rgba(34,211,238,0.1);
+  }
+
+  .stat-card .icon { font-size: 2rem; margin-bottom: 12px; }
+  .stat-card .val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-card .lbl {
+    font-size: 0.75rem;
+    color: #71717a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .stat-card:nth-child(1) .val { color: var(--cyan); }
+  .stat-card:nth-child(2) .val { color: var(--green); }
+  .stat-card:nth-child(3) .val { color: var(--gold); }
+  .stat-card:nth-child(4) .val { color: var(--pink); }
+
+  /* ─── Repo cards ─── */
+  .repos-section { flex-direction: column; gap: 40px; }
+
+  .repos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .repo-card {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 24px;
+    backdrop-filter: blur(20px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .repo-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 20px 20px 0 0;
+  }
+  .repo-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    border-color: rgba(34,211,238,0.2);
+  }
+
+  .repo-card[data-tier="1"]::before { background: linear-gradient(90deg, var(--cyan), var(--purple)); }
+  .repo-card[data-tier="2"]::before { background: linear-gradient(90deg, var(--purple), var(--pink)); }
+  .repo-card[data-tier="3"]::before { background: linear-gradient(90deg, var(--gold), var(--orange)); }
+  .repo-card[data-tier="4"]::before { background: linear-gradient(90deg, #52525b, #3f3f46); }
+
+  .repo-card .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .repo-card .name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #fff;
+    word-break: break-all;
+  }
+  .repo-card .tier {
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .t1 { background: rgba(34,211,238,0.15); color: var(--cyan); }
+  .t2 { background: rgba(167,139,250,0.15); color: var(--purple); }
+  .t3 { background: rgba(251,191,36,0.15); color: var(--gold); }
+  .t4 { background: rgba(113,113,122,0.15); color: #71717a; }
+
+  .repo-card .desc {
+    font-size: 0.82rem;
+    color: #71717a;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .repo-card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.72rem;
+    color: #52525b;
+    margin-bottom: 14px;
+  }
+  .repo-card .meta span { display: inline-flex; align-items: center; gap: 4px; }
+
+  .repo-card .val-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .repo-card .val {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .repo-card .pct {
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+  .repo-card .bar {
+    width: 100%;
+    height: 5px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  .repo-card .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  /* ─── CTA section ─── */
+  .cta-section { text-align: center; }
+  .cta-section h2 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+  .cta-section p {
+    color: #71717a;
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    margin-bottom: 40px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-glow {
+    position: relative;
+    display: inline-block;
+  }
+  .cta-glow::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
+    filter: blur(20px);
+    opacity: 0.4;
+    z-index: -1;
+    animation: glow 3s ease infinite alternate;
+  }
+  @keyframes glow {
+    0% { opacity: 0.3; filter: blur(20px); }
+    100% { opacity: 0.6; filter: blur(30px); }
+  }
+
+  /* ─── Footer ─── */
+  .footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px 24px;
+    color: #3f3f46;
+    font-size: 0.8rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  /* ─── Animations ─── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(30px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── Reduced motion ─── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 768px) {
+    section { padding: 40px 16px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .stat-card { padding: 20px 12px; }
+    .repos-grid { grid-template-columns: 1fr; }
+    .hero-buttons { flex-direction: column; align-items: center; }
+    .hero-buttons .btn { width: 100%; max-width: 300px; justify-content: center; }
+    .hero h1 { letter-spacing: -1px; }
+    .scroll-hint { bottom: 20px; }
+  }
+
+  @media (max-width: 400px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .stat-card { padding: 16px 10px; }
+    .stat-card .icon { font-size: 1.5rem; }
+    .repo-card { padding: 18px; }
+  }
+
+  @media (min-width: 1400px) {
+    .repos-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="scroll-container">
+
+  <!-- ═══════ HERO ═══════ -->
+  <section class="hero">
+    <div class="hero-tag">RL Engineer · Builder · Trader</div>
+    <h1><span class="gradient">KIA</span></h1>
+    <p class="hero-sub">
+      Building AI agents, trading bots, and social commerce —
+      one first-principle at a time.
+    </p>
+    <div class="hero-buttons">
+      <a href="https://github.com/ImXforever" target="_blank" rel="noopener" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        View on GitHub
+      </a>
+      <a href="#stats" class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        See Portfolio
+      </a>
+    </div>
+    <div class="scroll-hint" aria-hidden="true">
+      <span class="mouse"></span>
+      <div style="font-size:0.7rem;color:#52525b">scroll</div>
+    </div>
+  </section>
+
+  <!-- ═══════ STATS ═══════ -->
+  <section class="stats-section" id="stats">
+    <div class="section-header reveal">
+      <h2>Portfolio at a Glance</h2>
+      <p>$19K — $38K estimated across 34 repositories</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="icon">📦</div>
+        <div class="val">34</div>
+        <div class="lbl">Repositories</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="icon">💎</div>
+        <div class="val">$29K</div>
+        <div class="lbl">Total Value</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="icon">🧠</div>
+        <div class="val">4</div>
+        <div class="lbl">RL Projects</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="icon">👥</div>
+        <div class="val">308</div>
+        <div class="lbl">Active Users</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ REPOS ═══════ -->
+  <section class="repos-section" id="repos">
+    <div class="section-header reveal">
+      <h2>Top Repositories</h2>
+      <p>Ranked by estimated dollar value</p>
+    </div>
+    <div class="repos-grid" id="reposGrid"></div>
+  </section>
+
+  <!-- ═══════ CTA ═══════ -->
+  <section class="cta-section">
+    <div class="reveal">
+      <h2>Let's Build.</h2>
+      <p>Open source. First principles. Zero fluff.</p>
+      <div class="cta-glow">
+        <a href="https://github.com/ImXforever" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:1.1rem;padding:20px 48px;">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:24px;height:24px"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          github.com/ImXforever
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    ImXforever · KIA · Built with first principles
+  </div>
+
+</div>
+
+<!-- ═══════ THREE.JS ═══════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // ─── Device detection ───
+  const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent)
+                   || window.innerWidth < 768;
+  const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ─── Adaptive particle count ───
+  const COUNT = prefersReducedMotion ? 0 : (isMobile ? 300 : isLowEnd ? 500 : 1000);
+  const PIXEL_RATIO = Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2);
+
+  // ─── Three.js setup ───
+  const canvas = document.getElementById('bg');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !isMobile, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(PIXEL_RATIO);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 0, 30);
+
+  let sceneGroup;
+  let particleGeo = null;
+  let initialPositions = null;
+
+  if (COUNT > 0) {
+    sceneGroup = new THREE.Group();
+    scene.add(sceneGroup);
+
+    // ─── Particles ───
+    particleGeo = new THREE.BufferGeometry();
+    const positions = new Float32Array(COUNT * 3);
+    const colors = new Float32Array(COUNT * 3);
+    const palette = [
+      [0.133, 0.827, 0.933],
+      [0.655, 0.545, 0.980],
+      [0.204, 0.827, 0.600],
+      [0.984, 0.745, 0.141],
+    ];
+
+    for (let i = 0; i < COUNT; i++) {
+      const i3 = i * 3;
+      positions[i3]     = (Math.random() - 0.5) * 80;
+      positions[i3 + 1] = (Math.random() - 0.5) * 80;
+      positions[i3 + 2] = (Math.random() - 0.5) * 60;
+      const c = palette[Math.floor(Math.random() * palette.length)];
+      colors[i3]     = c[0];
+      colors[i3 + 1] = c[1];
+      colors[i3 + 2] = c[2];
+    }
+
+    // Store base positions for wave animation (no drift)
+    initialPositions = new Float32Array(positions);
+
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const mat = new THREE.PointsMaterial({
+      size: isMobile ? 0.2 : 0.15,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.7,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
+    sceneGroup.add(new THREE.Points(particleGeo, mat));
+
+    // ─── Grid plane ───
+    const gridGeo = new THREE.PlaneGeometry(100, 100, isMobile ? 20 : 40, isMobile ? 20 : 40);
+    const gridMat = new THREE.MeshBasicMaterial({
+      color: 0x22d3ee,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.04,
+    });
+    const gridMesh = new THREE.Mesh(gridGeo, gridMat);
+    gridMesh.rotation.x = -Math.PI / 2;
+    gridMesh.position.y = -15;
+    sceneGroup.add(gridMesh);
+
+    // ─── Floating rings (reduced on mobile) ───
+    const ringCount = isMobile ? 2 : 3;
+    const rings = [];
+    for (let i = 0; i < ringCount; i++) {
+      const ringGeo = new THREE.TorusGeometry(6 + i * 4, 0.05, 8, isMobile ? 32 : 64);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: [0x22d3ee, 0xa78bfa, 0x34d399][i],
+        transparent: true,
+        opacity: 0.12,
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.y = -8 + i * 2;
+      ring.rotation.x = Math.PI / 3 + i * 0.2;
+      ring.userData = { speed: 0.001 + i * 0.0005, baseY: -8 + i * 2, axis: i };
+      sceneGroup.add(ring);
+      rings.push(ring);
+    }
+
+    // Expose for animate
+    window._rings = rings;
+  }
+
+  // ─── Mouse / Touch tracking ───
+  let mx = 0, my = 0;
+  let targetMx = 0, targetMy = 0;
+
+  document.addEventListener('mousemove', function(e) {
+    targetMx = (e.clientX / window.innerWidth - 0.5) * 2;
+    targetMy = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  // Touch support for parallax on mobile
+  document.addEventListener('touchmove', function(e) {
+    if (e.touches.length === 1) {
+      targetMx = (e.touches[0].clientX / window.innerWidth - 0.5) * 2;
+      targetMy = (e.touches[0].clientY / window.innerHeight - 0.5) * 2;
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', function() {
+    targetMx = 0;
+    targetMy = 0;
+  }, { passive: true });
+
+  // ─── Scroll tracking ───
+  let scrollY = 0;
+  let targetScrollY = 0;
+  window.addEventListener('scroll', function() {
+    targetScrollY = window.scrollY;
+  }, { passive: true });
+
+  // ─── Animation loop ───
+  const clock = new THREE.Clock();
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    // Skip rendering when tab is hidden
+    if (document.hidden) return;
+
+    const elapsed = clock.getElapsedTime();
+
+    // Smooth interpolation (lerp) for mouse & scroll
+    mx += (targetMx - mx) * 0.05;
+    my += (targetMy - my) * 0.05;
+    scrollY += (targetScrollY - scrollY) * 0.08;
+
+    if (sceneGroup && COUNT > 0) {
+      // Rotate particles — use base rotation + mouse offset
+      sceneGroup.rotation.y = elapsed * 0.05 + mx * 0.15;
+      sceneGroup.rotation.x = my * 0.08;
+      sceneGroup.position.y = -scrollY * 0.003;
+
+      // Wave particles — from initial positions (NO drift)
+      if (particleGeo && initialPositions) {
+        const pos = particleGeo.attributes.position.array;
+        for (let i = 0; i < COUNT; i++) {
+          const i3 = i * 3;
+          pos[i3 + 1] = initialPositions[i3 + 1] + Math.sin(elapsed + initialPositions[i3] * 0.1) * 1.5;
+        }
+        particleGeo.attributes.position.needsUpdate = true;
+      }
+
+      // Float rings — oscillate around baseY (NO drift)
+      if (window._rings) {
+        window._rings.forEach(function(ring) {
+          ring.rotation.z = elapsed * ring.userData.speed * 60;
+          ring.position.y = ring.userData.baseY + Math.sin(elapsed * 0.5 + ring.userData.axis) * 1.5;
+        });
+      }
+    }
+
+    // Camera parallax
+    camera.position.x += (mx * 2 - camera.position.x) * 0.02;
+    camera.position.y += (-my * 2 - camera.position.y) * 0.02;
+    camera.lookAt(0, -scrollY * 0.003, 0);
+
+    renderer.render(scene, camera);
+  }
+
+  if (!prefersReducedMotion) {
+    animate();
+  } else {
+    // Static render for reduced-motion
+    renderer.render(scene, camera);
+  }
+
+  // ─── Resize handler (debounced) ───
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }, 150);
+  });
+
+  // ─── Tab visibility — pause when hidden ───
+  document.addEventListener('visibilitychange', function() {
+    if (!document.hidden && !prefersReducedMotion) {
+      clock.start();
+    }
+  });
+
+  // ─── Scroll Reveal (live — catches dynamically added elements) ───
+  const revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Animate bar fills
+        entry.target.querySelectorAll('.bar-fill').forEach(function(bar) {
+          setTimeout(function() { bar.style.width = bar.dataset.w; }, 200);
+        });
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  // ─── Repo Cards ───
+  var reposData = [
+    { name:"DropAgentXBot", lang:"Python", tier:1, lo:8000, hi:15000, desc:"Social commerce Telegram bot with AI agent, multi-faceted memory, identity RL, USDT treasury, A2A/MCP", users:"308", tags:["AI","Marketplace","USDT"] },
+    { name:"DropAgentXmain", lang:"Python", tier:1, lo:3000, hi:5000, desc:"Monorepo — Docker, FastAPI, Next.js, 12 topics, full production stack", users:"—", tags:["Monorepo","Docker","FastAPI"] },
+    { name:"GQR-v1", lang:"Python", tier:2, lo:2000, hi:4000, desc:"Transformer Actor-Critic, PPO trainer, SMC engine, DXY-Nexus cross-asset fusion, model guard rollback", users:"—", tags:["RL","Trading","PyTorch"] },
+    { name:"GQR-v2", lang:"TypeScript", tier:2, lo:1500, hi:3000, desc:"1166 lines of technical indicators + 420 lines of codebase analysis engine", users:"—", tags:["Indicators","TypeScript"] },
+    { name:"GQR-v3", lang:"TypeScript", tier:2, lo:1000, hi:2000, desc:"Third iteration of the quantitative trading system", users:"—", tags:["RL","Quant"] },
+    { name:"solmarket", lang:"TypeScript", tier:2, lo:800, hi:1500, desc:"SOL + USDC marketplace on Solana", users:"—", tags:["Solana","DeFi"] },
+    { name:"DOGE", lang:"HTML", tier:1, lo:500, hi:1000, desc:"9 Dogecoin dashboards — easy to legendary", users:"—", tags:["Crypto","Dashboard"] },
+    { name:"Pyhub", lang:"HTML", tier:1, lo:300, hi:600, desc:"Python reference + interactive workshop with Pyodide, PWA, gamification", users:"—", tags:["Python","PWA"] },
+    { name:"Neon-Prompt-Studio", lang:"HTML", tier:3, lo:200, hi:400, desc:"Neon Prompt Studio Ultimate", users:"—", tags:["AI","Prompts"] },
+    { name:"X", lang:"HTML", tier:3, lo:300, hi:600, desc:"MT5 Fetcher — MetaTrader data pipeline", users:"—", tags:["Trading","MT5"] },
+    { name:"senpai-bot", lang:"JavaScript", tier:3, lo:200, hi:400, desc:"Telegram bot", users:"—", tags:["Bot","Telegram"] },
+    { name:"0xElon", lang:"Python", tier:3, lo:200, hi:400, desc:"HermesBOT", users:"—", tags:["AI","Bot"] },
+  ];
+
+  var totalMid = 29025;
+  var reposGrid = document.getElementById('reposGrid');
+  var tierLabels = ['', '\u{1F525} Core', '\u{1F9E0} RL', '\u{1F6E0}\uFE0F Tool', '\u{1F4E6} Proto'];
+
+  var fragment = document.createDocumentFragment();
+
+  reposData.forEach(function(r, i) {
+    var mid = Math.round((r.lo + r.hi) / 2);
+    var pct = (mid / totalMid * 100).toFixed(1);
+    var valColor = r.tier === 1 ? 'var(--cyan)' : r.tier === 2 ? 'var(--purple)' : r.tier === 3 ? 'var(--gold)' : '#71717a';
+    var gradient = r.tier === 1 ? 'var(--cyan),var(--purple)' :
+                   r.tier === 2 ? 'var(--purple),var(--pink)' :
+                   r.tier === 3 ? 'var(--gold),var(--orange)' : '#52525b,#3f3f46';
+
+    var card = document.createElement('div');
+    card.className = 'repo-card reveal';
+    card.setAttribute('data-tier', r.tier);
+    card.innerHTML =
+      '<div class="top">' +
+        '<div class="name">' + r.name + '</div>' +
+        '<div class="tier t' + r.tier + '">' + tierLabels[r.tier] + '</div>' +
+      '</div>' +
+      '<div class="desc">' + r.desc + '</div>' +
+      '<div class="meta">' +
+        '<span>\u{1F535} ' + r.lang + '</span>' +
+        (r.users !== '\u2014' ? '<span>\u{1F465} ' + r.users + ' users</span>' : '') +
+        r.tags.map(function(t) { return '<span>#' + t + '</span>'; }).join('') +
+      '</div>' +
+      '<div class="val-row">' +
+        '<div class="val" style="color:' + valColor + '">$' + r.lo.toLocaleString() + ' \u2014 $' + r.hi.toLocaleString() + '</div>' +
+        '<div class="pct">' + pct + '%</div>' +
+      '</div>' +
+      '<div class="bar"><div class="bar-fill" data-w="' + pct + '%" style="background:linear-gradient(90deg,' + gradient + ')"></div></div>';
+
+    fragment.appendChild(card);
+  });
+
+  reposGrid.appendChild(fragment);
+
+  // ─── Observe all .reveal elements (including dynamically added) ───
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    revealObserver.observe(el);
+  });
+
+})();
+</script>
+
+</body>
+</html>

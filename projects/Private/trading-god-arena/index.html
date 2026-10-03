@@ -1,0 +1,4013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+    <title>Trading God Arena v10 · Elon Musk Edition · Desktop Optimized</title>
+    <meta name="theme-color" content="#0a0015" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="description" content="Trading God Arena v10 - Ultimate Trading Simulator with 8 AI Gods, Battle Arena, Skill Tree, Elon Advisor, Desktop UI, Bot Timeline & R1/R2/R3 Risk Manager." />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon-192.svg" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ================================================================
+               GLOBAL RESET & VARIABLES — DIVINE CYBER THEME v10
+               ================================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        :root {
+            --bg-primary: #0a0015;
+            --bg-secondary: #12082a;
+            --bg-card: #1a0d3a;
+            --bg-hover: #2a1a5a;
+            --text-primary: #e8d5ff;
+            --text-secondary: #a88bdd;
+            --text-dim: #6a4a9a;
+            --accent: #7c3aed;
+            --accent-dim: rgba(124,58,237,0.15);
+            --gold: #ffd700;
+            --gold-bg: rgba(255,215,0,0.08);
+            --cyan: #00d4ff;
+            --cyan-bg: rgba(0,212,255,0.08);
+            --purple: #b388ff;
+            --purple-bg: rgba(179,136,255,0.08);
+            --pink: #ff6bff;
+            --pink-bg: rgba(255,107,255,0.08);
+            --green: #00ff88;
+            --green-bg: rgba(0,255,136,0.12);
+            --red: #ff1744;
+            --red-bg: rgba(255,23,68,0.12);
+            --orange: #ff8a4a;
+            --orange-bg: rgba(255,138,74,0.08);
+            --radius: 8px;
+            --radius-sm: 4px;
+            --radius-lg: 14px;
+            --radius-xl: 20px;
+            --font: 'Inter', system-ui, sans-serif;
+            --mono: 'JetBrains Mono', 'Courier New', monospace;
+            --display: 'Orbitron', 'Inter', sans-serif;
+            --border: #2a1a5a;
+            --border-strong: #4a2a8a;
+            --shadow: 0 4px 60px rgba(0,0,0,0.8);
+            --shadow-glow: 0 0 80px rgba(124,58,237,0.03);
+            --transition: 0.2s ease-out;
+            --header-height: 56px;
+            --nav-height: 60px;
+        }
+        html, body {
+            height: 100%;
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-secondary);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-primary);
+        }
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+            background: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ================================================================
+               DIVINE HEADER v10
+               ================================================================ */
+        .divine-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 14px;
+            background: var(--bg-secondary);
+            border-bottom: 2px solid var(--border-strong);
+            flex-shrink: 0;
+            height: var(--header-height);
+        }
+        .divine-header .title {
+            font-family: var(--display);
+            font-size: 0.85rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffd700, #ff6bff, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+        }
+        .divine-header .title .sub {
+            font-size: 0.5rem;
+            -webkit-text-fill-color: var(--text-secondary);
+            font-family: var(--font);
+            font-weight: 400;
+        }
+        .divine-header .stats {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 0.55rem;
+            color: var(--text-secondary);
+        }
+        .divine-header .stats .stat {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .divine-header .stats .stat .val {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        .divine-header .stats .stat .val.gold { color: var(--gold); }
+        .divine-header .stats .stat .val.cyan { color: var(--cyan); }
+        .divine-header .stats .stat .val.pink { color: var(--pink); }
+        .divine-header .elon-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--gold-bg);
+            border: 1px solid rgba(255,215,0,0.2);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.45rem;
+            color: var(--gold);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .divine-header .elon-badge:hover {
+            background: var(--gold-bg);
+            border-color: var(--gold);
+            transform: scale(1.05);
+        }
+
+        /* ================================================================
+               TRADE HEADER
+               ================================================================ */
+        .trade-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            padding: 0 6px;
+            height: 48px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+            flex-shrink: 0;
+        }
+        .sell-box, .buy-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2px 0;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: var(--radius);
+        }
+        .sell-box { background: var(--red-bg); border: 1px solid var(--red); }
+        .buy-box { background: var(--green-bg); border: 1px solid var(--green); }
+        .sell-box .label, .buy-box .label {
+            font-size: 0.45rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sell-box .price, .buy-box .price {
+            font-size: 0.85rem;
+            font-weight: 800;
+            font-family: var(--mono);
+        }
+        .sell-box .price { color: var(--red); }
+        .buy-box .price { color: var(--green); }
+        .sell-box:hover, .buy-box:hover { transform: scale(1.02); }
+        .volume-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            min-width: 100px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0 8px;
+        }
+        .volume-box .vol-val {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: var(--mono);
+        }
+        .volume-box .vol-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            width: 24px;
+            height: 24px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            font-weight: 700;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+        .volume-box .vol-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        /* ================================================================
+               TOOLBAR
+               ================================================================ */
+        .chart-tools-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2px 12px;
+            background: var(--bg-secondary);
+            height: 32px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .chart-tools-row .left-tools {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .chart-tools-row .left-tools .symbol {
+            font-weight: 800;
+            font-size: 0.7rem;
+            color: var(--text-primary);
+        }
+        .chart-tools-row .left-tools .symbol .sub {
+            font-weight: 400;
+            color: var(--text-secondary);
+            font-size: 0.55rem;
+        }
+        .chart-tools-row .left-tools .tf {
+            font-size: 0.5rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 0 6px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+        .chart-tools-row .left-tools .tf.active {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: var(--gold-bg);
+        }
+        .chart-tools-row .left-tools .tf:hover { border-color: var(--text-secondary); }
+        .chart-tools-row .right-tools {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .chart-tools-row .right-tools .tool-icon {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .chart-tools-row .right-tools .tool-icon:hover { color: var(--text-primary); }
+
+        /* ================================================================
+               MAIN CONTENT v10 — Desktop Adaptive Grid
+               ================================================================ */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 0 0 var(--nav-height) 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .tab-content {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+        .tab-content.active { display: flex; }
+
+        /* ================================================================
+               TAB: ARENA v10 — DESKTOP TWO-COLUMN LAYOUT
+               ================================================================ */
+        #tab-arena {
+            padding: 8px;
+            gap: 8px;
+        }
+        @media (min-width: 1024px) {
+            #tab-arena {
+                display: grid !important;
+                grid-template-columns: 1.8fr 1.2fr;
+                grid-template-rows: auto 1fr;
+                gap: 12px;
+            }
+            #tab-arena .arena-grid { grid-area: 1 / 1 / 2 / 2; }
+            #tab-arena .trade-panel { grid-area: 2 / 1 / 3 / 2; }
+            #tab-arena .position-box { grid-area: 1 / 2 / 2 / 3; }
+            #tab-arena .gods-panel { grid-area: 2 / 2 / 3 / 3; }
+            #tab-arena .battle-arena { grid-area: 3 / 1 / 4 / 3; }
+        }
+
+        .arena-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+        .arena-grid .full { grid-column: 1/-1; }
+        .info-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-glow);
+        }
+        .info-card .row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            padding: 2px 0;
+        }
+        .info-card .row .label { color: var(--text-secondary); font-weight: 500; }
+        .info-card .row .value { font-weight: 700; font-variant-numeric: tabular-nums; }
+        .info-card .row .value.green { color: var(--green); }
+        .info-card .row .value.red { color: var(--red); }
+        .info-card .row .value.gold { color: var(--gold); }
+        .info-card .row .value.cyan { color: var(--cyan); }
+        .info-card .row .value.pink { color: var(--pink); }
+
+        .trade-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 10px 12px;
+            box-shadow: var(--shadow-glow);
+        }
+        .trade-panel label {
+            font-size: 0.45rem;
+            color: var(--text-secondary);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 1px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .trade-panel input[type="number"] {
+            width: 100%;
+            padding: 4px 8px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: var(--font);
+            font-size: 0.6rem;
+            outline: none;
+            transition: var(--transition);
+        }
+        .trade-panel input[type="number"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(124,58,237,0.05);
+        }
+        .trade-panel .btn-row {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .trade-panel .btn-row button {
+            flex: 1;
+            padding: 6px 0;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            font-size: 0.6rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            min-width: 40px;
+            text-transform: uppercase;
+        }
+        .trade-panel .btn-row .btn-buy {
+            background: linear-gradient(135deg, var(--green), #00cc66);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0,255,136,0.15);
+        }
+        .trade-panel .btn-row .btn-buy:hover {
+            box-shadow: 0 0 50px rgba(0,255,136,0.25);
+            transform: scale(1.02);
+        }
+        .trade-panel .btn-row .btn-sell {
+            background: linear-gradient(135deg, var(--red), #b71c1c);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(255,23,68,0.15);
+        }
+        .trade-panel .btn-row .btn-sell:hover {
+            box-shadow: 0 0 50px rgba(255,23,68,0.25);
+            transform: scale(1.02);
+        }
+        .trade-panel .btn-row .btn-close {
+            background: rgba(255,255,255,0.04);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        .trade-panel .btn-row .btn-close:hover { background: rgba(255,255,255,0.08); }
+        .trade-panel .btn-row .btn-skill {
+            background: var(--purple-bg);
+            color: var(--purple);
+            border: 1px solid rgba(179,136,255,0.1);
+            font-size: 0.5rem;
+        }
+        .trade-panel .btn-row .btn-skill:hover {
+            background: var(--purple-bg);
+            border-color: var(--purple);
+        }
+        .trade-panel .btn-row .btn-arena {
+            background: var(--pink-bg);
+            color: var(--pink);
+            border: 1px solid rgba(255,107,255,0.1);
+            font-size: 0.5rem;
+        }
+        .trade-panel .btn-row .btn-arena:hover {
+            background: var(--pink-bg);
+            border-color: var(--pink);
+        }
+        .trade-panel .leverage-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.5rem;
+            margin-top: 2px;
+        }
+        .trade-panel .leverage-row input[type="range"] {
+            flex: 1;
+            min-width: 80px;
+            accent-color: var(--gold);
+            height: 3px;
+            background: rgba(255,255,255,0.05);
+        }
+        .trade-panel .leverage-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+        }
+        .trade-panel .leverage-row .lev-val {
+            font-weight: 700;
+            min-width: 40px;
+            color: var(--gold);
+        }
+        .trade-panel .pair-select {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+        .trade-panel .pair-select select {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 0.6rem;
+            padding: 2px 4px;
+            outline: none;
+        }
+        .trade-panel .pair-select select:focus { border-color: var(--accent); }
+
+        /* ===== v10 NEW: R1, R2, R3 Risk Manager ===== */
+        .risk-manager {
+            background: var(--bg-hover);
+            border-radius: var(--radius-sm);
+            padding: 6px 8px;
+            margin-top: 4px;
+            border: 1px solid var(--border);
+        }
+        .risk-manager .rm-row {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 0.45rem;
+        }
+        .risk-manager .rm-row label { color: var(--text-secondary); }
+        .risk-manager .rm-row input[type="number"] {
+            width: 50px;
+            padding: 1px 4px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 0.45rem;
+            text-align: center;
+        }
+        .risk-manager .rm-row button {
+            background: var(--gold-bg);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 1px 8px;
+            border-radius: 12px;
+            font-size: 0.4rem;
+            cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+        .risk-manager .rm-row button:hover {
+            background: var(--gold);
+            color: var(--bg-primary);
+        }
+
+        /* ================================================================
+               POSITION BOX
+               ================================================================ */
+        .position-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 8px 12px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px 8px;
+            box-shadow: var(--shadow-glow);
+            margin: 4px 0;
+        }
+        .position-box .pos-item { display: flex; flex-direction: column; }
+        .position-box .pos-label {
+            font-size: 0.4rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .position-box .pos-value {
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
+        .position-box .pos-value.green { color: var(--green); }
+        .position-box .pos-value.red { color: var(--red); }
+        .position-box .pos-value.gold { color: var(--gold); }
+        .position-box .pos-value.cyan { color: var(--cyan); }
+        .position-box .pos-value.small { font-size: 0.5rem; }
+
+        /* ================================================================
+               AI GODS PANEL
+               ================================================================ */
+        .gods-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 8px 10px;
+            box-shadow: var(--shadow-glow);
+        }
+        .gods-panel .gods-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 700;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--border);
+        }
+        .gods-panel .gods-header .god-count { color: var(--gold); }
+        .gods-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            padding-top: 4px;
+        }
+        .god-card {
+            background: var(--bg-hover);
+            border-radius: var(--radius-sm);
+            padding: 4px 6px;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .god-card:hover {
+            border-color: var(--text-secondary);
+            transform: scale(1.03);
+        }
+        .god-card .god-icon { font-size: 1rem; }
+        .god-card .god-name {
+            font-size: 0.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .god-card .god-status {
+            font-size: 0.3rem;
+            color: var(--text-secondary);
+        }
+        .god-card .god-status .dot {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            margin-right: 2px;
+        }
+        .god-card .god-status .dot.green { background: var(--green); }
+        .god-card .god-status .dot.red { background: var(--red); }
+        .god-card .god-status .dot.gold { background: var(--gold); }
+        .god-card .god-status .dot.cyan { background: var(--cyan); }
+        .god-card .god-pnl {
+            font-size: 0.35rem;
+            font-weight: 600;
+        }
+        .god-card .god-pnl.green { color: var(--green); }
+        .god-card .god-pnl.red { color: var(--red); }
+        .god-card .god-pnl.gold { color: var(--gold); }
+
+        /* ================================================================
+               BATTLE ARENA
+               ================================================================ */
+        .battle-arena {
+            background: var(--bg-card);
+            border: 2px solid var(--border-strong);
+            border-radius: var(--radius-lg);
+            padding: 8px 10px;
+            margin: 4px 0;
+            box-shadow: var(--shadow-glow);
+        }
+        .battle-arena .battle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--border);
+        }
+        .battle-arena .battle-header .battle-title {
+            font-family: var(--display);
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+        .battle-arena .battle-header .battle-mode {
+            font-size: 0.45rem;
+            color: var(--text-secondary);
+        }
+        .battle-arena .battle-header .battle-mode select {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 0.45rem;
+            padding: 1px 4px;
+            outline: none;
+        }
+        .battle-arena .battle-field {
+            display: flex;
+            gap: 4px;
+            padding: 6px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .battle-arena .battle-field .fighter {
+            background: var(--bg-hover);
+            border-radius: var(--radius-sm);
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+            min-width: 60px;
+            transition: var(--transition);
+        }
+        .battle-arena .battle-field .fighter.active {
+            border-color: var(--gold);
+            background: var(--gold-bg);
+        }
+        .battle-arena .battle-field .fighter .f-icon { font-size: 0.9rem; }
+        .battle-arena .battle-field .fighter .f-name {
+            font-size: 0.35rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .battle-arena .battle-field .fighter .f-pnl {
+            font-size: 0.35rem;
+            font-weight: 700;
+        }
+        .battle-arena .battle-field .fighter .f-pnl.green { color: var(--green); }
+        .battle-arena .battle-field .fighter .f-pnl.red { color: var(--red); }
+        .battle-arena .battle-actions {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            padding-top: 4px;
+            border-top: 1px solid var(--border);
+        }
+        .battle-arena .battle-actions button {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.4rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            font-weight: 600;
+        }
+        .battle-arena .battle-actions button:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: var(--gold-bg);
+        }
+        .battle-arena .battle-actions button.active {
+            border-color: var(--pink);
+            color: var(--pink);
+            background: var(--pink-bg);
+        }
+        .battle-arena .battle-log {
+            background: rgba(0,0,0,0.3);
+            border-radius: var(--radius-sm);
+            padding: 4px 6px;
+            font-size: 0.4rem;
+            color: var(--text-secondary);
+            max-height: 50px;
+            overflow-y: auto;
+            margin-top: 2px;
+        }
+        .battle-arena .battle-log .log-entry {
+            padding: 1px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+        }
+        .battle-arena .battle-log .log-entry .highlight {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* ================================================================
+               TAB: QUOTES
+               ================================================================ */
+        .quotes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 8px;
+        }
+        .quote-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            align-items: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .quote-item:hover { border-color: var(--text-dim); }
+        .quote-item .q-pair { font-weight: 700; font-size: 0.75rem; }
+        .quote-item .q-price {
+            font-weight: 600;
+            font-size: 0.75rem;
+            font-family: var(--mono);
+        }
+        .quote-item .q-change {
+            font-size: 0.55rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .quote-item .q-change.up { background: var(--green-bg); color: var(--green); }
+        .quote-item .q-change.down { background: var(--red-bg); color: var(--red); }
+
+        /* ================================================================
+               TAB: CHARTS v10 — Close Button & Elon Tweets
+               ================================================================ */
+        #tab-charts {
+            padding: 0;
+            height: 100%;
+            position: relative;
+        }
+        .chart-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-primary);
+            position: relative;
+            height: 100%;
+        }
+        #chartCanvas {
+            width: 100%;
+            height: 100%;
+            min-height: 350px;
+            display: block;
+            background: var(--bg-primary);
+            touch-action: none;
+            cursor: crosshair;
+        }
+        .chart-controls {
+            display: flex;
+            gap: 2px;
+            padding: 2px 4px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .chart-controls button {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0 6px;
+            font-size: 0.4rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+        .chart-controls button:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+        .chart-controls button.active {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: var(--gold-bg);
+        }
+
+        /* ===== v10 NEW: Floating Close Button on Chart ===== */
+        #chartCloseBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--red-bg);
+            border: 1px solid var(--red);
+            color: var(--red);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10;
+            box-shadow: var(--shadow);
+        }
+        #chartCloseBtn:hover {
+            transform: scale(1.1);
+            background: var(--red);
+            color: #fff;
+        }
+
+        /* ================================================================
+               TAB: LEADERBOARD v10 — Bot Timeline & Event History
+               ================================================================ */
+        .leaderboard-container {
+            padding: 8px;
+        }
+        .leaderboard-container .lb-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            box-shadow: var(--shadow-glow);
+        }
+        .leaderboard-container .lb-card .lb-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 700;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--border);
+        }
+        .leaderboard-container .lb-card .lb-header .lb-title {
+            font-family: var(--display);
+            font-size: 0.6rem;
+            color: var(--gold);
+        }
+        .lb-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+            font-size: 0.55rem;
+            color: var(--text-secondary);
+        }
+        .lb-item:last-child { border-bottom: none; }
+        .lb-item .lb-rank {
+            font-weight: 700;
+            color: var(--gold);
+            min-width: 20px;
+        }
+        .lb-item .lb-name { flex: 1; padding-left: 4px; }
+        .lb-item .lb-pnl { font-weight: 600; }
+        .lb-item .lb-pnl.green { color: var(--green); }
+        .lb-item .lb-pnl.red { color: var(--red); }
+        .lb-item .lb-pnl.gold { color: var(--gold); }
+        .lb-item.lb-top1 { background: var(--gold-bg); border-radius: var(--radius-sm); }
+        .lb-item.lb-top2 { background: var(--purple-bg); border-radius: var(--radius-sm); }
+        .lb-item.lb-top3 { background: var(--cyan-bg); border-radius: var(--radius-sm); }
+
+        /* ===== v10 NEW: Bot & Trade Timeline ===== */
+        .timeline-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 8px;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.5rem;
+            align-items: center;
+        }
+        .timeline-item .tl-time {
+            color: var(--text-dim);
+            min-width: 40px;
+            font-size: 0.4rem;
+        }
+        .timeline-item .tl-icon { font-size: 0.6rem; }
+        .timeline-item .tl-desc { flex: 1; }
+        .timeline-item .tl-desc .highlight { color: var(--gold); font-weight: 700; }
+        .timeline-item .tl-pnl {
+            font-weight: 700;
+            min-width: 40px;
+            text-align: right;
+        }
+        .timeline-item .tl-pnl.green { color: var(--green); }
+        .timeline-item .tl-pnl.red { color: var(--red); }
+        .timeline-item .tl-pnl.gold { color: var(--gold); }
+
+        /* ================================================================
+               TAB: ELON FEED
+               ================================================================ */
+        .elon-feed-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 8px 12px;
+            flex: 1;
+            overflow-y: auto;
+            margin: 8px;
+            box-shadow: var(--shadow-glow);
+        }
+        .elon-feed-container .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--border);
+        }
+        .elon-feed-container .feed-header .feed-profile {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .elon-feed-container .feed-header .feed-profile .avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--bg-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            border: 1px solid var(--gold);
+        }
+        .elon-feed-container .feed-header .feed-profile .ename {
+            font-weight: 700;
+            font-size: 0.7rem;
+            color: var(--gold);
+        }
+        .elon-feed-container .feed-header .feed-profile .ehandle {
+            font-size: 0.4rem;
+            color: var(--text-secondary);
+        }
+        .elon-feed-container .feed-header .feed-status {
+            font-size: 0.45rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .elon-feed-container .feed-header .feed-status .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: pulse-dot 1.2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+        .elon-feed-item {
+            background: var(--bg-hover);
+            padding: 6px 8px;
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--gold);
+            margin-bottom: 4px;
+        }
+        .elon-feed-item .feed-text {
+            font-size: 0.7rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+        .elon-feed-item .feed-text .highlight { color: var(--gold); font-weight: 700; }
+        .elon-feed-item .feed-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.45rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        .elon-feed-item .feed-meta .feed-tag {
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.4rem;
+        }
+        .elon-feed-item .feed-meta .feed-tag.long { background: var(--green-bg); color: var(--green); }
+        .elon-feed-item .feed-meta .feed-tag.short { background: var(--red-bg); color: var(--red); }
+        .elon-feed-item .feed-meta .feed-tag.analysis { background: var(--cyan-bg); color: var(--cyan); }
+        .elon-feed-item .feed-meta .feed-tag.meme { background: var(--gold-bg); color: var(--gold); }
+        .elon-feed-item .feed-meta .feed-tag.news { background: var(--purple-bg); color: var(--purple); }
+        .elon-feed-actions {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            padding-top: 4px;
+            border-top: 1px solid var(--border);
+        }
+        .elon-feed-actions button {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.45rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            font-weight: 600;
+        }
+        .elon-feed-actions button:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ================================================================
+               TAB: SKILLS
+               ================================================================ */
+        .skills-detail {
+            padding: 8px;
+        }
+        .skills-detail .skill-card-lg {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            box-shadow: var(--shadow-glow);
+        }
+        .skills-detail .skill-card-lg .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .skills-detail .skill-card-lg .skill-header .skill-icon { font-size: 1.2rem; }
+        .skills-detail .skill-card-lg .skill-header .skill-name { font-weight: 700; font-size: 0.7rem; }
+        .skills-detail .skill-card-lg .skill-header .skill-level { font-size: 0.5rem; color: var(--gold); }
+        .skills-detail .skill-card-lg .skill-desc {
+            font-size: 0.55rem;
+            color: var(--text-secondary);
+            padding: 2px 0;
+        }
+        .skills-detail .skill-card-lg .skill-progress {
+            height: 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 2px;
+        }
+        .skills-detail .skill-card-lg .skill-progress .fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--pink));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* ================================================================
+               TAB: SETTINGS
+               ================================================================ */
+        .settings-container {
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .settings-container .bg-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 8px;
+        }
+        .settings-container .bg-card .text-xs {
+            font-size: 0.5rem;
+            color: var(--text-dim);
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+        .settings-container .bg-card .flex {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .settings-container .bg-card .flex label {
+            font-size: 0.45rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .settings-container .bg-card .flex input[type="checkbox"] { accent-color: var(--gold); }
+        .settings-container .bg-card .flex button {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.45rem;
+            cursor: pointer;
+            font-family: var(--font);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .settings-container .bg-card .flex button:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        .settings-container .bg-card .flex button.active {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: var(--gold-bg);
+        }
+
+        /* ================================================================
+               BOTTOM NAVIGATION
+               ================================================================ */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--bg-secondary);
+            border-top: 2px solid var(--border-strong);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 4px 4px env(safe-area-inset-bottom, 4px) 4px;
+            z-index: 100;
+            flex-shrink: 0;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .bottom-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font);
+            font-size: 0.45rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            position: relative;
+        }
+        .bottom-nav .nav-item .nav-icon { font-size: 1.1rem; line-height: 1.2; }
+        .bottom-nav .nav-item.active {
+            color: var(--gold);
+            background: var(--gold-bg);
+        }
+        .bottom-nav .nav-item .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--red);
+            color: #fff;
+            font-size: 0.3rem;
+            padding: 0 4px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+        .bottom-nav .nav-item:hover { color: var(--text-primary); }
+
+        /* ================================================================
+               TOAST, DOPAMINE, CONFETTI
+               ================================================================ */
+        .toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: var(--bg-card);
+            border: 2px solid var(--border-strong);
+            border-radius: var(--radius);
+            padding: 8px 20px;
+            backdrop-filter: blur(16px);
+            color: var(--text-primary);
+            font-size: 0.65rem;
+            font-weight: 600;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+            box-shadow: var(--shadow);
+            max-width: 92%;
+            pointer-events: none;
+            text-align: center;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+        .toast.success { border-color: var(--green); }
+        .toast.error { border-color: var(--red); }
+        .toast.gold { border-color: var(--gold); }
+        .toast.cyan { border-color: var(--cyan); }
+        .toast.purple { border-color: var(--purple); }
+        .toast.pink { border-color: var(--pink); }
+
+        .confetti-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 99999;
+            overflow: hidden;
+        }
+        .confetti-overlay .confetti-piece {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 2px;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(-10px) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg) scale(0.2);
+            }
+        }
+
+        .dopamine-banner {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card);
+            border: 2px solid var(--gold);
+            border-radius: var(--radius-lg);
+            padding: 10px 24px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 80px rgba(255,215,0,0.06);
+            z-index: 99998;
+            text-align: center;
+            transition: top 0.5s cubic-bezier(0.34,1.56,0.64,1);
+            max-width: 92%;
+        }
+        .dopamine-banner.show {
+            top: 20px;
+        }
+        .dopamine-banner .dopamine-icon { font-size: 1.8rem; display: block; }
+        .dopamine-banner .dopamine-title { font-size: 1.1rem; font-weight: 900; }
+        .dopamine-banner .dopamine-title.green { color: var(--green); }
+        .dopamine-banner .dopamine-title.red { color: var(--red); }
+        .dopamine-banner .dopamine-title.gold { color: var(--gold); }
+        .dopamine-banner .dopamine-title.pink { color: var(--pink); }
+        .dopamine-banner .dopamine-sub { font-size: 0.55rem; color: var(--text-secondary); }
+        .dopamine-banner .dopamine-streak {
+            display: inline-block;
+            background: var(--gold-bg);
+            border: 1px solid rgba(255,215,0,0.1);
+            padding: 1px 14px;
+            border-radius: 20px;
+            font-size: 0.4rem;
+            color: var(--gold);
+        }
+
+        /* ================================================================
+               RESPONSIVE v10 — Desktop Optimizations
+               ================================================================ */
+        @media (min-width: 768px) {
+            .divine-header .title { font-size: 1.2rem; }
+            .divine-header .stats { font-size: 0.7rem; gap: 16px; }
+            .trade-header { height: 56px; padding: 0 12px; }
+            .sell-box .price, .buy-box .price { font-size: 1.1rem; }
+            .chart-tools-row { height: 38px; padding: 2px 16px; }
+            .main-content { padding: 0 0 var(--nav-height) 0; }
+            #tab-arena { padding: 12px; gap: 12px; }
+            .trade-panel .btn-row button { font-size: 0.7rem; padding: 8px 0; }
+            .gods-grid { grid-template-columns: repeat(4, 1fr); }
+            .position-box { grid-template-columns: repeat(4, 1fr); }
+            #chartCanvas { min-height: 450px; }
+            .timeline-container { max-height: 600px; }
+            .leaderboard-container .lb-card { padding: 12px 16px; }
+            .elon-feed-container .feed-header .feed-profile .avatar { width: 40px; height: 40px; font-size: 1.5rem; }
+            .elon-feed-item .feed-text { font-size: 0.85rem; }
+        }
+        @media (min-width: 1024px) {
+            .divine-header { padding: 8px 24px; }
+            .trade-header { height: 64px; padding: 0 16px; }
+            .sell-box .price, .buy-box .price { font-size: 1.3rem; }
+            .chart-tools-row { height: 40px; padding: 2px 20px; }
+            #tab-arena { padding: 16px; gap: 16px; }
+            .trade-panel .btn-row button { font-size: 0.8rem; padding: 10px 0; }
+            .position-box .pos-value { font-size: 0.9rem; }
+            #chartCanvas { min-height: 550px; }
+            .bottom-nav { padding: 6px 12px; }
+            .bottom-nav .nav-item { font-size: 0.6rem; }
+            .bottom-nav .nav-item .nav-icon { font-size: 1.3rem; }
+        }
+
+        /* ================================================================
+               UTILITY CLASSES
+               ================================================================ */
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .gap-4 { gap: 4px; }
+        .gap-8 { gap: 8px; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .wrap { flex-wrap: wrap; }
+        .w-full { width: 100%; }
+        .text-center { text-align: center; }
+        .text-gold { color: var(--gold); }
+        .text-green { color: var(--green); }
+        .text-red { color: var(--red); }
+        .text-dim { color: var(--text-dim); }
+        .text-sm { font-size: 0.65rem; }
+        .text-xs { font-size: 0.5rem; }
+        .mt-4 { margin-top: 4px; }
+        .mb-4 { margin-bottom: 4px; }
+        .p-4 { padding: 4px; }
+        .hidden { display: none !important; }
+        .border-bottom { border-bottom: 1px solid var(--border); }
+        .rounded { border-radius: var(--radius-sm); }
+        .bg-card { background: var(--bg-card); }
+        .p-2 { padding: 2px; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- ================================================================
+        DIVINE HEADER v10
+        ================================================================ -->
+        <div class="divine-header">
+            <div class="title">
+                ⚡ GOD ARENA
+                <span class="sub">Elon Edition v10</span>
+            </div>
+            <div class="stats">
+                <span class="stat">💰 <span class="val gold" id="headerBalance">10,000</span></span>
+                <span class="stat">⭐ <span class="val cyan" id="headerLevel">1</span></span>
+                <span class="stat">🔥 <span class="val pink" id="headerStreak">0</span></span>
+                <span class="elon-badge" onclick="generateElonTweet()">
+                    <span class="tweet-icon">🐦</span> Elon v10
+                </span>
+            </div>
+        </div>
+
+        <!-- ================================================================
+        TRADE HEADER
+        ================================================================ -->
+        <div class="trade-header">
+            <div class="sell-box" onclick="quickTrade('sell')">
+                <span class="label">SELL</span>
+                <span class="price" id="mt5SellPrice">0.00</span>
+            </div>
+            <div class="volume-box">
+                <button class="vol-btn" onclick="adjustVolume(-0.01)">◀</button>
+                <span class="vol-val" id="mt5Volume">0.02</span>
+                <button class="vol-btn" onclick="adjustVolume(0.01)">▶</button>
+            </div>
+            <div class="buy-box" onclick="quickTrade('buy')">
+                <span class="label">BUY</span>
+                <span class="price" id="mt5BuyPrice">0.00</span>
+            </div>
+        </div>
+
+        <!-- ================================================================
+        TOOLBAR
+        ================================================================ -->
+        <div class="chart-tools-row">
+            <div class="left-tools">
+                <span class="symbol" id="symbolDisplay">XAUUSD <span class="sub">Gold vs USD</span></span>
+                <span class="tf active" onclick="setTimeframe('15s')" data-tf="15s">15s</span>
+                <span class="tf" onclick="setTimeframe('1m')" data-tf="1m">1m</span>
+                <span class="tf" onclick="setTimeframe('5m')" data-tf="5m">5m</span>
+                <span class="tf" onclick="setTimeframe('15m')" data-tf="15m">15m</span>
+                <span class="tf" onclick="setTimeframe('1h')" data-tf="1h">1h</span>
+            </div>
+            <div class="right-tools">
+                <span class="tool-icon" onclick="toggleFullscreen()" title="Fullscreen">⛶</span>
+                <span class="tool-icon" onclick="toggleIndicators()" title="Indicators">📈</span>
+            </div>
+        </div>
+
+        <!-- ================================================================
+        MAIN CONTENT
+        ================================================================ -->
+        <main class="main-content">
+
+            <!-- ===== TAB: ARENA v10 ===== -->
+            <div id="tab-arena" class="tab-content active">
+                <div class="arena-grid">
+                    <div class="info-card full">
+                        <div class="row"><span class="label">Balance:</span><span class="value gold" id="arenaBalance">0.00</span></div>
+                        <div class="row"><span class="label">Equity:</span><span class="value green" id="arenaEquity">0.00</span></div>
+                        <div class="row"><span class="label">Free Margin:</span><span class="value" id="arenaFreeMargin">0.00</span></div>
+                        <div class="row"><span class="label">Level:</span><span class="value gold" id="arenaLevel">1</span></div>
+                        <div class="row"><span class="label">XP:</span><span class="value gold" id="arenaXP">0</span></div>
+                        <div class="row"><span class="label">Rank:</span><span class="value cyan" id="arenaRank">Bronze</span></div>
+                        <div class="row"><span class="label">Trades:</span><span class="value" id="arenaTrades">0</span></div>
+                        <div class="row"><span class="label">Win Rate:</span><span class="value gold" id="arenaWinRate">0%</span></div>
+                        <div class="row"><span class="label">P&L:</span><span class="value green" id="arenaPnl">0.00</span></div>
+                        <div class="row"><span class="label">Streak:</span><span class="value pink" id="arenaStreak">0</span></div>
+                        <div class="row"><span class="label">God Kills:</span><span class="value gold" id="arenaGodKills">0</span></div>
+                    </div>
+                </div>
+
+                <div class="trade-panel">
+                    <div class="pair-select">
+                        <label>Pair:</label>
+                        <select id="pairSelect" onchange="changePair(this.value)">
+                            <option value="XAUUSD">XAUUSD</option>
+                            <option value="EURUSD">EURUSD</option>
+                            <option value="GBPUSD">GBPUSD</option>
+                            <option value="BTCUSD">BTCUSD</option>
+                            <option value="ETHUSD">ETHUSD</option>
+                            <option value="SOLUSD">SOLUSD</option>
+                            <option value="DOGEUSD">DOGEUSD</option>
+                            <option value="AUDUSD">AUDUSD</option>
+                            <option value="NZDUSD">NZDUSD</option>
+                            <option value="USDCAD">USDCAD</option>
+                            <option value="USDJPY">USDJPY</option>
+                        </select>
+                    </div>
+                    <div><label>Volume (Lots)</label><input type="number" id="tradeVolume" value="0.02" step="0.01" min="0.01" max="10.0" /></div>
+                    <div><label>Stop Loss</label><input type="number" id="tradeSL" placeholder="0.00" step="0.01" /></div>
+                    <div><label>Take Profit</label><input type="number" id="tradeTP" placeholder="0.00" step="0.01" /></div>
+
+                    <!-- ===== v10 NEW: R1 R2 R3 Risk Manager ===== -->
+                    <div class="risk-manager">
+                        <div class="rm-row">
+                            <label>Risk $:</label>
+                            <input type="number" id="riskAmount" value="20" step="1" min="1" placeholder="Risk $" oninput="updateRiskFromDollar()" />
+                            <label>Reward $:</label>
+                            <input type="number" id="rewardAmount" value="40" step="1" min="1" placeholder="Reward $" oninput="updateRiskFromDollar()" />
+                            <button onclick="applyRiskPreset(1)">R1</button>
+                            <button onclick="applyRiskPreset(2)">R2</button>
+                            <button onclick="applyRiskPreset(3)">R3</button>
+                        </div>
+                    </div>
+
+                    <div class="leverage-row">
+                        <span>Leverage:</span>
+                        <input type="range" id="leverageSlider" min="1" max="50" step="1" value="10" oninput="updateLeverage(this.value)" />
+                        <span class="lev-val" id="leverageDisplay">10x</span>
+                        <input type="number" id="leverageInput" value="10" min="1" max="50" step="1" onchange="updateLeverage(this.value)" />
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn-buy" onclick="openTrade('buy')" id="btnBuy">📈 BUY</button>
+                        <button class="btn-sell" onclick="openTrade('sell')" id="btnSell">📉 SELL</button>
+                        <button class="btn-close" onclick="confirmClose()">✕ Close</button>
+                        <button class="btn-skill" onclick="toggleSkillPanel()">⚡ Skill</button>
+                        <button class="btn-arena" onclick="startBattle()">⚔️ Battle</button>
+                    </div>
+                </div>
+
+                <!-- Position Box -->
+                <div class="position-box" id="positionBox">
+                    <div class="pos-item"><div class="pos-label">Position</div><div class="pos-value" id="posDir">—</div></div>
+                    <div class="pos-item"><div class="pos-label">Entry</div><div class="pos-value gold" id="posEntry">—</div></div>
+                    <div class="pos-item"><div class="pos-label">P&L</div><div class="pos-value" id="posPL">0.00</div></div>
+                    <div class="pos-item"><div class="pos-label">Volume</div><div class="pos-value" id="posVol">—</div></div>
+                    <div class="pos-item"><div class="pos-label">SL / TP</div><div class="pos-value small" id="posSLTP">— / —</div></div>
+                    <div class="pos-item"><div class="pos-label">Leverage</div><div class="pos-value cyan" id="posLev">—</div></div>
+                    <div class="pos-item"><div class="pos-label">Duration</div><div class="pos-value small" id="posDuration">—</div></div>
+                    <div class="pos-item"><div class="pos-label">Skill</div><div class="pos-value gold small" id="posSkill">—</div></div>
+                </div>
+
+                <!-- AI Gods Panel -->
+                <div class="gods-panel">
+                    <div class="gods-header">
+                        <span>👑 AI Gods</span>
+                        <span class="god-count">8 Gods</span>
+                    </div>
+                    <div class="gods-grid" id="godsGrid">
+                        <!-- dynamically filled -->
+                    </div>
+                </div>
+
+                <!-- Battle Arena -->
+                <div class="battle-arena">
+                    <div class="battle-header">
+                        <div class="battle-title">⚔️ BATTLE ARENA</div>
+                        <div class="battle-mode">
+                            Mode:
+                            <select id="battleModeSelect">
+                                <option value="1v1">1v1</option>
+                                <option value="1v3">1v3</option>
+                                <option value="ffa">Free For All</option>
+                                <option value="king">King of the Hill</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="battle-field" id="battleField">
+                        <!-- dynamically filled -->
+                    </div>
+                    <div class="battle-actions">
+                        <button onclick="startBattle()">⚔️ Start Battle</button>
+                        <button onclick="spectateBattle()">👁️ Spectate</button>
+                        <button onclick="replayBattle()">🔄 Replay</button>
+                        <button onclick="clearBattleLog()">🗑️ Clear Log</button>
+                    </div>
+                    <div class="battle-log" id="battleLog">
+                        <div class="log-entry">⚔️ Battle Arena ready. Select mode and start!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB: QUOTES ===== -->
+            <div id="tab-quotes" class="tab-content">
+                <div class="quotes-list" id="quotesListContainer">
+                    <!-- dynamically filled -->
+                </div>
+            </div>
+
+            <!-- ===== TAB: CHARTS v10 ===== -->
+            <div id="tab-charts" class="tab-content">
+                <div class="chart-container">
+                    <canvas id="chartCanvas"></canvas>
+                    <!-- ===== v10 NEW: Floating Close Button ===== -->
+                    <div id="chartCloseBtn" onclick="confirmClose()" title="Close Position">✕</div>
+                    <div class="chart-controls">
+                        <button onclick="chartType('candle')" class="active" id="chartTypeCandle">📊</button>
+                        <button onclick="chartType('bar')" id="chartTypeBar">📉</button>
+                        <button onclick="chartType('line')" id="chartTypeLine">📈</button>
+                        <button onclick="resetZoom()">Reset</button>
+                        <button onclick="toggleIndicator('MA')">MA</button>
+                        <button onclick="toggleIndicator('BB')">BB</button>
+                        <button onclick="toggleIndicator('RSI')">RSI</button>
+                        <button onclick="toggleIndicator('MACD')">MACD</button>
+                        <button onclick="toggleIndicator('ATR')">ATR</button>
+                        <button onclick="toggleIndicator('Stoch')">Stoch</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB: LEADERBOARD v10 ===== -->
+            <div id="tab-leaderboard" class="tab-content">
+                <div class="leaderboard-container">
+                    <div class="lb-card">
+                        <div class="lb-header">
+                            <span class="lb-title">🏆 GOD LEADERBOARD</span>
+                            <span>Season 1</span>
+                        </div>
+                        <div id="leaderboardList">
+                            <!-- dynamically filled -->
+                        </div>
+                    </div>
+                    <!-- ===== v10 NEW: Bot & Trade Timeline ===== -->
+                    <div class="lb-card">
+                        <div class="lb-header">
+                            <span class="lb-title">📜 TRADE & BOT TIMELINE</span>
+                            <span>v10 Live</span>
+                        </div>
+                        <div class="timeline-container" id="timelineContainer">
+                            <!-- dynamically filled -->
+                        </div>
+                    </div>
+                    <div class="lb-card">
+                        <div class="lb-header">
+                            <span class="lb-title">📅 Seasonal Events</span>
+                            <span>Active</span>
+                        </div>
+                        <div id="seasonalEvents" style="font-size:0.5rem;color:var(--text-secondary);padding:4px 0;">
+                            <div>🎯 Summer Slam: +50% XP (ends in 3d)</div>
+                            <div>⚡ Tesla Pump Week: 2x leverage (ends in 5d)</div>
+                            <div>🚀 Doge Moon Mission: 1000 XP bonus (ends in 7d)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB: ELON FEED ===== -->
+            <div id="tab-elon" class="tab-content">
+                <div class="elon-feed-container" id="elonFeedContainer">
+                    <div class="feed-header">
+                        <div class="feed-profile">
+                            <div class="avatar">🐦</div>
+                            <div>
+                                <div class="ename">Elon Musk</div>
+                                <div class="ehandle">@elonmusk · Chief Advisor v10</div>
+                            </div>
+                        </div>
+                        <div class="feed-status"><span class="dot"></span> Active · 500+ Tweets</div>
+                    </div>
+                    <div id="elonFeedList">
+                        <!-- dynamically filled -->
+                    </div>
+                    <div class="elon-feed-actions">
+                        <button onclick="generateElonTweet()">🐦 New Tweet</button>
+                        <button onclick="elonAnalyze()">📊 Analyze</button>
+                        <button onclick="elonTip()">💡 Tip</button>
+                        <button onclick="elonMeme()">😂 Meme</button>
+                        <button onclick="clearElonFeed()">🗑️ Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB: SKILLS ===== -->
+            <div id="tab-skills" class="tab-content">
+                <div class="skills-detail">
+                    <div class="skill-card-lg">
+                        <div class="skill-header">
+                            <span class="skill-icon">⚡</span>
+                            <span class="skill-name">Divine Skill Tree</span>
+                            <span class="skill-level">Points: <span id="skillPoints">0</span></span>
+                        </div>
+                        <div class="skill-desc">Unlock divine powers to dominate the arena. Each skill costs 1 point.</div>
+                    </div>
+                    <div id="skillTreeDetail">
+                        <!-- dynamically filled -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB: SETTINGS ===== -->
+            <div id="tab-settings" class="tab-content">
+                <div class="settings-container">
+                    <div class="bg-card">
+                        <div class="text-xs">🔊 Sound</div>
+                        <div class="flex">
+                            <label><input type="checkbox" id="soundTrade" checked onchange="toggleSound('trade')" /> Trade</label>
+                            <label><input type="checkbox" id="soundWin" checked onchange="toggleSound('win')" /> Win</label>
+                            <label><input type="checkbox" id="soundElon" checked onchange="toggleSound('elon')" /> Elon</label>
+                            <label><input type="checkbox" id="soundBattle" checked onchange="toggleSound('battle')" /> Battle</label>
+                        </div>
+                    </div>
+                    <div class="bg-card">
+                        <div class="text-xs">🎨 Theme</div>
+                        <div class="flex">
+                            <button onclick="setTheme('dark')" class="active" id="themeDark">Dark</button>
+                            <button onclick="setTheme('neon')" id="themeNeon">Neon</button>
+                            <button onclick="setTheme('divine')" id="themeDivine">Divine</button>
+                        </div>
+                    </div>
+                    <div class="bg-card">
+                        <div class="text-xs">💾 Data</div>
+                        <div class="flex">
+                            <button onclick="exportAllData()">📦 Export</button>
+                            <button onclick="importAllData()">📥 Import</button>
+                            <button onclick="resetAllData()">⚠️ Reset</button>
+                        </div>
+                    </div>
+                    <div class="bg-card">
+                        <div class="text-xs">🎯 Risk</div>
+                        <div class="flex">
+                            <label>Max Daily Loss: <input type="number" id="maxDailyLoss" value="500" style="width:50px;padding:2px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.45rem;text-align:center;" /></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- ================================================================
+        BOTTOM NAVIGATION
+        ================================================================ -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-tab="arena"><span class="nav-icon">⚔️</span>Arena</button>
+            <button class="nav-item" data-tab="quotes"><span class="nav-icon">📊</span>Quotes</button>
+            <button class="nav-item" data-tab="charts"><span class="nav-icon">📈</span>Charts</button>
+            <button class="nav-item" data-tab="leaderboard"><span class="nav-icon">🏆</span>Leaderboard</button>
+            <button class="nav-item" data-tab="elon"><span class="nav-icon">🐦</span>Elon</button>
+            <button class="nav-item" data-tab="skills"><span class="nav-icon">⚡</span>Skills</button>
+            <button class="nav-item" data-tab="settings"><span class="nav-icon">⚙️</span>Settings</button>
+        </nav>
+
+        <!-- ================================================================
+        TOAST, DOPAMINE, CONFETTI
+        ================================================================ -->
+        <div class="toast" id="toast"></div>
+        <div class="confetti-overlay" id="confettiOverlay"></div>
+        <div class="dopamine-banner" id="dopamineBanner">
+            <span class="dopamine-icon" id="dopamineIcon">⚔️</span>
+            <div class="dopamine-title" id="dopamineTitle">God Mode</div>
+            <div class="dopamine-sub" id="dopamineSub">+$0.00 profit</div>
+            <div class="dopamine-streak" id="dopamineStreak">🔥 0 wins streak</div>
+        </div>
+    </div>
+
+    <!-- ================================================================
+    JAVASCRIPT – TRADING GOD ARENA v10 – ELON MUSK EDITION
+    ================================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ================================================================
+            //  GLOBAL STATE v10
+            // ================================================================
+            const STATE = {
+                balance: 10000.00,
+                equity: 10000.00,
+                freeMargin: 10000.00,
+                position: null,
+                trades: [],
+                positionStartTime: null,
+                leverage: 10,
+                winStreak: 0,
+                lossStreak: 0,
+                level: 1,
+                xp: 0,
+                xpToNext: 100,
+                arenaWins: 0,
+                arenaLosses: 0,
+                arenaKills: 0,
+                arenaTrades: 0,
+                arenaPnl: 0,
+                arenaRank: 'Bronze',
+                rankPoints: 0,
+                rankProgress: 0,
+                price: 4713.69,
+                bid: 0,
+                ask: 0,
+                spread: 0.2,
+                _basePrice: 4713.69,
+                ticks: [],
+                candles: {},
+                tickCounter: 0,
+                maxCandles: 150,
+                timeframe: '15s',
+                _currentCandle: null,
+                _candleStartTime: 0,
+                currentPair: 'XAUUSD',
+                indicators: { MA: true, BB: true, RSI: true, MACD: true, ATR: false, Stoch: false },
+                chartType: 'candle',
+                theme: 'dark',
+                colors: { up: '#00ff88', down: '#ff1744', bg: '#0a0015' },
+                soundSettings: { trade: true, win: true, elon: true, battle: true },
+                dailyLoss: 0,
+                lastResetDay: new Date().toDateString(),
+                maxDailyLoss: 500,
+                feedItems: [],
+                elonFeed: [],
+                elonSignals: [], // v10: Elon signals on chart
+                elonSignalCount: 0,
+                elonScore: 0,
+                gods: [],
+                battleMode: '1v1',
+                battleActive: false,
+                battleLog: [],
+                battleReplay: [],
+                skillPoints: 0,
+                skills: {},
+                leaderboard: [],
+                seasonalEvents: [
+                    { name: 'Summer Slam', desc: '+50% XP', ends: '3d' },
+                    { name: 'Tesla Pump Week', desc: '2x leverage', ends: '5d' },
+                    { name: 'Doge Moon Mission', desc: '1000 XP bonus', ends: '7d' }
+                ],
+                spectatorMode: false,
+                replayMode: false,
+                maxPositionSize: 1.0,
+                elonBias: 0,
+                elonBiasTimer: 0,
+                godKills: 0,
+            };
+
+            // ================================================================
+            //  AI GODS CONFIG
+            // ================================================================
+            const GODS_CONFIG = [
+                { id: 'elon', name: 'Elon God', icon: '🚀', color: '#ffd700', strategy: 'momentum', desc: 'Tweets to the moon!' },
+                { id: 'vitalik', name: 'Vitalik God', icon: '🦄', color: '#ff6bff', strategy: 'mean_reversion', desc: 'Ethereum maxi.' },
+                { id: 'whale', name: 'Whale God', icon: '🐋', color: '#00d4ff', strategy: 'volume', desc: 'Market manipulator.' },
+                { id: 'chaos', name: 'Chaos God', icon: '💥', color: '#ff1744', strategy: 'random', desc: 'Wild and unpredictable.' },
+                { id: 'cyber', name: 'Cyber God', icon: '🤖', color: '#7c3aed', strategy: 'trend', desc: 'AI-powered precision.' },
+                { id: 'moon', name: 'Moon God', icon: '🌙', color: '#ff8a4a', strategy: 'breakout', desc: 'Lunar cycles.' },
+                { id: 'doge', name: 'Doge God', icon: '🐕', color: '#ffd700', strategy: 'meme', desc: 'To the moon! 🚀' },
+                { id: 'satosh', name: 'Satosh God', icon: '₿', color: '#00ff88', strategy: 'hodl', desc: 'Bitcoin maxi.' },
+            ];
+
+            // ================================================================
+            //  SKILL TREE CONFIG
+            // ================================================================
+            const SKILLS_CONFIG = [
+                { id: 'time_slow', name: 'Time Slow', icon: '⏳', desc: 'Slow down market for 15s', cost: 1, level: 0, maxLevel: 3 },
+                { id: 'doge_boost', name: 'Doge Boost', icon: '🐕', desc: '+50% profit on next trade', cost: 1, level: 0, maxLevel: 5 },
+                { id: 'tesla_pump', name: 'Tesla Pump', icon: '⚡', desc: '2x leverage for 1 trade', cost: 1, level: 0, maxLevel: 3 },
+                { id: 'mars_volatility', name: 'Mars Volatility', icon: '🔴', desc: 'Double volatility for 30s', cost: 1, level: 0, maxLevel: 3 },
+                { id: 'starlink_signal', name: 'Starlink Signal', icon: '📡', desc: 'See next candle direction', cost: 1, level: 0, maxLevel: 2 },
+                { id: 'cyber_shield', name: 'Cyber Shield', icon: '🛡️', desc: 'Protect from 1 loss', cost: 1, level: 0, maxLevel: 3 },
+                { id: 'moon_shot', name: 'Moon Shot', icon: '🌙', desc: 'Double TP on next trade', cost: 1, level: 0, maxLevel: 3 },
+                { id: 'quantum_edge', name: 'Quantum Edge', icon: '⚛️', desc: '+25% win rate for 5 trades', cost: 1, level: 0, maxLevel: 2 },
+            ];
+
+            // ================================================================
+            //  ELON TWEETS
+            // ================================================================
+            const ELON_TWEETS = [
+                { text: "The future is not a gift. It is an achievement. BUY GOLD.", type: 'long', bias: 2.5 },
+                { text: "Going to the moon, not just DOGE. LONG.", type: 'long', bias: 2.0 },
+                { text: "Volatility is opportunity. Embrace the chaos. LONG.", type: 'long', bias: 2.0 },
+                { text: "First principles: gold is real. Fiat is fake. LONG.", type: 'long', bias: 2.5 },
+                { text: "The best time to buy was 20 years ago. The second best time is now.", type: 'long', bias: 2.0 },
+                { text: "Inflation is real. Gold protects wealth. LONG.", type: 'long', bias: 2.5 },
+                { text: "Technical breakout on XAUUSD. Buy the retest. LONG.", type: 'long', bias: 1.5 },
+                { text: "Fundamental analysis says gold undervalued. LONG.", type: 'long', bias: 2.0 },
+                { text: "Momentum shifting to the upside. Go LONG.", type: 'long', bias: 1.5 },
+                { text: "Chart patterns forming a bull flag. LONG.", type: 'long', bias: 2.0 },
+                { text: "Volume increasing at support. Accumulation. LONG.", type: 'long', bias: 2.0 },
+                { text: "FOMC dovish – gold rockets. LONG.", type: 'long', bias: 2.5 },
+                { text: "DXY weakening – gold inverse. LONG.", type: 'long', bias: 2.0 },
+                { text: "Global recession fears? Gold is safe. LONG.", type: 'long', bias: 2.0 },
+                { text: "China buying gold reserves. LONG.", type: 'long', bias: 2.5 },
+                { text: "Fed pivot incoming. Gold will fly. LONG.", type: 'long', bias: 2.5 },
+                { text: "Gold is the ultimate store of value. LONG.", type: 'long', bias: 2.5 },
+                { text: "The dollar is losing its reserve status. Gold wins. LONG.", type: 'long', bias: 2.5 },
+                { text: "BRICS de-dollarization. Gold is the alternative. LONG.", type: 'long', bias: 2.5 },
+                { text: "Gold is the most underrated asset. LONG.", type: 'long', bias: 2.0 },
+                { text: "Market overheated. Be careful with leverage. SHORT.", type: 'short', bias: -2.5 },
+                { text: "Fiat currency is a confidence game. Gold is real, but overbought. SHORT.", type: 'short', bias: -2.0 },
+                { text: "The trend is your friend, but the trend can change in an instant. SHORT.", type: 'short', bias: -2.0 },
+                { text: "Bubble forming in gold. Pullback incoming. SHORT.", type: 'short', bias: -2.5 },
+                { text: "Technical overextension. Reversal likely. SHORT.", type: 'short', bias: -2.0 },
+                { text: "RSI divergence detected. Bearish signal. SHORT.", type: 'short', bias: -1.5 },
+                { text: "Double top pattern on 4h chart. SHORT.", type: 'short', bias: -2.0 },
+                { text: "Liquidity sweep at highs. Short the retest. SHORT.", type: 'short', bias: -1.5 },
+                { text: "Market psychology shifting. Fear is coming. SHORT.", type: 'short', bias: -2.0 },
+                { text: "Profit taking at key resistance. SHORT.", type: 'short', bias: -1.5 },
+                { text: "Failed breakout at 4750. Bearish reversal. SHORT.", type: 'short', bias: -2.0 },
+                { text: "Fed hawks speak – gold under pressure. SHORT.", type: 'short', bias: -2.5 },
+                { text: "DXY strength – gold slides. SHORT.", type: 'short', bias: -2.0 },
+                { text: "Bearish engulfing pattern on daily. SHORT.", type: 'short', bias: -2.0 },
+                { text: "Support broken with volume. Retest and short. SHORT.", type: 'short', bias: -2.0 },
+                { text: "Gold is overbought at key resistance. SHORT.", type: 'short', bias: -2.5 },
+                { text: "Correction incoming. Protect your gains. SHORT.", type: 'short', bias: -2.0 },
+                { text: "Smart money is selling into strength. SHORT.", type: 'short', bias: -2.0 },
+                { text: "Gold is a crowded trade. Reverse is near. SHORT.", type: 'short', bias: -2.5 },
+                { text: "Yield curve inversion. Risk-off. SHORT.", type: 'short', bias: -2.0 },
+                { text: "The market is a probability game. Focus on your edge.", type: 'analysis', bias: 0.5 },
+                { text: "Volume confirms price action. Wait for volume spikes to enter.", type: 'analysis', bias: 0.5 },
+                { text: "In ranging markets, use mean reversion strategies.", type: 'analysis', bias: 0.5 },
+                { text: "The market is a negotiation. Don't be afraid to walk away.", type: 'analysis', bias: 0.5 },
+                { text: "Volatility clusters are forming. Expect range expansion.", type: 'analysis', bias: 0.5 },
+                { text: "Market regime is shifting from ranging to trending.", type: 'analysis', bias: 0.5 },
+                { text: "Order flow shows institutional accumulation at support.", type: 'analysis', bias: 0.5 },
+                { text: "Session volatility peaks in London-NY overlap. Trade accordingly.", type: 'analysis', bias: 0.5 },
+                { text: "Your stop loss is your survival tool. Never trade without it.", type: 'coach', bias: 0.5 },
+                { text: "Drawdown is manageable when you scale down after losses.", type: 'coach', bias: 0.5 },
+                { text: "Golden rule: protect capital, then protect capital, then profit.", type: 'coach', bias: 0.5 },
+                { text: "Scalpers win on small moves. Tighten your stops and take quick profits.", type: 'coach', bias: 0.5 },
+                { text: "Swing traders need patience. Let the trade develop over time.", type: 'coach', bias: 0.5 },
+                { text: "News traders thrive on volatility. Be ready for major announcements.", type: 'coach', bias: 0.5 },
+                { text: "The trend is your friend. Ride the momentum with tight stops.", type: 'coach', bias: 0.5 },
+                { text: "Your win rate is improving! Focus on risk management.", type: 'coach', bias: 0.5 },
+                { text: "Replay mode is perfect for backtesting strategies. Use it.", type: 'coach', bias: 0.5 },
+                { text: "Training mode helps you learn without risk. Enable it.", type: 'coach', bias: 0.5 },
+                { text: "Indicators are tools, not crystal balls. Combine them.", type: 'coach', bias: 0.5 },
+                { text: "Trailing stops protect your profits. Use them.", type: 'coach', bias: 0.5 },
+                { text: "The best traders are the ones who keep learning.", type: 'coach', bias: 0.5 },
+                { text: "Trading is a marathon, not a sprint.", type: 'coach', bias: 0.5 },
+                { text: "The market is always right. Your job is to adapt.", type: 'coach', bias: 0.5 },
+                { text: "Don't trade out of boredom. Wait for your setup.", type: 'coach', bias: 0.5 },
+                { text: "Quality over quantity. One good trade is better than ten bad ones.", type: 'coach', bias: 0.5 },
+                { text: "Treat trading like a business. Have a plan.", type: 'coach', bias: 0.5 },
+                { text: "Stay humble. The market can humble anyone.", type: 'coach', bias: 0.5 },
+                { text: "Fed signals rate pause. Gold bullish. NEWS.", type: 'news', bias: 2.0 },
+                { text: "Conflict escalates. Safe-haven flows into gold. NEWS.", type: 'news', bias: 2.5 },
+                { text: "USD weakness across the board. Gold benefits. NEWS.", type: 'news', bias: 2.0 },
+                { text: "China buying gold reserves. Strong demand. NEWS.", type: 'news', bias: 2.0 },
+                { text: "Inflation data beats estimates. Gold rallies. NEWS.", type: 'news', bias: 2.0 },
+                { text: "GDP miss – rate cut speculation. Gold up. NEWS.", type: 'news', bias: 2.0 },
+                { text: "Central bank gold purchases at record high. NEWS.", type: 'news', bias: 2.5 },
+                { text: "US dollar index at 3-month low. Gold bull. NEWS.", type: 'news', bias: 2.0 },
+                { text: "Jobless claims rise. Gold higher. NEWS.", type: 'news', bias: 2.0 },
+                { text: "Consumer sentiment drops. Gold up. NEWS.", type: 'news', bias: 2.0 },
+                { text: "Geopolitical risk premium increasing. NEWS.", type: 'news', bias: 2.5 },
+                { text: "Fear and greed drive markets. Stay rational.", type: 'psych', bias: 0.5 },
+                { text: "Your emotions are your worst enemy. Trade the plan.", type: 'psych', bias: 0.5 },
+                { text: "The market does not care about your opinion. Follow the price.", type: 'psych', bias: 0.5 },
+                { text: "Losing is part of trading. Learn from it, don't fear it.", type: 'psych', bias: 0.5 },
+                { text: "Consistency beats intensity. 10 small wins > 1 lucky jackpot.", type: 'psych', bias: 0.5 },
+                { text: "If you're losing sleep over a trade, you're over-leveraged.", type: 'psych', bias: 0.5 },
+                { text: "The best traders have the best risk management, not the best predictions.", type: 'psych', bias: 0.5 },
+                { text: "Patience is the ultimate edge. Wait for your setup.", type: 'psych', bias: 0.5 },
+                { text: "Smart money waits. Retail chases. Be smart.", type: 'psych', bias: 0.5 },
+                { text: "If you're not sure, stay out. Clarity is key.", type: 'psych', bias: 0.5 },
+                { text: "Tilt is the enemy. When you tilt, stop trading.", type: 'psych', bias: 0.5 },
+                { text: "Trading is 80% psychology, 20% strategy.", type: 'psych', bias: 0.5 },
+                { text: "Your beliefs shape your results. Believe in your process.", type: 'psych', bias: 0.5 },
+                { text: "The goal is to be profitable over the long term, not to be right every time.", type: 'psych', bias: 0.5 },
+                { text: "Fibonacci 0.618 level acting as support. Bounce expected.", type: 'tech', bias: 1.0 },
+                { text: "MACD bullish crossover on 15m chart. LONG.", type: 'tech', bias: 1.5 },
+                { text: "RSI oversold on 1h chart. Buy opportunity.", type: 'tech', bias: 1.5 },
+                { text: "Bollinger bands squeeze. Breakout incoming.", type: 'tech', bias: 1.0 },
+                { text: "MA20 crossing above MA50. Golden cross. LONG.", type: 'tech', bias: 1.5 },
+                { text: "Volume profile shows POC at key level.", type: 'tech', bias: 0.5 },
+                { text: "Order block formed. Bullish bias.", type: 'tech', bias: 1.0 },
+                { text: "FVG on 5m chart. Price likely to fill upside.", type: 'tech', bias: 1.0 },
+                { text: "Market structure shift (MSS) to bullish. LONG.", type: 'tech', bias: 1.5 },
+                { text: "SMT divergence detected. Reversal probability high.", type: 'tech', bias: 1.0 },
+                { text: "ATR expansion suggests volatility increase. Adjust stops.", type: 'tech', bias: 0.5 },
+                { text: "Stochastic oversold with divergence. Bullish.", type: 'tech', bias: 1.0 },
+                { text: "Trendline breakout with volume. Confirmation.", type: 'tech', bias: 1.5 },
+                { text: "VWAP acting as dynamic support. LONG.", type: 'tech', bias: 1.0 },
+                { text: "OBV divergence detected. Weakness.", type: 'tech', bias: -1.0 },
+                { text: "Two consecutive bullish engulfing candles. LONG.", type: 'tech', bias: 1.5 },
+                { text: "Price holding above 20EMA. Bullish structure.", type: 'tech', bias: 1.0 },
+                { text: "Bearish divergence on RSI. SHORT.", type: 'tech', bias: -1.5 },
+                { text: "Bull flag pattern on 1h. LONG.", type: 'tech', bias: 1.5 },
+                { text: "Bearish wedge breakout. SHORT.", type: 'tech', bias: -1.5 },
+                { text: "Rounding bottom formation. LONG.", type: 'tech', bias: 1.5 },
+                { text: "Head and shoulders pattern on 4h. SHORT.", type: 'tech', bias: -2.0 },
+                { text: "Risk 1% per trade. Protect your capital.", type: 'risk', bias: 0.5 },
+                { text: "Your stop loss is your insurance. Never trade without it.", type: 'risk', bias: 0.5 },
+                { text: "Drawdown is not your enemy. Ignoring it is.", type: 'risk', bias: 0.5 },
+                { text: "Prop firm challenges are won in the mind before they're won on the chart.", type: 'risk', bias: 0.5 },
+                { text: "The goal isn't to be right. It's to manage risk so well that being wrong doesn't matter.", type: 'risk', bias: 0.5 },
+                { text: "If you're losing sleep over a trade, you're over-leveraged.", type: 'risk', bias: 0.5 },
+                { text: "The best traders have the best risk management, not the best predictions.", type: 'risk', bias: 0.5 },
+                { text: "Cut your losses quickly. Let your profits run.", type: 'risk', bias: 0.5 },
+                { text: "A losing streak is not a system failure. It's a test of discipline.", type: 'risk', bias: 0.5 },
+                { text: "Risk management is the only edge that lasts forever.", type: 'risk', bias: 0.5 },
+                { text: "Daily loss limit prevents catastrophic drawdown. Set yours.", type: 'risk', bias: 0.5 },
+                { text: "Don't risk more than you're willing to lose.", type: 'risk', bias: 0.5 },
+                { text: "Trading is about survival first, profits second.", type: 'risk', bias: 0.5 },
+                { text: "The market will always be there. Don't force trades.", type: 'risk', bias: 0.5 },
+                { text: "A good trade is one that follows your plan, not one that wins.", type: 'risk', bias: 0.5 },
+                { text: "Position sizing is the most underrated skill.", type: 'risk', bias: 0.5 },
+                { text: "Know when to walk away. Tomorrow is another trading day.", type: 'risk', bias: 0.5 },
+                { text: "First win is a milestone. Celebrate it.", type: 'achieve', bias: 0.5 },
+                { text: "5 wins in a row? You're on fire.", type: 'achieve', bias: 0.5 },
+                { text: "10 wins streak? Unstoppable.", type: 'achieve', bias: 0.5 },
+                { text: "Level 5 trader. You're a Battle Master.", type: 'achieve', bias: 0.5 },
+                { text: "Legendary trader. You've reached the top.", type: 'achieve', bias: 0.5 },
+                { text: "100 trades completed. You're a veteran.", type: 'achieve', bias: 0.5 },
+                { text: "50 wins. You're a true warrior.", type: 'achieve', bias: 0.5 },
+                { text: "Level 10. You're a legend.", type: 'achieve', bias: 0.5 },
+                { text: "Perfect day. 100% win rate.", type: 'achieve', bias: 0.5 },
+                { text: "You've beaten the market. Well done.", type: 'achieve', bias: 0.5 },
+                { text: "Signal: BUY at market. Strong momentum.", type: 'signal', bias: 2.0 },
+                { text: "Signal: SELL at resistance. Reversal likely.", type: 'signal', bias: -2.0 },
+                { text: "Signal: Wait for pullback to enter LONG.", type: 'signal', bias: 1.0 },
+                { text: "Signal: Breakout above 4725 confirmed. LONG.", type: 'signal', bias: 2.0 },
+                { text: "Signal: Double top at 4730. SELL.", type: 'signal', bias: -2.0 },
+                { text: "Signal: FVG filled. Reversal expected. SHORT.", type: 'signal', bias: -1.5 },
+                { text: "Signal: Order block at 4708. LONG entry.", type: 'signal', bias: 1.5 },
+                { text: "Signal: RSI divergence on 1h. SHORT.", type: 'signal', bias: -1.5 },
+                { text: "Signal: Volume spike at support. LONG.", type: 'signal', bias: 1.5 },
+                { text: "Signal: Trendline break on 15m. LONG.", type: 'signal', bias: 1.5 },
+                { text: "Signal: Bearish MACD crossover. SHORT.", type: 'signal', bias: -1.5 },
+                { text: "Signal: Bullish flag pattern. LONG.", type: 'signal', bias: 1.5 },
+                { text: "Signal: Support test with pin bar. LONG.", type: 'signal', bias: 1.5 },
+                { text: "Signal: Resistance rejection with volume. SHORT.", type: 'signal', bias: -1.5 },
+                { text: "The future is not a gift. It is an achievement. Keep building.", type: 'fun', bias: 0.5 },
+                { text: "If you're not failing, you're not innovating enough.", type: 'fun', bias: 0.5 },
+                { text: "The best way to predict the future is to build it.", type: 'fun', bias: 0.5 },
+                { text: "Don't let the haters stop you. Keep shipping.", type: 'fun', bias: 0.5 },
+                { text: "When something is important enough, you do it even if the odds are against you.", type: 'fun', bias: 0.5 },
+                { text: "You should take the approach that you're wrong. Your goal is to be less wrong.", type: 'fun', bias: 0.5 },
+                { text: "The future belongs to the builders.", type: 'fun', bias: 0.5 },
+                { text: "I'd rather be wrong than be late.", type: 'fun', bias: 0.5 },
+                { text: "Build cool shit that matters.", type: 'fun', bias: 0.5 },
+                { text: "First principles: think from fundamentals, not analogies.", type: 'fun', bias: 0.5 },
+                { text: "Elon signal is just a suggestion. You still need your own analysis.", type: 'fun', bias: 0.5 },
+                { text: "The best traders are the ones who kept losing until they didn't.", type: 'fun', bias: 0.5 },
+                { text: "Trading is 80% psychology, 20% strategy.", type: 'fun', bias: 0.5 },
+                { text: "If you can't sleep, you're trading too big.", type: 'fun', bias: 0.5 },
+                { text: "Everyone has a plan until they get punched in the face. Stay adaptable.", type: 'fun', bias: 0.5 },
+                { text: "The market is a giant casino. The house always wins unless you know the odds.", type: 'fun', bias: 0.5 },
+                { text: "Trading is the hardest way to make easy money.", type: 'fun', bias: 0.5 },
+                { text: "The only thing that works in trading is what works for you.", type: 'fun', bias: 0.5 },
+                { text: "Don't be a hero. Be a profitable trader.", type: 'fun', bias: 0.5 },
+                { text: "The market doesn't care about your feelings.", type: 'fun', bias: 0.5 },
+                { text: "If you're bored, you're not trading enough. Or you're trading too much.", type: 'fun', bias: 0.5 },
+                { text: "The best trade is sometimes the one you don't take.", type: 'fun', bias: 0.5 },
+                { text: "Trading is simple, but not easy.", type: 'fun', bias: 0.5 },
+                { text: "The most dangerous phrase in trading: 'This time it's different.'", type: 'fun', bias: 0.5 },
+                { text: "Remember: the market can stay irrational longer than you can stay solvent.", type: 'fun', bias: 0.5 },
+                { text: "Bitcoin is digital gold. But gold is still king. LONG.", type: 'crypto', bias: 2.0 },
+                { text: "Crypto markets are correlated to gold in times of crisis.", type: 'crypto', bias: 1.5 },
+                { text: "BTC is the best hedge against the dollar. LONG.", type: 'crypto', bias: 2.0 },
+                { text: "Ethereum has strong fundamentals. Accumulate.", type: 'crypto', bias: 1.5 },
+                { text: "Solana is the fastest chain. Bullish.", type: 'crypto', bias: 1.5 },
+                { text: "Crypto winter is over. Spring is here.", type: 'crypto', bias: 2.0 },
+                { text: "Institutional adoption is driving crypto higher.", type: 'crypto', bias: 1.5 },
+                { text: "Crypto is the future of money. LONG.", type: 'crypto', bias: 2.0 },
+                { text: "EURUSD at key support. Bounce expected.", type: 'forex', bias: 1.0 },
+                { text: "GBPUSD breakout above 1.28. LONG.", type: 'forex', bias: 1.5 },
+                { text: "USDJPY overbought. Reversal likely. SHORT.", type: 'forex', bias: -1.5 },
+                { text: "AUDUSD bullish divergence. LONG.", type: 'forex', bias: 1.5 },
+                { text: "NZDUSD at strong resistance. SHORT.", type: 'forex', bias: -1.5 },
+                { text: "USDCAD in a bearish channel. SHORT.", type: 'forex', bias: -1.5 },
+                { text: "DOGE to the moon! 🚀", type: 'meme', bias: 2.0 },
+                { text: "Doge is the people's crypto. LONG.", type: 'meme', bias: 2.0 },
+                { text: "Who let the doge out? 🐕", type: 'meme', bias: 1.5 },
+                { text: "Doge to $1? Maybe. To the moon? Definitely.", type: 'meme', bias: 2.0 },
+                { text: "The doge is strong with this one. LONG.", type: 'meme', bias: 2.0 },
+            ];
+
+            // ================================================================
+            //  UTILITY FUNCTIONS
+            // ================================================================
+            function safeSetText(id, text) {
+                const el = document.getElementById(id);
+                if (el) el.textContent = text;
+            }
+            function safeFloat(val, def) {
+                const n = parseFloat(val);
+                return isNaN(n) ? def : n;
+            }
+            function safeInt(val, def) {
+                const n = parseInt(val);
+                return isNaN(n) ? def : n;
+            }
+            function randomRange(min, max) {
+                return min + Math.random() * (max - min);
+            }
+            function randomInt(min, max) {
+                return Math.floor(randomRange(min, max + 1));
+            }
+            function clamp(v, min, max) {
+                return Math.max(min, Math.min(max, v));
+            }
+
+            // ================================================================
+            //  LOAD / SAVE
+            // ================================================================
+            function loadState() {
+                try {
+                    const raw = localStorage.getItem('trading_god_arena_state');
+                    if (raw) {
+                        const d = JSON.parse(raw);
+                        Object.assign(STATE, d);
+                        return true;
+                    }
+                } catch (e) { console.warn('Load error:', e); }
+                return false;
+            }
+            function saveState() {
+                try {
+                    const d = {};
+                    const keys = [
+                        'balance', 'equity', 'freeMargin', 'position', 'trades', 'positionStartTime',
+                        'leverage', 'winStreak', 'lossStreak', 'level', 'xp', 'xpToNext',
+                        'arenaWins', 'arenaLosses', 'arenaKills', 'arenaTrades', 'arenaPnl',
+                        'arenaRank', 'rankPoints', 'rankProgress', 'price', '_basePrice',
+                        'ticks', 'candles', 'timeframe', '_currentCandle', '_candleStartTime',
+                        'currentPair', 'indicators', 'chartType', 'theme', 'colors',
+                        'soundSettings', 'dailyLoss', 'lastResetDay', 'maxDailyLoss',
+                        'feedItems', 'elonFeed', 'elonSignals', 'elonSignalCount', 'elonScore',
+                        'gods', 'battleMode', 'battleActive', 'battleLog', 'battleReplay',
+                        'skillPoints', 'skills', 'leaderboard', 'spectatorMode', 'replayMode',
+                        'maxPositionSize', 'elonBias', 'elonBiasTimer', 'godKills'
+                    ];
+                    keys.forEach(k => { d[k] = STATE[k]; });
+                    localStorage.setItem('trading_god_arena_state', JSON.stringify(d));
+                } catch (e) { console.warn('Save error:', e); }
+            }
+
+            // ================================================================
+            //  MARKET ENGINE
+            // ================================================================
+            function getCandleSeconds() {
+                const map = { '5s': 5, '15s': 15, '30s': 30, '1m': 60, '5m': 300, '15m': 900, '1h': 3600 };
+                return map[STATE.timeframe] || 15;
+            }
+            function generateTick() {
+                let move = (Math.random() - 0.5) * 0.8;
+                if (STATE.elonBiasTimer > 0) {
+                    move += STATE.elonBias * 0.15;
+                    STATE.elonBiasTimer--;
+                }
+                STATE._basePrice += move;
+                const pair = STATE.currentPair;
+                let minP = 4600, maxP = 4850;
+                if (pair === 'EURUSD') { minP = 1.05; maxP = 1.15; }
+                else if (pair === 'GBPUSD') { minP = 1.20; maxP = 1.35; }
+                else if (pair === 'BTCUSD') { minP = 60000; maxP = 70000; }
+                else if (pair === 'ETHUSD') { minP = 3000; maxP = 4000; }
+                else if (pair === 'SOLUSD') { minP = 150; maxP = 200; }
+                else if (pair === 'DOGEUSD') { minP = 0.15; maxP = 0.25; }
+                else if (pair === 'AUDUSD') { minP = 0.63; maxP = 0.68; }
+                else if (pair === 'NZDUSD') { minP = 0.58; maxP = 0.63; }
+                else if (pair === 'USDCAD') { minP = 1.35; maxP = 1.40; }
+                else if (pair === 'USDJPY') { minP = 148; maxP = 152; }
+                STATE._basePrice = clamp(STATE._basePrice, minP, maxP);
+                return STATE._basePrice;
+            }
+            function startNewCandle(openPrice) {
+                const now = Date.now();
+                STATE._currentCandle = {
+                    open: openPrice,
+                    high: openPrice,
+                    low: openPrice,
+                    close: openPrice,
+                    volume: 0,
+                    timestamp: now,
+                    ticks: [openPrice]
+                };
+                STATE._candleStartTime = now;
+            }
+            function updateCurrentCandle(price, volume) {
+                if (!STATE._currentCandle) return;
+                const c = STATE._currentCandle;
+                c.close = price;
+                if (price > c.high) c.high = price;
+                if (price < c.low) c.low = price;
+                c.volume += volume || 1;
+                c.ticks.push(price);
+            }
+            function closeCurrentCandle() {
+                if (!STATE._currentCandle) return;
+                const tf = STATE.timeframe;
+                const candles = STATE.candles[tf] || [];
+                const c = STATE._currentCandle;
+                candles.push({
+                    open: c.open,
+                    high: c.high,
+                    low: c.low,
+                    close: c.close,
+                    volume: c.volume || Math.floor(Math.random() * 800) + 200,
+                    timestamp: c.timestamp,
+                });
+                if (candles.length > STATE.maxCandles) candles.shift();
+                STATE.candles[tf] = candles;
+                STATE._currentCandle = null;
+            }
+            function processTick(price) {
+                STATE.ticks.push({ price, time: Date.now() });
+                if (STATE.ticks.length > 10000) STATE.ticks.shift();
+
+                const candleSeconds = getCandleSeconds();
+                if (!STATE._currentCandle) {
+                    startNewCandle(price);
+                } else {
+                    const now = Date.now();
+                    const elapsed = (now - STATE._candleStartTime) / 1000;
+                    if (elapsed >= candleSeconds) {
+                        closeCurrentCandle();
+                        startNewCandle(price);
+                    } else {
+                        updateCurrentCandle(price, 1);
+                    }
+                }
+                STATE.tickCounter++;
+                drawChart();
+            }
+
+            // ================================================================
+            //  CHART RENDERING v10 — Elon Tweets on Chart
+            // ================================================================
+            const canvas = document.getElementById('chartCanvas');
+            const ctx = canvas.getContext('2d');
+            function resizeCanvas() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                const w = canvas.clientWidth || rect.width - 12 || 400;
+                const h = canvas.clientHeight || rect.height - 12 || 280;
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = w * dpr;
+                canvas.height = h * dpr;
+                canvas.style.width = w + 'px';
+                canvas.style.height = h + 'px';
+                ctx.scale(dpr, dpr);
+                return { w, h };
+            }
+            function calculateMA(candles, length) {
+                const result = [];
+                for (let i = 0; i < candles.length; i++) {
+                    if (i < length - 1) { result.push(null); continue; }
+                    let sum = 0;
+                    for (let j = i - length + 1; j <= i; j++) sum += candles[j].close;
+                    result.push(sum / length);
+                }
+                return result;
+            }
+            function calculateBB(candles, length = 20, stdDev = 2) {
+                const ma = calculateMA(candles, length);
+                const result = { upper: [], middle: [], lower: [] };
+                for (let i = 0; i < candles.length; i++) {
+                    if (i < length - 1) {
+                        result.upper.push(null);
+                        result.middle.push(null);
+                        result.lower.push(null);
+                        continue;
+                    }
+                    let sum = 0;
+                    for (let j = i - length + 1; j <= i; j++) sum += Math.pow(candles[j].close - ma[i], 2);
+                    const variance = sum / length;
+                    const std = Math.sqrt(variance);
+                    result.upper.push(ma[i] + stdDev * std);
+                    result.middle.push(ma[i]);
+                    result.lower.push(ma[i] - stdDev * std);
+                }
+                return result;
+            }
+            function calculateRSI(candles, length = 14) {
+                const result = [];
+                for (let i = 0; i < candles.length; i++) {
+                    if (i < length) { result.push(null); continue; }
+                    let gain = 0, loss = 0;
+                    for (let j = i - length + 1; j <= i; j++) {
+                        const diff = candles[j].close - candles[j - 1].close;
+                        if (diff > 0) gain += diff;
+                        else loss -= diff;
+                    }
+                    const avgGain = gain / length;
+                    const avgLoss = loss / length;
+                    const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
+                    result.push(100 - (100 / (1 + rs)));
+                }
+                return result;
+            }
+            function calculateMACD(candles, fast = 12, slow = 26, signal = 9) {
+                const emaFast = calculateEMA(candles, fast);
+                const emaSlow = calculateEMA(candles, slow);
+                const macd = [];
+                for (let i = 0; i < candles.length; i++) {
+                    if (emaFast[i] === null || emaSlow[i] === null) { macd.push(null); continue; }
+                    macd.push(emaFast[i] - emaSlow[i]);
+                }
+                const signalLine = calculateEMAFromArray(macd, signal);
+                const histogram = [];
+                for (let i = 0; i < macd.length; i++) {
+                    if (macd[i] === null || signalLine[i] === null) { histogram.push(null); continue; }
+                    histogram.push(macd[i] - signalLine[i]);
+                }
+                return { macd, signal: signalLine, histogram };
+            }
+            function calculateEMA(candles, length) {
+                const result = [];
+                const multiplier = 2 / (length + 1);
+                let ema = candles[0]?.close || 0;
+                for (let i = 0; i < candles.length; i++) {
+                    if (i === 0) { result.push(candles[i]?.close || null); continue; }
+                    ema = (candles[i].close - ema) * multiplier + ema;
+                    result.push(ema);
+                }
+                return result;
+            }
+            function calculateEMAFromArray(arr, length) {
+                const result = [];
+                const multiplier = 2 / (length + 1);
+                let ema = arr[0] || 0;
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i] === null) { result.push(null); continue; }
+                    if (i === 0) { result.push(arr[i]); continue; }
+                    ema = (arr[i] - ema) * multiplier + ema;
+                    result.push(ema);
+                }
+                return result;
+            }
+
+            // ===== v10 NEW: Draw Chart with Elon Signals =====
+            function drawChart() {
+                try {
+                    const tf = STATE.timeframe;
+                    const candles = STATE.candles[tf] || [];
+                    let view = candles.slice(-80);
+                    if (STATE._currentCandle) view = view.concat([STATE._currentCandle]);
+                    if (view.length < 2) {
+                        const { w, h } = resizeCanvas();
+                        ctx.fillStyle = 'rgba(240,240,255,0.02)';
+                        ctx.font = '12px Inter, sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('Loading Chart...', w / 2, h / 2);
+                        return;
+                    }
+                    const { w, h } = resizeCanvas();
+                    const count = view.length;
+                    const padRight = 40;
+                    const padBottom = 20;
+                    const padTop = 6;
+                    const padLeft = 4;
+
+                    const cw = w - padLeft - padRight;
+                    const ch = h - padTop - padBottom;
+                    const stepX = cw / count;
+                    const half = stepX * 0.22;
+
+                    let min = Infinity, max = -Infinity;
+                    view.forEach(c => { if (c.low < min) min = c.low; if (c.high > max) max = c.high; });
+                    const range = max - min || 1;
+                    const padR = Math.max(range * 0.06, 1.0);
+                    const minY = min - padR;
+                    const maxY = max + padR;
+                    const total = maxY - minY || 1;
+
+                    ctx.clearRect(0, 0, w, h);
+
+                    // Grid
+                    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+                    ctx.lineWidth = 0.5;
+                    for (let i = 0; i <= 6; i++) {
+                        const y = padTop + (i / 6) * ch;
+                        ctx.beginPath();
+                        ctx.moveTo(padLeft, y);
+                        ctx.lineTo(padLeft + cw, y);
+                        ctx.stroke();
+                    }
+
+                    // Draw indicators
+                    drawIndicators(view, minY, total, padLeft, padTop, ch, cw, stepX);
+
+                    // Draw candles
+                    const chartType = STATE.chartType;
+                    for (let i = 0; i < count; i++) {
+                        const c = view[i];
+                        const x = padLeft + i * stepX + stepX / 2;
+                        const yO = padTop + ch - ((c.open - minY) / total) * ch;
+                        const yC = padTop + ch - ((c.close - minY) / total) * ch;
+                        const yH = padTop + ch - ((c.high - minY) / total) * ch;
+                        const yL = padTop + ch - ((c.low - minY) / total) * ch;
+                        const isUp = c.close >= c.open;
+                        const col = isUp ? STATE.colors.up : STATE.colors.down;
+
+                        if (chartType === 'candle') {
+                            ctx.strokeStyle = col;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(x, yH);
+                            ctx.lineTo(x, yL);
+                            ctx.stroke();
+                            const top = Math.min(yO, yC);
+                            const bot = Math.max(yO, yC);
+                            const bodyHeight = bot - top || 1;
+                            ctx.fillStyle = isUp ? col + 'aa' : col + '88';
+                            ctx.fillRect(x - half, top, half * 2, bodyHeight);
+                        } else if (chartType === 'bar') {
+                            ctx.strokeStyle = col;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(x, yH);
+                            ctx.lineTo(x, yL);
+                            ctx.stroke();
+                            ctx.beginPath();
+                            ctx.moveTo(x - half, yC);
+                            ctx.lineTo(x, yC);
+                            ctx.stroke();
+                            ctx.beginPath();
+                            ctx.moveTo(x, yO);
+                            ctx.lineTo(x + half, yO);
+                            ctx.stroke();
+                        } else if (chartType === 'line') {
+                            if (i > 0) {
+                                const prev = view[i - 1];
+                                const yPrevClose = padTop + ch - ((prev.close - minY) / total) * ch;
+                                const xPrev = padLeft + (i - 1) * stepX + stepX / 2;
+                                ctx.strokeStyle = col;
+                                ctx.lineWidth = 1.2;
+                                ctx.beginPath();
+                                ctx.moveTo(xPrev, yPrevClose);
+                                ctx.lineTo(x, yC);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+
+                    // ===== v10 NEW: Draw Elon Signals on Chart =====
+                    const visibleStart = view[0].timestamp;
+                    const visibleEnd = view[view.length - 1].timestamp;
+                    STATE.elonSignals.forEach(signal => {
+                        if (signal.timestamp < visibleStart || signal.timestamp > visibleEnd) return;
+                        const x = padLeft + ((signal.timestamp - visibleStart) / (visibleEnd - visibleStart)) * cw;
+                        const y = padTop + ch - ((signal.price - minY) / total) * ch;
+                        const isUp = signal.type === 'long';
+                        const emoji = isUp ? '🐦🟢' : '🐦🔴';
+                        ctx.font = '10px Inter, sans-serif';
+                        ctx.fillStyle = isUp ? 'rgba(0,255,136,0.8)' : 'rgba(255,23,68,0.8)';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(emoji, x, y - 12);
+                        ctx.font = '6px Inter, sans-serif';
+                        ctx.fillStyle = 'rgba(255,215,0,0.6)';
+                        ctx.fillText('Elon', x, y - 2);
+                    });
+
+                    // Position lines
+                    if (STATE.position) {
+                        const pos = STATE.position;
+                        const entryY = padTop + ch - ((pos.entry - minY) / total) * ch;
+                        ctx.strokeStyle = 'rgba(255,215,0,0.9)';
+                        ctx.lineWidth = 1.5;
+                        ctx.beginPath();
+                        ctx.moveTo(padLeft, entryY);
+                        ctx.lineTo(padLeft + cw, entryY);
+                        ctx.stroke();
+                        ctx.fillStyle = 'rgba(255,215,0,0.9)';
+                        ctx.font = '7px Inter, sans-serif';
+                        ctx.textAlign = 'left';
+                        ctx.fillText('Entry ' + pos.entry.toFixed(2), padLeft + 2, entryY - 4);
+                        if (pos.sl > 0) {
+                            const slY = padTop + ch - ((pos.sl - minY) / total) * ch;
+                            ctx.strokeStyle = 'rgba(255,23,68,0.9)';
+                            ctx.setLineDash([4, 4]);
+                            ctx.lineWidth = 1.5;
+                            ctx.beginPath();
+                            ctx.moveTo(padLeft, slY);
+                            ctx.lineTo(padLeft + cw, slY);
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+                            ctx.fillStyle = 'rgba(255,23,68,0.9)';
+                            ctx.font = '7px Inter, sans-serif';
+                            ctx.textAlign = 'left';
+                            ctx.fillText('SL ' + pos.sl.toFixed(2), padLeft + 2, slY - 4);
+                        }
+                        if (pos.tp > 0) {
+                            const tpY = padTop + ch - ((pos.tp - minY) / total) * ch;
+                            ctx.strokeStyle = 'rgba(0,255,136,0.9)';
+                            ctx.setLineDash([4, 4]);
+                            ctx.lineWidth = 1.5;
+                            ctx.beginPath();
+                            ctx.moveTo(padLeft, tpY);
+                            ctx.lineTo(padLeft + cw, tpY);
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+                            ctx.fillStyle = 'rgba(0,255,136,0.9)';
+                            ctx.font = '7px Inter, sans-serif';
+                            ctx.textAlign = 'left';
+                            ctx.fillText('TP ' + pos.tp.toFixed(2), padLeft + 2, tpY - 4);
+                        }
+                    }
+
+                    // Bid/Ask lines
+                    const sellPrice = STATE.bid;
+                    const buyPrice = STATE.ask;
+                    const ySell = padTop + ch - ((sellPrice - minY) / total) * ch;
+                    const yBuy = padTop + ch - ((buyPrice - minY) / total) * ch;
+                    ctx.strokeStyle = 'rgba(255,23,68,0.5)';
+                    ctx.setLineDash([3, 3]);
+                    ctx.lineWidth = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(padLeft, ySell);
+                    ctx.lineTo(padLeft + cw, ySell);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = 'rgba(255,23,68,0.6)';
+                    ctx.font = '6px Inter, sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(sellPrice.toFixed(2), padLeft + 2, ySell - 2);
+
+                    ctx.strokeStyle = 'rgba(0,255,136,0.5)';
+                    ctx.setLineDash([3, 3]);
+                    ctx.lineWidth = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(padLeft, yBuy);
+                    ctx.lineTo(padLeft + cw, yBuy);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = 'rgba(0,255,136,0.6)';
+                    ctx.font = '6px Inter, sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(buyPrice.toFixed(2), padLeft + 2, yBuy - 2);
+
+                    // Time labels
+                    ctx.fillStyle = 'rgba(255,255,255,0.1)';
+                    ctx.font = '6px Inter, sans-serif';
+                    ctx.textAlign = 'center';
+                    const stepIdx = Math.max(1, Math.floor(count / 4));
+                    for (let i = 0; i < count; i += stepIdx) {
+                        const c = view[i];
+                        const x = padLeft + i * stepX + stepX / 2;
+                        const d = new Date(c.timestamp);
+                        const timeStr = d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
+                        ctx.fillText(timeStr, x, padTop + ch + 10);
+                    }
+                } catch (e) { console.warn('drawChart error:', e); }
+            }
+
+            function drawIndicators(view, minY, total, padLeft, padTop, ch, cw, stepX) {
+                const indicators = STATE.indicators;
+                if (!indicators) return;
+
+                if (indicators.MA && view.length > 20) {
+                    const ma20 = calculateMA(view, 20);
+                    ctx.strokeStyle = 'rgba(255,215,0,0.2)';
+                    ctx.lineWidth = 0.8;
+                    ctx.beginPath();
+                    for (let i = 0; i < ma20.length; i++) {
+                        if (ma20[i] === null) continue;
+                        const x = padLeft + i * stepX + stepX / 2;
+                        const y = padTop + ch - ((ma20[i] - minY) / total) * ch;
+                        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                }
+                if (indicators.BB && view.length > 20) {
+                    const bb = calculateBB(view, 20, 2);
+                    ctx.strokeStyle = 'rgba(0,212,255,0.15)';
+                    ctx.lineWidth = 0.6;
+                    ctx.setLineDash([2, 2]);
+                    for (let key of ['upper', 'lower']) {
+                        ctx.beginPath();
+                        for (let i = 0; i < bb[key].length; i++) {
+                            if (bb[key][i] === null) continue;
+                            const x = padLeft + i * stepX + stepX / 2;
+                            const y = padTop + ch - ((bb[key][i] - minY) / total) * ch;
+                            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                        }
+                        ctx.stroke();
+                    }
+                    ctx.setLineDash([]);
+                }
+                if (indicators.RSI && view.length > 14) {
+                    const rsi = calculateRSI(view, 14);
+                    const rsiMin = 0;
+                    const rsiMax = 100;
+                    const rsiRange = rsiMax - rsiMin || 1;
+                    ctx.strokeStyle = 'rgba(255,107,255,0.2)';
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    for (let i = 0; i < rsi.length; i++) {
+                        if (rsi[i] === null) continue;
+                        const x = padLeft + i * stepX + stepX / 2;
+                        const norm = (rsi[i] - rsiMin) / rsiRange;
+                        const y = padTop + ch - norm * ch;
+                        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                    ctx.strokeStyle = 'rgba(255,23,68,0.15)';
+                    ctx.setLineDash([2, 2]);
+                    ctx.lineWidth = 0.5;
+                    const y30 = padTop + ch - (30 / rsiRange) * ch;
+                    ctx.beginPath();
+                    ctx.moveTo(padLeft, y30);
+                    ctx.lineTo(padLeft + cw, y30);
+                    ctx.stroke();
+                    const y70 = padTop + ch - (70 / rsiRange) * ch;
+                    ctx.beginPath();
+                    ctx.moveTo(padLeft, y70);
+                    ctx.lineTo(padLeft + cw, y70);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+                if (indicators.MACD && view.length > 26) {
+                    const macd = calculateMACD(view, 12, 26, 9);
+                    const values = [];
+                    for (let i = 0; i < macd.macd.length; i++) {
+                        if (macd.macd[i] !== null) values.push(macd.macd[i]);
+                        if (macd.signal[i] !== null) values.push(macd.signal[i]);
+                        if (macd.histogram[i] !== null) values.push(macd.histogram[i]);
+                    }
+                    const mMin = Math.min(0, ...values);
+                    const mMax = Math.max(0, ...values);
+                    const mRange = mMax - mMin || 1;
+                    ctx.strokeStyle = 'rgba(0,212,255,0.2)';
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    for (let i = 0; i < macd.macd.length; i++) {
+                        if (macd.macd[i] === null) continue;
+                        const x = padLeft + i * stepX + stepX / 2;
+                        const norm = (macd.macd[i] - mMin) / mRange;
+                        const y = padTop + ch - norm * ch;
+                        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                    ctx.strokeStyle = 'rgba(255,215,0,0.2)';
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    for (let i = 0; i < macd.signal.length; i++) {
+                        if (macd.signal[i] === null) continue;
+                        const x = padLeft + i * stepX + stepX / 2;
+                        const norm = (macd.signal[i] - mMin) / mRange;
+                        const y = padTop + ch - norm * ch;
+                        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                }
+            }
+
+            // ================================================================
+            //  TRADING ENGINE v10 — Risk Manager Integration
+            // ================================================================
+            function openTrade(direction) {
+                if (STATE.position) { showToast('⚠️ Close existing position first', 'error'); return; }
+                const vol = parseFloat(document.getElementById('tradeVolume').value) || 0.02;
+                if (vol <= 0) { showToast('Volume must be > 0', 'error'); return; }
+                if (vol > STATE.maxPositionSize) { showToast('⚠️ Volume exceeds max position size (' + STATE.maxPositionSize + ')', 'error'); return; }
+                const sl = parseFloat(document.getElementById('tradeSL').value) || 0;
+                const tp = parseFloat(document.getElementById('tradeTP').value) || 0;
+                const lev = STATE.leverage;
+                const entry = direction === 'buy' ? STATE.ask : STATE.bid;
+
+                const today = new Date().toDateString();
+                if (STATE.lastResetDay !== today) {
+                    STATE.dailyLoss = 0;
+                    STATE.lastResetDay = today;
+                }
+                const potentialLoss = (entry * vol * 100 * 0.0005) * 2;
+                if (STATE.dailyLoss + potentialLoss > STATE.maxDailyLoss) {
+                    showToast('⚠️ Daily loss limit reached!', 'error');
+                    return;
+                }
+
+                STATE.position = {
+                    direction: direction,
+                    entry: entry,
+                    volume: vol,
+                    sl: sl,
+                    tp: tp,
+                    leverage: lev,
+                    timestamp: Date.now(),
+                    skillActive: null,
+                };
+                STATE.positionStartTime = Date.now();
+                updatePositionUI();
+                STATE.arenaTrades++;
+                showToast('✅ ' + direction.toUpperCase() + ' opened at ' + entry.toFixed(2) + ' (' + lev + 'x)', 'success');
+                if (STATE.soundSettings.trade) playSound('trade');
+                updateUI();
+                updateTimeline(); // v10: Update timeline
+                saveState();
+            }
+
+            function confirmClose() {
+                if (!STATE.position) { showToast('⚠️ No open position', 'error'); return; }
+                closeTrade();
+            }
+
+            function closeTrade() {
+                if (!STATE.position) return;
+                const pos = STATE.position;
+                const exit = pos.direction === 'buy' ? STATE.bid : STATE.ask;
+                const diff = (exit - pos.entry) * (pos.direction === 'buy' ? 1 : -1) * 100 * pos.volume * pos.leverage;
+                const commission = (pos.entry * pos.volume * 100 * 0.0005) + (exit * pos.volume * 100 * 0.0005);
+                let net = diff - commission;
+
+                if (STATE.skills.doge_boost && STATE.skills.doge_boost > 0 && net > 0) {
+                    net *= 1.5;
+                    STATE.skills.doge_boost--;
+                    showToast('🐕 Doge Boost active! +50% profit', 'gold');
+                }
+
+                STATE.balance += net;
+                STATE.arenaPnl += net;
+                addXP(Math.abs(net) / 10);
+                addRankPoints(Math.abs(net) / 5);
+                if (net < 0) STATE.dailyLoss += Math.abs(net);
+
+                const holdTime = (Date.now() - STATE.positionStartTime) / 1000;
+                STATE.trades.push({
+                    pair: STATE.currentPair,
+                    direction: pos.direction,
+                    entry: pos.entry,
+                    exit: exit,
+                    volume: pos.volume,
+                    leverage: pos.leverage,
+                    sl: pos.sl,
+                    tp: pos.tp,
+                    pnl: net,
+                    commission: commission,
+                    result: net > 0 ? 'profit' : (net < 0 ? 'loss' : 'breakeven'),
+                    holdTime: holdTime,
+                    timestamp: Date.now(),
+                });
+                STATE.position = null;
+                STATE.positionStartTime = null;
+                updatePositionUI();
+                saveState();
+
+                if (net > 0) {
+                    STATE.winStreak++;
+                    STATE.lossStreak = 0;
+                    STATE.arenaWins++;
+                    showDopamineFeedback(true, net, '🔥 Divine Trade!', '+' + net.toFixed(2) + ' profit');
+                    if (STATE.battleActive) {
+                        STATE.arenaKills++;
+                        STATE.godKills++;
+                        addBattleLog('⚔️ You eliminated a god! +1 kill');
+                    }
+                } else if (net < 0) {
+                    STATE.winStreak = 0;
+                    STATE.lossStreak++;
+                    STATE.arenaLosses++;
+                    showDopamineFeedback(false, net, '💪 Next One!', net.toFixed(2) + ' loss');
+                } else {
+                    showDopamineFeedback(true, net, '⚖️ Breakeven', '0.00');
+                }
+
+                updateUI();
+                updateTimeline(); // v10: Update timeline
+                showToast('📊 Closed · P&L: ' + net.toFixed(2), net >= 0 ? 'success' : 'error');
+                if (STATE.soundSettings.trade) playSound('trade_close');
+                checkBattleStatus();
+                updateLeaderboard();
+            }
+
+            function quickTrade(direction) {
+                const vol = parseFloat(document.getElementById('mt5Volume').textContent) || 0.02;
+                document.getElementById('tradeVolume').value = vol;
+                openTrade(direction);
+            }
+
+            function adjustVolume(delta) {
+                const volEl = document.getElementById('mt5Volume');
+                let vol = parseFloat(volEl.textContent) || 0.02;
+                vol = Math.max(0.01, Math.min(1.0, vol + delta));
+                volEl.textContent = vol.toFixed(2);
+            }
+
+            function updatePositionUI() {
+                const pos = STATE.position;
+                const dirEl = document.getElementById('posDir');
+                const entryEl = document.getElementById('posEntry');
+                const volEl = document.getElementById('posVol');
+                const sltpEl = document.getElementById('posSLTP');
+                const plEl = document.getElementById('posPL');
+                const levEl = document.getElementById('posLev');
+                const durEl = document.getElementById('posDuration');
+                const skillEl = document.getElementById('posSkill');
+                if (pos) {
+                    const current = pos.direction === 'buy' ? STATE.bid : STATE.ask;
+                    const diff = (current - pos.entry) * (pos.direction === 'buy' ? 1 : -1) * 100 * pos.volume * pos.leverage;
+                    const netPnl = diff - (pos.entry * pos.volume * 100 * 0.0005) - (current * pos.volume * 100 * 0.0005);
+                    if (dirEl) { dirEl.textContent = pos.direction === 'buy' ? '📈 LONG' : '📉 SHORT';
+                        dirEl.className = 'pos-value ' + (pos.direction === 'buy' ? 'green' : 'red'); }
+                    if (entryEl) entryEl.textContent = pos.entry.toFixed(2);
+                    if (volEl) volEl.textContent = pos.volume.toFixed(2);
+                    if (sltpEl) sltpEl.textContent = (pos.sl ? 'SL:' + pos.sl.toFixed(2) : '—') + ' / ' + (pos.tp ? 'TP:' + pos.tp
+                        .toFixed(2) : '—');
+                    if (plEl) { plEl.textContent = (netPnl >= 0 ? '+' : '') + netPnl.toFixed(2);
+                        plEl.className = 'pos-value ' + (netPnl >= 0 ? 'green' : 'red'); }
+                    if (levEl) levEl.textContent = pos.leverage + 'x';
+                    if (durEl) durEl.textContent = Math.floor((Date.now() - STATE.positionStartTime) / 1000) + 's';
+                    if (skillEl) skillEl.textContent = pos.skillActive || '—';
+                } else {
+                    if (dirEl) { dirEl.textContent = '—';
+                        dirEl.className = 'pos-value'; }
+                    if (entryEl) entryEl.textContent = '—';
+                    if (volEl) volEl.textContent = '—';
+                    if (sltpEl) sltpEl.textContent = '— / —';
+                    if (plEl) { plEl.textContent = '0.00';
+                        plEl.className = 'pos-value'; }
+                    if (levEl) levEl.textContent = '—';
+                    if (durEl) durEl.textContent = '—';
+                    if (skillEl) skillEl.textContent = '—';
+                }
+            }
+
+            function updateLeverage(val) {
+                STATE.leverage = parseInt(val) || 1;
+                if (STATE.leverage < 1) STATE.leverage = 1;
+                if (STATE.leverage > 50) STATE.leverage = 50;
+                const levDisplay = document.getElementById('leverageDisplay');
+                const levSlider = document.getElementById('leverageSlider');
+                const levInput = document.getElementById('leverageInput');
+                if (levDisplay) levDisplay.textContent = STATE.leverage + 'x';
+                if (levSlider) levSlider.value = STATE.leverage;
+                if (levInput) levInput.value = STATE.leverage;
+                saveState();
+            }
+
+            // ===== v10 NEW: Risk Manager Functions =====
+            function updateRiskFromDollar() {
+                const riskAmt = parseFloat(document.getElementById('riskAmount').value) || 0;
+                const rewardAmt = parseFloat(document.getElementById('rewardAmount').value) || 0;
+                const vol = parseFloat(document.getElementById('tradeVolume').value) || 0.02;
+                const lev = STATE.leverage;
+                const entry = STATE.position ? STATE.position.entry : (STATE.bid + STATE.ask) / 2;
+                if (riskAmt > 0 && vol > 0 && lev > 0) {
+                    // Risk distance = riskAmt / (100 * vol * lev)
+                    const slDist = riskAmt / (100 * vol * lev);
+                    const tpDist = rewardAmt / (100 * vol * lev);
+                    // Direction independent logic:
+                    const slPrice = entry - slDist;
+                    const tpPrice = entry + tpDist;
+                    document.getElementById('tradeSL').value = slPrice.toFixed(2);
+                    document.getElementById('tradeTP').value = tpPrice.toFixed(2);
+                }
+            }
+
+            function applyRiskPreset(preset) {
+                let riskAmt = 0, rewardAmt = 0;
+                if (preset === 1) { riskAmt = 20; rewardAmt = 40; }
+                else if (preset === 2) { riskAmt = 50; rewardAmt = 100; }
+                else if (preset === 3) { riskAmt = 100; rewardAmt = 200; }
+                document.getElementById('riskAmount').value = riskAmt;
+                document.getElementById('rewardAmount').value = rewardAmt;
+                updateRiskFromDollar();
+                showToast('💰 R' + preset + ' applied: Risk $' + riskAmt + ' / Reward $' + rewardAmt, 'gold');
+            }
+
+            function addXP(amount) {
+                let bonus = 1;
+                if (STATE.skills.moon_shot && STATE.skills.moon_shot > 0) bonus = 1.5;
+                STATE.xp += Math.floor(amount * bonus);
+                while (STATE.xp >= STATE.xpToNext) {
+                    STATE.xp -= STATE.xpToNext;
+                    STATE.level++;
+                    STATE.xpToNext = Math.floor(STATE.xpToNext * 1.5);
+                    STATE.skillPoints++;
+                    showToast('🎉 Level Up! Lv.' + STATE.level + ' +1 Skill Point!', 'gold');
+                    addBattleLog('🎉 Level Up! Lv.' + STATE.level + ' +1 Skill Point!');
+                    launchConfetti();
+                }
+                updateUI();
+                saveState();
+            }
+
+            function addRankPoints(amount) {
+                STATE.rankPoints += Math.floor(amount);
+                const xpPerRank = 200;
+                const currentRankIdx = Math.min(Math.floor(STATE.rankPoints / xpPerRank), 8);
+                const ranks = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Elite', 'Legend', 'Divine', 'Godlike'];
+                STATE.arenaRank = ranks[currentRankIdx] || 'Bronze';
+                STATE.rankProgress = ((STATE.rankPoints % xpPerRank) / xpPerRank) * 100;
+                updateUI();
+                saveState();
+            }
+
+            function updateUI() {
+                const price = STATE.ticks.length > 0 ? STATE.ticks[STATE.ticks.length - 1].price : STATE.price;
+                STATE.price = price;
+                STATE.bid = price - 0.1;
+                STATE.ask = price + 0.1;
+                STATE.spread = 0.2;
+
+                safeSetText('headerBalance', STATE.balance.toFixed(0));
+                safeSetText('headerLevel', STATE.level);
+                safeSetText('headerStreak', STATE.winStreak);
+
+                safeSetText('arenaBalance', STATE.balance.toFixed(2));
+                safeSetText('arenaEquity', STATE.equity.toFixed(2));
+                safeSetText('arenaFreeMargin', (STATE.equity - (STATE.position ? 500 : 0)).toFixed(2));
+                safeSetText('arenaLevel', STATE.level);
+                safeSetText('arenaXP', STATE.xp + ' XP');
+                safeSetText('arenaRank', STATE.arenaRank);
+                safeSetText('arenaTrades', STATE.trades.length);
+
+                const total = STATE.trades.length;
+                const wins = STATE.trades.filter(t => t.pnl > 0).length;
+                const winRate = total > 0 ? (wins / total) * 100 : 0;
+                safeSetText('arenaWinRate', winRate.toFixed(1) + '%');
+                safeSetText('arenaPnl', STATE.arenaPnl.toFixed(2));
+                safeSetText('arenaStreak', STATE.winStreak);
+                safeSetText('arenaGodKills', STATE.godKills);
+
+                safeSetText('mt5SellPrice', STATE.bid.toFixed(2));
+                safeSetText('mt5BuyPrice', STATE.ask.toFixed(2));
+
+                updatePositionUI();
+                updateGodsPanel();
+                updateLeaderboard();
+                updateSkillTree();
+                drawChart();
+                updateQuotesList();
+                updateTimeline(); // v10: Update timeline
+            }
+
+            function updateQuotesList() {
+                const container = document.getElementById('quotesListContainer');
+                if (!container) return;
+                const pairs = ['XAUUSD', 'EURUSD', 'GBPUSD', 'BTCUSD', 'ETHUSD', 'SOLUSD', 'DOGEUSD', 'AUDUSD', 'NZDUSD',
+                    'USDCAD', 'USDJPY'
+                ];
+                const prices = {
+                    XAUUSD: STATE.price,
+                    EURUSD: STATE.price * 0.00023 + 1.08,
+                    GBPUSD: STATE.price * 0.00027 + 1.26,
+                    BTCUSD: STATE.price * 14.4 + 60000,
+                    ETHUSD: STATE.price * 0.74 + 3000,
+                    SOLUSD: STATE.price * 0.038 + 150,
+                    DOGEUSD: STATE.price * 0.00004 + 0.18,
+                    AUDUSD: STATE.price * 0.00014 + 0.64,
+                    NZDUSD: STATE.price * 0.00013 + 0.60,
+                    USDCAD: STATE.price * 0.00029 + 1.36,
+                    USDJPY: STATE.price * 0.032 + 149
+                };
+                let html = '';
+                pairs.forEach(p => {
+                    const basePrice = prices[p] || STATE.price;
+                    const change = (Math.random() - 0.5) * 0.5;
+                    const up = change >= 0;
+                    html += `
+                        <div class="quote-item" onclick="changePair('${p}')">
+                            <span class="q-pair">${p}</span>
+                            <div style="text-align:right;">
+                                <div class="q-price">${basePrice.toFixed(2)}</div>
+                                <div class="q-change ${up?'up':'down'}">${up?'+':''}${change.toFixed(2)}%</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+
+            // ================================================================
+            //  AI GODS SYSTEM
+            // ================================================================
+            function initGods() {
+                if (STATE.gods.length === 0) {
+                    STATE.gods = GODS_CONFIG.map(g => ({
+                        ...g,
+                        balance: 10000 + Math.random() * 5000,
+                        position: null,
+                        trades: [],
+                        pnl: 0,
+                        wins: 0,
+                        losses: 0,
+                        active: true,
+                        skillLevel: Math.floor(Math.random() * 3) + 1,
+                    }));
+                }
+            }
+
+            function updateGodsPanel() {
+                const container = document.getElementById('godsGrid');
+                if (!container) return;
+                let html = '';
+                STATE.gods.forEach((g, idx) => {
+                    const pnl = g.pnl || 0;
+                    const statusClass = pnl > 0 ? 'green' : (pnl < 0 ? 'red' : 'gold');
+                    const statusText = pnl > 0 ? 'Profit' : (pnl < 0 ? 'Loss' : 'Flat');
+                    html += `
+                        <div class="god-card" onclick="godAction(${idx})">
+                            <div class="god-icon">${g.icon}</div>
+                            <div class="god-name">${g.name}</div>
+                            <div class="god-status"><span class="dot ${statusClass}"></span>${statusText}</div>
+                            <div class="god-pnl ${statusClass}">${pnl>=0?'+':''}${pnl.toFixed(0)}</div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+
+            function godAction(idx) {
+                const g = STATE.gods[idx];
+                if (!g) return;
+                showToast('👑 ' + g.name + ': ' + g.desc + ' | P&L: ' + (g.pnl >= 0 ? '+' : '') + g.pnl.toFixed(0), 'gold');
+                addBattleLog('👑 ' + g.name + ' is watching...');
+            }
+
+            function godTrade(god, price) {
+                const dir = Math.random() < 0.5 ? 'buy' : 'sell';
+                const vol = 0.01 + Math.random() * 0.05;
+                const entry = dir === 'buy' ? price + 0.05 : price - 0.05;
+                const exit = dir === 'buy' ? price - 0.1 + Math.random() * 0.2 : price + 0.1 - Math.random() * 0.2;
+                const diff = (exit - entry) * (dir === 'buy' ? 1 : -1) * 100 * vol * 10;
+                const pnl = diff - (entry * vol * 100 * 0.0005) - (exit * vol * 100 * 0.0005);
+                god.pnl += pnl;
+                god.trades.push({ dir, entry, exit, pnl });
+                if (pnl > 0) god.wins++;
+                else god.losses++;
+                return pnl;
+            }
+
+            // ================================================================
+            //  BATTLE SYSTEM
+            // ================================================================
+            function startBattle() {
+                if (STATE.battleActive) {
+                    showToast('⚔️ Battle already in progress!', 'error');
+                    return;
+                }
+                const mode = document.getElementById('battleModeSelect').value;
+                STATE.battleMode = mode;
+                STATE.battleActive = true;
+                STATE.battleLog = [];
+                STATE.battleReplay = [];
+
+                addBattleLog('⚔️ Battle started! Mode: ' + mode.toUpperCase());
+                showToast('⚔️ Battle started! Mode: ' + mode.toUpperCase(), 'gold');
+
+                initGods();
+                STATE.gods.forEach(g => {
+                    g.position = null;
+                    g.pnl = 0;
+                    g.trades = [];
+                    g.wins = 0;
+                    g.losses = 0;
+                });
+
+                battleLoop();
+                updateBattleField();
+                updateTimeline();
+                saveState();
+            }
+
+            let battleInterval = null;
+
+            function battleLoop() {
+                if (battleInterval) clearInterval(battleInterval);
+                battleInterval = setInterval(() => {
+                    if (!STATE.battleActive) {
+                        clearInterval(battleInterval);
+                        battleInterval = null;
+                        return;
+                    }
+                    const price = STATE.price;
+                    STATE.gods.forEach((g, idx) => {
+                        if (Math.random() < 0.15) {
+                            const pnl = godTrade(g, price);
+                            if (Math.abs(pnl) > 50) {
+                                const action = pnl > 0 ? '📈' : '📉';
+                                addBattleLog(action + ' ' + g.name + ' ' + (pnl > 0 ? 'profit' : 'loss') + ': ' + pnl
+                                    .toFixed(0));
+                                if (pnl > 0 && Math.random() < 0.1) {
+                                    addBattleLog('💬 ' + g.name + ': "' + getGodQuote(g.id, true) + '"');
+                                } else if (pnl < 0 && Math.random() < 0.1) {
+                                    addBattleLog('💬 ' + g.name + ': "' + getGodQuote(g.id, false) + '"');
+                                }
+                            }
+                        }
+                    });
+
+                    const mode = STATE.battleMode;
+                    if (mode === '1v1') {
+                        const playerPnl = STATE.arenaPnl;
+                        const godPnl = STATE.gods[0]?.pnl || 0;
+                        if (Math.abs(playerPnl - godPnl) > 500) {
+                            endBattle(playerPnl > godPnl ? 'player' : 'god');
+                        }
+                    } else if (mode === '1v3') {
+                        const playerPnl = STATE.arenaPnl;
+                        const totalGodPnl = STATE.gods.slice(0, 3).reduce((s, g) => s + g.pnl, 0);
+                        if (Math.abs(playerPnl - totalGodPnl) > 500) {
+                            endBattle(playerPnl > totalGodPnl ? 'player' : 'god');
+                        }
+                    } else if (mode === 'ffa') {
+                        const allPnl = STATE.gods.map(g => g.pnl);
+                        const maxPnl = Math.max(...allPnl, STATE.arenaPnl);
+                        const winner = allPnl.indexOf(maxPnl);
+                        if (winner >= 0 && Math.abs(maxPnl - Math.min(...allPnl, STATE.arenaPnl)) > 400) {
+                            endBattle(winner === STATE.gods.length ? 'player' : 'god');
+                        }
+                    } else if (mode === 'king') {
+                        const playerPnl = STATE.arenaPnl;
+                        const godPnl = STATE.gods[0]?.pnl || 0;
+                        if (Math.abs(playerPnl - godPnl) > 300) {
+                            endBattle(playerPnl > godPnl ? 'player' : 'god');
+                        }
+                    }
+
+                    updateBattleField();
+                    updateGodsPanel();
+                    updateUI();
+                    updateTimeline();
+                    saveState();
+                }, 3000);
+            }
+
+            function endBattle(winner) {
+                STATE.battleActive = false;
+                if (battleInterval) {
+                    clearInterval(battleInterval);
+                    battleInterval = null;
+                }
+                if (winner === 'player') {
+                    addBattleLog('🏆 YOU WIN! +200 XP');
+                    showToast('🏆 YOU WIN! +200 XP', 'gold');
+                    addXP(200);
+                    STATE.arenaWins++;
+                    launchConfetti();
+                    if (STATE.soundSettings.win) playSound('win');
+                } else {
+                    addBattleLog('💀 You lose. Better luck next time!');
+                    showToast('💀 You lose. Better luck next time!', 'error');
+                    STATE.arenaLosses++;
+                }
+                updateLeaderboard();
+                updateUI();
+                updateTimeline();
+                saveState();
+            }
+
+            function checkBattleStatus() {
+                if (STATE.battleActive) {
+                    if (STATE.balance < 5000) {
+                        endBattle('god');
+                    }
+                }
+            }
+
+            function updateBattleField() {
+                const container = document.getElementById('battleField');
+                if (!container) return;
+                let html = '';
+                const playerPnl = STATE.arenaPnl;
+                html += `
+                    <div class="fighter ${playerPnl > 0 ? 'active' : ''}">
+                        <div class="f-icon">👑</div>
+                        <div class="f-name">YOU</div>
+                        <div class="f-pnl ${playerPnl>=0?'green':'red'}">${playerPnl>=0?'+':''}${playerPnl.toFixed(0)}</div>
+                    </div>
+                `;
+                STATE.gods.forEach((g, idx) => {
+                    const pnl = g.pnl || 0;
+                    html += `
+                        <div class="fighter ${pnl > 0 ? 'active' : ''}">
+                            <div class="f-icon">${g.icon}</div>
+                            <div class="f-name">${g.name}</div>
+                            <div class="f-pnl ${pnl>=0?'green':'red'}">${pnl>=0?'+':''}${pnl.toFixed(0)}</div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+
+            function addBattleLog(text) {
+                STATE.battleLog.push(text);
+                if (STATE.battleLog.length > 50) STATE.battleLog.shift();
+                STATE.battleReplay.push({ text, timestamp: Date.now() });
+                const logEl = document.getElementById('battleLog');
+                if (logEl) {
+                    const entry = document.createElement('div');
+                    entry.className = 'log-entry';
+                    entry.innerHTML = text;
+                    logEl.appendChild(entry);
+                    logEl.scrollTop = logEl.scrollHeight;
+                    if (logEl.children.length > 20) {
+                        logEl.removeChild(logEl.firstChild);
+                    }
+                }
+                saveState();
+            }
+
+            function clearBattleLog() {
+                const logEl = document.getElementById('battleLog');
+                if (logEl) logEl.innerHTML = '<div class="log-entry">⚔️ Battle log cleared.</div>';
+                STATE.battleLog = [];
+                saveState();
+            }
+
+            function spectateBattle() {
+                STATE.spectatorMode = !STATE.spectatorMode;
+                if (STATE.spectatorMode) {
+                    showToast('👁️ Spectator mode ON. Watch the gods battle!', 'cyan');
+                    addBattleLog('👁️ Spectator mode activated.');
+                } else {
+                    showToast('👁️ Spectator mode OFF.', 'cyan');
+                    addBattleLog('👁️ Spectator mode deactivated.');
+                }
+                saveState();
+            }
+
+            function replayBattle() {
+                if (STATE.battleReplay.length === 0) {
+                    showToast('No battle replay available.', 'error');
+                    return;
+                }
+                STATE.replayMode = !STATE.replayMode;
+                if (STATE.replayMode) {
+                    showToast('🔄 Replay mode ON. Watch the battle again!', 'gold');
+                    addBattleLog('🔄 Replay mode activated.');
+                    let idx = 0;
+                    const replayInterval = setInterval(() => {
+                        if (idx >= STATE.battleReplay.length || !STATE.replayMode) {
+                            clearInterval(replayInterval);
+                            return;
+                        }
+                        addBattleLog('🔄 ' + STATE.battleReplay[idx].text);
+                        idx++;
+                    }, 800);
+                } else {
+                    showToast('🔄 Replay mode OFF.', 'gold');
+                    addBattleLog('🔄 Replay mode deactivated.');
+                }
+                saveState();
+            }
+
+            function getGodQuote(id, win) {
+                const quotes = {
+                    elon: win ? "To the moon! 🚀" : "My bad. I'll tweet better next time.",
+                    vitalik: win ? "ETH is the future." : "I need to optimize my gas fees.",
+                    whale: win ? "The market is my playground." : "I'll buy the dip.",
+                    chaos: win ? "Chaos is a ladder." : "Randomness is a feature.",
+                    cyber: win ? "Precision beats power." : "Recalculating...",
+                    moon: win ? "Lunar cycle alignment." : "The moon is too far today.",
+                    doge: win ? "DOGE to $1!" : "Much sad. Very loss.",
+                    satosh: win ? "HODL is the way." : "The long game continues."
+                };
+                return quotes[id] || "Interesting.";
+            }
+
+            // ================================================================
+            //  SKILL TREE
+            // ================================================================
+            function toggleSkillPanel() {
+                const tab = document.querySelector('.nav-item[data-tab="skills"]');
+                if (tab) tab.click();
+            }
+
+            function updateSkillTree() {
+                const container = document.getElementById('skillTreeDetail');
+                if (!container) return;
+                const pointsEl = document.getElementById('skillPoints');
+                if (pointsEl) pointsEl.textContent = STATE.skillPoints;
+
+                let html = '';
+                SKILLS_CONFIG.forEach(skill => {
+                    const level = STATE.skills[skill.id] || 0;
+                    const unlocked = level > 0;
+                    const maxed = level >= skill.maxLevel;
+                    const canBuy = STATE.skillPoints >= skill.cost && !maxed;
+                    html += `
+                        <div class="skill-card-lg">
+                            <div class="skill-header">
+                                <span class="skill-icon">${skill.icon}</span>
+                                <span class="skill-name">${skill.name}</span>
+                                <span class="skill-level">Lv.${level}/${skill.maxLevel}</span>
+                            </div>
+                            <div class="skill-desc">${skill.desc}</div>
+                            <div class="skill-progress"><div class="fill" style="width:${(level/skill.maxLevel)*100}%"></div></div>
+                            <div style="display:flex;gap:4px;margin-top:2px;">
+                                <span style="font-size:0.4rem;color:var(--text-dim);">Cost: ${skill.cost} point${skill.cost>1?'s':''}</span>
+                                <button onclick="buySkill('${skill.id}')" ${!canBuy?'disabled':''} style="background:${canBuy?'var(--gold-bg)':'var(--bg-hover)'};border:1px solid ${canBuy?'var(--gold)':'var(--border)'};color:${canBuy?'var(--gold)':'var(--text-dim)'};padding:2px 12px;border-radius:12px;font-size:0.4rem;cursor:${canBuy?'pointer':'not-allowed'};font-family:var(--font);font-weight:600;transition:var(--transition);">
+                                    ${canBuy?'Buy':'Maxed'}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+
+            function buySkill(id) {
+                const skill = SKILLS_CONFIG.find(s => s.id === id);
+                if (!skill) return;
+                const level = STATE.skills[id] || 0;
+                if (level >= skill.maxLevel) {
+                    showToast('⚠️ ' + skill.name + ' is already maxed!', 'error');
+                    return;
+                }
+                if (STATE.skillPoints < skill.cost) {
+                    showToast('⚠️ Not enough skill points! Need ' + skill.cost, 'error');
+                    return;
+                }
+                STATE.skillPoints -= skill.cost;
+                STATE.skills[id] = (STATE.skills[id] || 0) + 1;
+                showToast('⚡ ' + skill.name + ' upgraded to Lv.' + STATE.skills[id] + '!', 'gold');
+                addBattleLog('⚡ ' + skill.name + ' upgraded to Lv.' + STATE.skills[id] + '!');
+                updateSkillTree();
+                updateUI();
+                saveState();
+            }
+
+            // ================================================================
+            //  LEADERBOARD v10 — Timeline
+            // ================================================================
+            function updateLeaderboard() {
+                const container = document.getElementById('leaderboardList');
+                if (!container) return;
+                const entries = [
+                    { name: 'YOU', pnl: STATE.arenaPnl, wins: STATE.arenaWins, trades: STATE.trades.length },
+                    ...STATE.gods.map(g => ({ name: g.name, pnl: g.pnl || 0, wins: g.wins || 0, trades: (g.trades || [])
+                            .length }))
+                ];
+                entries.sort((a, b) => b.pnl - a.pnl);
+                let html = '';
+                entries.forEach((e, idx) => {
+                    const rankClass = idx === 0 ? 'lb-top1' : (idx === 1 ? 'lb-top2' : (idx === 2 ? 'lb-top3' : ''));
+                    html += `
+                        <div class="lb-item ${rankClass}">
+                            <span class="lb-rank">${idx+1}</span>
+                            <span class="lb-name">${e.name}</span>
+                            <span class="lb-pnl ${e.pnl>=0?'green':'red'}">${e.pnl>=0?'+':''}${e.pnl.toFixed(0)}</span>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+
+            // ===== v10 NEW: Timeline of Trades & Bot Actions =====
+            function updateTimeline() {
+                const container = document.getElementById('timelineContainer');
+                if (!container) return;
+                const allEvents = [];
+
+                // User trades
+                STATE.trades.slice(-20).forEach(t => {
+                    allEvents.push({
+                        time: t.timestamp,
+                        icon: t.pnl > 0 ? '📈' : '📉',
+                        desc: 'YOU ' + t.direction.toUpperCase() + ' ' + t.pair + ' (' + t.volume + ' lots)',
+                        pnl: t.pnl,
+                        type: 'user'
+                    });
+                });
+
+                // Bot trades
+                STATE.gods.forEach(g => {
+                    (g.trades || []).slice(-5).forEach(t => {
+                        allEvents.push({
+                            time: Date.now() - Math.random() * 60000,
+                            icon: g.icon,
+                            desc: g.name + ' ' + t.dir.toUpperCase() + ' ' + t.entry.toFixed(2) + ' → ' + t
+                                .exit.toFixed(2),
+                            pnl: t.pnl,
+                            type: 'bot'
+                        });
+                    });
+                });
+
+                // Battle logs
+                STATE.battleLog.slice(-10).forEach(log => {
+                    allEvents.push({
+                        time: Date.now() - Math.random() * 30000,
+                        icon: '⚔️',
+                        desc: log,
+                        pnl: 0,
+                        type: 'battle'
+                    });
+                });
+
+                // Elon signals
+                STATE.elonSignals.slice(-5).forEach(s => {
+                    allEvents.push({
+                        time: s.timestamp,
+                        icon: '🐦',
+                        desc: 'Elon: ' + s.text,
+                        pnl: 0,
+                        type: 'elon'
+                    });
+                });
+
+                allEvents.sort((a, b) => b.time - a.time);
+
+                let html = '';
+                allEvents.slice(0, 30).forEach(e => {
+                    const pnlClass = e.pnl > 0 ? 'green' : (e.pnl < 0 ? 'red' : 'gold');
+                    const pnlStr = e.pnl !== 0 ? (e.pnl > 0 ? '+' : '') + e.pnl.toFixed(0) : '';
+                    html += `
+                        <div class="timeline-item">
+                            <span class="tl-time">${new Date(e.time).toLocaleTimeString()}</span>
+                            <span class="tl-icon">${e.icon}</span>
+                            <span class="tl-desc">${e.desc}</span>
+                            ${pnlStr ? `<span class="tl-pnl ${pnlClass}">${pnlStr}</span>` : ''}
+                        </div>
+                    `;
+                });
+                if (html === '') html = '<div style="text-align:center;color:var(--text-dim);font-size:0.5rem;padding:10px 0;">No timeline events yet.</div>';
+                container.innerHTML = html;
+            }
+
+            // ================================================================
+            //  ELON FEED & SIGNALS v10
+            // ================================================================
+            function generateElonTweet() {
+                const tweet = ELON_TWEETS[Math.floor(Math.random() * ELON_TWEETS.length)];
+                const msg = '🐦 ' + tweet.text;
+                addElonFeed(msg, tweet.type);
+                STATE.elonSignalCount++;
+                STATE.elonScore += 1;
+                // v10: Add to chart signals
+                STATE.elonSignals.push({
+                    price: STATE.price,
+                    text: tweet.text,
+                    timestamp: Date.now(),
+                    type: tweet.type
+                });
+                if (STATE.elonSignals.length > 50) STATE.elonSignals.shift();
+
+                if (tweet.type === 'long') {
+                    STATE.elonBias = 1;
+                    STATE.elonBiasTimer = 10;
+                    showToast('🐦 Elon: ' + tweet.text, 'gold');
+                    if (STATE.soundSettings.elon) playSound('elon');
+                } else if (tweet.type === 'short') {
+                    STATE.elonBias = -1;
+                    STATE.elonBiasTimer = 10;
+                    showToast('🐦 Elon: ' + tweet.text, 'gold');
+                    if (STATE.soundSettings.elon) playSound('elon');
+                } else if (tweet.type === 'news') {
+                    showToast('📰 ' + tweet.text, 'cyan');
+                } else if (tweet.type === 'meme') {
+                    showToast('😂 ' + tweet.text, 'gold');
+                } else if (tweet.type === 'coach') {
+                    showToast('💡 ' + tweet.text, 'purple');
+                } else {
+                    showToast('🐦 ' + tweet.text, 'gold');
+                }
+                updateTimeline();
+                saveState();
+            }
+
+            function addElonFeed(text, type = 'analysis') {
+                STATE.elonFeed.push({ text, type, timestamp: Date.now() });
+                if (STATE.elonFeed.length > 100) STATE.elonFeed.shift();
+                updateElonFeed();
+                saveState();
+            }
+
+            function updateElonFeed() {
+                const container = document.getElementById('elonFeedList');
+                if (!container) return;
+                const items = STATE.elonFeed.slice(-20).reverse();
+                if (items.length === 0) {
+                    container.innerHTML =
+                        '<div style="text-align:center;color:var(--text-dim);font-size:0.6rem;padding:20px 0;">🚀 Welcome to Trading God Arena · Elon Musk Edition v10</div>';
+                    return;
+                }
+                container.innerHTML = items.map(item => `
+                    <div class="elon-feed-item" style="border-left-color: ${item.type==='long'?'var(--green)':item.type==='short'?'var(--red)':item.type==='meme'?'var(--gold)':item.type==='news'?'var(--cyan)':'var(--purple)'};">
+                        <div class="feed-text">${item.text}</div>
+                        <div class="feed-meta">
+                            <span>${new Date(item.timestamp).toLocaleTimeString()}</span>
+                            <span class="feed-tag ${item.type}">${item.type}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            function elonAnalyze() {
+                const total = STATE.trades.length;
+                const wins = STATE.trades.filter(t => t.pnl > 0).length;
+                const winRate = total > 0 ? (wins / total) * 100 : 0;
+                const msg = '📊 Analysis: ' + total + ' trades, ' + winRate.toFixed(1) + '% win rate. Balance: $' + STATE
+                    .balance.toFixed(2) + ' | Level: ' + STATE.level + ' | P&L: $' + STATE.arenaPnl.toFixed(2) +
+                    ' | Elon Score: ' + STATE.elonScore + ' | Rank: ' + STATE.arenaRank;
+                addElonFeed('📊 ' + msg, 'analysis');
+                showToast('📊 Analysis complete', 'cyan');
+            }
+
+            function elonTip() {
+                const tips = [
+                    "The trend is your friend. Ride the momentum with tight stops.",
+                    "Your stop loss is your survival tool. Never trade without it.",
+                    "Volume confirms price action. Wait for volume spikes to enter.",
+                    "In ranging markets, use mean reversion strategies.",
+                    "Cut your losses quickly. Let your profits run.",
+                    "Don't trade out of boredom. Wait for your setup.",
+                    "Quality over quantity. One good trade is better than ten bad ones.",
+                    "Treat trading like a business. Have a plan.",
+                    "Stay humble. The market can humble anyone.",
+                    "Patience is the ultimate edge. Wait for your setup.",
+                ];
+                const tip = tips[Math.floor(Math.random() * tips.length)];
+                addElonFeed('💡 ' + tip, 'coach');
+                showToast('💡 ' + tip, 'purple');
+            }
+
+            function elonMeme() {
+                const memes = [
+                    "Doge to the moon! 🚀",
+                    "When the market dips, I buy. When it pumps, I tweet.",
+                    "My favorite chart pattern: the 'Doge U'.",
+                    "I'm not a trader. I'm a meme dealer.",
+                    "BTC is cool. DOGE is life.",
+                    "To the moon! 🌙",
+                    "Who let the doge out? 🐕",
+                    "The future is a meme. Let's go.",
+                ];
+                const meme = memes[Math.floor(Math.random() * memes.length)];
+                addElonFeed('😂 ' + meme, 'meme');
+                showToast('😂 ' + meme, 'gold');
+            }
+
+            function clearElonFeed() {
+                STATE.elonFeed = [];
+                updateElonFeed();
+                showToast('🗑️ Elon feed cleared', 'gold');
+                saveState();
+            }
+
+            // ================================================================
+            //  PAIR CHANGE
+            // ================================================================
+            function changePair(pair) {
+                STATE.currentPair = pair;
+                document.getElementById('symbolDisplay').innerHTML = pair + ' <span class="sub">' + pair + '</span>';
+                let base = 4713.69;
+                if (pair === 'EURUSD') base = 1.0894;
+                else if (pair === 'GBPUSD') base = 1.2768;
+                else if (pair === 'BTCUSD') base = 67845;
+                else if (pair === 'ETHUSD') base = 3500;
+                else if (pair === 'SOLUSD') base = 180;
+                else if (pair === 'DOGEUSD') base = 0.18;
+                else if (pair === 'AUDUSD') base = 0.6520;
+                else if (pair === 'NZDUSD') base = 0.6070;
+                else if (pair === 'USDCAD') base = 1.3750;
+                else if (pair === 'USDJPY') base = 150.20;
+                STATE._basePrice = base;
+                STATE.price = base;
+                STATE.bid = base - 0.1;
+                STATE.ask = base + 0.1;
+                STATE.candles[STATE.timeframe] = [];
+                STATE._currentCandle = null;
+                STATE.ticks = [];
+                for (let i = 0; i < 30; i++) {
+                    const price = generateTick();
+                    processTick(price);
+                }
+                updateUI();
+                saveState();
+                showToast('🔄 Switched to ' + pair, 'gold');
+            }
+
+            // ================================================================
+            //  TIMEFRAME
+            // ================================================================
+            function setTimeframe(tf) {
+                STATE.timeframe = tf;
+                document.querySelectorAll('.chart-tools-row .tf').forEach(b => b.classList.toggle('active', b.dataset.tf ===
+                tf));
+                rebuildCandlesForTF(tf);
+                drawChart();
+                saveState();
+                showToast('⏱ Timeframe: ' + tf, 'gold');
+            }
+
+            function rebuildCandlesForTF(tf) {
+                const map = { '5s': 5, '15s': 15, '30s': 30, '1m': 60, '5m': 300, '15m': 900, '1h': 3600 };
+                const tickCount = map[tf] || 15;
+                const ticks = STATE.ticks;
+                if (ticks.length < tickCount) { STATE.candles[tf] = []; return; }
+                const newCandles = [];
+                let buffer = [];
+                let count = 0;
+                for (let i = 0; i < ticks.length; i++) {
+                    buffer.push(ticks[i].price);
+                    count++;
+                    if (count >= tickCount) {
+                        const open = buffer[0];
+                        const close = buffer[buffer.length - 1];
+                        const high = Math.max(...buffer);
+                        const low = Math.min(...buffer);
+                        const volume = Math.floor(Math.random() * 5000) + 300;
+                        newCandles.push({ open, high, low, close, volume, timestamp: ticks[i].time });
+                        buffer = [];
+                        count = 0;
+                    }
+                }
+                STATE.candles[tf] = newCandles;
+            }
+
+            // ================================================================
+            //  INDICATORS
+            // ================================================================
+            function toggleIndicator(name) {
+                STATE.indicators[name] = !STATE.indicators[name];
+                const btn = document.querySelector(`.chart-controls button[onclick="toggleIndicator('${name}')"]`);
+                if (btn) btn.classList.toggle('active');
+                drawChart();
+                saveState();
+                showToast('📈 ' + name + ' ' + (STATE.indicators[name] ? 'ON' : 'OFF'), 'cyan');
+            }
+
+            function toggleIndicators() {
+                showToast('📈 Indicators: ' + Object.keys(STATE.indicators).filter(k => STATE.indicators[k]).join(', '),
+                'cyan');
+            }
+
+            // ================================================================
+            //  FULLSCREEN, ZOOM, CHART TYPE
+            // ================================================================
+            function toggleFullscreen() {
+                const app = document.getElementById('app');
+                if (!document.fullscreenElement) {
+                    app.requestFullscreen().then(() => {
+                        STATE.fullscreen = true;
+                        setTimeout(drawChart, 100);
+                    }).catch(() => {});
+                } else {
+                    document.exitFullscreen().then(() => {
+                        STATE.fullscreen = false;
+                        setTimeout(drawChart, 100);
+                    }).catch(() => {});
+                }
+            }
+
+            function resetZoom() {
+                drawChart();
+            }
+
+            function chartType(type) {
+                STATE.chartType = type;
+                document.querySelectorAll('.chart-controls button[id^="chartType"]').forEach(b => b.classList.remove(
+                'active'));
+                const btn = document.getElementById('chartType' + type.charAt(0).toUpperCase() + type.slice(1));
+                if (btn) btn.classList.add('active');
+                drawChart();
+                saveState();
+                showToast('📊 Chart type: ' + type.toUpperCase(), 'gold');
+            }
+
+            // ================================================================
+            //  THEME & SETTINGS
+            // ================================================================
+            function setTheme(theme) {
+                STATE.theme = theme;
+                const root = document.documentElement;
+                if (theme === 'neon') {
+                    root.style.setProperty('--bg-primary', '#0a0a1a');
+                    root.style.setProperty('--bg-secondary', '#0f0f2a');
+                    root.style.setProperty('--bg-card', '#151530');
+                    root.style.setProperty('--bg-hover', '#1a1a40');
+                    root.style.setProperty('--text-primary', '#00ffcc');
+                    root.style.setProperty('--text-secondary', '#00ccaa');
+                    root.style.setProperty('--text-dim', '#008877');
+                    root.style.setProperty('--border', '#00ffcc33');
+                    root.style.setProperty('--border-strong', '#00ffcc66');
+                    STATE.colors.up = '#00ffcc';
+                    STATE.colors.down = '#ff00cc';
+                    STATE.colors.bg = '#0a0a1a';
+                } else if (theme === 'divine') {
+                    root.style.setProperty('--bg-primary', '#1a0030');
+                    root.style.setProperty('--bg-secondary', '#2a0050');
+                    root.style.setProperty('--bg-card', '#3a0070');
+                    root.style.setProperty('--bg-hover', '#4a0090');
+                    root.style.setProperty('--text-primary', '#e8d5ff');
+                    root.style.setProperty('--text-secondary', '#b388ff');
+                    root.style.setProperty('--text-dim', '#6a4a9a');
+                    root.style.setProperty('--border', '#4a2a8a');
+                    root.style.setProperty('--border-strong', '#6a4a9a');
+                    STATE.colors.up = '#ffd700';
+                    STATE.colors.down = '#ff6bff';
+                    STATE.colors.bg = '#1a0030';
+                } else {
+                    root.style.setProperty('--bg-primary', '#0a0015');
+                    root.style.setProperty('--bg-secondary', '#12082a');
+                    root.style.setProperty('--bg-card', '#1a0d3a');
+                    root.style.setProperty('--bg-hover', '#2a1a5a');
+                    root.style.setProperty('--text-primary', '#e8d5ff');
+                    root.style.setProperty('--text-secondary', '#a88bdd');
+                    root.style.setProperty('--text-dim', '#6a4a9a');
+                    root.style.setProperty('--border', '#2a1a5a');
+                    root.style.setProperty('--border-strong', '#4a2a8a');
+                    STATE.colors.up = '#00ff88';
+                    STATE.colors.down = '#ff1744';
+                    STATE.colors.bg = '#0a0015';
+                }
+                document.querySelectorAll('.settings-container .flex button').forEach(b => b.classList.remove('active'));
+                const btn = document.getElementById('theme' + theme.charAt(0).toUpperCase() + theme.slice(1));
+                if (btn) btn.classList.add('active');
+                drawChart();
+                saveState();
+                showToast('🎨 Theme: ' + theme.toUpperCase(), 'gold');
+            }
+
+            function toggleSound(type) {
+                STATE.soundSettings[type] = !STATE.soundSettings[type];
+                const el = document.getElementById('sound' + type.charAt(0).toUpperCase() + type.slice(1));
+                if (el) el.checked = STATE.soundSettings[type];
+                saveState();
+                showToast('🔊 Sound ' + type + ' ' + (STATE.soundSettings[type] ? 'ON' : 'OFF'), 'gold');
+            }
+
+            // ================================================================
+            //  EXPORT / IMPORT / RESET
+            // ================================================================
+            function exportAllData() {
+                const data = {
+                    state: STATE,
+                    trades: STATE.trades,
+                    feedItems: STATE.feedItems,
+                    elonFeed: STATE.elonFeed,
+                    battleLog: STATE.battleLog,
+                    battleReplay: STATE.battleReplay,
+                    gods: STATE.gods,
+                    skills: STATE.skills,
+                    exportedAt: new Date().toISOString()
+                };
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const link = document.createElement('a');
+                link.download = 'trading_god_arena_data_' + Date.now() + '.json';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                showToast('📦 All data exported!', 'success');
+            }
+
+            function importAllData() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        try {
+                            const data = JSON.parse(ev.target.result);
+                            Object.assign(STATE, data.state);
+                            if (data.trades) STATE.trades = data.trades;
+                            if (data.feedItems) STATE.feedItems = data.feedItems;
+                            if (data.elonFeed) STATE.elonFeed = data.elonFeed;
+                            if (data.battleLog) STATE.battleLog = data.battleLog;
+                            if (data.battleReplay) STATE.battleReplay = data.battleReplay;
+                            if (data.gods) STATE.gods = data.gods;
+                            if (data.skills) STATE.skills = data.skills;
+                            saveState();
+                            updateUI();
+                            updateElonFeed();
+                            updateBattleField();
+                            updateGodsPanel();
+                            updateSkillTree();
+                            updateLeaderboard();
+                            updateTimeline();
+                            showToast('📥 Data imported successfully!', 'success');
+                        } catch (err) {
+                            showToast('❌ Error importing data', 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+                input.click();
+            }
+
+            function resetAllData() {
+                if (!confirm('⚠️ This will reset ALL data. Continue?')) return;
+                localStorage.removeItem('trading_god_arena_state');
+                location.reload();
+            }
+
+            // ================================================================
+            //  DOPAMINE & CONFETTI & TOAST
+            // ================================================================
+            function showToast(msg, type = 'info') {
+                const toast = document.getElementById('toast');
+                if (!toast) return;
+                toast.textContent = msg;
+                toast.className = 'toast ' + type;
+                toast.classList.add('show');
+                if (toastTimeout) clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 2500);
+            }
+
+            function launchConfetti() {
+                const overlay = document.getElementById('confettiOverlay');
+                if (!overlay) return;
+                const colors = ['#ffd700', '#00ff88', '#7c3aed', '#ff1744', '#ff6bff', '#00d4ff', '#ff8a4a'];
+                for (let i = 0; i < 50; i++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'confetti-piece';
+                    piece.style.left = Math.random() * 100 + '%';
+                    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    piece.style.width = (4 + Math.random() * 8) + 'px';
+                    piece.style.height = (4 + Math.random() * 8) + 'px';
+                    piece.style.animationDuration = (1.5 + Math.random() * 2.5) + 's';
+                    piece.style.animationDelay = (Math.random() * 0.8) + 's';
+                    overlay.appendChild(piece);
+                    setTimeout(() => { piece.remove(); }, 3500);
+                }
+            }
+
+            function showDopamineFeedback(isWin, pnl, message, subMessage) {
+                const banner = document.getElementById('dopamineBanner');
+                if (!banner) return;
+                const icon = document.getElementById('dopamineIcon');
+                const title = document.getElementById('dopamineTitle');
+                const sub = document.getElementById('dopamineSub');
+                const streak = document.getElementById('dopamineStreak');
+                if (dopamineTimeout) { clearTimeout(dopamineTimeout);
+                    banner.classList.remove('show'); }
+                if (isWin) {
+                    const emojis = ['🎉', '🔥', '🚀', '💎', '⭐', '🏆', '⚡', '👑', '💫'];
+                    if (icon) icon.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    if (title) { title.textContent = message || '🔥 Win!';
+                        title.className = 'dopamine-title green'; }
+                    if (sub) sub.textContent = subMessage || (pnl ? '+' + pnl.toFixed(2) + ' profit' : '');
+                    banner.className = 'dopamine-banner show';
+                    launchConfetti();
+                    if (STATE.winStreak >= 2 && streak) { streak.textContent = '🔥 ' + STATE.winStreak + ' wins streak';
+                        streak.style.display = 'inline-block'; } else if (streak) streak.style.display = 'none';
+                    if (STATE.soundSettings.win) playSound('win');
+                } else {
+                    const emojis = ['💪', '❤️', '🔄', '🧘', '🔥', '🛡️'];
+                    if (icon) icon.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    if (title) { title.textContent = message || '💪 Keep Going!';
+                        title.className = 'dopamine-title red'; }
+                    if (sub) sub.textContent = subMessage || (pnl ? pnl.toFixed(2) + ' loss' : '');
+                    banner.className = 'dopamine-banner show';
+                    if (streak) streak.style.display = 'none';
+                }
+                dopamineTimeout = setTimeout(() => { banner.classList.remove('show'); }, 3500);
+            }
+
+            function playSound(type) {
+                if (!STATE.soundSettings[type]) return;
+                try {
+                    const ctx = new(window.AudioContext || window.webkitAudioContext)();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    const freqMap = { trade: 800, trade_close: 600, win: 1200, elon: 1000, battle: 900 };
+                    osc.frequency.value = freqMap[type] || 800;
+                    gain.gain.value = 0.06;
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.08);
+                } catch (e) {}
+            }
+
+            // ================================================================
+            //  NAVIGATION
+            // ================================================================
+            function switchTab(tabId) {
+                document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                const target = document.getElementById('tab-' + tabId);
+                if (target) target.classList.add('active');
+                const navBtn = document.querySelector(`.nav-item[data-tab="${tabId}"]`);
+                if (navBtn) navBtn.classList.add('active');
+                if (tabId === 'arena') updateUI();
+                if (tabId === 'charts') drawChart();
+                if (tabId === 'quotes') updateQuotesList();
+                if (tabId === 'leaderboard') { updateLeaderboard();
+                    updateTimeline(); }
+                if (tabId === 'elon') updateElonFeed();
+                if (tabId === 'skills') updateSkillTree();
+                if (tabId === 'settings') {
+                    Object.keys(STATE.soundSettings).forEach(k => {
+                        const el = document.getElementById('sound' + k.charAt(0).toUpperCase() + k.slice(1));
+                        if (el) el.checked = STATE.soundSettings[k];
+                    });
+                }
+            }
+
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.addEventListener('click', function() { switchTab(this.dataset.tab); });
+            });
+
+            // ================================================================
+            //  MAIN LOOP
+            // ================================================================
+            let animFrameId = null;
+            let lastUpdateTime = 0;
+            let toastTimeout = null;
+            let dopamineTimeout = null;
+
+            function animationLoop(ts) {
+                if (!lastUpdateTime) lastUpdateTime = ts;
+                const speed = 200;
+                if (ts - lastUpdateTime >= speed) {
+                    const price = generateTick();
+                    processTick(price);
+                    updateUI();
+                    if (STATE.position) {
+                        const pos = STATE.position;
+                        if (pos.sl > 0) {
+                            const hit = pos.direction === 'buy' ? STATE.bid <= pos.sl : STATE.ask >= pos.sl;
+                            if (hit) { showToast('⚡ SL hit at ' + pos.sl.toFixed(2), 'error');
+                                closeTrade(); }
+                        }
+                        if (pos.tp > 0) {
+                            const hit = pos.direction === 'buy' ? STATE.ask >= pos.tp : STATE.bid <= pos.tp;
+                            if (hit) { showToast('🎯 TP hit at ' + pos.tp.toFixed(2), 'success');
+                                closeTrade(); }
+                        }
+                    }
+                    lastUpdateTime = ts;
+                }
+                animFrameId = requestAnimationFrame(animationLoop);
+            }
+
+            // ================================================================
+            //  INIT v10
+            // ================================================================
+            function init() {
+                loadState();
+                initGods();
+
+                if (STATE.ticks.length < 30) {
+                    let p = STATE._basePrice || 4713.69;
+                    for (let i = 0; i < 30; i++) {
+                        p += (Math.random() - 0.5) * 2;
+                        p = clamp(p, 4680, 4760);
+                        STATE.ticks.push({ price: p, time: Date.now() });
+                    }
+                }
+                if (!STATE._currentCandle && STATE.ticks.length > 0) {
+                    startNewCandle(STATE.ticks[STATE.ticks.length - 1].price);
+                }
+                rebuildCandlesForTF(STATE.timeframe);
+
+                document.getElementById('chartType' + STATE.chartType.charAt(0).toUpperCase() + STATE.chartType.slice(1))
+                    ?.classList.add('active');
+                document.querySelectorAll('.chart-controls button').forEach(b => {
+                    const name = b.textContent;
+                    if (STATE.indicators[name] !== undefined) {
+                        if (STATE.indicators[name]) b.classList.add('active');
+                    }
+                });
+                setTheme(STATE.theme);
+                Object.keys(STATE.soundSettings).forEach(k => {
+                    const el = document.getElementById('sound' + k.charAt(0).toUpperCase() + k.slice(1));
+                    if (el) el.checked = STATE.soundSettings[k];
+                });
+
+                updateUI();
+                updateElonFeed();
+                updateBattleField();
+                updateGodsPanel();
+                updateSkillTree();
+                updateLeaderboard();
+                updateTimeline();
+
+                animFrameId = requestAnimationFrame(animationLoop);
+
+                setInterval(saveState, 30000);
+                window.addEventListener('beforeunload', saveState);
+                document.addEventListener('visibilitychange', () => { if (document.hidden) saveState(); });
+
+                setInterval(() => {
+                    if (Math.random() < 0.2) generateElonTweet();
+                }, 20000);
+
+                setInterval(updateQuotesList, 5000);
+
+                showToast('⚔️ Trading God Arena v10 · Elon Musk Edition Ready!', 'success');
+                setTimeout(() => { generateElonTweet(); }, 1500);
+                setTimeout(() => {
+                    addElonFeed('🚀 Welcome to Trading God Arena v10! 8 AI Gods, Battle Arena, Skill Tree, Elon Advisor, R1/R2/R3 Risk Manager, Desktop UI, and more!');
+                }, 1000);
+                console.log('✅ Trading God Arena v10 · Elon Musk Edition');
+            }
+
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+            else init();
+
+            // ================================================================
+            //  EXPOSE GLOBALS v10
+            // ================================================================
+            window.openTrade = openTrade;
+            window.confirmClose = confirmClose;
+            window.closeTrade = closeTrade;
+            window.quickTrade = quickTrade;
+            window.adjustVolume = adjustVolume;
+            window.setTimeframe = setTimeframe;
+            window.updateLeverage = updateLeverage;
+            window.changePair = changePair;
+            window.toggleFullscreen = toggleFullscreen;
+            window.resetZoom = resetZoom;
+            window.chartType = chartType;
+            window.toggleIndicator = toggleIndicator;
+            window.toggleIndicators = toggleIndicators;
+            window.setTheme = setTheme;
+            window.toggleSound = toggleSound;
+            window.exportAllData = exportAllData;
+            window.importAllData = importAllData;
+            window.resetAllData = resetAllData;
+            window.startBattle = startBattle;
+            window.spectateBattle = spectateBattle;
+            window.replayBattle = replayBattle;
+            window.clearBattleLog = clearBattleLog;
+            window.godAction = godAction;
+            window.buySkill = buySkill;
+            window.toggleSkillPanel = toggleSkillPanel;
+            window.generateElonTweet = generateElonTweet;
+            window.elonAnalyze = elonAnalyze;
+            window.elonTip = elonTip;
+            window.elonMeme = elonMeme;
+            window.clearElonFeed = clearElonFeed;
+            window.showToast = showToast;
+            window.launchConfetti = launchConfetti;
+            window.switchTab = switchTab;
+            window.addBattleLog = addBattleLog;
+            window.addElonFeed = addElonFeed;
+            window.updateUI = updateUI;
+            window.drawChart = drawChart;
+            window.updateLeaderboard = updateLeaderboard;
+            window.updateSkillTree = updateSkillTree;
+            window.updateGodsPanel = updateGodsPanel;
+            window.updateBattleField = updateBattleField;
+            window.updateElonFeed = updateElonFeed;
+            window.updateQuotesList = updateQuotesList;
+            window.updateTimeline = updateTimeline;
+            window.updateRiskFromDollar = updateRiskFromDollar;
+            window.applyRiskPreset = applyRiskPreset;
+        })();
+    </script>
+</body>
+</html>
