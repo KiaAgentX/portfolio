@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Starter Pro · DOGE Trainer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+    <style>
+        /* ============================================================
+           STARTER PRO — MINI TRAINING DASHBOARD
+           Speed control · professional UI · full trading logic
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --doge-gold: #F2C94C;
+            --doge-orange: #F2994A;
+            --doge-red: #eb5757;
+            --musk-blue: #00b4d8;
+            --bg: #0a0a1a;
+            --card: rgba(15, 15, 35, 0.92);
+            --border: rgba(242, 201, 76, 0.15);
+            --text: #f0f0ff;
+            --text-dim: rgba(240, 240, 255, 0.35);
+            --radius: 18px;
+            --radius-sm: 10px;
+            --font: 'Inter', system-ui, sans-serif;
+            --shadow-glow: 0 0 40px rgba(242, 201, 76, 0.04);
+        }
+
+        html,
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            height: 100%;
+            padding: 6px;
+            overflow-y: auto;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #10101a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--doge-gold);
+            border-radius: 8px;
+        }
+
+        /* ─── UTILITY ─── */
+        .flex {
+            display: flex;
+        }
+        .flex-col {
+            flex-direction: column;
+        }
+        .gap-4 {
+            gap: 4px;
+        }
+        .gap-6 {
+            gap: 6px;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .gap-12 {
+            gap: 12px;
+        }
+        .items-center {
+            align-items: center;
+        }
+        .justify-between {
+            justify-content: space-between;
+        }
+        .justify-center {
+            justify-content: center;
+        }
+        .wrap {
+            flex-wrap: wrap;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-gold {
+            color: var(--doge-gold);
+        }
+        .text-green {
+            color: #00ff88;
+        }
+        .text-red {
+            color: var(--doge-red);
+        }
+        .text-dim {
+            color: var(--text-dim);
+        }
+        .text-sm {
+            font-size: 0.7rem;
+        }
+        .text-xs {
+            font-size: 0.55rem;
+        }
+
+        /* ─── GLASS CARD ─── */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 12px 14px;
+            box-shadow: var(--shadow-glow);
+            transition: 0.2s ease;
+        }
+        .card-sm {
+            border-radius: var(--radius-sm);
+            padding: 8px 10px;
+        }
+        .card-glow {
+            box-shadow: 0 0 50px rgba(242, 201, 76, 0.05);
+        }
+
+        /* ─── BUTTONS ─── */
+        .btn {
+            padding: 6px 16px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: var(--font);
+        }
+        .btn:active {
+            transform: scale(0.96);
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--doge-gold), var(--doge-orange));
+            color: #0a0e17;
+            box-shadow: 0 4px 20px rgba(242, 201, 76, 0.15);
+        }
+        .btn-gold:hover {
+            box-shadow: 0 0 40px rgba(242, 201, 76, 0.25);
+            transform: scale(1.02);
+        }
+        .btn-green {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #0a0e17;
+        }
+        .btn-green:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+            transform: scale(1.02);
+        }
+        .btn-red {
+            background: linear-gradient(135deg, var(--doge-red), #cc0044);
+            color: #fff;
+        }
+        .btn-red:hover {
+            box-shadow: 0 0 30px rgba(235, 87, 87, 0.2);
+            transform: scale(1.02);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+        .btn-outline:hover {
+            border-color: var(--doge-gold);
+            color: var(--doge-gold);
+        }
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 0.55rem;
+        }
+        .btn-buy {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #0a0e17;
+            font-weight: 900;
+            font-size: 0.8rem;
+        }
+        .btn-buy:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+            transform: scale(1.02);
+        }
+        .btn-sell {
+            background: linear-gradient(135deg, var(--doge-red), #cc0044);
+            color: #fff;
+            font-weight: 900;
+            font-size: 0.8rem;
+        }
+        .btn-sell:hover {
+            box-shadow: 0 0 30px rgba(235, 87, 87, 0.2);
+            transform: scale(1.02);
+        }
+        .btn-close {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-weight: 700;
+        }
+        .btn-close:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* ─── INPUT / SELECT ─── */
+        .input,
+        .select {
+            width: 100%;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 0.7rem;
+            outline: none;
+            transition: 0.2s;
+        }
+        .input:focus,
+        .select:focus {
+            border-color: rgba(242, 201, 76, 0.25);
+        }
+        .select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' viewBox='0 0 8 6'%3E%3Cpath d='M0 0l4 6 4z' fill='rgba(240,240,255,0.25)'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+        }
+        .label {
+            font-size: 0.45rem;
+            color: var(--text-dim);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ─── HEADER ─── */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 12px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .header .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, var(--doge-gold), var(--doge-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header .price-box {
+            text-align: right;
+            min-width: 110px;
+        }
+        .header .price-box .price {
+            font-weight: 900;
+            font-size: 1.2rem;
+            line-height: 1.2;
+        }
+        .header .price-box .price.green {
+            color: #00ff88;
+        }
+        .header .price-box .price.red {
+            color: var(--doge-red);
+        }
+        .header .price-box .change {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+        }
+        .header .balance {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--doge-gold);
+            background: rgba(242, 201, 76, 0.06);
+            padding: 2px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(242, 201, 76, 0.08);
+        }
+
+        /* ─── CHART ─── */
+        .chart-wrap {
+            margin-bottom: 6px;
+            padding: 6px;
+        }
+        #candleCanvas {
+            width: 100%;
+            height: 180px;
+            border-radius: var(--radius-sm);
+            display: block;
+            background: transparent;
+            touch-action: none;
+            cursor: crosshair;
+        }
+
+        /* ─── SPEED CONTROL ─── */
+        .speed-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .speed-row .label {
+            margin-bottom: 0;
+        }
+
+        /* ─── TRADE PANEL ─── */
+        .trade-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+        .trade-panel .full {
+            grid-column: 1/-1;
+        }
+        .trade-panel .btn-row {
+            grid-column: 1/-1;
+            display: flex;
+            gap: 4px;
+        }
+        .trade-panel .btn-row button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 900;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: var(--font);
+        }
+
+        /* ─── POSITION BOX ─── */
+        .position-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 14px;
+            align-items: center;
+            margin-bottom: 6px;
+            padding: 6px 12px;
+        }
+        .position-box .pos-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .position-box .pos-label {
+            font-size: 0.4rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+        .position-box .pos-value {
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .position-box .pos-value.green {
+            color: #00ff88;
+        }
+        .position-box .pos-value.red {
+            color: var(--doge-red);
+        }
+        .position-box .pos-value.gold {
+            color: var(--doge-gold);
+        }
+        .position-box .pos-value.small {
+            font-size: 0.6rem;
+        }
+
+        /* ─── STATS BAR ─── */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-sm);
+            font-size: 0.55rem;
+            color: var(--text-dim);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            gap: 2px;
+            flex-wrap: wrap;
+        }
+        .stats-bar .stat-item {
+            text-align: center;
+        }
+        .stats-bar .stat-item .num {
+            font-weight: 700;
+            display: block;
+            line-height: 1.2;
+        }
+        .stats-bar .stat-item .num.green {
+            color: #00ff88;
+        }
+        .stats-bar .stat-item .num.red {
+            color: var(--doge-red);
+        }
+        .stats-bar .stat-item .num.gold {
+            color: var(--doge-gold);
+        }
+
+        /* ─── TOAST ─── */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 20px;
+            backdrop-filter: blur(16px);
+            color: var(--text);
+            font-size: 0.65rem;
+            font-weight: 700;
+            z-index: 999;
+            opacity: 0;
+            transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            max-width: 90%;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.success {
+            border-color: #00ff88;
+        }
+        .toast.error {
+            border-color: var(--doge-red);
+        }
+        .toast.gold {
+            border-color: var(--doge-gold);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 500px) {
+            #candleCanvas {
+                height: 140px;
+            }
+            .header .logo {
+                font-size: 1rem;
+            }
+            .trade-panel .btn-row button {
+                font-size: 0.6rem;
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
+    <header class="header">
+        <div class="logo">⚡ Starter<span style="color:var(--text);-webkit-text-fill-color:var(--text);">·Pro</span></div>
+        <div class="price-box">
+            <div class="price green" id="currentPrice">0.105360</div>
+            <div class="change" id="priceChange">±0.00 (0.00%)</div>
+        </div>
+        <div class="balance" id="balanceDisplay">💰 $10,000.00</div>
+    </header>
+
+    <!-- ============================================================
+    SPEED CONTROL
+    ============================================================ -->
+    <div class="card-sm speed-row">
+        <span class="label" style="margin-bottom:0;">⏱ Speed</span>
+        <select id="speedSelect" class="select" style="width:auto;min-width:60px;padding:2px 8px;">
+            <option value="50">0.05s</option>
+            <option value="100" selected>0.10s</option>
+            <option value="250">0.25s</option>
+            <option value="500">0.50s</option>
+            <option value="1000">1.00s</option>
+            <option value="2000">2.00s</option>
+        </select>
+        <span class="label" style="margin-bottom:0;">Volatility</span>
+        <select id="volatilitySelect" class="select" style="width:auto;min-width:60px;padding:2px 8px;">
+            <option value="0.5">Low</option>
+            <option value="1.0" selected>Medium</option>
+            <option value="2.0">High</option>
+        </select>
+        <button class="btn btn-gold btn-sm" onclick="resetTrainer()">🔄 Reset</button>
+    </div>
+
+    <!-- ============================================================
+    CHART
+    ============================================================ -->
+    <div class="card chart-wrap">
+        <canvas id="candleCanvas"></canvas>
+    </div>
+
+    <!-- ============================================================
+    TRADE PANEL
+    ============================================================ -->
+    <div class="trade-panel card">
+        <div class="full"><label>Volume (Lots)</label><input type="number" id="tradeVolume" value="0.1" step="0.01" min="0.01" /></div>
+        <div><label>Stop Loss</label><input type="number" id="tradeSL" placeholder="0.00" step="0.00001" /></div>
+        <div><label>Take Profit</label><input type="number" id="tradeTP" placeholder="0.00" step="0.00001" /></div>
+        <div class="btn-row">
+            <button class="btn-buy" onclick="openTrade('buy')" id="btnBuy">📈 BUY</button>
+            <button class="btn-sell" onclick="openTrade('sell')" id="btnSell">📉 SELL</button>
+            <button class="btn-close" onclick="closeTrade()">✕ Close</button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    POSITION BOX
+    ============================================================ -->
+    <div class="position-box card-sm">
+        <div class="pos-item"><span class="pos-label">Position</span><span class="pos-value" id="posDir">—</span></div>
+        <div class="pos-item"><span class="pos-label">Entry</span><span class="pos-value gold" id="posEntry">—</span></div>
+        <div class="pos-item"><span class="pos-label">P&L</span><span class="pos-value" id="posPL">0.00</span></div>
+        <div class="pos-item"><span class="pos-label">Volume</span><span class="pos-value" id="posVol">—</span></div>
+        <div class="pos-item"><span class="pos-label">SL / TP</span><span class="pos-value small" id="posSLTP">— / —</span></div>
+    </div>
+
+    <!-- ============================================================
+    STATS BAR
+    ============================================================ -->
+    <div class="stats-bar">
+        <div class="stat-item"><span class="num gold" id="statTrades">0</span><span>Trades</span></div>
+        <div class="stat-item"><span class="num" id="statNet">0</span><span>Net P&L</span></div>
+        <div class="stat-item"><span class="num blue" id="statWinrate">0%</span><span>Win Rate</span></div>
+        <div class="stat-item"><span class="num gold" id="statStreak">0</span><span>Streak</span></div>
+    </div>
+
+    <!-- ============================================================
+    TOAST
+    ============================================================ -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ============================================================
+    JAVASCRIPT — PROFESSIONAL TRAINING ENGINE
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ─── STATE ────────────────────────────────────────────────
+            const STATE = {
+                price: 0.105360,
+                bid: 0.105350,
+                ask: 0.105370,
+                balance: 10000,
+                position: null,
+                trades: [],
+                winStreak: 0,
+                _basePrice: 0.105360,
+                _trend: 0,
+                ticks: [],
+                maxTicks: 120,
+                speed: 100,
+                volatility: 1.0,
+                isRunning: true,
+            };
+
+            // ─── DOM REFS ─────────────────────────────────────────────
+            const canvas = document.getElementById('candleCanvas');
+            const ctx = canvas.getContext('2d');
+            const priceEl = document.getElementById('currentPrice');
+            const changeEl = document.getElementById('priceChange');
+            const balanceEl = document.getElementById('balanceDisplay');
+            const posDir = document.getElementById('posDir');
+            const posEntry = document.getElementById('posEntry');
+            const posPL = document.getElementById('posPL');
+            const posVol = document.getElementById('posVol');
+            const posSLTP = document.getElementById('posSLTP');
+            const statTrades = document.getElementById('statTrades');
+            const statNet = document.getElementById('statNet');
+            const statWinrate = document.getElementById('statWinrate');
+            const statStreak = document.getElementById('statStreak');
+            const toast = document.getElementById('toast');
+            const speedSelect = document.getElementById('speedSelect');
+            const volatilitySelect = document.getElementById('volatilitySelect');
+            const btnBuy = document.getElementById('btnBuy');
+            const btnSell = document.getElementById('btnSell');
+
+            // ─── CANVAS RESIZE ──────────────────────────────────────
+            function resizeCanvas() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                const w = canvas.clientWidth || rect.width - 16 || 380;
+                const h = canvas.clientHeight || 180;
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = w * dpr;
+                canvas.height = h * dpr;
+                canvas.style.width = w + 'px';
+                canvas.style.height = h + 'px';
+                ctx.scale(dpr, dpr);
+                return { w, h };
+            }
+
+            // ─── TICK GENERATOR ──────────────────────────────────────
+            function generateTick() {
+                const vol = STATE.volatility;
+                const r = Math.random();
+                // Trend switching
+                if (r < 0.015) STATE._trend = (Math.random() < 0.5 ? 1 : -1) * 0.00004 * vol;
+                STATE._trend *= 0.985;
+                const noise = (Math.random() - 0.5) * 0.00006 * vol;
+                STATE._basePrice += STATE._trend + noise;
+                STATE._basePrice = Math.max(0.08, Math.min(0.13, STATE._basePrice));
+                STATE.price = STATE._basePrice;
+                STATE.bid = STATE.price - 0.00001;
+                STATE.ask = STATE.price + 0.00001;
+                return STATE.price;
+            }
+
+            // ─── CHART DRAW (PROFESSIONAL) ──────────────────────────
+            function drawChart() {
+                const { w, h } = resizeCanvas();
+                const view = STATE.ticks.slice(-80);
+                if (view.length < 2) {
+                    ctx.fillStyle = 'rgba(240,240,255,0.08)';
+                    ctx.font = '12px Inter, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Fetching market data...', w / 2, h / 2);
+                    return;
+                }
+
+                const pad = { top: 10, bottom: 10, left: 6, right: 6 };
+                const cw = w - pad.left - pad.right;
+                const ch = h - pad.top - pad.bottom;
+                const stepX = cw / view.length;
+                const half = stepX * 0.32;
+
+                let min = Infinity,
+                    max = -Infinity;
+                view.forEach(p => { if (p < min) min = p; if (p > max) max = p; });
+                const range = max - min || 1;
+                const minY = min - range * 0.1;
+                const maxY = max + range * 0.1;
+                const total = maxY - minY || 1;
+
+                ctx.clearRect(0, 0, w, h);
+
+                // Background glow
+                const grad = ctx.createRadialGradient(w / 2, h * 0.4, 0, w / 2, h * 0.4, w * 0.7);
+                grad.addColorStop(0, 'rgba(242, 201, 76, 0.02)');
+                grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, w, h);
+
+                // Grid
+                ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+                ctx.lineWidth = 0.4;
+                for (let i = 0; i <= 4; i++) {
+                    const y = pad.top + (i / 4) * ch;
+                    ctx.beginPath();
+                    ctx.moveTo(pad.left, y);
+                    ctx.lineTo(w - pad.right, y);
+                    ctx.stroke();
+                }
+
+                // Candles
+                let openPrice = view[0];
+                for (let i = 0; i < view.length; i++) {
+                    const x = pad.left + i * stepX + stepX / 2;
+                    const close = view[i];
+                    const isUp = close >= openPrice;
+                    const col = isUp ? '#00ff88' : '#eb5757';
+
+                    const yO = pad.top + ch - ((openPrice - minY) / total) * ch;
+                    const yC = pad.top + ch - ((close - minY) / total) * ch;
+                    const yH = pad.top + ch - ((Math.max(openPrice, close) - minY) / total) * ch;
+                    const yL = pad.top + ch - ((Math.min(openPrice, close) - minY) / total) * ch;
+
+                    // Wick
+                    ctx.strokeStyle = col;
+                    ctx.lineWidth = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(x, yH);
+                    ctx.lineTo(x, yL);
+                    ctx.stroke();
+
+                    // Body
+                    const top = Math.min(yO, yC);
+                    const bot = Math.max(yO, yC);
+                    ctx.fillStyle = col;
+                    ctx.globalAlpha = isUp ? 0.65 : 0.55;
+                    ctx.fillRect(x - half, top, half * 2, bot - top || 1);
+                    ctx.globalAlpha = 1;
+
+                    openPrice = close;
+                }
+
+                // Current price line with glow
+                if (view.length > 0) {
+                    const last = view[view.length - 1];
+                    const y = pad.top + ch - ((last - minY) / total) * ch;
+                    const glow = ctx.createRadialGradient(w - pad.right - 10, y, 0, w - pad.right - 10, y, 25);
+                    glow.addColorStop(0, 'rgba(242,201,76,0.12)');
+                    glow.addColorStop(1, 'rgba(242,201,76,0)');
+                    ctx.fillStyle = glow;
+                    ctx.fillRect(w - pad.right - 40, y - 25, 40, 50);
+
+                    ctx.strokeStyle = 'rgba(242,201,76,0.2)';
+                    ctx.setLineDash([3, 3]);
+                    ctx.lineWidth = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(pad.left, y);
+                    ctx.lineTo(w - pad.right, y);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = 'rgba(242,201,76,0.7)';
+                    ctx.font = '8px Inter, sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(last.toFixed(6), pad.left + 2, y - 4);
+                }
+            }
+
+            // ─── UI UPDATE ───────────────────────────────────────────
+            function updateUI() {
+                const price = STATE.price;
+                priceEl.textContent = price.toFixed(6);
+                const prev = STATE.ticks.length >= 2 ? STATE.ticks[STATE.ticks.length - 2] : price;
+                const diff = price - prev;
+                const pct = prev !== 0 ? (diff / prev) * 100 : 0;
+                changeEl.textContent = (diff > 0 ? '+' : '') + diff.toFixed(6) + ' (' + (pct > 0 ? '+' : '') + pct.toFixed(
+                    3) + '%)';
+                changeEl.className = 'change ' + (diff >= 0 ? 'text-green' : 'text-red');
+                priceEl.className = 'price ' + (diff >= 0 ? 'green' : 'red');
+                balanceEl.textContent = '💰 $' + STATE.balance.toFixed(2);
+
+                // Position
+                if (STATE.position) {
+                    const pos = STATE.position;
+                    const current = pos.direction === 'buy' ? STATE.bid : STATE.ask;
+                    const diffPnl = (current - pos.entry) * (pos.direction === 'buy' ? 1 : -1) * 10000 * pos.volume;
+                    posDir.textContent = pos.direction === 'buy' ? '📈 LONG' : '📉 SHORT';
+                    posDir.className = 'pos-value ' + (pos.direction === 'buy' ? 'green' : 'red');
+                    posEntry.textContent = pos.entry.toFixed(6);
+                    posVol.textContent = pos.volume.toFixed(2);
+                    posPL.textContent = diffPnl.toFixed(2);
+                    posPL.className = 'pos-value ' + (diffPnl >= 0 ? 'green' : 'red');
+                    posSLTP.textContent = (pos.sl ? 'SL:' + pos.sl.toFixed(6) : '—') + ' / ' + (pos.tp ? 'TP:' + pos.tp
+                        .toFixed(6) : '—');
+
+                    // SL/TP check
+                    if (pos.sl > 0) {
+                        const hit = pos.direction === 'buy' ? STATE.bid <= pos.sl : STATE.ask >= pos.sl;
+                        if (hit) { showToast('⚡ SL hit at ' + pos.sl.toFixed(6), 'error');
+                            closeTrade(); }
+                    }
+                    if (pos.tp > 0) {
+                        const hit = pos.direction === 'buy' ? STATE.ask >= pos.tp : STATE.bid <= pos.tp;
+                        if (hit) { showToast('🎯 TP hit at ' + pos.tp.toFixed(6), 'success');
+                            closeTrade(); }
+                    }
+                } else {
+                    posDir.textContent = '—';
+                    posDir.className = 'pos-value';
+                    posEntry.textContent = '—';
+                    posVol.textContent = '—';
+                    posPL.textContent = '0.00';
+                    posPL.className = 'pos-value';
+                    posSLTP.textContent = '— / —';
+                }
+
+                // Stats
+                statTrades.textContent = STATE.trades.length;
+                const net = STATE.trades.reduce((s, t) => s + t.pnl, 0);
+                statNet.textContent = net.toFixed(2);
+                statNet.className = 'num ' + (net >= 0 ? 'green' : 'red');
+                const wins = STATE.trades.filter(t => t.pnl > 0).length;
+                const total = STATE.trades.length;
+                const wr = total > 0 ? Math.round((wins / total) * 100) : 0;
+                statWinrate.textContent = wr + '%';
+                statStreak.textContent = STATE.winStreak;
+                statStreak.className = 'num ' + (STATE.winStreak >= 3 ? 'gold' : '');
+            }
+
+            // ─── TRADING ──────────────────────────────────────────────
+            window.openTrade = function(dir) {
+                if (STATE.position) { showToast('⚠️ Close existing position first', 'error'); return; }
+                const vol = parseFloat(document.getElementById('tradeVolume').value) || 0.01;
+                if (vol <= 0) { showToast('Volume must be > 0', 'error'); return; }
+                const sl = parseFloat(document.getElementById('tradeSL').value) || 0;
+                const tp = parseFloat(document.getElementById('tradeTP').value) || 0;
+                const entry = dir === 'buy' ? STATE.ask : STATE.bid;
+                STATE.position = { direction: dir, entry, volume: vol, sl, tp, timestamp: Date.now() };
+                showToast('✅ ' + dir.toUpperCase() + ' opened at ' + entry.toFixed(6), 'success');
+                updateUI();
+                btnBuy.disabled = true;
+                btnSell.disabled = true;
+                setTimeout(() => { btnBuy.disabled = false;
+                    btnSell.disabled = false; }, 800);
+            };
+
+            window.closeTrade = function() {
+                if (!STATE.position) { showToast('⚠️ No open position', 'error'); return; }
+                const pos = STATE.position;
+                const exit = pos.direction === 'buy' ? STATE.bid : STATE.ask;
+                const diff = (exit - pos.entry) * (pos.direction === 'buy' ? 1 : -1) * 10000 * pos.volume;
+                const commission = (pos.entry * pos.volume * 10000 * 0.001) + (exit * pos.volume * 10000 * 0.001);
+                const net = diff - commission;
+                STATE.balance += net;
+                STATE.trades.push({
+                    pair: 'DOGEUSDT',
+                    direction: pos.direction,
+                    entry: pos.entry,
+                    exit: exit,
+                    volume: pos.volume,
+                    pnl: net,
+                    result: net > 0 ? 'profit' : (net < 0 ? 'loss' : 'breakeven'),
+                    timestamp: Date.now()
+                });
+                STATE.position = null;
+
+                if (net > 0) {
+                    STATE.winStreak++;
+                    showToast('🔥 +' + net.toFixed(2) + ' profit!', 'success');
+                } else if (net < 0) {
+                    STATE.winStreak = 0;
+                    showToast('💪 ' + net.toFixed(2) + ' loss — stay strong', 'error');
+                } else {
+                    showToast('⚖️ Breakeven', 'gold');
+                }
+                updateUI();
+                btnBuy.disabled = false;
+                btnSell.disabled = false;
+            };
+
+            // ─── RESET ────────────────────────────────────────────────
+            window.resetTrainer = function() {
+                if (STATE.position) { closeTrade(); }
+                STATE.trades = [];
+                STATE.balance = 10000;
+                STATE.winStreak = 0;
+                STATE.ticks = [];
+                STATE._basePrice = 0.105360;
+                STATE._trend = 0;
+                STATE.price = 0.105360;
+                STATE.bid = 0.105350;
+                STATE.ask = 0.105370;
+                // Reseed ticks
+                const seed = STATE._basePrice;
+                for (let i = 0; i < 60; i++) {
+                    const p = seed + (Math.random() - 0.5) * 0.0001;
+                    STATE.ticks.push(p);
+                }
+                STATE.price = STATE.ticks[STATE.ticks.length - 1];
+                STATE.bid = STATE.price - 0.00001;
+                STATE.ask = STATE.price + 0.00001;
+                drawChart();
+                updateUI();
+                showToast('🔄 Trainer reset — fresh start!', 'gold');
+            };
+
+            // ─── TOAST ────────────────────────────────────────────────
+            function showToast(msg, type = 'info') {
+                toast.textContent = msg;
+                toast.className = 'toast ' + type;
+                toast.classList.add('show');
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => { toast.classList.remove('show'); }, 2200);
+            }
+            window.showToast = showToast;
+
+            // ─── MAIN LOOP ────────────────────────────────────────────
+            let timerId = null;
+
+            function tick() {
+                if (!STATE.isRunning) return;
+                const price = generateTick();
+                STATE.ticks.push(price);
+                if (STATE.ticks.length > STATE.maxTicks) STATE.ticks.shift();
+                drawChart();
+                updateUI();
+            }
+
+            function startLoop() {
+                if (timerId) clearInterval(timerId);
+                const speed = parseInt(speedSelect.value) || 100;
+                STATE.speed = speed;
+                timerId = setInterval(tick, speed);
+            }
+
+            // ─── SPEED / VOLATILITY CHANGE ───────────────────────────
+            speedSelect.addEventListener('change', function() {
+                STATE.speed = parseInt(this.value);
+                startLoop();
+                showToast('⏱ Speed: ' + (STATE.speed / 1000).toFixed(2) + 's', 'gold');
+            });
+
+            volatilitySelect.addEventListener('change', function() {
+                STATE.volatility = parseFloat(this.value);
+                showToast('📊 Volatility: ' + (STATE.volatility === 0.5 ? 'Low' : STATE.volatility === 1.0 ?
+                    'Medium' : 'High'), 'gold');
+            });
+
+            // ─── INIT ──────────────────────────────────────────────────
+            function init() {
+                // Seed ticks
+                const seed = STATE._basePrice;
+                for (let i = 0; i < 60; i++) {
+                    const p = seed + (Math.random() - 0.5) * 0.0001;
+                    STATE.ticks.push(p);
+                }
+                STATE.price = STATE.ticks[STATE.ticks.length - 1];
+                STATE.bid = STATE.price - 0.00001;
+                STATE.ask = STATE.price + 0.00001;
+                drawChart();
+                updateUI();
+                startLoop();
+                showToast('🚀 Starter Pro ready — speed is fully controllable!', 'success');
+            }
+
+            // Handle resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => drawChart(), 100);
+            });
+
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+            else init();
+
+            // ─── EXPOSE ──────────────────────────────────────────────
+            window.openTrade = openTrade;
+            window.closeTrade = closeTrade;
+            window.showToast = showToast;
+            window.resetTrainer = resetTrainer;
+
+        })();
+    </script>
+<script>
+// DOGE global error surface (debug v1.1)
+(function(){window.esc=window.esc||function(s){var d=document.createElement('div');d.textContent=String(s==null?'':s);return d.innerHTML;};function t(m){try{var d=document.createElement("div");d.style.cssText="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#3a1015;color:#ffd7dc;border:1px solid #ff5566;padding:8px 14px;border-radius:10px;font-size:12px;z-index:99999;max-width:92vw;";d.textContent="WARN "+String(m).slice(0,160);document.body.appendChild(d);setTimeout(function(){d.remove();},5000);}catch(e){}}
+window.addEventListener("error",function(e){t(e.message||"Script error");});window.addEventListener("unhandledrejection",function(e){t((e.reason&&e.reason.message)||"Async error");});})();
+</script>
+</body>
+</html>

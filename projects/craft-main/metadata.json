@@ -1,0 +1,6 @@
+{
+  "name": "Gemini AI Craft Studio",
+  "description": "An elegant full-stack prompt playground, collaborative text workspace, and structured JSON generator powered by the Gemini 2.5 Flash API.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

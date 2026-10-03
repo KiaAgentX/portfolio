@@ -1,0 +1,6 @@
+{
+  "name": "Antigravity Research & Simulation Platform",
+  "description": "A sleek, futuristic, and documentary-inspired simulation and archives system for antigravity propulsion technologies and gravity manipulation research.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
