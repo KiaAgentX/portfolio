@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hermes Desk — Showcase</title>
+<style>
+:root{--bg:#06060e;--panel:#0c0c18;--panel2:#12122a;--border:#1c2033;--text:#f0ebdf;--muted:#9d9aa8;--faint:#62647a;--accent:#ef4435;--gold:#fbbf24;--c:#a78bfa}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+.mono{font-family:ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace}
+.wrap{max-width:960px;margin:0 auto;padding:48px 24px}
+.eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--c);margin-bottom:16px;display:flex;gap:12px;align-items:center}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--c)}
+h1{font-size:clamp(32px,5vw,52px);margin:0 0 10px;letter-spacing:-1.2px}
+.tag{color:var(--muted);font-size:17px;margin:0 0 22px}
+.badge{display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(251,191,36,.45);background:rgba(251,191,36,.07);padding:6px 12px;border-radius:4px;margin-bottom:26px}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:22px;margin-bottom:26px}
+.card{background:linear-gradient(180deg,var(--panel),#0a0a16);border:1px solid var(--border);border-radius:6px;padding:22px}
+.card h4{margin:0 0 14px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);font-family:ui-monospace,Menlo,monospace}
+.card p{margin:0 0 12px;font-size:15px}
+.kv{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--border);font-size:14px}
+.kv:last-child{border-bottom:none}
+.kv .k{color:var(--faint);font-family:ui-monospace,Menlo,monospace;font-size:12.5px}
+.kv .v{font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-family:ui-monospace,Menlo,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:5px 10px;border-radius:4px}
+.run{border:1px dashed var(--border);border-radius:6px;padding:18px 20px;font-family:ui-monospace,Menlo,monospace;font-size:13px;color:var(--muted);background:var(--panel)}
+.run b{color:var(--text)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.btn{font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:600;padding:11px 20px;border-radius:4px;border:1px solid var(--border);background:var(--panel2);color:var(--text);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:transparent;color:#fff}
+a.btn{text-decoration:none}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">AI &amp; Agents</div>
+  <h1>Hermes Desk</h1>
+  <p class="tag">Cross-platform AI operations MVP (Arabic/English).</p>
+  <div class="badge mono">Server-side project · static showcase</div>
+  <div class="grid">
+    <div class="card">
+      <h4>About this project</h4>
+      <p>Unified operations and automation workspace for Gulf SMEs — unified inbox across WhatsApp/Telegram/Billing, Arabic-first with English/French support, Python services plus an admin web app. MVP spec included.</p>
+      <h4 style="margin-top:18px">Stack</h4>
+      <div class="chips"><span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">Docker</span><span class="chip">TypeScript</span></div>
+    </div>
+    <div class="card">
+      <h4>Project facts</h4>
+      <div class="kv"><span class="k">Category</span><span class="v">AI &amp; Agents</span></div><div class="kv"><span class="k">Primary language</span><span class="v">Python</span></div><div class="kv"><span class="k">Lines of code</span><span class="v">4,115</span></div><div class="kv"><span class="k">Files</span><span class="v">161</span></div><div class="kv"><span class="k">Status</span><span class="v">beta</span></div><div class="kv"><span class="k">Est. market value</span><span class="v">$14,000</span></div>
+    </div>
+  </div>
+  <div class="run mono"><b>RUN LOCALLY</b><br>git clone &lt;repo&gt; &amp;&amp; cd xA<br>see README for install (Docker / package manager)<br>this showcase is a static front — the service itself runs on a server.</div>
+  <div class="cta">
+    <a class="btn primary" href="https://github.com/KiaAgentX/portfolio/tree/main/projects/xA-main" target="_blank" rel="noopener">View source</a>
+    <a class="btn" href="../../projects/xA/">Back to project page</a>
+  </div>
+</div>
+</body>
+</html>
