@@ -1,9 +1,9 @@
 {
   "stats": {
-    "projects": 48,
-    "loc": 653708,
-    "value": 431500,
-    "previews": 32
+    "projects": 59,
+    "loc": 662465,
+    "value": 462000,
+    "previews": 43
   },
   "projects": [
     {
@@ -921,6 +921,208 @@
       "previewReady": true,
       "loc": 13023,
       "fileCount": 50
+    },
+    {
+      "id": "ag",
+      "name": "AI Agent Guide",
+      "tagline": "Long-form Persian guide: building AI agents — with interactive puzzles.",
+      "description": "Deep practical answer to \"do you need programming to build AI agents\" — featuring a 100-feature GitHub puzzle, multi-provider chatbot demo, cost calculator and skill-level quiz, all in one interactive page.",
+      "category": "Learning & Content",
+      "language": "HTML",
+      "stack": [
+        "HTML",
+        "Three.js",
+        "Content"
+      ],
+      "value": 800,
+      "status": "stable",
+      "preview": "static",
+      "previewReady": true,
+      "loc": 0,
+      "fileCount": 2
+    },
+    {
+      "id": "dropagentx-architecture",
+      "name": "DropAgentX Architecture",
+      "tagline": "Full visual architecture map of the DropAgentX platform.",
+      "description": "Single-document architecture of DropAgentX: services, data flows, LLM gateways and deployment topology rendered as one visual reference.",
+      "category": "Docs & Strategy",
+      "language": "HTML",
+      "stack": [
+        "HTML",
+        "Docs"
+      ],
+      "value": 1200,
+      "status": "stable",
+      "preview": "static",
+      "previewReady": true,
+      "loc": 531,
+      "fileCount": 2
+    },
+    {
+      "id": "dropagentx-roadmap",
+      "name": "DropAgentX Roadmap",
+      "tagline": "Investment roadmap: phases, traction and future vision.",
+      "description": "Roadmap document for the DropAgentX intelligent digital-commerce platform — phased plan, current performance and investor-facing outlook.",
+      "category": "Docs & Strategy",
+      "language": "HTML",
+      "stack": [
+        "HTML",
+        "Docs"
+      ],
+      "value": 1000,
+      "status": "stable",
+      "preview": "static",
+      "previewReady": true,
+      "loc": 385,
+      "fileCount": 2
+    },
+    {
+      "id": "fable-berger",
+      "name": "Fable Berger",
+      "tagline": "Playful 3D burger builder in the browser.",
+      "description": "Stack ingredients into a burger on a live Three.js scene — a compact, playful 3D interaction toy in a single file.",
+      "category": "Games & 3D",
+      "language": "HTML",
+      "stack": [
+        "HTML",
+        "Three.js"
+      ],
+      "value": 2500,
+      "status": "stable",
+      "preview": "static",
+      "previewReady": true,
+      "loc": 582,
+      "fileCount": 2
+    },
+    {
+      "id": "hermes-company-structure",
+      "name": "Hermes Company Structure",
+      "tagline": "Commercial structure of Hermes on one page.",
+      "description": "Organizational chart of the Hermes commercial entity: legal form, product lines and operating units in a single self-contained document.",
+      "category": "Docs & Strategy",
+      "language": "HTML",
+      "stack": [
+        "HTML",
+        "Docs"
+      ],
+      "value": 1000,
+      "status": "stable",
+      "preview": "static",
+      "previewReady": true,
+      "loc": 366,
+      "fileCount": 2
+    },
+    {
+      "id": "imx-landing-3d",
+      "name": "ImX 3D Landing",
+      "tagline": "Particle-identity portfolio landing with Pyodide demo.",
+      "description": "Previous-generation portfolio landing: KIA particle identity scene in Three.js plus an interactive Pyodide-powered demo, in one file.",
+      "category": "Web & Brand Experiences",
+      "language": "HTML",
+      "stack": [
+        "HTML",
+        "Three.js",
+        "Pyodide"
+      ],
+      "value": 3000,
+      "status": "stable",
+      "preview": "static",
+      "previewReady": true,
+      "loc": 832,
+      "fileCount": 2
+    },
+    {
+      "id": "sc-studio",
+      "name": "SC Studio",
+      "tagline": "Persian idea-to-requirements tool — local, single file, no server.",
+      "description": "SC Studio takes an idea through project discovery to clear requirements: fully local Persian tooling in one self-contained 600KB file — \"clarify it first, then build it.\"",
+      "category": "Developer Tools",
+      "language": "HTML",
+      "stack": [
+        "HTML",
+        "Vanilla JS"
+      ],
+      "value": 7000,
+      "status": "stable",
+      "preview": "static",
+      "previewReady": true,
+      "loc": 0,
+      "fileCount": 2
+    },
+    {
+      "id": "fishkal-deep-catch",
+      "name": "FISHKAL Deep Catch",
+      "tagline": "Interactive cinematic fishing journey — single-file edition.",
+      "description": "The self-contained single-file edition of the FISHKAL Deep Catch experience: an interactive cinematic descent off the coast of Dubai.",
+      "category": "Web & Brand Experiences",
+      "language": "HTML",
+      "stack": [
+        "HTML",
+        "Single-file"
+      ],
+      "value": 4500,
+      "status": "stable",
+      "preview": "static",
+      "previewReady": true,
+      "loc": 0,
+      "fileCount": 2
+    },
+    {
+      "id": "trading-god-arena",
+      "name": "Trading God Arena v10",
+      "tagline": "Trading simulator with 8 AI gods, battle arena and skill tree.",
+      "description": "Elon Musk Edition desktop-optimized trading simulator: 8 AI gods, battle arena, skill tree and an AI advisor — a 195KB single-file game.",
+      "category": "Trading & Fintech",
+      "language": "HTML",
+      "stack": [
+        "HTML",
+        "Vanilla JS",
+        "Game"
+      ],
+      "value": 6500,
+      "status": "stable",
+      "preview": "static",
+      "previewReady": true,
+      "loc": 4013,
+      "fileCount": 2
+    },
+    {
+      "id": "guide-9router",
+      "name": "9Router Guide",
+      "tagline": "Complete Persian reference for the 9Router AI mesh.",
+      "description": "Comprehensive 9Router documentation: installation, providers, three-layer fallback, media providers and token optimization — presented with 3D visuals.",
+      "category": "Learning & Content",
+      "language": "HTML",
+      "stack": [
+        "HTML",
+        "Three.js",
+        "Tailwind CSS"
+      ],
+      "value": 1500,
+      "status": "stable",
+      "preview": "static",
+      "previewReady": true,
+      "loc": 1184,
+      "fileCount": 2
+    },
+    {
+      "id": "guide-railway",
+      "name": "DropRail Railway Guide",
+      "tagline": "How to use Railway's $5 Hobby plan — signup to deploy.",
+      "description": "Complete DropRail guide to Railway's $5 Hobby plan: registration to deployment, plan comparison and a cost calculator — in Persian with 3D visuals.",
+      "category": "Learning & Content",
+      "language": "HTML",
+      "stack": [
+        "HTML",
+        "Three.js"
+      ],
+      "value": 1500,
+      "status": "stable",
+      "preview": "static",
+      "previewReady": true,
+      "loc": 864,
+      "fileCount": 2
     }
   ]
 }
