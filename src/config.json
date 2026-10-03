@@ -1,0 +1,16 @@
+{
+  "owner": {
+    "name": "Kia",
+    "handle": "ImXforever",
+    "github": "https://github.com/ImXforever",
+    "tagline": "Full-stack engineer building AI agents, trading systems, and immersive web experiences.",
+    "location": "Available worldwide · Remote",
+    "email": ""
+  },
+  "site": {
+    "title": "Kia — Software Portfolio",
+    "description": "48 production projects across AI agents, algorithmic trading, e-commerce, and real-time 3D. Open source code and live previews.",
+    "repoUrl": "https://github.com/KiaAgentX/portfolio",
+    "base": ""
+  }
+}
