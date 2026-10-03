@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حل مسائل حسابداری - موسسه خدماتی گلفا</title>
+    <style>
+        :root {
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --border: #e2e8f0;
+            --primary: #2b6cb0;
+            --primary-light: #ebf4ff;
+            --debit: #c53030;
+            --debit-bg: #fff5f5;
+            --credit: #2f855a;
+            --credit-bg: #f0fff4;
+            --accent: #d69e2e;
+            --accent-bg: #fffff0;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Tahoma', 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            padding: 20px;
+            min-height: 100vh;
+            background-image: radial-gradient(ellipse at 50% 0%, #e2e8f0 0%, transparent 70%);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2b6cb0, #3182ce, #63b3ed, #3182ce, #2b6cb0);
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            color: #1a365d;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+        .header .subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .header .badge {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* Section */
+        .section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .section:hover {
+            box-shadow: var(--shadow-lg);
+        }
+        .section h2 {
+            font-size: 1.35rem;
+            color: #1a365d;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section h2 .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .section h3 {
+            font-size: 1.1rem;
+            color: #2d3748;
+            margin: 18px 0 10px;
+            padding-right: 12px;
+            border-right: 4px solid var(--accent);
+        }
+
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 700px;
+        }
+        table thead th {
+            background: #f7fafc;
+            color: #1a365d;
+            font-weight: 700;
+            padding: 13px 10px;
+            text-align: center;
+            border-bottom: 2px solid #cbd5e0;
+            white-space: nowrap;
+            font-size: 0.85rem;
+            letter-spacing: -0.2px;
+        }
+        table tbody td {
+            padding: 10px 10px;
+            text-align: center;
+            border-bottom: 1px solid #edf2f7;
+            vertical-align: middle;
+        }
+        table tbody tr {
+            transition: background 0.2s;
+        }
+        table tbody tr:hover {
+            background: #f7fafc;
+        }
+        table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .num {
+            font-family: 'Vazirmatn', 'Tahoma', monospace;
+            font-weight: 600;
+            direction: ltr;
+            display: inline-block;
+            text-align: right;
+            min-width: 90px;
+        }
+        .debit-cell {
+            color: var(--debit);
+        }
+        .credit-cell {
+            color: var(--credit);
+        }
+        .desc-cell {
+            text-align: right;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            max-width: 250px;
+        }
+        .row-num {
+            font-weight: 700;
+            color: #718096;
+            width: 35px;
+        }
+
+        /* T-Accounts (Ledger) */
+        .ledger-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 16px;
+        }
+        .t-account {
+            background: #fdfdfd;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+        .t-account:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transform: translateY(-1px);
+        }
+        .t-account-header {
+            background: #1a365d;
+            color: #fff;
+            padding: 10px 14px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 0.9rem;
+            letter-spacing: -0.2px;
+        }
+        .t-account-header.asset {
+            background: #2b6cb0;
+        }
+        .t-account-header.liability {
+            background: #c53030;
+        }
+        .t-account-header.equity {
+            background: #2f855a;
+        }
+        .t-account-header.revenue {
+            background: #2f855a;
+        }
+        .t-account-header.expense {
+            background: #d69e2e;
+            color: #1a202c;
+        }
+        .t-account-body {
+            display: flex;
+            flex-direction: row;
+        }
+        .t-side {
+            flex: 1;
+            padding: 0;
+        }
+        .t-side:first-child {
+            border-left: 1px dashed #e2e8f0;
+        }
+        .t-side-label {
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.78rem;
+            padding: 6px;
+            background: #f7fafc;
+            color: #4a5568;
+        }
+        .t-side-label.debit-label {
+            color: var(--debit);
+            background: #fff5f5;
+        }
+        .t-side-label.credit-label {
+            color: var(--credit);
+            background: #f0fff4;
+        }
+        .t-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            border-bottom: 1px dotted #f0f0f0;
+        }
+        .t-row .t-num {
+            font-weight: 600;
+            direction: ltr;
+            font-family: 'Vazirmatn', 'Tahoma', monospace;
+        }
+        .t-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            background: #fafcfd;
+            border-top: 2px solid #e2e8f0;
+        }
+        .t-footer .balance {
+            direction: ltr;
+            font-family: 'Vazirmatn', 'Tahoma', monospace;
+        }
+
+        /* Trial Balance */
+        .trial-balance-table tbody tr.total-row {
+            background: #f7fafc;
+            font-weight: 700;
+            border-top: 3px double #2d3748;
+        }
+        .trial-balance-table tbody tr.total-row td {
+            font-size: 0.95rem;
+            color: #1a365d;
+            padding: 14px 10px;
+        }
+        .balanced-badge {
+            display: inline-block;
+            background: #c6f6d5;
+            color: #22543d;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-top: 12px;
+        }
+
+        /* Summary Cards */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .summary-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .summary-card .card-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a365d;
+            direction: ltr;
+            font-family: 'Vazirmatn', 'Tahoma', monospace;
+        }
+        .summary-card .card-label {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        /* Step indicator */
+        .step-indicator {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        .step {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #718096;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+        .step.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+        .step.done {
+            border-color: var(--credit);
+            color: var(--credit);
+            background: #f0fff4;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+                font-size: 11px;
+            }
+            .section {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ccc;
+                margin-bottom: 14px;
+            }
+            .header {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+            .header::before {
+                background: #000;
+            }
+            table {
+                font-size: 10px;
+                min-width: auto;
+            }
+            .t-account {
+                break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
+            .header {
+                padding: 18px 14px;
+            }
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            .section {
+                padding: 16px 12px;
+            }
+            .section h2 {
+                font-size: 1.1rem;
+            }
+            table {
+                font-size: 0.75rem;
+                min-width: 550px;
+            }
+            table thead th,
+            table tbody td {
+                padding: 7px 5px;
+            }
+            .ledger-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .num {
+                min-width: 60px;
+                font-size: 0.75rem;
+            }
+            .desc-cell {
+                max-width: 120px;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>📊 موسسه خدماتی گلفا</h1>
+            <p class="subtitle">ثبت رویدادهای مالی – دفتر روزنامه، دفتر کل و تراز آزمایشی</p>
+            <span class="badge">۱۰ رویداد مالی + ۱ رویداد دریافت بدهکاران</span>
+        </div>
+
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <span class="step done">✅ تحلیل رویدادها</span>
+            <span class="step active">📝 دفتر روزنامه</span>
+            <span class="step">📚 دفتر کل</span>
+            <span class="step">⚖️ تراز آزمایشی</span>
+        </div>
+
+        <!-- ==================== دفتر روزنامه ==================== -->
+        <div class="section" id="journal">
+            <h2><span class="icon">📝</span> دفتر روزنامه</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ردیف</th>
+                            <th>شرح</th>
+                            <th>بدهکار (ریال)</th>
+                            <th>بستانکار (ریال)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 1 -->
+                        <tr>
+                            <td class="row-num">۱</td>
+                            <td class="desc-cell">تأسیس موسسه – افتتاح حساب بانکی و اثاثه<br><small>سرمایه‌گذاری اولیه مالک</small></td>
+                            <td class="debit-cell"><span class="num">۸٬۰۰۰٬۰۰۰</span><br><span class="num">۲٬۰۰۰٬۰۰۰</span></td>
+                            <td class="credit-cell"><span class="num">۱۰٬۰۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <!-- 2 -->
+                        <tr>
+                            <td class="row-num">۲</td>
+                            <td class="desc-cell">ارائه خدمات به‌صورت نقد</td>
+                            <td class="debit-cell"><span class="num">۵۰۰٬۰۰۰</span></td>
+                            <td class="credit-cell"><span class="num">۵۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <!-- 3 -->
+                        <tr>
+                            <td class="row-num">۳</td>
+                            <td class="desc-cell">خرید ملزومات به‌صورت نقد</td>
+                            <td class="debit-cell"><span class="num">۲۰۰٬۰۰۰</span></td>
+                            <td class="credit-cell"><span class="num">۲۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <!-- 4 -->
+                        <tr>
+                            <td class="row-num">۴</td>
+                            <td class="desc-cell">پرداخت هزینه اجاره از حساب بانکی</td>
+                            <td class="debit-cell"><span class="num">۴۰۰٬۰۰۰</span></td>
+                            <td class="credit-cell"><span class="num">۴۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <!-- 5 -->
+                        <tr>
+                            <td class="row-num">۵</td>
+                            <td class="desc-cell">ارائه خدمات – ۳۰۰ هزار نقد + ۷۰۰ هزار نسیه</td>
+                            <td class="debit-cell"><span class="num">۳۰۰٬۰۰۰</span><br><span class="num">۷۰۰٬۰۰۰</span></td>
+                            <td class="credit-cell"><span class="num">۱٬۰۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <!-- 6 -->
+                        <tr>
+                            <td class="row-num">۶</td>
+                            <td class="desc-cell">انجام هزینه تعمیرات به‌صورت نسیه</td>
+                            <td class="debit-cell"><span class="num">۵۰۰٬۰۰۰</span></td>
+                            <td class="credit-cell"><span class="num">۵۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <!-- 7 -->
+                        <tr>
+                            <td class="row-num">۷</td>
+                            <td class="desc-cell">خرید وسیله نقلیه – ۵۰۰ هزار نقد + ۱.۵ میلیون نسیه</td>
+                            <td class="debit-cell"><span class="num">۲٬۰۰۰٬۰۰۰</span></td>
+                            <td class="credit-cell"><span class="num">۵۰۰٬۰۰۰</span><br><span class="num">۱٬۵۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <!-- 8 -->
+                        <tr>
+                            <td class="row-num">۸</td>
+                            <td class="desc-cell">برداشت صاحب موسسه از حساب بانکی</td>
+                            <td class="debit-cell"><span class="num">۲۰۰٬۰۰۰</span></td>
+                            <td class="credit-cell"><span class="num">۲۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <!-- 9 -->
+                        <tr>
+                            <td class="row-num">۹</td>
+                            <td class="desc-cell">پرداخت بدهی‌ها از حساب بانکی</td>
+                            <td class="debit-cell"><span class="num">۳۰۰٬۰۰۰</span></td>
+                            <td class="credit-cell"><span class="num">۳۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <!-- 10 -->
+                        <tr>
+                            <td class="row-num">۱۰</td>
+                            <td class="desc-cell">سرمایه‌گذاری مجدد صاحب موسسه – زمین</td>
+                            <td class="debit-cell"><span class="num">۱٬۰۰۰٬۰۰۰</span></td>
+                            <td class="credit-cell"><span class="num">۱٬۰۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <!-- 11 -->
+                        <tr>
+                            <td class="row-num">۱۱</td>
+                            <td class="desc-cell">دریافت وجه از بدهکاران</td>
+                            <td class="debit-cell"><span class="num">۲۰۰٬۰۰۰</span></td>
+                            <td class="credit-cell"><span class="num">۲۰۰٬۰۰۰</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="margin-top:12px;font-size:0.8rem;color:#718096;">
+                💡 <strong>راهنما:</strong> در هر سطر، جمع مبالغ بدهکار با جمع مبالغ بستانکار برابر است.
+            </p>
+        </div>
+
+        <!-- ==================== دفتر کل ==================== -->
+        <div class="section" id="ledger">
+            <h2><span class="icon">📚</span> دفتر کل (حساب‌های T)</h2>
+            <div class="ledger-grid">
+
+                <!-- بانک -->
+                <div class="t-account">
+                    <div class="t-account-header asset">🏦 بانک (دارایی)</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>۱) تأسیس</span><span class="t-num">۸٬۰۰۰٬۰۰۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>۴) اجاره</span><span class="t-num">۴۰۰٬۰۰۰</span></div>
+                            <div class="t-row"><span>۷) وسیله نقلیه</span><span class="t-num">۵۰۰٬۰۰۰</span></div>
+                            <div class="t-row"><span>۸) برداشت</span><span class="t-num">۲۰۰٬۰۰۰</span></div>
+                            <div class="t-row"><span>۹) پرداخت بدهی</span><span class="t-num">۳۰۰٬۰۰۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بدهکار:</span>
+                        <span class="balance" style="color:#c53030;">۶٬۶۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+                <!-- صندوق -->
+                <div class="t-account">
+                    <div class="t-account-header asset">💰 صندوق (دارایی)</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>۲) خدمات نقد</span><span class="t-num">۵۰۰٬۰۰۰</span></div>
+                            <div class="t-row"><span>۵) خدمات نقد</span><span class="t-num">۳۰۰٬۰۰۰</span></div>
+                            <div class="t-row"><span>۱۱) دریافت بدهکاران</span><span class="t-num">۲۰۰٬۰۰۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>۳) ملزومات</span><span class="t-num">۲۰۰٬۰۰۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بدهکار:</span>
+                        <span class="balance" style="color:#c53030;">۸۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+                <!-- اثاثه -->
+                <div class="t-account">
+                    <div class="t-account-header asset">🪑 اثاثه (دارایی)</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>۱) تأسیس</span><span class="t-num">۲٬۰۰۰٬۰۰۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>—</span><span class="t-num">۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بدهکار:</span>
+                        <span class="balance" style="color:#c53030;">۲٬۰۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+                <!-- ملزومات -->
+                <div class="t-account">
+                    <div class="t-account-header asset">📦 ملزومات (دارایی)</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>۳) خرید نقد</span><span class="t-num">۲۰۰٬۰۰۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>—</span><span class="t-num">۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بدهکار:</span>
+                        <span class="balance" style="color:#c53030;">۲۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+                <!-- وسیله نقلیه -->
+                <div class="t-account">
+                    <div class="t-account-header asset">🚗 وسیله نقلیه (دارایی)</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>۷) خرید</span><span class="t-num">۲٬۰۰۰٬۰۰۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>—</span><span class="t-num">۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بدهکار:</span>
+                        <span class="balance" style="color:#c53030;">۲٬۰۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+                <!-- زمین -->
+                <div class="t-account">
+                    <div class="t-account-header asset">🏞️ زمین (دارایی)</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>۱۰) سرمایه‌گذاری مجدد</span><span class="t-num">۱٬۰۰۰٬۰۰۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>—</span><span class="t-num">۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بدهکار:</span>
+                        <span class="balance" style="color:#c53030;">۱٬۰۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+                <!-- حساب‌های دریافتنی -->
+                <div class="t-account">
+                    <div class="t-account-header asset">👤 بدهکاران (دارایی)</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>۵) خدمات نسیه</span><span class="t-num">۷۰۰٬۰۰۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>۱۱) دریافت</span><span class="t-num">۲۰۰٬۰۰۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بدهکار:</span>
+                        <span class="balance" style="color:#c53030;">۵۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+                <!-- حساب‌های پرداختنی -->
+                <div class="t-account">
+                    <div class="t-account-header liability">📋 بستانکاران (بدهی)</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>۹) پرداخت</span><span class="t-num">۳۰۰٬۰۰۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>۶) تعمیرات نسیه</span><span class="t-num">۵۰۰٬۰۰۰</span></div>
+                            <div class="t-row"><span>۷) وسیله نقلیه</span><span class="t-num">۱٬۵۰۰٬۰۰۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بستانکار:</span>
+                        <span class="balance" style="color:#2f855a;">۱٬۷۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+                <!-- سرمایه -->
+                <div class="t-account">
+                    <div class="t-account-header equity">🏛️ سرمایه (حقوق مالکانه)</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>—</span><span class="t-num">۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>۱) تأسیس</span><span class="t-num">۱۰٬۰۰۰٬۰۰۰</span></div>
+                            <div class="t-row"><span>۱۰) زمین</span><span class="t-num">۱٬۰۰۰٬۰۰۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بستانکار:</span>
+                        <span class="balance" style="color:#2f855a;">۱۱٬۰۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+                <!-- برداشت -->
+                <div class="t-account">
+                    <div class="t-account-header expense" style="background:#e53e3e;color:#fff;">💸 برداشت مالک</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>۸) برداشت</span><span class="t-num">۲۰۰٬۰۰۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>—</span><span class="t-num">۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بدهکار:</span>
+                        <span class="balance" style="color:#c53030;">۲۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+                <!-- درآمد خدمات -->
+                <div class="t-account">
+                    <div class="t-account-header revenue">📈 درآمد خدمات (درآمد)</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>—</span><span class="t-num">۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>۲) نقد</span><span class="t-num">۵۰۰٬۰۰۰</span></div>
+                            <div class="t-row"><span>۵) نقد + نسیه</span><span class="t-num">۱٬۰۰۰٬۰۰۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بستانکار:</span>
+                        <span class="balance" style="color:#2f855a;">۱٬۵۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+                <!-- هزینه اجاره -->
+                <div class="t-account">
+                    <div class="t-account-header expense">🏠 هزینه اجاره (هزینه)</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>۴) پرداخت</span><span class="t-num">۴۰۰٬۰۰۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>—</span><span class="t-num">۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بدهکار:</span>
+                        <span class="balance" style="color:#c53030;">۴۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+                <!-- هزینه تعمیرات -->
+                <div class="t-account">
+                    <div class="t-account-header expense">🔧 هزینه تعمیرات (هزینه)</div>
+                    <div class="t-account-body">
+                        <div class="t-side">
+                            <div class="t-side-label debit-label">بدهکار</div>
+                            <div class="t-row"><span>۶) نسیه</span><span class="t-num">۵۰۰٬۰۰۰</span></div>
+                        </div>
+                        <div class="t-side">
+                            <div class="t-side-label credit-label">بستانکار</div>
+                            <div class="t-row"><span>—</span><span class="t-num">۰</span></div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <span>مانده بدهکار:</span>
+                        <span class="balance" style="color:#c53030;">۵۰۰٬۰۰۰</span>
+                    </div>
+                </div>
+
+            </div> <!-- end ledger-grid -->
+        </div>
+
+        <!-- ==================== تراز آزمایشی ==================== -->
+        <div class="section" id="trial-balance">
+            <h2><span class="icon">⚖️</span> تراز آزمایشی</h2>
+            <div class="table-wrapper">
+                <table class="trial-balance-table">
+                    <thead>
+                        <tr>
+                            <th>ردیف</th>
+                            <th>نام حساب</th>
+                            <th>بدهکار (ریال)</th>
+                            <th>بستانکار (ریال)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>۱</td>
+                            <td>بانک</td>
+                            <td class="debit-cell"><span class="num">۶٬۶۰۰٬۰۰۰</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>۲</td>
+                            <td>صندوق</td>
+                            <td class="debit-cell"><span class="num">۸۰۰٬۰۰۰</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>۳</td>
+                            <td>اثاثه</td>
+                            <td class="debit-cell"><span class="num">۲٬۰۰۰٬۰۰۰</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>۴</td>
+                            <td>ملزومات</td>
+                            <td class="debit-cell"><span class="num">۲۰۰٬۰۰۰</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>۵</td>
+                            <td>وسیله نقلیه</td>
+                            <td class="debit-cell"><span class="num">۲٬۰۰۰٬۰۰۰</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>۶</td>
+                            <td>زمین</td>
+                            <td class="debit-cell"><span class="num">۱٬۰۰۰٬۰۰۰</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>۷</td>
+                            <td>بدهکاران (حساب‌های دریافتنی)</td>
+                            <td class="debit-cell"><span class="num">۵۰۰٬۰۰۰</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>۸</td>
+                            <td>بستانکاران (حساب‌های پرداختنی)</td>
+                            <td></td>
+                            <td class="credit-cell"><span class="num">۱٬۷۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <tr>
+                            <td>۹</td>
+                            <td>سرمایه</td>
+                            <td></td>
+                            <td class="credit-cell"><span class="num">۱۱٬۰۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <tr>
+                            <td>۱۰</td>
+                            <td>برداشت مالک</td>
+                            <td class="debit-cell"><span class="num">۲۰۰٬۰۰۰</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>۱۱</td>
+                            <td>درآمد خدمات</td>
+                            <td></td>
+                            <td class="credit-cell"><span class="num">۱٬۵۰۰٬۰۰۰</span></td>
+                        </tr>
+                        <tr>
+                            <td>۱۲</td>
+                            <td>هزینه اجاره</td>
+                            <td class="debit-cell"><span class="num">۴۰۰٬۰۰۰</span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>۱۳</td>
+                            <td>هزینه تعمیرات</td>
+                            <td class="debit-cell"><span class="num">۵۰۰٬۰۰۰</span></td>
+                            <td></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="2"><strong>جمع کل</strong></td>
+                            <td style="color:#c53030;font-weight:900;"><span class="num">۱۴٬۲۰۰٬۰۰۰</span></td>
+                            <td style="color:#2f855a;font-weight:900;"><span class="num">۱۴٬۲۰۰٬۰۰۰</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="text-align:center; margin-top:16px;">
+                <span class="balanced-badge">✅ تراز آزمایشی متوازن است — جمع بدهکاران = جمع بستانکاران = ۱۴٬۲۰۰٬۰۰۰ ریال</span>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="card-value" style="color:#2b6cb0;">۱۳٬۱۰۰٬۰۰۰</div>
+                <div class="card-label">کل دارایی‌ها (بانک + صندوق + اثاثه + ملزومات + وسیله نقلیه + زمین + بدهکاران)</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-value" style="color:#c53030;">۱٬۷۰۰٬۰۰۰</div>
+                <div class="card-label">کل بدهی‌ها (بستانکاران)</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-value" style="color:#2f855a;">۱۱٬۴۰۰٬۰۰۰</div>
+                <div class="card-label">حقوق مالکانه (سرمایه - برداشت + درآمد - هزینه‌ها)</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-value">۱۴٬۲۰۰٬۰۰۰</div>
+                <div class="card-label">جمع تراز آزمایشی</div>
+            </div>
+        </div>
+
+        <!-- Footer Note -->
+        <div style="text-align:center; padding:20px; color:#718096; font-size:0.8rem;">
+            <p>📌 معادله حسابداری: دارایی‌ها (۱۳٬۱۰۰٬۰۰۰) = بدهی‌ها (۱٬۷۰۰٬۰۰۰) + حقوق مالکانه (۱۱٬۴۰۰٬۰۰۰) ✓</p>
+            <p style="margin-top:4px;">حقوق مالکانه = سرمایه (۱۱٬۰۰۰٬۰۰۰) − برداشت (۲۰۰٬۰۰۰) + درآمد خدمات (۱٬۵۰۰٬۰۰۰) − هزینه اجاره (۴۰۰٬۰۰۰) − هزینه تعمیرات (۵۰۰٬۰۰۰) = <strong>۱۱٬۴۰۰٬۰۰۰</strong></p>
+            <p style="margin-top:8px;color:#a0aec0;">تهیه شده با ❤️ | موسسه خدماتی گلفا | ۱۴۰۵</p>
+        </div>
+
+    </div>
+</body>
+</html>

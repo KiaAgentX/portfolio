@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>سپاسگزارم | حسابان</title>
+    
+    <!-- فونت فارسی لوکال -->
+    <style>
+        @font-face { font-family: 'Vazirmatn'; src: url('core/fonts/Vazirmatn-Regular.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+        @font-face { font-family: 'Vazirmatn'; src: url('core/fonts/Vazirmatn-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+        @font-face { font-family: 'Vazirmatn'; src: url('core/fonts/Vazirmatn-Black.woff2') format('woff2'); font-weight: 900; font-display: swap; }
+    </style>
+
+    <style>
+        /* ============================================================
+           تـم سه‌بعدی و نئونی ویژه صفحه تقدیر
+           ============================================================ */
+        :root {
+            --neon-green: #00ff88;
+            --neon-cyan: #00f0ff;
+            --neon-red: #ff2255;
+            --neon-white: #f0f0ff;
+            --gold: #ffd700;
+            --dark-bg: #05050c;
+            --card-bg: rgba(18, 18, 35, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --radius: 24px;
+            --font: 'Vazirmatn', Tahoma, sans-serif;
+            --transition-smooth: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        
+        body {
+            font-family: var(--font);
+            background: var(--dark-bg);
+            background: radial-gradient(ellipse at 20% 20%, #111830 0%, var(--dark-bg) 60%);
+            color: var(--neon-white);
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 2000px;
+            position: relative;
+        }
+
+        /* ===== پس‌زمینه بوم ذرات (Canvas) ===== */
+        #thanks-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== گوی‌های شناور نئونی ===== */
+        .orb { position:fixed; border-radius:50%; filter:blur(80px) brightness(1.2); animation:floatOrb 12s infinite alternate ease-in-out; z-index:1; mix-blend-mode:screen; }
+        .orb1 { width:350px; height:350px; background:var(--neon-cyan); top:-10%; left:10%; animation-duration:14s; }
+        .orb2 { width:400px; height:400px; background:var(--neon-green); bottom:-10%; right:5%; animation-duration:16s; }
+        .orb3 { width:250px; height:250px; background:var(--gold); top:60%; left:20%; animation-duration:12s; }
+        @keyframes floatOrb { 0% { transform:translate(0,0) scale(0.8); } 33% { transform:translate(40px,-50px) scale(1.1); } 66% { transform:translate(-20px,30px) scale(0.9); } 100% { transform:translate(10px,-20px) scale(1); } }
+
+        /* ===== کانتینر اصلی ===== */
+        .thanks-container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            transform-style: preserve-3d;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* ===== مکعب سه‌بعدی ===== */
+        .cube-wrapper {
+            transform-style: preserve-3d;
+            width: 260px;
+            height: 260px;
+            margin-bottom: 20px;
+        }
+        .cube {
+            width: 260px;
+            height: 260px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateCube 20s linear infinite;
+            transition: transform 0.1s ease-out;
+        }
+        @keyframes rotateCube {
+            0% { transform: rotateX(-20deg) rotateY(0deg); }
+            100% { transform: rotateX(-20deg) rotateY(360deg); }
+        }
+        .face {
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(16px) saturate(1.2);
+            box-shadow: inset 0 0 60px rgba(0, 240, 255, 0.05), 0 0 40px rgba(0, 240, 255, 0.05);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            text-shadow: 0 0 40px currentColor;
+        }
+        .front  { transform: translateZ(130px); color: #ff2255; } /* ❤️ */
+        .back   { transform: rotateY(180deg) translateZ(130px); color: #ffd700; } /* 🙏 */
+        .left   { transform: rotateY(-90deg) translateZ(130px); color: #00f0ff; } /* ✨ */
+        .right  { transform: rotateY(90deg) translateZ(130px); color: #ffd700; } /* 🚀 */
+        .top    { transform: rotateX(90deg) translateZ(130px); color: #00ff88; } /* 💎 */
+        .bottom { transform: rotateX(-90deg) translateZ(130px); color: #ffd700; } /* 🏆 */
+
+        /* ===== تایپوگرافی و متن ===== */
+        .main-title {
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold), var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px rgba(255, 215, 0, 0.1);
+            transform: rotateX(5deg) translateZ(40px);
+            animation: floatText 3s ease-in-out infinite alternate;
+        }
+        .sub-title {
+            font-size: clamp(1.2rem, 2vw, 1.6rem);
+            color: var(--text-secondary);
+            transform: translateZ(30px);
+            margin-top: -10px;
+            opacity: 0.8;
+        }
+        @keyframes floatText {
+            0% { transform: rotateX(5deg) translateZ(40px) translateY(0); }
+            100% { transform: rotateX(5deg) translateZ(40px) translateY(-15px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 14px 36px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: var(--neon-white);
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+            transform: translateZ(20px);
+        }
+        .back-btn:hover {
+            background: rgba(0, 240, 255, 0.08);
+            border-color: var(--neon-cyan);
+            transform: translateZ(20px) translateY(-5px) scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.1);
+        }
+        .back-btn:active {
+            transform: translateZ(20px) scale(0.95);
+        }
+
+        /* ===== واکنش‌گرایی ===== */
+        @media (max-width: 768px) {
+            .cube-wrapper, .cube, .face { width: 200px; height: 200px; }
+            .face { font-size: 4.5rem; }
+            .front { transform: translateZ(100px); }
+            .back { transform: rotateY(180deg) translateZ(100px); }
+            .left { transform: rotateY(-90deg) translateZ(100px); }
+            .right { transform: rotateY(90deg) translateZ(100px); }
+            .top { transform: rotateX(90deg) translateZ(100px); }
+            .bottom { transform: rotateX(-90deg) translateZ(100px); }
+        }
+        @media (max-width: 480px) {
+            .cube-wrapper, .cube, .face { width: 160px; height: 160px; }
+            .face { font-size: 3.5rem; border-radius: 18px; }
+            .front { transform: translateZ(80px); }
+            .back { transform: rotateY(180deg) translateZ(80px); }
+            .left { transform: rotateY(-90deg) translateZ(80px); }
+            .right { transform: rotateY(90deg) translateZ(80px); }
+            .top { transform: rotateX(90deg) translateZ(80px); }
+            .bottom { transform: rotateX(-90deg) translateZ(80px); }
+            .main-title { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== بوم ذرات ===== -->
+    <canvas id="thanks-canvas"></canvas>
+
+    <!-- ===== گوی‌های شناور ===== -->
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <!-- ===== کانتینر اصلی ===== -->
+    <div class="thanks-container">
+        
+        <div class="cube-wrapper">
+            <div class="cube" id="thankCube">
+                <div class="face front">❤️</div>
+                <div class="face back">🙏</div>
+                <div class="face left">✨</div>
+                <div class="face right">🚀</div>
+                <div class="face top">💎</div>
+                <div class="face bottom">🏆</div>
+            </div>
+        </div>
+
+        <h1 class="main-title">سپاسگزارم از شما</h1>
+        <p class="sub-title">برای همراهی و اعتماد بی‌نهایت شما</p>
+
+        <a href="index.html" class="back-btn">🏠 بازگشت به داشبورد</a>
+    </div>
+
+    <!-- ============================================================
+    اسکریپت ذرات و افکت سه‌بعدی
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ۱. موتور ذرات (Particle Engine)
+            const canvas = document.getElementById('thanks-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H, particlesArray = [];
+            const COLORS = ['rgba(0, 240, 255, ', 'rgba(0, 255, 136, ', 'rgba(255, 215, 0, '];
+
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * W; this.y = Math.random() * H;
+                    this.size = Math.random() * 2.5 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.6; this.speedY = (Math.random() - 0.5) * 0.6;
+                    this.opacity = Math.random() * 0.4 + 0.1;
+                    this.colorIdx = Math.floor(Math.random() * COLORS.length);
+                    this.pulse = Math.random() * Math.PI * 2; this.pulseSpeed = 0.006 + Math.random() * 0.012;
+                }
+                update() {
+                    this.x += this.speedX; this.y += this.speedY; this.pulse += this.pulseSpeed;
+                    if (this.x < 0 || this.x > W) this.speedX *= -1;
+                    if (this.y < 0 || this.y > H) this.speedY *= -1;
+                    this.currentOpacity = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                }
+                draw() {
+                    const alpha = Math.max(0.03, Math.min(0.8, this.currentOpacity));
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = COLORS[this.colorIdx] + alpha + ')';
+                    ctx.shadowColor = ctx.fillStyle;
+                    ctx.shadowBlur = 15;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            function initParticles() {
+                particlesArray = [];
+                for (let i = 0; i < 150; i++) particlesArray.push(new Particle());
+            }
+
+            function resizeCanvas() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, W, H);
+                // پس‌زمینه بسیار تیره
+                const grad = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W, H)*0.7);
+                grad.addColorStop(0, '#0d0d18'); grad.addColorStop(1, '#05050a');
+                ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
+                
+                particlesArray.forEach(p => { p.update(); p.draw(); });
+                
+                // خطوط ارتباطی
+                for (let i = 0; i < particlesArray.length; i++) {
+                    for (let j = i + 1; j < particlesArray.length; j++) {
+                        const dx = particlesArray[i].x - particlesArray[j].x;
+                        const dy = particlesArray[i].y - particlesArray[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            const alpha = (1 - dist / 150) * 0.12;
+                            ctx.beginPath();
+                            ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                            ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                            ctx.strokeStyle = COLORS[0] + alpha + ')';
+                            ctx.lineWidth = 0.4;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animateParticles);
+            }
+
+            function setupParticles() {
+                resizeCanvas();
+                initParticles();
+                animateParticles();
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                particlesArray.forEach(p => { p.x = Math.min(p.x, W); p.y = Math.min(p.y, H); });
+            });
+
+            setupParticles();
+
+            // ۲. افکت پارالاکس روی مکعب (حرکت با موس)
+            const cube = document.getElementById('thankCube');
+            let mouseX = 0, mouseY = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+                
+                if (cube) {
+                    const rotX = mouseY * 10; // چرخش عمودی
+                    const rotY = mouseX * 15; // چرخش افقی
+                    cube.style.transform = `rotateX(${-20 + rotX}deg) rotateY(${rotY}deg)`;
+                }
+            });
+
+            // ۳. هندل کردن خروج موس از پنجره (بازگشت به انیمیشن اولیه)
+            document.addEventListener('mouseleave', () => {
+                if (cube) {
+                    cube.style.transform = '';
+                }
+            });
+
+            console.log('✨ صفحه تقدیر و تشکر سه‌بعدی با موفقیت بارگذاری شد!');
+        })();
+    </script>
+</body>
+</html>

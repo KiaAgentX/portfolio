@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>جلسه سیزدهم: ذخیره مطالبات مشکوک‌الوصول | کیانوش کریمی</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: rgba(24, 24, 24, 0.75);
+            --surface2: rgba(40, 40, 40, 0.5);
+            --text: #f0f0f0;
+            --text2: #c0c0c0;
+            --primary: #fbbf24;
+            --primary-light: #fde68a;
+            --primary-dark: #92400e;
+            --accent: #2dd4bf;
+            --accent-light: rgba(45, 212, 191, 0.15);
+            --danger: #ef4444;
+            --danger-light: rgba(239, 68, 68, 0.15);
+            --success: #22c55e;
+            --success-light: rgba(34, 197, 94, 0.15);
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+            --shadow: 0 4px 20px rgba(0,0,0,0.5);
+            --shadow-lg: 0 12px 30px rgba(0,0,0,0.6);
+            --radius-sm: 10px;
+            --radius: 16px;
+            --radius-lg: 24px;
+            --transition: 0.2s ease;
+            direction: rtl;
+            font-size: 15px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Vazirmatn', 'B Nazanin', 'Tahoma', sans-serif;
+            background: #0a0a0a;
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0.55; }
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1.4); opacity: 0; }
+        }
+        .drift-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; animation: drift 12s ease-in-out infinite;
+            opacity: 0.2;
+            background: radial-gradient(circle at 30% 40%, #fbbf24 0%, transparent 40%),
+                radial-gradient(circle at 70% 60%, #22c55e 0%, transparent 40%),
+                radial-gradient(circle at 50% 20%, #ef4444 0%, transparent 35%);
+        }
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(18px); }
+            100% { transform: translateX(0); }
+        }
+        .container { position: relative; z-index: 1; max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 14px; }
+        .header {
+            background: rgba(24, 24, 24, 0.7); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg);
+            padding: 20px 18px 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .header::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #fbbf24, #22c55e, #fbbf24);
+            background-size: 200% 100%; animation: headerBar 3s linear infinite;
+        }
+        @keyframes headerBar {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .session-badge {
+            display: inline-block; background: rgba(251,191,36,0.2); color: #fbbf24;
+            padding: 4px 18px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+            margin-bottom: 8px; border: 1px solid rgba(251,191,36,0.3);
+        }
+        .glow-text {
+            font-size: 1.8rem; font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #22c55e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin: 6px 0; animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 6px rgba(251,191,36,0.4)); }
+            100% { filter: drop-shadow(0 0 16px rgba(34,197,94,0.7)); }
+        }
+        .subtitle { font-size: 0.9rem; color: #c0c0c0; }
+        .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin-top: 8px; }
+        .toolbar button {
+            background: rgba(40,40,40,0.6); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15); color: #e0e0e0;
+            padding: 7px 16px; border-radius: 25px; cursor: pointer; font-family: inherit;
+            font-size: 0.85rem; font-weight: 500; transition: 0.2s; white-space: nowrap;
+        }
+        .toolbar button:active { transform: scale(0.96); background: #fbbf24; color: #000; border-color: #fbbf24; }
+        .card {
+            background: rgba(24, 24, 24, 0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius);
+            padding: 18px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.35); transition: 0.2s;
+        }
+        .card:hover { border-color: rgba(251,191,36,0.25); }
+        .card h2 {
+            font-size: 1.25rem; color: #fbbf24;
+            border-bottom: 2px solid rgba(251,191,36,0.2); padding-bottom: 8px; margin-bottom: 14px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .card h3 { font-size: 1.05rem; color: #2dd4bf; margin: 12px 0 6px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 500px) { .grid-2 { grid-template-columns: 1fr; } }
+        .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 12px 0; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.08); }
+        table { width: 100%; min-width: 450px; border-collapse: collapse; background: rgba(20,20,20,0.5); font-size: 0.85rem; }
+        th { background: #fbbf24; color: #000; padding: 10px 6px; font-weight: 700; text-align: center; font-size: 0.8rem; white-space: nowrap; }
+        td { padding: 9px 6px; border-bottom: 1px solid rgba(255,255,255,0.06); text-align: center; }
+        .highlight { background: rgba(251,191,36,0.18); font-weight: 700; }
+        .sim-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0; padding: 12px; background: rgba(40,40,40,0.4); border-radius: var(--radius-sm); font-size: 0.9rem; }
+        .sim-row label { font-weight: 600; white-space: nowrap; min-width: 70px; }
+        .sim-row input, .sim-row select {
+            flex: 1; min-width: 100px; padding: 10px 12px; border-radius: var(--radius-sm);
+            border: 2px solid rgba(255,255,255,0.15); font-family: inherit; font-size: 0.9rem;
+            background: #1a1a1a; color: #f0f0f0; transition: 0.2s;
+        }
+        .sim-row input:focus, .sim-row select:focus { border-color: #fbbf24; outline: none; box-shadow: 0 0 0 3px rgba(251,191,36,0.15); }
+        .btn {
+            display: inline-block; padding: 10px 22px; border-radius: 25px; border: none;
+            font-family: inherit; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: 0.2s; text-align: center;
+        }
+        .btn-primary { background: #fbbf24; color: #000; }
+        .btn-primary:active { background: #f59e0b; transform: scale(0.96); }
+        .btn-outline { background: transparent; border: 2px solid #fbbf24; color: #fbbf24; }
+        .result-box { text-align: center; padding: 14px; border-radius: var(--radius-sm); margin-top: 10px; font-weight: 700; font-size: 0.95rem; }
+        .result-box.success { background: var(--success-light); color: var(--success); border: 1px solid var(--success); }
+        .result-box.error { background: var(--danger-light); color: var(--danger); border: 1px solid var(--danger); }
+        .result-box.info { background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); }
+        .quiz-block { margin: 10px 0; padding: 14px; background: rgba(40,40,40,0.4); border-radius: var(--radius-sm); }
+        .quiz-block strong { display: block; margin-bottom: 8px; }
+        .quiz-opt {
+            display: block; width: 100%; text-align: right; padding: 10px 14px; margin: 5px 0;
+            background: rgba(20,20,20,0.6); border: 2px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm);
+            cursor: pointer; font-family: inherit; font-size: 0.9rem; transition: 0.2s; color: #e0e0e0;
+        }
+        .quiz-opt.correct { background: rgba(34,197,94,0.2); border-color: #22c55e; color: #22c55e; font-weight: 700; }
+        .quiz-opt.wrong { background: rgba(239,68,68,0.2); border-color: #ef4444; color: #ef4444; }
+        .quiz-opt:disabled { pointer-events: none; opacity: 0.85; }
+        .progress-bar { height: 6px; background: rgba(40,40,40,0.6); border-radius: 6px; overflow: hidden; margin: 4px 0 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #fbbf24, #22c55e); width: 0%; transition: width 0.4s; border-radius: 6px; }
+        details { margin: 8px 0; }
+        summary {
+            font-weight: 700; cursor: pointer; padding: 8px 0; color: #fbbf24;
+            border-bottom: 1px dashed rgba(251,191,36,0.2); outline: none;
+        }
+        .footer { text-align: center; font-size: 0.75rem; color: #666; padding: 10px; }
+        ::-webkit-scrollbar { height: 4px; width: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particlesContainer"></div>
+    <div class="drift-layer"></div>
+
+    <div class="container">
+        <div class="header">
+            <span class="session-badge">🛡️ جلسه ۱۳ از ۲۴</span>
+            <h1 class="glow-text">ذخیره مطالبات مشکوک‌الوصول</h1>
+            <p class="subtitle">اصل محافظه‌کاری در عمل — شناسایی زیان قبل از وقوع</p>
+            <div class="toolbar">
+                <button id="printBtn">🖨️ چاپ</button>
+                <button id="resetBtn">🔄 بازنشانی</button>
+                <span style="font-size:0.75rem;color:#c0c0c0;">👤 کیانوش کریمی</span>
+            </div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+        <!-- ۱. مفهوم -->
+        <div class="card">
+            <h2>📖 ذخیره مطالبات مشکوک‌الوصول چیست؟</h2>
+            <p>وقتی شرکتی به مشتریان خود <strong>نسیه</strong> می‌فروشد، همیشه این احتمال وجود دارد که بخشی از این مطالبات <strong>وصول نشود</strong>. طبق اصل محافظه‌کاری، باید این زیان احتمالی <strong>پیش از وقوع</strong> شناسایی شود. به همین منظور، حسابی به نام <strong>ذخیره مطالبات مشکوک‌الوصول</strong> (Allowance for Doubtful Accounts) ایجاد می‌شود که یک دارایی کاهنده است و از حساب‌های دریافتنی کسر می‌گردد.</p>
+            <details>
+                <summary>➕ تفاوت هزینه و ذخیره</summary>
+                <p style="margin-top:8px;"><strong>هزینه</strong> واقعی و قطعی است (مثلاً حقوق). <strong>ذخیره</strong> یک برآورد محافظه‌کارانه برای یک رویداد احتمالی است. هر دو سود را کاهش می‌دهند.</p>
+            </details>
+        </div>
+
+        <!-- ۲. دو روش محاسبه -->
+        <div class="card">
+            <h2>🧮 دو روش اصلی محاسبه ذخیره</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>📊 روش درصدی از فروش</h3>
+                    <p>بر اساس <strong>فروش نسیهٔ دوره</strong> (یا کل فروش). تمرکز بر <strong>صورت سود و زیان</strong> (تطابق هزینه با درآمد).</p>
+                    <p style="color:var(--accent);">🔹 ذخیره = فروش نسیه × درصد برآوردی</p>
+                </div>
+                <div>
+                    <h3>📋 روش درصدی از حساب‌های دریافتنی</h3>
+                    <p>بر اساس <strong>مانده پایان دوره حساب‌های دریافتنی</strong>. تمرکز بر <strong>ترازنامه</strong> (ارائه ارزش خالص دارایی).</p>
+                    <p style="color:var(--accent);">🔹 ذخیره = حساب‌های دریافتنی × درصد برآوردی</p>
+                </div>
+            </div>
+            <details>
+                <summary>➕ کدام روش بهتر است؟</summary>
+                <p style="margin-top:8px;">روش درصدی از فروش برای <strong>تطابق بهتر درآمد و هزینه</strong> مناسب‌تر است. روش درصدی از حساب‌های دریافتنی، <strong>ترازنامه را واقعی‌تر</strong> نشان می‌دهد. در عمل، ترکیب هر دو مرسوم است.</p>
+            </details>
+        </div>
+
+        <!-- ۳. مثال جامع -->
+        <div class="card">
+            <h2>🧾 مثال جامع — شرکت «مهر»</h2>
+            <p>اطلاعات پایان سال:</p>
+            <ul style="padding-right:16px;font-size:0.9rem;color:#c0c0c0;">
+                <li>فروش نسیه: ۵۰۰,۰۰۰,۰۰۰</li>
+                <li>حساب‌های دریافتنی پایان دوره: ۱۲۰,۰۰۰,۰۰۰</li>
+                <li>درصد برآوردی ذخیره: ۳٪</li>
+                <li>مانده قبلی ذخیره: ۲,۰۰۰,۰۰۰ (بستانکار)</li>
+            </ul>
+            <details>
+                <summary>🔍 محاسبه و ثبت</summary>
+                <div style="margin-top:10px;">
+                    <p><strong>روش درصدی از فروش:</strong> ۵۰۰ × ۳٪ = <strong>۱۵ میلیون</strong> (هزینه ذخیرهٔ دوره)</p>
+                    <p><strong>روش درصدی از دریافتنی:</strong> ۱۲۰ × ۳٪ = <strong>۳.۶ میلیون</strong> (مانده مورد نیاز ذخیره) → هزینهٔ دوره = ۳.۶ − ۲ = <strong>۱.۶ میلیون</strong></p>
+                    <p><strong>ثبت تعدیلی (روش اول):</strong></p>
+                    <div class="table-wrapper"><table><tr><td>هزینه ذخیره مطالبات</td><td>۱۵,۰۰۰,۰۰۰</td><td></td></tr><tr><td>ذخیره مطالبات مشکوک</td><td></td><td>۱۵,۰۰۰,۰۰۰</td></tr></table></div>
+                </div>
+            </details>
+        </div>
+
+        <!-- ۴. شبیه‌ساز -->
+        <div class="card">
+            <h2>🕹️ شبیه‌ساز ذخیره مطالبات</h2>
+            <p style="font-size:0.85rem;">اطلاعات را وارد کنید. در روش دوم، اگر ذخیرهٔ قبلی دارید، هزینهٔ تعدیلی محاسبه می‌شود:</p>
+            <div class="sim-row"><label>💰 فروش نسیه:</label><input type="number" id="simSales" value="500000000"></div>
+            <div class="sim-row"><label>📋 دریافتنی پایان دوره:</label><input type="number" id="simAR" value="120000000"></div>
+            <div class="sim-row"><label>📊 درصد ذخیره (%):</label><input type="number" id="simPct" value="3"></div>
+            <div class="sim-row"><label>🗂️ مانده قبلی ذخیره:</label><input type="number" id="simOldReserve" value="2000000"></div>
+            <button class="btn btn-primary" id="simCalc" style="width:100%;margin-top:10px;">⚡ محاسبه</button>
+            <div id="simResult" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- ۵. تمرین -->
+        <div class="card">
+            <h2>✍️ تمرین عملی</h2>
+            <details>
+                <summary>📌 تمرین — شرکت «افق»</summary>
+                <div style="margin-top:8px;">
+                    <p>فروش نسیه: ۳۰۰,۰۰۰,۰۰۰ | دریافتنی پایان دوره: ۸۰,۰۰۰,۰۰۰ | درصد ذخیره: ۴٪ | مانده قبلی ذخیره: ۱,۰۰۰,۰۰۰. هزینه ذخیره را با هر دو روش محاسبه کنید.</p>
+                    <button class="btn btn-outline show-answer-btn">🔍 نمایش پاسخ</button>
+                    <div class="answer-content" style="display:none;margin-top:8px;">
+                        <p><strong>روش فروش:</strong> ۳۰۰ × ۴٪ = ۱۲,۰۰۰,۰۰۰</p>
+                        <p><strong>روش دریافتنی:</strong> ۸۰ × ۴٪ = ۳,۲۰۰,۰۰۰ (نیاز) ← هزینه = ۳.۲ − ۱ = ۲,۲۰۰,۰۰۰</p>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <!-- ۶. آزمونک -->
+        <div class="card">
+            <h2>🧠 آزمونک جلسه سیزدهم</h2>
+            <div id="quizContainer"></div>
+            <div id="quizScore" style="text-align:center;font-weight:700;margin-top:8px;"></div>
+        </div>
+
+        <div class="card">
+            <h2>📌 جمع‌بندی</h2>
+            <ul style="padding-right:18px;font-size:0.9rem;">
+                <li>ذخیره مطالبات یک <strong>برآورد محافظه‌کارانه</strong> برای مطالبات وصول‌نشدنی است.</li>
+                <li>دو روش اصلی: <strong>درصدی از فروش</strong> (تطابق هزینه با درآمد) و <strong>درصدی از دریافتنی</strong> (واقعی‌سازی ترازنامه).</li>
+                <li>ثبت: هزینه ذخیره (بدهکار) / ذخیره مطالبات (بستانکار).</li>
+                <li>ذخیره، یک دارایی کاهنده است و از حساب‌های دریافتنی کسر می‌شود تا خالص ارزش بازیافتنی نشان داده شود.</li>
+            </ul>
+        </div>
+
+        <div class="card" style="text-align:center;">
+            <p>🔜 جلسه چهاردهم: <strong>حسابداری حقوق و دستمزد</strong> — بیمه، مالیات تکلیفی و ثبت‌های آن</p>
+        </div>
+        <div class="footer">✍️ تهیه و تنظیم: کیانوش کریمی | 📅 ۱۴۰۴</div>
+    </div>
+
+    <script>
+        const pc = document.getElementById('particlesContainer');
+        for (let i = 0; i < 50; i++) {
+            const p = document.createElement('div'); p.classList.add('particle');
+            const s = Math.random() * 5 + 2;
+            p.style.width = s + 'px'; p.style.height = s + 'px';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = Math.random() * 18 + 10 + 's';
+            p.style.animationDelay = Math.random() * 12 + 's';
+            const colors = ['#fbbf24', '#22c55e', '#ef4444', '#2dd4bf', '#f59e0b'];
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            p.style.boxShadow = `0 0 ${s+3}px ${p.style.background}`;
+            pc.appendChild(p);
+        }
+
+        const pf = document.getElementById('progressFill');
+        let done = 0; const total = 3;
+        function upd() { pf.style.width = Math.round((done/total)*100) + '%'; }
+
+        document.getElementById('printBtn').addEventListener('click', () => window.print());
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            document.querySelectorAll('input[type=number]').forEach(i => { if(i.id.startsWith('sim')) i.value = i.defaultValue; });
+            document.getElementById('simResult').innerHTML = '';
+            document.querySelectorAll('.answer-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('correct','wrong'));
+            document.getElementById('quizScore').innerHTML = '';
+            done = 0; upd(); window.scrollTo({top:0,behavior:'smooth'});
+        });
+
+        // شبیه‌ساز ذخیره
+        document.getElementById('simCalc').addEventListener('click', () => {
+            const sales = parseFloat(document.getElementById('simSales').value) || 0;
+            const ar = parseFloat(document.getElementById('simAR').value) || 0;
+            const pct = parseFloat(document.getElementById('simPct').value) || 0;
+            const oldReserve = parseFloat(document.getElementById('simOldReserve').value) || 0;
+
+            const bySales = sales * (pct / 100);
+            const needed = ar * (pct / 100);
+            const byAR = Math.max(0, needed - oldReserve);
+
+            const res = document.getElementById('simResult');
+            res.innerHTML = `
+                <div class="table-wrapper"><table>
+                    <tr><th>روش</th><th>هزینه ذخیرهٔ دوره</th><th>ذخیرهٔ پایان دوره</th></tr>
+                    <tr><td>درصدی از فروش</td><td>${bySales.toLocaleString()}</td><td>${(oldReserve + bySales).toLocaleString()}</td></tr>
+                    <tr><td>درصدی از دریافتنی</td><td>${byAR.toLocaleString()}</td><td>${needed.toLocaleString()}</td></tr>
+                </table></div>
+                <div class="result-box info">📊 ذخیرهٔ مورد نیاز (درصد از دریافتنی): <strong>${needed.toLocaleString()} تومان</strong></div>
+            `;
+            if (!window._simDone) { window._simDone = true; done++; upd(); }
+        });
+
+        // تمرین
+        document.querySelectorAll('.show-answer-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const ans = this.nextElementSibling;
+                if (ans.style.display === 'none' || !ans.style.display) { ans.style.display = 'block'; this.textContent = '🔒 مخفی‌کردن پاسخ'; if (!this.dataset.marked) { this.dataset.marked = '1'; done++; upd(); } }
+                else { ans.style.display = 'none'; this.textContent = '🔍 نمایش پاسخ'; }
+            });
+        });
+
+        // آزمونک
+        const quizData = [
+            { q: 'ذخیره مطالبات مشکوک‌الوصول چه نوع حسابی است؟', opts: ['بدهی', 'هزینه', 'دارایی کاهنده', 'سرمایه'], ans: 2 },
+            { q: 'در روش درصدی از فروش، مبنای محاسبه کدام است؟', opts: ['دریافتنی پایان دوره', 'فروش نسیه', 'کل دارایی', 'سود خالص'], ans: 1 },
+            { q: 'اگر ذخیرهٔ قبلی ۵ و ذخیرهٔ مورد نیاز ۸ باشد، هزینهٔ تعدیلی چقدر است؟', opts: ['۵', '۸', '۳', '۱۳'], ans: 2 },
+            { q: 'کدام اصل حسابداری توجیه‌کنندهٔ ایجاد ذخیره است؟', opts: ['تطابق', 'محافظه‌کاری', 'بهای تمام‌شده', 'افشای کامل'], ans: 1 },
+        ];
+        const qc = document.getElementById('quizContainer');
+        let qa = 0, qco = 0, qf = false;
+        quizData.forEach((q, idx) => {
+            const block = document.createElement('div'); block.className = 'quiz-block';
+            block.innerHTML = `<strong>${idx+1}. ${q.q}</strong>`;
+            q.opts.forEach((opt, optIdx) => {
+                const btn = document.createElement('button'); btn.className = 'quiz-opt'; btn.textContent = opt;
+                btn.addEventListener('click', () => {
+                    if (btn.disabled) return;
+                    const all = block.querySelectorAll('.quiz-opt'); all.forEach(b => b.disabled = true);
+                    if (optIdx === q.ans) { btn.classList.add('correct'); qco++; }
+                    else { btn.classList.add('wrong'); all[q.ans].classList.add('correct'); }
+                    qa++;
+                    if (qa === quizData.length && !qf) { qf = true; document.getElementById('quizScore').innerHTML = `🎯 نتیجه: ${qco} از ${quizData.length}`; done++; upd(); }
+                });
+                block.appendChild(btn);
+            });
+            qc.appendChild(block);
+        });
+    </script>
+</body>
+</html>

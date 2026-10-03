@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>جلسه بیست‌ودوم: حسابداری پیمانکاری | کیانوش کریمی</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: rgba(24, 24, 24, 0.75);
+            --surface2: rgba(40, 40, 40, 0.5);
+            --text: #f0f0f0;
+            --text2: #c0c0c0;
+            --primary: #fbbf24;
+            --primary-light: #fde68a;
+            --primary-dark: #92400e;
+            --accent: #2dd4bf;
+            --accent-light: rgba(45, 212, 191, 0.15);
+            --danger: #ef4444;
+            --danger-light: rgba(239, 68, 68, 0.15);
+            --success: #22c55e;
+            --success-light: rgba(34, 197, 94, 0.15);
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+            --shadow: 0 4px 20px rgba(0,0,0,0.5);
+            --shadow-lg: 0 12px 30px rgba(0,0,0,0.6);
+            --radius-sm: 10px;
+            --radius: 16px;
+            --radius-lg: 24px;
+            --transition: 0.2s ease;
+            direction: rtl;
+            font-size: 15px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Vazirmatn', 'B Nazanin', 'Tahoma', sans-serif;
+            background: #0a0a0a;
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0.55; }
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1.4); opacity: 0; }
+        }
+        .drift-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; animation: drift 12s ease-in-out infinite;
+            opacity: 0.2;
+            background: radial-gradient(circle at 30% 40%, #fbbf24 0%, transparent 40%),
+                radial-gradient(circle at 70% 60%, #22c55e 0%, transparent 40%),
+                radial-gradient(circle at 50% 20%, #ef4444 0%, transparent 35%);
+        }
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(18px); }
+            100% { transform: translateX(0); }
+        }
+        .container { position: relative; z-index: 1; max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 14px; }
+        .header {
+            background: rgba(24, 24, 24, 0.7); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg);
+            padding: 20px 18px 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .header::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #fbbf24, #22c55e, #fbbf24);
+            background-size: 200% 100%; animation: headerBar 3s linear infinite;
+        }
+        @keyframes headerBar {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .session-badge {
+            display: inline-block; background: rgba(251,191,36,0.2); color: #fbbf24;
+            padding: 4px 18px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+            margin-bottom: 8px; border: 1px solid rgba(251,191,36,0.3);
+        }
+        .glow-text {
+            font-size: 1.8rem; font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #22c55e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin: 6px 0; animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 6px rgba(251,191,36,0.4)); }
+            100% { filter: drop-shadow(0 0 16px rgba(34,197,94,0.7)); }
+        }
+        .subtitle { font-size: 0.9rem; color: #c0c0c0; }
+        .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin-top: 8px; }
+        .toolbar button {
+            background: rgba(40,40,40,0.6); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15); color: #e0e0e0;
+            padding: 7px 16px; border-radius: 25px; cursor: pointer; font-family: inherit;
+            font-size: 0.85rem; font-weight: 500; transition: 0.2s; white-space: nowrap;
+        }
+        .toolbar button:active { transform: scale(0.96); background: #fbbf24; color: #000; border-color: #fbbf24; }
+        .card {
+            background: rgba(24, 24, 24, 0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius);
+            padding: 18px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.35); transition: 0.2s;
+        }
+        .card:hover { border-color: rgba(251,191,36,0.25); }
+        .card h2 {
+            font-size: 1.25rem; color: #fbbf24;
+            border-bottom: 2px solid rgba(251,191,36,0.2); padding-bottom: 8px; margin-bottom: 14px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .card h3 { font-size: 1.05rem; color: #2dd4bf; margin: 12px 0 6px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 500px) { .grid-2 { grid-template-columns: 1fr; } }
+        .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 12px 0; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.08); }
+        table { width: 100%; min-width: 450px; border-collapse: collapse; background: rgba(20,20,20,0.5); font-size: 0.85rem; }
+        th { background: #fbbf24; color: #000; padding: 10px 6px; font-weight: 700; text-align: center; font-size: 0.8rem; white-space: nowrap; }
+        td { padding: 9px 6px; border-bottom: 1px solid rgba(255,255,255,0.06); text-align: center; }
+        .highlight { background: rgba(251,191,36,0.18); font-weight: 700; }
+        .sim-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0; padding: 12px; background: rgba(40,40,40,0.4); border-radius: var(--radius-sm); font-size: 0.9rem; }
+        .sim-row label { font-weight: 600; white-space: nowrap; min-width: 70px; }
+        .sim-row input {
+            flex: 1; min-width: 100px; padding: 10px 12px; border-radius: var(--radius-sm);
+            border: 2px solid rgba(255,255,255,0.15); font-family: inherit; font-size: 0.9rem;
+            background: #1a1a1a; color: #f0f0f0; transition: 0.2s;
+        }
+        .sim-row input:focus { border-color: #fbbf24; outline: none; box-shadow: 0 0 0 3px rgba(251,191,36,0.15); }
+        .btn {
+            display: inline-block; padding: 10px 22px; border-radius: 25px; border: none;
+            font-family: inherit; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: 0.2s; text-align: center;
+        }
+        .btn-primary { background: #fbbf24; color: #000; }
+        .btn-primary:active { background: #f59e0b; transform: scale(0.96); }
+        .btn-outline { background: transparent; border: 2px solid #fbbf24; color: #fbbf24; }
+        .result-box { text-align: center; padding: 14px; border-radius: var(--radius-sm); margin-top: 10px; font-weight: 700; font-size: 0.95rem; }
+        .result-box.success { background: var(--success-light); color: var(--success); border: 1px solid var(--success); }
+        .result-box.error { background: var(--danger-light); color: var(--danger); border: 1px solid var(--danger); }
+        .result-box.info { background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); }
+        .quiz-block { margin: 10px 0; padding: 14px; background: rgba(40,40,40,0.4); border-radius: var(--radius-sm); }
+        .quiz-block strong { display: block; margin-bottom: 8px; }
+        .quiz-opt {
+            display: block; width: 100%; text-align: right; padding: 10px 14px; margin: 5px 0;
+            background: rgba(20,20,20,0.6); border: 2px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm);
+            cursor: pointer; font-family: inherit; font-size: 0.9rem; transition: 0.2s; color: #e0e0e0;
+        }
+        .quiz-opt.correct { background: rgba(34,197,94,0.2); border-color: #22c55e; color: #22c55e; font-weight: 700; }
+        .quiz-opt.wrong { background: rgba(239,68,68,0.2); border-color: #ef4444; color: #ef4444; }
+        .quiz-opt:disabled { pointer-events: none; opacity: 0.85; }
+        .progress-bar { height: 6px; background: rgba(40,40,40,0.6); border-radius: 6px; overflow: hidden; margin: 4px 0 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #fbbf24, #22c55e); width: 0%; transition: width 0.4s; border-radius: 6px; }
+        details { margin: 8px 0; }
+        summary {
+            font-weight: 700; cursor: pointer; padding: 8px 0; color: #fbbf24;
+            border-bottom: 1px dashed rgba(251,191,36,0.2); outline: none;
+        }
+        .footer { text-align: center; font-size: 0.75rem; color: #666; padding: 10px; }
+        ::-webkit-scrollbar { height: 4px; width: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particlesContainer"></div>
+    <div class="drift-layer"></div>
+
+    <div class="container">
+        <div class="header">
+            <span class="session-badge">🏗️ جلسه ۲۲ از ۲۴</span>
+            <h1 class="glow-text">حسابداری پیمانکاری</h1>
+            <p class="subtitle">درصد پیشرفت کار، ذخیره ضرایب و شناسایی سود در پروژه‌های بلندمدت</p>
+            <div class="toolbar">
+                <button id="printBtn">🖨️ چاپ</button>
+                <button id="resetBtn">🔄 بازنشانی</button>
+                <span style="font-size:0.75rem;color:#c0c0c0;">👤 کیانوش کریمی</span>
+            </div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+        <!-- ۱. مفهوم حسابداری پیمانکاری -->
+        <div class="card">
+            <h2>📖 حسابداری پیمانکاری چیست؟</h2>
+            <p>حسابداری پیمانکاری (Contract Accounting) برای <strong>پروژه‌های بلندمدت</strong> (سدسازی، ساختمان‌سازی، کشتی‌سازی، نرم‌افزارهای بزرگ) به کار می‌رود. ویژگی اصلی این پروژه‌ها این است که <strong>شروع و پایان آن‌ها در دوره‌های مالی مختلف</strong> قرار می‌گیرد. بنابراین نمی‌توان تا پایان کامل پروژه برای شناسایی سود صبر کرد. در عوض، بخشی از سود در هر دوره و بر اساس <strong>میزان پیشرفت کار</strong> شناسایی می‌شود.</p>
+            <details>
+                <summary>➕ استاندارد حسابداری ایران</summary>
+                <p style="margin-top:8px;">استاندارد شماره ۹ ایران (و IAS 11 بین‌المللی که اکنون با IFRS 15 جایگزین شده) به حسابداری پیمان‌های بلندمدت می‌پردازد. دو روش اصلی: <strong>درصد پیشرفت کار</strong> و <strong>کار تکمیل‌شده</strong>.</p>
+            </details>
+        </div>
+
+        <!-- ۲. روش درصد پیشرفت کار -->
+        <div class="card">
+            <h2>📊 روش درصد پیشرفت کار (Percentage of Completion)</h2>
+            <p>در این روش، <strong>درآمد و سود</strong> پیمان به تناسب پیشرفت فیزیکی پروژه در هر دوره شناسایی می‌شود. درصد پیشرفت معمولاً از رابطه زیر به دست می‌آید:</p>
+            <div style="text-align:center;margin:15px 0;font-size:1.1rem;font-weight:900;color:#fbbf24;">
+                درصد پیشرفت = (هزینه‌های انجام‌شده تا امروز) ÷ (کل هزینه‌های برآوردی پروژه)
+            </div>
+            <p>سپس:</p>
+            <div style="text-align:center;font-size:1rem;color:var(--accent);">
+                درآمد شناسایی‌شده = درصد پیشرفت × مبلغ کل پیمان<br>
+                سود ناخالص دوره = درآمد شناسایی‌شده − هزینه‌های واقعی دوره
+            </div>
+        </div>
+
+        <!-- ۳. ذخیره ضرایب (پیش‌بینی زیان) -->
+        <div class="card">
+            <h2>🛡️ ذخیره ضرایب (Provision for Foreseeable Losses)</h2>
+            <p>طبق <strong>اصل محافظه‌کاری</strong>، اگر در هر مرحله مشخص شود که کل پروژه <strong>زیان‌ده</strong> خواهد بود (یعنی کل هزینه‌های برآوردی > مبلغ پیمان)، باید <strong>بلافاصله</strong> کل زیان مورد انتظار شناسایی شود، حتی اگر پروژه هنوز در مراحل اولیه باشد. این کار از طریق <strong>ذخیره ضرایب</strong> انجام می‌شود.</p>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>شرایط</th><th>نحوه شناسایی</th></tr></thead>
+                    <tbody>
+                        <tr><td>پروژه سودده (کل هزینه < مبلغ پیمان)</td><td>شناسایی تدریجی سود بر اساس درصد پیشرفت</td></tr>
+                        <tr><td>پروژه زیان‌ده (کل هزینه > مبلغ پیمان)</td><td>شناسایی <strong>کل زیان</strong> در همان دوره از طریق ذخیره</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size:0.9rem;color:var(--danger);">🔹 ثبت ذخیره ضرایب: <strong>هزینه ذخیره ضرایب (بد) / ذخیره ضرایب (بس)</strong></p>
+        </div>
+
+        <!-- ۴. مثال جامع -->
+        <div class="card">
+            <h2>🧾 مثال جامع — شرکت «عمران»</h2>
+            <p>اطلاعات یک پروژه پل‌سازی در سال اول:</p>
+            <ul style="padding-right:16px;font-size:0.9rem;color:#c0c0c0;">
+                <li>مبلغ پیمان: ۱۰,۰۰۰,۰۰۰,۰۰۰ تومان</li>
+                <li>کل هزینه‌های برآوردی: ۸,۰۰۰,۰۰۰,۰۰۰ تومان</li>
+                <li>هزینه‌های واقعی سال اول: ۲,۰۰۰,۰۰۰,۰۰۰ تومان</li>
+            </ul>
+            <details>
+                <summary>🔍 محاسبه درآمد و سود سال اول</summary>
+                <div style="margin-top:10px;">
+                    <p><strong>درصد پیشرفت:</strong> ۲,۰۰۰ ÷ ۸,۰۰۰ = <strong>۲۵٪</strong></p>
+                    <p><strong>درآمد شناسایی‌شده:</strong> ۲۵٪ × ۱۰,۰۰۰ = <strong>۲,۵۰۰,۰۰۰,۰۰۰ تومان</strong></p>
+                    <p><strong>سود ناخالص شناسایی‌شده:</strong> ۲,۵۰۰ − ۲,۰۰۰ = <strong>۵۰۰,۰۰۰,۰۰۰ تومان</strong></p>
+                    <p style="color:var(--accent);">✅ پروژه سودده است (۱۰,۰۰۰ > ۸,۰۰۰) ← سود به تناسب ۲۵٪ شناسایی می‌شود.</p>
+                </div>
+            </details>
+            <details>
+                <summary>🔍 اگر برآورد هزینه به ۱۱,۰۰۰ افزایش یابد (زیان‌ده)</summary>
+                <div style="margin-top:10px;">
+                    <p>زیان کل = ۱۱,۰۰۰ − ۱۰,۰۰۰ = <strong>۱,۰۰۰,۰۰۰,۰۰۰ تومان</strong></p>
+                    <p>درصد پیشرفت همچنان ۲۵٪ است، اما اکنون باید <strong>کل زیان</strong> شناسایی شود:</p>
+                    <p><strong>ثبت:</strong> هزینه ذخیره ضرایب ۱,۰۰۰ (بد) / ذخیره ضرایب ۱,۰۰۰ (بس)</p>
+                </div>
+            </details>
+        </div>
+
+        <!-- ۵. شبیه‌ساز -->
+        <div class="card">
+            <h2>🕹️ شبیه‌ساز پیمانکاری</h2>
+            <p style="font-size:0.85rem;">اطلاعات پروژه را وارد کنید تا درآمد، سود (یا زیان) و ذخیره ضرایب محاسبه شود:</p>
+            <div class="sim-row"><label>💰 مبلغ پیمان:</label><input type="number" id="simContract" value="10000000000"></div>
+            <div class="sim-row"><label>📊 کل هزینه برآوردی:</label><input type="number" id="simTotalCost" value="8000000000"></div>
+            <div class="sim-row"><label>🧾 هزینه‌های واقعی تا امروز:</label><input type="number" id="simActualCost" value="2000000000"></div>
+            <button class="btn btn-primary" id="simCalc" style="width:100%;margin-top:10px;">⚡ محاسبه</button>
+            <div id="simResult" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- ۶. تمرین -->
+        <div class="card">
+            <h2>✍️ تمرین عملی</h2>
+            <details>
+                <summary>📌 تمرین — پروژه «پتروشیمی»</summary>
+                <div style="margin-top:8px;">
+                    <p>مبلغ پیمان: ۵۰ میلیارد | برآورد کل هزینه: ۴۵ میلیارد | هزینه واقعی تا پایان سال اول: ۹ میلیارد. مطلوب: درصد پیشرفت، درآمد شناسایی‌شده، سود دوره.</p>
+                    <button class="btn btn-outline show-answer-btn">🔍 نمایش پاسخ</button>
+                    <div class="answer-content" style="display:none;margin-top:8px;">
+                        <p>درصد پیشرفت = ۹ ÷ ۴۵ = <strong>۲۰٪</strong></p>
+                        <p>درآمد = ۲۰٪ × ۵۰ = <strong>۱۰ میلیارد</strong></p>
+                        <p>سود = ۱۰ − ۹ = <strong>۱ میلیارد تومان</strong></p>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <!-- ۷. آزمونک -->
+        <div class="card">
+            <h2>🧠 آزمونک جلسه بیست‌ودوم</h2>
+            <div id="quizContainer"></div>
+            <div id="quizScore" style="text-align:center;font-weight:700;margin-top:8px;"></div>
+        </div>
+
+        <div class="card">
+            <h2>📌 جمع‌بندی</h2>
+            <ul style="padding-right:18px;font-size:0.9rem;">
+                <li>حسابداری پیمانکاری برای <strong>پروژه‌های بلندمدت</strong> به کار می‌رود.</li>
+                <li>روش <strong>درصد پیشرفت کار</strong>: سود بر اساس نسبت هزینه‌های واقعی به کل هزینه برآوردی شناسایی می‌شود.</li>
+                <li>اگر پروژه <strong>زیان‌ده</strong> پیش‌بینی شود، باید کل زیان فوراً از طریق <strong>ذخیره ضرایب</strong> شناسایی گردد.</li>
+                <li>ثبت ذخیره: <strong>هزینه ذخیره ضرایب (بد) / ذخیره ضرایب (بس)</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="card" style="text-align:center;">
+            <p>🔜 جلسه بیست‌وسوم: <strong>گزارشگری مالی بین‌المللی (IFRS)</strong> — تفاوت‌ها با استانداردهای ایران</p>
+        </div>
+        <div class="footer">✍️ تهیه و تنظیم: کیانوش کریمی | 📅 ۱۴۰۴</div>
+    </div>
+
+    <script>
+        const pc = document.getElementById('particlesContainer');
+        for (let i = 0; i < 50; i++) {
+            const p = document.createElement('div'); p.classList.add('particle');
+            const s = Math.random() * 5 + 2;
+            p.style.width = s + 'px'; p.style.height = s + 'px';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = Math.random() * 18 + 10 + 's';
+            p.style.animationDelay = Math.random() * 12 + 's';
+            const colors = ['#fbbf24', '#22c55e', '#ef4444', '#2dd4bf', '#f59e0b'];
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            p.style.boxShadow = '0 0 ' + (s+3) + 'px ' + p.style.background;
+            pc.appendChild(p);
+        }
+
+        const pf = document.getElementById('progressFill');
+        let done = 0; const total = 3;
+        function upd() { pf.style.width = Math.round((done/total)*100) + '%'; }
+
+        document.getElementById('printBtn').addEventListener('click', () => window.print());
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            document.querySelectorAll('input[type=number]').forEach(i => { if(i.id.startsWith('sim')) i.value = i.defaultValue; });
+            document.getElementById('simResult').innerHTML = '';
+            document.querySelectorAll('.answer-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('correct','wrong'));
+            document.getElementById('quizScore').innerHTML = '';
+            done = 0; upd(); window.scrollTo({top:0,behavior:'smooth'});
+        });
+
+        // شبیه‌ساز پیمانکاری
+        document.getElementById('simCalc').addEventListener('click', () => {
+            const contract = parseFloat(document.getElementById('simContract').value) || 0;
+            const totalCost = parseFloat(document.getElementById('simTotalCost').value) || 0;
+            const actualCost = parseFloat(document.getElementById('simActualCost').value) || 0;
+
+            const pct = totalCost > 0 ? (actualCost / totalCost) * 100 : 0;
+            const revenue = (pct / 100) * contract;
+            const grossProfit = revenue - actualCost;
+            const isProfitable = contract >= totalCost;
+            const totalLoss = isProfitable ? 0 : totalCost - contract;
+
+            const res = document.getElementById('simResult');
+            let html = `
+                <div class="table-wrapper"><table>
+                    <tr><td>درصد پیشرفت</td><td>${pct.toFixed(1)}٪</td></tr>
+                    <tr><td>درآمد شناسایی‌شده</td><td>${revenue.toLocaleString()} تومان</td></tr>
+                    <tr><td>سود ناخالص دوره</td><td>${grossProfit.toLocaleString()} تومان</td></tr>
+            `;
+
+            if (!isProfitable) {
+                html += `
+                    <tr class="highlight"><td colspan="2">⚠️ پروژه زیان‌ده — نیاز به ذخیره ضرایب</td></tr>
+                    <tr><td>زیان کل پروژه</td><td>${totalLoss.toLocaleString()} تومان</td></tr>
+                `;
+            }
+            html += '</table></div>';
+
+            html += `<div class="result-box ${isProfitable ? 'success' : 'error'}">`;
+            if (isProfitable) {
+                html += `✅ پروژه سودده است — سود به تناسب ${pct.toFixed(1)}٪ پیشرفت شناسایی شد.`;
+            } else {
+                html += `❌ پروژه زیان‌ده — باید بلافاصله کل زیان ${totalLoss.toLocaleString()} تومان از طریق ذخیره ضرایب شناسایی شود.`;
+            }
+            html += '</div>';
+
+            if (!isProfitable) {
+                html += `
+                    <div class="result-box info" style="margin-top:6px;">
+                        📋 <strong>ثبت ذخیره ضرایب:</strong><br>
+                        هزینه ذخیره ضرایب ${totalLoss.toLocaleString()} (بد)<br>
+                        &nbsp;&nbsp;&nbsp;ذخیره ضرایب ${totalLoss.toLocaleString()} (بس)
+                    </div>
+                `;
+            }
+
+            document.getElementById('simResult').innerHTML = html;
+            if (!window._simDone) { window._simDone = true; done++; upd(); }
+        });
+
+        document.querySelectorAll('.show-answer-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const ans = this.nextElementSibling;
+                if (ans.style.display === 'none' || !ans.style.display) { ans.style.display = 'block'; this.textContent = '🔒 مخفی‌کردن پاسخ'; if (!this.dataset.marked) { this.dataset.marked = '1'; done++; upd(); } }
+                else { ans.style.display = 'none'; this.textContent = '🔍 نمایش پاسخ'; }
+            });
+        });
+
+        const quizData = [
+            { q: 'کدام روش برای شناسایی سود پروژه‌های بلندمدت رایج است؟', opts: ['روش نقدی', 'روش تعهدی ساده', 'درصد پیشرفت کار', 'روش ثبت یکباره در پایان'], ans: 2 },
+            { q: 'فرمول درصد پیشرفت کار کدام است؟', opts: ['هزینه واقعی ÷ مبلغ پیمان', 'هزینه واقعی ÷ کل هزینه برآوردی', 'مبلغ پیمان ÷ هزینه واقعی', 'کل هزینه ÷ مبلغ پیمان'], ans: 1 },
+            { q: 'اگر پروژه‌ای زیان‌ده پیش‌بینی شود، چه باید کرد؟', opts: ['هیچ چیز', 'شناسایی تدریجی زیان', 'شناسایی کل زیان بلافاصله', 'توقف پروژه'], ans: 2 },
+            { q: 'ذخیره ضرایب در کدام طرف حساب ثبت می‌شود؟', opts: ['همیشه بدهکار', 'همیشه بستانکار', 'بدهکار در سود، بستانکار در زیان', 'ثبت نمی‌شود'], ans: 1 },
+        ];
+        const qc = document.getElementById('quizContainer');
+        let qa = 0, qco = 0, qf = false;
+        quizData.forEach((q, idx) => {
+            const block = document.createElement('div'); block.className = 'quiz-block';
+            block.innerHTML = '<strong>' + (idx+1) + '. ' + q.q + '</strong>';
+            q.opts.forEach((opt, optIdx) => {
+                const btn = document.createElement('button'); btn.className = 'quiz-opt'; btn.textContent = opt;
+                btn.addEventListener('click', () => {
+                    if (btn.disabled) return;
+                    const all = block.querySelectorAll('.quiz-opt'); all.forEach(b => b.disabled = true);
+                    if (optIdx === q.ans) { btn.classList.add('correct'); qco++; }
+                    else { btn.classList.add('wrong'); all[q.ans].classList.add('correct'); }
+                    qa++;
+                    if (qa === quizData.length && !qf) { qf = true; document.getElementById('quizScore').innerHTML = '🎯 نتیجه: ' + qco + ' از ' + quizData.length; done++; upd(); }
+                });
+                block.appendChild(btn);
+            });
+            qc.appendChild(block);
+        });
+    </script>
+</body>
+</html>

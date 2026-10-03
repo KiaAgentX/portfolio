@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>راهنمای جامع شروع کار | Accounting Suite v1.1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== RESET & BASE ===== */
+        :root {
+            --neon-green: #00ff88;
+            --neon-red: #ff2255;
+            --neon-white: #f0f0ff;
+            --dark-bg: #0a0a12;
+            --gold: #ffd700;
+            --card-bg: rgba(18, 18, 30, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --radius: 20px;
+            --font: 'Vazirmatn', Tahoma, sans-serif;
+            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font);
+            background: var(--dark-bg);
+            color: var(--neon-white);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.8;
+            direction: rtl;
+        }
+
+        /* ===== BACKGROUND ===== */
+        .bg-overlay {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle at 10% 20%, rgba(0, 247, 255, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(0, 255, 136, 0.04) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        /* ===== CONTAINER ===== */
+        .guide-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 255, 136, 0.05);
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1 { font-size: 2.8rem; font-weight: 900; margin-bottom: 0.5rem; text-align: center; }
+        h1 .green { color: var(--neon-green); text-shadow: 0 0 40px rgba(0,255,136,0.2); }
+        h1 .red { color: var(--neon-red); }
+        .sub-title { text-align: center; color: rgba(240,240,255,0.5); font-size: 1.1rem; margin-bottom: 2.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1.2rem; }
+
+        h2 { font-size: 1.8rem; font-weight: 900; margin-top: 2.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        h2 .icon { font-size: 1.8rem; }
+        h3 { font-size: 1.3rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.8rem; color: var(--gold); }
+
+        /* ===== CARDS & LISTS ===== */
+        .section-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: var(--radius);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            transition: var(--transition);
+        }
+        .section-card:hover { border-color: rgba(0, 255, 136, 0.15); transform: translateY(-3px); }
+
+        ul { list-style: none; padding-right: 1rem; }
+        ul li { position: relative; padding: 0.4rem 1.2rem 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        ul li::before { content: '▸'; position: absolute; right: 0; color: var(--neon-green); font-weight: 700; }
+        ul li:last-child { border-bottom: none; }
+
+        .highlight { color: var(--neon-green); font-weight: 700; }
+        .highlight-red { color: var(--neon-red); font-weight: 700; }
+        .highlight-gold { color: var(--gold); font-weight: 700; }
+        .code-box {
+            background: #0d0d1a;
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 0.8rem 1.2rem;
+            font-family: monospace;
+            color: var(--gold);
+            display: inline-block;
+            margin: 0.4rem 0;
+            font-size: 0.9rem;
+        }
+
+        /* ===== BUTTON ===== */
+        .btn-back {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 12px 32px;
+            background: linear-gradient(135deg, var(--gold), #ffaa00);
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.2);
+        }
+        .btn-back:hover { transform: translateY(-4px); box-shadow: 0 16px 50px rgba(255, 215, 0, 0.3); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .guide-container { padding: 1.2rem; }
+            .section-card { padding: 1rem 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-overlay"></div>
+
+    <div class="guide-container">
+
+        <h1>
+            <span class="green">Accounting Suite</span> <span class="red">v1.1</span>
+        </h1>
+        <div class="sub-title">راهنمای جامع شروع کار · چگونه از این اکوسیستم استفاده کنیم؟</div>
+
+        <!-- ========== بخش ۱: مقدمه ========== -->
+        <h2><span class="icon">🚀</span> معرفی پروژه</h2>
+        <div class="section-card">
+            <p>
+                <strong>Accounting Suite v1.1</strong> یک نرم‌افزار تحت وب (Web App) کامل، آفلاین و رایگان است که با تکنولوژی‌های مدرن (HTML, CSS, JavaScript) ساخته شده است. 
+                این پروژه، حاصل تلفیق <span class="highlight">۲۴ جلسه آموزشی تخصصی حسابداری</span> و <span class="highlight-red">۱۰ ابزار حرفه‌ای حسابرسی</span> در یک پلتفرم یکپارچه و زیبا با افکت‌های سه‌بعدی است.
+            </p>
+            <p style="margin-top:12px;">
+                شما می‌توانید از این مجموعه به عنوان یک <strong>کارگاه آموزشی و ابزار عملیاتی</strong> هم‌زمان استفاده کنید. 
+                تمام محتواها در گوشی و کامپیوتر شما ذخیره می‌شود و حتی بدون اینترنت هم قابل اجراست.
+            </p>
+        </div>
+
+        <!-- ========== بخش ۲: درخت پوشه‌ها ========== -->
+        <h2><span class="icon">📂</span> ساختار فایل‌ها و پوشه‌های پروژه</h2>
+        <div class="section-card">
+            <p>
+                برای اینکه بدانید هر بخش از برنامه در کجا قرار دارد، درخت پوشه‌های پروژه به صورت کاملاً استاندارد طراحی شده است. 
+                اگر بخواهید محتوای آموزشی را ویرایش کنید یا ابزار جدیدی اضافه کنید، مسیرها کاملاً مشخص هستند:
+            </p>
+            <ul style="margin-top:12px;">
+                <li><strong>🧰 پوشه <span class="highlight">audit_tools/</span></strong> : شامل ۱۰ ابزار حرفه‌ای حسابرسی (تراز آزمایشی، نسبت‌های مالی، کنترل داخلی، تعدیلات، نمونه‌گیری، کشف تقلب، تطبیق مالیات، گزارش حسابرسی و حل‌کننده مسائل).</li>
+                <li><strong>📚 پوشه <span class="highlight">education/</span></strong> : محل قرارگیری ۲۴ جلسه آموزشی (پوشه <span class="highlight">Session/</span>)، آزمون‌ها (پوشه <span class="highlight">Tests/</span>)، سوالات (پوشه <span class="highlight">Questions/</span>) و ابزارهای کمک‌آموزشی (پوشه <span class="highlight">Tools/</span>).</li>
+                <li><strong>📊 پوشه <span class="highlight">business_suites/</span></strong> : مجموعه‌ای از اپلیکیشن‌های کسب‌وکار مثل "حسابک"، "دفتر"، "انبارک"، "فاکتورساز" و سایر ماژول‌های مدیریتی.</li>
+                <li><strong>💎 پوشه <span class="highlight">core/</span></strong> : موتور اصلی و هسته پروژه. شامل فایل‌های CSS و JavaScript است که ظاهر و افکت‌های سه‌بعدی، ذرات و تعاملات موس را مدیریت می‌کنند.</li>
+                <li><strong>📄 فایل‌های ریشه (Root)</strong> : فایل <span class="highlight-gold">index.html</span> (صفحه اصلی یکپارچه)، <span class="highlight-gold">manifest.json</span> (تنظیمات نصب روی موبایل)، <span class="highlight-gold">sw.js</span> (سرویس‌ورکر برای آفلاین)، و <span class="highlight-gold">server.py</span> (سرور پایتون برای اجرای لوکال).</li>
+            </ul>
+        </div>
+
+        <!-- ========== بخش ۳: نقشه راه استفاده ========== -->
+        <h2><span class="icon">🗺️</span> نقشه راه استفاده از مجموعه</h2>
+        <div class="section-card">
+            <p>
+                این مجموعه طوری طراحی شده که یک مسیر یادگیری و عملیات کامل را طی کنید. پیشنهاد ما دنبال کردن این <span class="highlight">۵ گام طلایی</span> است:
+            </p>
+            
+            <h3>📖 گام ۱: آموزش تخصصی (۲۴ جلسه)</h3>
+            <ul>
+                <li>در صفحه اصلی، به بخش <strong>"۲۴ جلسه آموزشی"</strong> بروید.</li>
+                <li>روی هر جلسه کلیک کنید تا محتوای آموزشی آن روز را مطالعه کنید.</li>
+                <li>پس از اتمام مطالعه، روی دکمه <span class="highlight-gold">✓</span> که روی کارت قرار دارد کلیک کنید. (این کار جلسه را به عنوان <span class="highlight">"تکمیل شده"</span> ثبت می‌کند).</li>
+                <li>پیشرفت شما به‌صورت خودکار در مرورگر ذخیره می‌شود.</li>
+            </ul>
+
+            <h3>📝 گام ۲: ارزیابی دانش (آزمون‌ها)</h3>
+            <ul>
+                <li>پس از مطالعه چند جلسه، به پوشه <span class="highlight">Tests</span> در صفحه اصلی بروید.</li>
+                <li>آزمون‌های کوئیز (Quiz) و تشریحی (Essay) که در پوشه <span class="highlight">education/Tests</span> هستند را باز کنید و سطح دانش خود را بسنجید.</li>
+                <li>اگر نیاز به مرور سریع دارید، از ابزار <span class="highlight-red">"شب امتحان"</span> در پوشه <span class="highlight">education/Tools</span> استفاده کنید.</li>
+            </ul>
+
+            <h3>🧰 گام ۳: ورود به ابزارهای حسابرسی</h3>
+            <ul>
+                <li>به بخش <strong>"ابزارهای حسابرسی (۱۰ ماژول)"</strong> در صفحه اصلی بروید.</li>
+                <li>با این ابزارها می‌توانید <span class="highlight">تراز آزمایشی</span> یک شرکت را بررسی کنید، <span class="highlight">نسبت‌های مالی</span> آن را محاسبه کنید، <span class="highlight">کنترل داخلی</span> را ارزیابی کنید و حتی <span class="highlight-red">کشف تقلب</span> با قانون بنفورد را انجام دهید.</li>
+                <li>داده‌های شما در این ابزارها هم در مرورگر ذخیره می‌شود.</li>
+            </ul>
+
+            <h3>📊 گام ۴: استفاده از ابزارهای کسب‌وکار</h3>
+            <ul>
+                <li>بخش <strong>"ابزارهای کسب‌وکار"</strong> برای مدیریت عملیات روزمره یک شرکت حسابداری طراحی شده است.</li>
+                <li>میتوانید با <span class="highlight">"حسابک"</span> محاسبات انجام دهید، با <span class="highlight">"فاکتورساز"</span> فاکتورهای فروش یا خرید ایجاد کنید، و با <span class="highlight">"بودجه‌بان"</span> بودجه شرکت را مدیریت کنید.</li>
+            </ul>
+
+            <h3>📄 گام ۵: تولید گزارش نهایی مشتری</h3>
+            <ul>
+                <li>پس از اینکه تمام اطلاعات حسابرسی مشتری را در ابزارها وارد کردید، به بخش <span class="highlight">"گزارش مشتری"</span> در صفحه اصلی بروید.</li>
+                <li>این صفحه به‌صورت هوشمند داده‌های تمام ابزارهای حسابرسی را جمع‌آوری کرده و به شما <span class="highlight-gold">یک گزارش کامل و یکپارچه</span> ارائه می‌دهد که می‌توانید آن را کپی کرده یا چاپ کنید.</li>
+            </ul>
+        </div>
+
+        <!-- ========== بخش ۴: نحوه اجرا و نصب ========== -->
+        <h2><span class="icon">⚙️</span> نحوه اجرا و نصب (PWA)</h2>
+        <div class="section-card">
+            <h3>💻 نحوه اجرا در کامپیوتر</h3>
+            <ul>
+                <li>کل پوشه پروژه را روی سیستم خود دانلود کنید.</li>
+                <li>برای اجرای ساده، کافیست روی فایل <span class="highlight">index.html</span> دوبار کلیک کنید تا در مرورگر باز شود.</li>
+                <li>برای دسترسی به تمام قابلیت‌های آفلاین و سرویس‌ورکر، پیشنهاد می‌کنیم فایل <span class="highlight">server.py</span> را با پایتون اجرا کنید. کافیست در ترمینال دستور <span class="code-box">python server.py</span> را تایپ کنید و سپس به آدرس <span class="code-box">http://localhost:8000</span> بروید.</li>
+            </ul>
+
+            <h3>📱 نحوه نصب روی گوشی اندروید (PWA)</h3>
+            <ul>
+                <li>پروژه را با سرور پایتون اجرا کنید و در مرورگر گوشی خود به همان آدرس بروید.</li>
+                <li>مرورگر به طور خودکار بنری پایین صفحه نمایش می‌دهد که می‌گوید <span class="highlight">"نصب اپلیکیشن"</span>.</li>
+                <li>روی دکمه "نصب" کلیک کنید. پروژه مانند یک اپلیکیشن معمولی با آیکون اختصاصی به صفحه اصلی گوشی شما اضافه می‌شود.</li>
+                <li>هنگامی که آن را از صفحه اصلی باز کنید، بدون نیاز به اینترنت (آفلاین) کار می‌کند.</li>
+            </ul>
+        </div>
+
+        <!-- ========== بخش ۵: مزایا و تکنولوژی ========== -->
+        <h2><span class="icon">✨</span> تکنولوژی‌ها و قابلیت‌های ویژه</h2>
+        <div class="section-card">
+            <ul>
+                <li><strong>طراحی سه‌بعدی و تعاملی:</strong> استفاده از <span class="highlight">Perspective 3D</span> و افکت <span class="highlight-red">Parallax</span> (حرکت کارت‌ها با حرکت موس) که تجربه‌ای مدرن و جذاب ایجاد می‌کند.</li>
+                <li><strong>پس‌زمینه زنده و پویا:</strong> ذرات نوری و اُرب‌های معلق با استفاده از <span class="highlight">HTML5 Canvas</span>.</li>
+                <li><strong>ذخیره‌سازی محلی:</strong> تمام داده‌ها، پیشرفت آموزشی و اطلاعات حسابرسی در <span class="highlight">LocalStorage</span> مرورگر ذخیره می‌شود و با بستن صفحه از بین نمی‌رود.</li>
+                <li><strong>ساختار ماژولار:</strong> کد به بخش‌های مستقل (Core, Styles, Scripts) تقسیم شده که نگهداری و توسعه آن را بسیار آسان کرده است.</li>
+                <li><strong>قابلیت نصب به عنوان اپ (PWA):</strong> با استفاده از <span class="highlight">Service Workers</span>، برنامه کش می‌شود و به‌صورت آفلاین روی موبایل و دسکتاپ نصب می‌شود.</li>
+            </ul>
+        </div>
+
+        <!-- ========== دکمه بازگشت ========== -->
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="index.html" class="btn-back">🏠 بازگشت به صفحه اصلی (داشبورد)</a>
+        </div>
+
+        <!-- ========== فوتر ========== -->
+        <div style="text-align: center; margin-top: 2.5rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem; color: rgba(240,240,255,0.15); font-size: 0.85rem;">
+            Accounting Suite v1.1 · طراحی شده با ❤️ برای جامعه حسابداری ایران · کاملاً متن‌باز و رایگان
+        </div>
+
+    </div>
+
+</body>
+</html>

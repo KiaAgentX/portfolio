@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>آزمون تستی جلسات ۱۹ تا ۲۴ | کیانوش کریمی</title>
+    <style>
+        :root{--bg:#0a0a0a;--text:#f0f0f0;--primary:#fbbf24;--accent:#2dd4bf;--success:#22c55e;--danger:#ef4444;--border:rgba(255,255,255,0.1);--radius:16px;--radius-sm:10px;direction:rtl;font-size:15px}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Vazirmatn','B Nazanin','Tahoma',sans-serif;background:#0a0a0a;color:var(--text);line-height:1.8;min-height:100vh;padding:12px;display:flex;justify-content:center;position:relative;overflow-x:hidden}
+        .particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+        .particle{position:absolute;border-radius:50%;animation:floatUp linear infinite;opacity:0.55}
+        @keyframes floatUp{0%{transform:translateY(105vh) scale(0);opacity:0}10%{opacity:0.6}90%{opacity:0.2}100%{transform:translateY(-10vh) scale(1.4);opacity:0}}
+        .container{position:relative;z-index:1;max-width:900px;width:100%;display:flex;flex-direction:column;gap:14px}
+        .header{background:rgba(24,24,24,0.7);backdrop-filter:blur(22px);border:1px solid var(--border);border-radius:24px;padding:20px 18px;box-shadow:0 8px 32px rgba(0,0,0,0.5);text-align:center;position:relative;overflow:hidden}
+        .header::after{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#fbbf24,#22c55e,#fbbf24);background-size:200% 100%;animation:headerBar 3s linear infinite}
+        @keyframes headerBar{0%{background-position:200% 0}100%{background-position:-200% 0}}
+        .glow-text{font-size:1.6rem;font-weight:900;background:linear-gradient(135deg,#fbbf24,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .card{background:rgba(24,24,24,0.65);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:18px 16px;box-shadow:0 4px 20px rgba(0,0,0,0.5)}
+        .quiz-block{margin:10px 0;padding:14px;background:rgba(40,40,40,0.4);border-radius:var(--radius-sm)}
+        .quiz-block strong{display:block;margin-bottom:8px}
+        .quiz-opt{display:block;width:100%;text-align:right;padding:10px 14px;margin:5px 0;background:rgba(20,20,20,0.6);border:2px solid rgba(255,255,255,0.1);border-radius:8px;cursor:pointer;font-family:inherit;font-size:0.9rem;transition:0.2s;color:#e0e0e0}
+        .quiz-opt.correct{background:rgba(34,197,94,0.2);border-color:#22c55e;color:#22c55e;font-weight:700}
+        .quiz-opt.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#ef4444}
+        .quiz-opt:disabled{pointer-events:none;opacity:0.85}
+        .progress-bar{height:6px;background:rgba(40,40,40,0.6);border-radius:6px;overflow:hidden;margin:4px 0 0}
+        .progress-fill{height:100%;background:linear-gradient(90deg,#fbbf24,#22c55e);width:0%;transition:width 0.4s}
+        .btn{display:inline-block;padding:10px 22px;border-radius:25px;border:none;font-family:inherit;font-weight:700;cursor:pointer;font-size:0.9rem;background:#fbbf24;color:#000}
+        .footer{text-align:center;font-size:0.75rem;color:#666;padding:10px}
+    </style>
+</head>
+<body>
+    <div class="particles" id="pc"></div>
+    <div class="container">
+        <div class="header"><h1 class="glow-text">📝 آزمون تستی: جلسات ۱۹ تا ۲۴</h1><p style="color:#c0c0c0;">۲۵ سوال — نقطه سربه‌سر، بودجه‌بندی، مالیاتی، پیمانکاری، IFRS، پروژه نهایی</p></div>
+        <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
+        <div id="quizContainer"></div>
+        <div id="quizScore" style="text-align:center;font-weight:700;margin-top:8px;font-size:1.2rem;"></div>
+        <div style="text-align:center;margin:15px 0;"><button class="btn" id="resetBtn">🔄 شروع دوباره</button></div>
+        <div class="footer">✍️ کیانوش کریمی | 📅 ۱۴۰۴</div>
+    </div>
+    <script>
+        const pc=document.getElementById('pc');
+        for(let i=0;i<50;i++){
+            const p=document.createElement('div');p.classList.add('particle');
+            const s=Math.random()*5+2;
+            p.style.width=s+'px';p.style.height=s+'px';
+            p.style.left=Math.random()*100+'%';
+            p.style.animationDuration=Math.random()*18+10+'s';
+            p.style.animationDelay=Math.random()*12+'s';
+            const colors=['#fbbf24','#22c55e','#ef4444','#2dd4bf','#f59e0b'];
+            p.style.background=colors[Math.floor(Math.random()*colors.length)];
+            p.style.boxShadow=`0 0 ${s+3}px ${p.style.background}`;
+            pc.appendChild(p);
+        }
+        const quizData=[
+            {q:'در نقطه سربه‌سر، سود چقدر است؟',opts:['مثبت','منفی','صفر','بستگی دارد'],ans:2},
+            {q:'حاشیه فروش هر واحد چگونه محاسبه می‌شود؟',opts:['قیمت - هزینه ثابت','قیمت - هزینه متغیر','هزینه متغیر - قیمت','فروش کل - هزینه کل'],ans:1},
+            {q:'مبدأ همه بودجه‌ها کدام است؟',opts:['بودجه نقدی','بودجه تولید','بودجه فروش','بودجه هزینه‌ها'],ans:2},
+            {q:'هدف اصلی بودجه نقدی چیست؟',opts:['محاسبه سود','پیش‌بینی کمبود و مازاد پول','تهیه ترازنامه','محاسبه مالیات'],ans:1},
+            {q:'نرخ مالیات بر ارزش افزوده در ایران چند است؟',opts:['۵٪','۹٪','۱۵٪','۲۵٪'],ans:1},
+            {q:'VAT خرید در دفاتر چه ماهیتی دارد؟',opts:['بدهی','دارایی','هزینه','سرمایه'],ans:1},
+            {q:'نرخ مالیات بر درآمد اشخاص حقوقی در ایران چند است؟',opts:['۹٪','۱۵٪','۲۵٪','۳۵٪'],ans:2},
+            {q:'کدام روش برای شناسایی سود پروژه‌های بلندمدت رایج است؟',opts:['نقدی','تعهدی ساده','درصد پیشرفت کار','ثبت یکباره'],ans:2},
+            {q:'اگر پروژه‌ای زیان‌ده پیش‌بینی شود، چه باید کرد؟',opts:['هیچ چیز','شناسایی تدریجی','شناسایی کل زیان بلافاصله','توقف پروژه'],ans:2},
+            {q:'IFRS مخفف چیست؟',opts:['استانداردهای ایران','اصول پذیرفته‌شده حسابداری','استانداردهای بین‌المللی گزارشگری مالی','هیئت استانداردها'],ans:2},
+            {q:'IFRS بر کدام مبنای اندازه‌گیری تأکید بیشتری دارد؟',opts:['بهای تمام‌شده','ارزش منصفانه','ارزش اسمی','ارزش جایگزینی'],ans:1},
+            {q:'مخارج توسعه در IFRS چگونه ثبت می‌شود؟',opts:['همیشه هزینه','همیشه سرمایه‌ای','در صورت احراز شرایط سرمایه‌ای','ثبت نمی‌شود'],ans:2},
+            {q:'اولین گام در چرخه حسابداری چیست؟',opts:['تهیه ترازنامه','ثبت دفتر روزنامه','تحلیل نسبت‌ها','بستن حساب‌ها'],ans:1},
+            {q:'کدام صورت مالی وضعیت را در یک لحظه نشان می‌دهد؟',opts:['سود و زیان','جریان نقد','ترازنامه','سود انباشته'],ans:2},
+            {q:'اگر نسبت جاری ۱.۵ باشد، یعنی چه؟',opts:['ورشکسته است','دارایی جاری ۱.۵ برابر بدهی جاری','بدهی بیشتر از دارایی','سود نکرده'],ans:1},
+            {q:'هدف نهایی حسابداری چیست؟',opts:['پرداخت مالیات کمتر','ارائه اطلاعات مفید برای تصمیم‌گیری','ثبت تمام رویدادها','افزایش فروش'],ans:1},
+            {q:'افزایش هزینه‌های ثابت چه تأثیری بر نقطه سربه‌سر دارد؟',opts:['کاهش','افزایش','بی‌تأثیر','بستگی دارد'],ans:1},
+            {q:'اگر موجودی ابتدا ۲۰، دریافت‌ها ۸۰ و پرداخت‌ها ۹۰ باشد، موجودی پایان چند است؟',opts:['۱۰','۲۰','۳۰','۱۹۰'],ans:0},
+            {q:'انحراف در بودجه به چه معناست؟',opts:['تفاوت بودجه و واقعی','برابری بودجه و واقعی','کسری بودجه','مازاد بودجه'],ans:0},
+            {q:'اگر VAT فروش ۵۰ و VAT خرید ۳۰ باشد، مابه‌التفاوت چند است؟',opts:['۲۰ پرداختنی','۲۰ دریافتنی','۸۰ پرداختنی','۸۰ دریافتنی'],ans:0},
+            {q:'ذخیره ضرایب در چه صورتی شناسایی می‌شود؟',opts:['پروژه سودده','پروژه زیان‌ده','همیشه','هرگز'],ans:1},
+            {q:'کدام نهاد IFRS را تدوین می‌کند؟',opts:['سازمان حسابرسی','IASB','FASB','سازمان بورس'],ans:1},
+            {q:'صورت سود و زیان عملکرد چه چیزی را نشان می‌دهد؟',opts:['یک لحظه','یک دوره','همیشه','دارایی‌ها'],ans:1},
+            {q:'بهای تمام‌شده از جمع کدام سه جزء است؟',opts:['مواد، دستمزد، فروش','مواد، دستمزد، سربار','فروش، هزینه، سود','دارایی، بدهی، سرمایه'],ans:1},
+            {q:'حسابداری زبان ... است.',opts:['ریاضی','تجارت','علم','هنر'],ans:1},
+        ];
+        const qc=document.getElementById('quizContainer');
+        let qa=0,qco=0,qf=false;
+        quizData.forEach((q,idx)=>{
+            const block=document.createElement('div');block.className='quiz-block';
+            block.innerHTML=`<strong>${idx+1}. ${q.q}</strong>`;
+            q.opts.forEach((opt,optIdx)=>{
+                const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;
+                btn.addEventListener('click',()=>{
+                    if(btn.disabled)return;
+                    const all=block.querySelectorAll('.quiz-opt');all.forEach(b=>b.disabled=true);
+                    if(optIdx===q.ans){btn.classList.add('correct');qco++;}
+                    else{btn.classList.add('wrong');all[q.ans].classList.add('correct');}
+                    qa++;
+                    document.getElementById('pf').style.width=Math.round((qa/quizData.length)*100)+'%';
+                    if(qa===quizData.length&&!qf){
+                        qf=true;
+                        document.getElementById('quizScore').innerHTML=`🎯 نتیجه: ${qco} از ${quizData.length} — ${qco>=20?'عالی!':qco>=15?'خوب':'بیشتر تمرین کن'}`;
+                    }
+                });
+                block.appendChild(btn);
+            });
+            qc.appendChild(block);
+        });
+        document.getElementById('resetBtn').addEventListener('click',()=>{
+            document.querySelectorAll('.quiz-opt').forEach(o=>{o.classList.remove('correct','wrong');o.disabled=false;});
+            document.getElementById('quizScore').innerHTML='';
+            document.getElementById('pf').style.width='0%';
+            qa=0;qco=0;qf=false;
+            window.scrollTo({top:0,behavior:'smooth'});
+        });
+    </script>
+</body>
+</html>

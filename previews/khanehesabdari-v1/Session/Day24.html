@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>جلسه بیست‌وچهارم: پروژهٔ نهایی و مرور کلی | کیانوش کریمی</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: rgba(24, 24, 24, 0.75);
+            --surface2: rgba(40, 40, 40, 0.5);
+            --text: #f0f0f0;
+            --text2: #c0c0c0;
+            --primary: #fbbf24;
+            --primary-light: #fde68a;
+            --primary-dark: #92400e;
+            --accent: #2dd4bf;
+            --accent-light: rgba(45, 212, 191, 0.15);
+            --danger: #ef4444;
+            --danger-light: rgba(239, 68, 68, 0.15);
+            --success: #22c55e;
+            --success-light: rgba(34, 197, 94, 0.15);
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+            --shadow: 0 4px 20px rgba(0,0,0,0.5);
+            --shadow-lg: 0 12px 30px rgba(0,0,0,0.6);
+            --radius-sm: 10px;
+            --radius: 16px;
+            --radius-lg: 24px;
+            --transition: 0.2s ease;
+            direction: rtl;
+            font-size: 15px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Vazirmatn', 'B Nazanin', 'Tahoma', sans-serif;
+            background: #0a0a0a;
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0.55; }
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1.4); opacity: 0; }
+        }
+        .drift-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; animation: drift 12s ease-in-out infinite;
+            opacity: 0.2;
+            background: radial-gradient(circle at 30% 40%, #fbbf24 0%, transparent 40%),
+                radial-gradient(circle at 70% 60%, #22c55e 0%, transparent 40%),
+                radial-gradient(circle at 50% 20%, #ef4444 0%, transparent 35%);
+        }
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(18px); }
+            100% { transform: translateX(0); }
+        }
+        .container { position: relative; z-index: 1; max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 14px; }
+        .header {
+            background: rgba(24, 24, 24, 0.7); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg);
+            padding: 20px 18px 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .header::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #fbbf24, #22c55e, #fbbf24);
+            background-size: 200% 100%; animation: headerBar 3s linear infinite;
+        }
+        @keyframes headerBar {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .session-badge {
+            display: inline-block; background: rgba(251,191,36,0.2); color: #fbbf24;
+            padding: 4px 18px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+            margin-bottom: 8px; border: 1px solid rgba(251,191,36,0.3);
+        }
+        .glow-text {
+            font-size: 1.8rem; font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #22c55e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin: 6px 0; animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 6px rgba(251,191,36,0.4)); }
+            100% { filter: drop-shadow(0 0 16px rgba(34,197,94,0.7)); }
+        }
+        .subtitle { font-size: 0.9rem; color: #c0c0c0; }
+        .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin-top: 8px; }
+        .toolbar button {
+            background: rgba(40,40,40,0.6); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15); color: #e0e0e0;
+            padding: 7px 16px; border-radius: 25px; cursor: pointer; font-family: inherit;
+            font-size: 0.85rem; font-weight: 500; transition: 0.2s; white-space: nowrap;
+        }
+        .toolbar button:active { transform: scale(0.96); background: #fbbf24; color: #000; border-color: #fbbf24; }
+        .card {
+            background: rgba(24, 24, 24, 0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius);
+            padding: 18px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.35); transition: 0.2s;
+        }
+        .card:hover { border-color: rgba(251,191,36,0.25); }
+        .card h2 {
+            font-size: 1.25rem; color: #fbbf24;
+            border-bottom: 2px solid rgba(251,191,36,0.2); padding-bottom: 8px; margin-bottom: 14px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .card h3 { font-size: 1.05rem; color: #2dd4bf; margin: 12px 0 6px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 500px) { .grid-2 { grid-template-columns: 1fr; } }
+        .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 12px 0; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.08); }
+        table { width: 100%; min-width: 450px; border-collapse: collapse; background: rgba(20,20,20,0.5); font-size: 0.85rem; }
+        th { background: #fbbf24; color: #000; padding: 10px 6px; font-weight: 700; text-align: center; font-size: 0.8rem; white-space: nowrap; }
+        td { padding: 9px 6px; border-bottom: 1px solid rgba(255,255,255,0.06); text-align: center; }
+        .highlight { background: rgba(251,191,36,0.18); font-weight: 700; }
+        .sim-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0; padding: 12px; background: rgba(40,40,40,0.4); border-radius: var(--radius-sm); font-size: 0.9rem; }
+        .sim-row label { font-weight: 600; white-space: nowrap; min-width: 70px; }
+        .sim-row input {
+            flex: 1; min-width: 100px; padding: 10px 12px; border-radius: var(--radius-sm);
+            border: 2px solid rgba(255,255,255,0.15); font-family: inherit; font-size: 0.9rem;
+            background: #1a1a1a; color: #f0f0f0; transition: 0.2s;
+        }
+        .sim-row input:focus { border-color: #fbbf24; outline: none; box-shadow: 0 0 0 3px rgba(251,191,36,0.15); }
+        .btn {
+            display: inline-block; padding: 10px 22px; border-radius: 25px; border: none;
+            font-family: inherit; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: 0.2s; text-align: center;
+        }
+        .btn-primary { background: #fbbf24; color: #000; }
+        .btn-primary:active { background: #f59e0b; transform: scale(0.96); }
+        .btn-outline { background: transparent; border: 2px solid #fbbf24; color: #fbbf24; }
+        .result-box { text-align: center; padding: 14px; border-radius: var(--radius-sm); margin-top: 10px; font-weight: 700; font-size: 0.95rem; }
+        .result-box.success { background: var(--success-light); color: var(--success); border: 1px solid var(--success); }
+        .result-box.error { background: var(--danger-light); color: var(--danger); border: 1px solid var(--danger); }
+        .result-box.info { background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); }
+        .quiz-block { margin: 10px 0; padding: 14px; background: rgba(40,40,40,0.4); border-radius: var(--radius-sm); }
+        .quiz-block strong { display: block; margin-bottom: 8px; }
+        .quiz-opt {
+            display: block; width: 100%; text-align: right; padding: 10px 14px; margin: 5px 0;
+            background: rgba(20,20,20,0.6); border: 2px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm);
+            cursor: pointer; font-family: inherit; font-size: 0.9rem; transition: 0.2s; color: #e0e0e0;
+        }
+        .quiz-opt.correct { background: rgba(34,197,94,0.2); border-color: #22c55e; color: #22c55e; font-weight: 700; }
+        .quiz-opt.wrong { background: rgba(239,68,68,0.2); border-color: #ef4444; color: #ef4444; }
+        .quiz-opt:disabled { pointer-events: none; opacity: 0.85; }
+        .progress-bar { height: 6px; background: rgba(40,40,40,0.6); border-radius: 6px; overflow: hidden; margin: 4px 0 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #fbbf24, #22c55e); width: 0%; transition: width 0.4s; border-radius: 6px; }
+        details { margin: 8px 0; }
+        summary {
+            font-weight: 700; cursor: pointer; padding: 8px 0; color: #fbbf24;
+            border-bottom: 1px dashed rgba(251,191,36,0.2); outline: none;
+        }
+        .footer { text-align: center; font-size: 0.75rem; color: #666; padding: 10px; }
+        ::-webkit-scrollbar { height: 4px; width: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particlesContainer"></div>
+    <div class="drift-layer"></div>
+
+    <div class="container">
+        <div class="header">
+            <span class="session-badge">🏁 جلسه ۲۴ از ۲۴</span>
+            <h1 class="glow-text">پروژهٔ نهایی و مرور کلی</h1>
+            <p class="subtitle">از ثبت دفتر روزنامه تا تحلیل نسبت‌های مالی — یک پروندهٔ جامع</p>
+            <div class="toolbar">
+                <button id="printBtn">🖨️ چاپ</button>
+                <button id="resetBtn">🔄 بازنشانی</button>
+                <span style="font-size:0.75rem;color:#c0c0c0;">👤 کیانوش کریمی</span>
+            </div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+        <!-- ۱. معرفی پروژه نهایی -->
+        <div class="card">
+            <h2>📖 پروژهٔ نهایی: فروشگاه «نیکان»</h2>
+            <p>در این جلسه، یک پروندهٔ کامل را از <strong>ابتدا تا انتها</strong> مرور می‌کنیم: از ثبت رویدادهای مالی در دفتر روزنامه تا تهیهٔ صورت‌های مالی و تحلیل نسبت‌ها. این پروژه عصارهٔ تمام ۲۳ جلسهٔ گذشته است. اگر این را کامل متوجه شوید، یک حسابدار حرفه‌ای هستید.</p>
+            <p style="margin-top:10px;font-size:0.9rem;color:var(--accent);">📌 <strong>اطلاعات پایه:</strong> آقای نیکان در اول فروردین ۱۴۰۴ فروشگاهی تأسیس کرده است. رویدادهای زیر طی سال رخ داده‌اند:</p>
+        </div>
+
+        <!-- ۲. رویدادهای مالی -->
+        <div class="card">
+            <h2>📋 رویدادهای مالی سال ۱۴۰۴</h2>
+            <ol style="padding-right:20px;font-size:0.9rem;">
+                <li><strong>۰۱/۰۱:</strong> سرمایه‌گذاری اولیه: ۵۰۰ میلیون تومان نقد.</li>
+                <li><strong>۰۱/۱۵:</strong> دریافت وام بانکی ۲۰۰ میلیون تومان (یک‌ساله).</li>
+                <li><strong>۰۲/۰۱:</strong> خرید کالا به مبلغ ۳۰۰ میلیون تومان — ۶۰٪ نقد، ۴۰٪ نسیه.</li>
+                <li><strong>۰۳ تا ۱۲:</strong> فروش کالا طی سال: ۶۰۰ میلیون تومان (نقد+نسیه). بهای تمام‌شده کالای فروش‌رفته: ۲۲۰ میلیون.</li>
+                <li><strong>پایان سال:</strong> حقوق پرداختی: ۸۰ میلیون | اجاره: ۴۰ میلیون | آب و برق: ۲۰ میلیون.</li>
+                <li><strong>تعدیلات پایان سال:</strong> استهلاک اثاثیه (بهای ۶۰ میلیون، عمر ۵ سال، اسقاط صفر) | ذخیره مطالبات: ۳٪ حساب‌های دریافتنی (مانده دریافتنی‌ها: ۱۰۰ میلیون) | مالیات: ۲۵٪ سود قبل از مالیات.</li>
+            </ol>
+        </div>
+
+        <!-- ۳. راهنمای گام‌به‌گام -->
+        <div class="card">
+            <h2>🪜 مسیر حرکت (خلاصه ۸ گام)</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>گام</th><th>عنوان</th><th>خروجی</th></tr></thead>
+                    <tbody>
+                        <tr><td>۱</td><td>ثبت دفتر روزنامه</td><td>۸ رویداد ثبت‌شده</td></tr>
+                        <tr><td>۲</td><td>انتقال به دفتر کل (حساب T)</td><td>ماندهٔ تمام حساب‌ها</td></tr>
+                        <tr><td>۳</td><td>تهیه تراز آزمایشی</td><td>تراز آزمایشی متعادل</td></tr>
+                        <tr><td>۴</td><td>ثبت‌های تعدیلی</td><td>استهلاک + ذخیره مطالبات</td></tr>
+                        <tr><td>۵</td><td>تهیه صورت سود و زیان</td><td>سود خالص</td></tr>
+                        <tr><td>۶</td><td>تهیه صورت جریان وجوه نقد</td><td>وجه نقد پایان دوره</td></tr>
+                        <tr><td>۷</td><td>تهیه ترازنامه طبقه‌بندی‌شده</td><td>ترازنامه متعادل</td></tr>
+                        <tr><td>۸</td><td>تحلیل نسبت‌های مالی</td><td>نسبت جاری، بدهی، ROE...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ۴. پاسخ کامل -->
+        <div class="card">
+            <h2>🧾 پاسخ کامل پروژه (برای مطالعه دقیق)</h2>
+            <details>
+                <summary>🔍 گام‌های ۱ تا ۴ (ثبت‌ها و تعدیلات)</summary>
+                <div style="margin-top:10px;">
+                    <p><strong>دفتر روزنامه:</strong> ۱. بانک ۵۰۰ / سرمایه ۵۰۰ | ۲. بانک ۲۰۰ / وام ۲۰۰ | ۳. موجودی کالا ۳۰۰ / بانک ۱۸۰ و حساب پرداختنی ۱۲۰ | ۴. بانک+دریافتنی ۶۰۰ / فروش ۶۰۰ — هم‌زمان: بهای تمام‌شده ۲۲۰ / موجودی کالا ۲۲۰ | ۵. هزینه حقوق ۸۰، هزینه اجاره ۴۰، هزینه آب و برق ۲۰ / بانک ۱۴۰.</p>
+                    <p><strong>تعدیلات:</strong> استهلاک = ۶۰÷۵ = ۱۲ ← هزینه استهلاک ۱۲ / استهلاک انباشته ۱۲</p>
+                    <p>ذخیره مطالبات = ۱۰۰ × ۳٪ = ۳ ← هزینه ذخیره ۳ / ذخیره مطالبات ۳</p>
+                </div>
+            </details>
+            <details>
+                <summary>🔍 گام‌های ۵ تا ۸ (صورت‌های مالی و تحلیل)</summary>
+                <div style="margin-top:10px;">
+                    <p><strong>صورت سود و زیان:</strong> فروش ۶۰۰ − بهای تمام‌شده ۲۲۰ = سود ناخالص ۳۸۰ | هزینه‌های عملیاتی: حقوق ۸۰ + اجاره ۴۰ + آب و برق ۲۰ + استهلاک ۱۲ + ذخیره ۳ = ۱۵۵ | سود عملیاتی = ۲۲۵ | سود قبل از مالیات = ۲۲۵ | مالیات ۲۵٪ = ۵۶.۲۵ | <strong>سود خالص = ۱۶۸.۷۵</strong></p>
+                    <p><strong>وجه نقد پایان دوره:</strong> دریافت‌ها: ۵۰۰+۲۰۰+۵۰۰ = ۱۲۰۰ | پرداخت‌ها: ۱۸۰+۱۴۰ = ۳۲۰ | خالص = ۸۸۰</p>
+                    <p><strong>ترازنامه:</strong> دارایی‌ها: بانک ۸۸۰ + دریافتنی ۹۷ (۱۰۰−۳) + موجودی ۸۰ (۳۰۰−۲۲۰) + اثاثیه ۴۸ (۶۰−۱۲) = <strong>۱۱۰۵</strong> | بدهی‌ها: پرداختنی ۱۲۰ + وام ۲۰۰ + مالیات ۵۶.۲۵ = <strong>۳۷۶.۲۵</strong> | سرمایه ۵۰۰ + سود انباشته = ۷۲۸.۷۵ (که مجموع بدهی و سرمایه = ۱۱۰۵)</p>
+                    <p><strong>نسبت‌ها:</strong> جاری = ۱۰۵۷/۱۷۶.۲۵ ≈ ۶ | بدهی = ۳۷۶/۱۱۰۵ ≈ ۳۴٪ | ROE = ۱۶۸.۷۵/۷۲۸.۷۵ ≈ ۲۳٪</p>
+                </div>
+            </details>
+        </div>
+
+        <!-- ۵. شبیه‌ساز نهایی -->
+        <div class="card">
+            <h2>🕹️ شبیه‌ساز پروژه نهایی</h2>
+            <p style="font-size:0.85rem;">چند رقم کلیدی را تغییر دهید و نتیجه را در سود و ترازنامه ببینید (اعداد به میلیون تومان):</p>
+            <div class="sim-row"><label>💰 سرمایه اولیه:</label><input type="number" id="simCapital" value="500"></div>
+            <div class="sim-row"><label>🏦 مبلغ وام:</label><input type="number" id="simLoan" value="200"></div>
+            <div class="sim-row"><label>🛒 خرید کالا:</label><input type="number" id="simPurchase" value="300"></div>
+            <div class="sim-row"><label>🛍️ فروش کل:</label><input type="number" id="simSales" value="600"></div>
+            <div class="sim-row"><label>📦 بهای تمام‌شده:</label><input type="number" id="simCOGS" value="220"></div>
+            <button class="btn btn-primary" id="simCalc" style="width:100%;margin-top:10px;">⚡ محاسبه سریع</button>
+            <div id="simResult" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- ۶. آزمونک نهایی -->
+        <div class="card">
+            <h2>🧠 آزمونک نهایی دوره</h2>
+            <div id="quizContainer"></div>
+            <div id="quizScore" style="text-align:center;font-weight:700;margin-top:8px;"></div>
+        </div>
+
+        <!-- جمع‌بندی نهایی -->
+        <div class="card">
+            <h2>📌 جمع‌بندی نهایی دوره</h2>
+            <ul style="padding-right:18px;font-size:0.9rem;">
+                <li>شما اکنون چرخهٔ کامل حسابداری را می‌شناسید: <strong>ثبت رویداد → دفتر کل → تراز آزمایشی → تعدیلات → صورت‌های مالی → تحلیل</strong>.</li>
+                <li>مفاهیم بنیادی: معادله حسابداری، ماهیت حساب‌ها، مبنای تعهدی، اصل تطابق و محافظه‌کاری.</li>
+                <li>ابزارهای تحلیل: نسبت‌های نقدینگی، سودآوری، اهرمی و کارایی — زبان واقعی کسب‌وکار.</li>
+                <li>حسابداری فقط ثبت اعداد نیست؛ <strong>هنر داستان‌سرایی مالی</strong> است. شما اکنون این داستان را می‌فهمید و می‌توانید روایت کنید.</li>
+            </ul>
+        </div>
+
+        <div class="card" style="text-align:center;background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.3);">
+            <h2 style="justify-content:center;border:none;color:#fbbf24;">🎓 تبریک! شما ۲۴ جلسه را به پایان رساندید.</h2>
+            <p style="font-size:0.9rem;">از جلسه اول (اصول اولیه) تا اینجا، یک مسیر کامل و حرفه‌ای را طی کرده‌اید. حالا می‌توانید با اعتماد‌به‌نفس وارد بازار کار شوید، کسب‌وکار خود را راه بیندازید، یا در مقاطع بالاتر ادامه دهید. یادتان باشد: <strong>حسابداری زبان تجارت است، و شما اکنون به این زبان مسلط هستید.</strong></p>
+            <p style="margin-top:10px;color:var(--accent);">👤 با احترام — کیانوش کریمی</p>
+        </div>
+
+        <div class="footer">✍️ تهیه و تنظیم: کیانوش کریمی | 📅 ۱۴۰۴ | 🏁 پایان دوره ۲۴ جلسه‌ای</div>
+    </div>
+
+    <script>
+        const pc = document.getElementById('particlesContainer');
+        for (let i = 0; i < 50; i++) {
+            const p = document.createElement('div'); p.classList.add('particle');
+            const s = Math.random() * 5 + 2;
+            p.style.width = s + 'px'; p.style.height = s + 'px';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = Math.random() * 18 + 10 + 's';
+            p.style.animationDelay = Math.random() * 12 + 's';
+            const colors = ['#fbbf24', '#22c55e', '#ef4444', '#2dd4bf', '#f59e0b'];
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            p.style.boxShadow = '0 0 ' + (s+3) + 'px ' + p.style.background;
+            pc.appendChild(p);
+        }
+
+        const pf = document.getElementById('progressFill');
+        let done = 0; const total = 2;
+        function upd() { pf.style.width = Math.round((done/total)*100) + '%'; }
+
+        document.getElementById('printBtn').addEventListener('click', () => window.print());
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            document.querySelectorAll('input[type=number]').forEach(i => { if(i.id.startsWith('sim')) i.value = i.defaultValue; });
+            document.getElementById('simResult').innerHTML = '';
+            document.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('correct','wrong'));
+            document.getElementById('quizScore').innerHTML = '';
+            done = 0; upd(); window.scrollTo({top:0,behavior:'smooth'});
+        });
+
+        // شبیه‌ساز سریع
+        document.getElementById('simCalc').addEventListener('click', () => {
+            const cap = parseFloat(document.getElementById('simCapital').value) || 0;
+            const loan = parseFloat(document.getElementById('simLoan').value) || 0;
+            const purch = parseFloat(document.getElementById('simPurchase').value) || 0;
+            const sales = parseFloat(document.getElementById('simSales').value) || 0;
+            const cogs = parseFloat(document.getElementById('simCOGS').value) || 0;
+
+            const grossProfit = sales - cogs;
+            const expenses = 140; // ثابت (حقوق+اجاره+آب و برق)
+            const depr = 12; // استهلاک ثابت
+            const reserve = 3; // ذخیره ثابت
+            const opProfit = grossProfit - expenses - depr - reserve;
+            const tax = opProfit > 0 ? opProfit * 0.25 : 0;
+            const netProfit = opProfit - tax;
+
+            const cashIn = cap + loan + (sales * 0.5); // فرض ۵۰٪ فروش نقد
+            const cashOut = purch * 0.6 + expenses;
+            const endCash = cashIn - cashOut;
+
+            const totalAssets = endCash + (sales * 0.1) + (purch - cogs) + (60 - depr);
+            const totalLiab = (purch * 0.4) + loan + tax;
+            const equity = cap + netProfit;
+
+            const res = document.getElementById('simResult');
+            res.innerHTML = `
+                <div class="table-wrapper"><table>
+                    <tr><td>سود ناخالص</td><td>${grossProfit.toLocaleString()} میلیون</td></tr>
+                    <tr><td>سود خالص</td><td>${netProfit.toLocaleString()} میلیون</td></tr>
+                    <tr><td>وجه نقد پایان دوره</td><td>${endCash.toLocaleString()} میلیون</td></tr>
+                    <tr class="highlight"><td><strong>ترازنامه</strong></td><td>${Math.abs(totalAssets - totalLiab - equity) < 1 ? '✅ متعادل' : '⚠️ عدم تعادل'}</td></tr>
+                </table></div>
+                <div class="result-box ${netProfit >= 0 ? 'success' : 'error'}">${netProfit >= 0 ? '📈 سود خالص: ' + netProfit.toLocaleString() + ' میلیون تومان' : '📉 زیان خالص: ' + Math.abs(netProfit).toLocaleString() + ' میلیون تومان'}</div>
+            `;
+            if (!window._simDone) { window._simDone = true; done++; upd(); }
+        });
+
+        // آزمونک نهایی
+        const quizData = [
+            { q: 'اولین گام در چرخه حسابداری چیست؟', opts: ['تهیه ترازنامه', 'ثبت در دفتر روزنامه', 'تحلیل نسبت‌ها', 'بستن حساب‌ها'], ans: 1 },
+            { q: 'کدام یک از صورت‌های مالی وضعیت را در یک لحظه نشان می‌دهد؟', opts: ['سود و زیان', 'جریان وجوه نقد', 'ترازنامه', 'سود انباشته'], ans: 2 },
+            { q: 'اگر نسبت جاری ۱.۵ باشد، یعنی چه؟', opts: ['شرکت ورشکسته است', 'دارایی‌های جاری ۱.۵ برابر بدهی‌های جاری است', 'بدهی‌ها بیشتر از دارایی‌هاست', 'شرکت سود نکرده'], ans: 1 },
+            { q: 'هدف نهایی حسابداری چیست؟', opts: ['پرداخت مالیات کمتر', 'ارائه اطلاعات مفید برای تصمیم‌گیری', 'ثبت تمام رویدادها', 'افزایش فروش'], ans: 1 },
+        ];
+        const qc = document.getElementById('quizContainer');
+        let qa = 0, qco = 0, qf = false;
+        quizData.forEach((q, idx) => {
+            const block = document.createElement('div'); block.className = 'quiz-block';
+            block.innerHTML = '<strong>' + (idx+1) + '. ' + q.q + '</strong>';
+            q.opts.forEach((opt, optIdx) => {
+                const btn = document.createElement('button'); btn.className = 'quiz-opt'; btn.textContent = opt;
+                btn.addEventListener('click', () => {
+                    if (btn.disabled) return;
+                    const all = block.querySelectorAll('.quiz-opt'); all.forEach(b => b.disabled = true);
+                    if (optIdx === q.ans) { btn.classList.add('correct'); qco++; }
+                    else { btn.classList.add('wrong'); all[q.ans].classList.add('correct'); }
+                    qa++;
+                    if (qa === quizData.length && !qf) { qf = true; document.getElementById('quizScore').innerHTML = '🎯 نتیجه: ' + qco + ' از ' + quizData.length; done++; upd(); }
+                });
+                block.appendChild(btn);
+            });
+            qc.appendChild(block);
+        });
+    </script>
+</body>
+</html>

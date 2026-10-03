@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>واژه‌نامه جامع حسابداری | کیانوش کریمی</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --text: #f0f0f0;
+            --text2: #c0c0c0;
+            --primary: #fbbf24;
+            --accent: #2dd4bf;
+            --border: rgba(255,255,255,0.1);
+            --radius: 16px;
+            --radius-sm: 10px;
+            direction: rtl;
+            font-size: 15px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Vazirmatn','B Nazanin','Tahoma',sans-serif;
+            background: #0a0a0a; color: var(--text); line-height: 1.8;
+            min-height: 100vh; padding: 12px; display: flex; justify-content: center;
+            position: relative; overflow-x: hidden;
+        }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0.55; }
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1.4); opacity: 0; }
+        }
+        .container { position: relative; z-index: 1; max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 14px; }
+        .header {
+            background: rgba(24,24,24,0.7); backdrop-filter: blur(22px);
+            border: 1px solid var(--border); border-radius: 24px;
+            padding: 20px 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .header::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #fbbf24, #22c55e, #fbbf24);
+            background-size: 200% 100%; animation: headerBar 3s linear infinite;
+        }
+        @keyframes headerBar { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+        .glow-text {
+            font-size: 1.8rem; font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #22c55e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .search-box { margin: 15px 0; }
+        .search-box input {
+            width: 100%; padding: 14px 18px; border-radius: 28px; border: 2px solid rgba(255,255,255,0.15);
+            background: #1a1a1a; color: #f0f0f0; font-family: inherit; font-size: 1rem;
+        }
+        .search-box input:focus { border-color: #fbbf24; outline: none; }
+        .card {
+            background: rgba(24,24,24,0.65); backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius);
+            padding: 18px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .term { margin: 12px 0; padding: 14px; background: rgba(40,40,40,0.4); border-radius: var(--radius-sm); border-right: 3px solid #fbbf24; }
+        .term h3 { color: #fbbf24; margin-bottom: 4px; font-size: 1.05rem; }
+        .term p { color: #c0c0c0; font-size: 0.9rem; }
+        .footer { text-align: center; font-size: 0.75rem; color: #666; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div class="particles" id="pc"></div>
+    <div class="container">
+        <div class="header">
+            <h1 class="glow-text">📖 واژه‌نامه جامع حسابداری</h1>
+            <p style="color:#c0c0c0;">از پایه تا پیشرفته — ۶۰+ اصطلاح ضروری</p>
+            <div class="search-box"><input type="text" id="searchInput" placeholder="🔍 جستجوی اصطلاح..."></div>
+        </div>
+        <div class="card" id="glossaryContainer">
+            <div class="term"><h3>دارایی (Asset)</h3><p>منابع اقتصادی تحت کنترل واحد تجاری که انتظار می‌رود منافع آتی ایجاد کند. شامل دارایی‌های جاری (نقد، دریافتنی) و غیرجاری (زمین، ساختمان).</p></div>
+            <div class="term"><h3>بدهی (Liability)</h3><p>تعهدات مالی واحد تجاری در برابر دیگران که از معاملات گذشته ناشی شده و باید با پرداخت پول یا خدمات تسویه شود.</p></div>
+            <div class="term"><h3>سرمایه (Equity)</h3><p>حقوق مالکانه صاحب یا صاحبان کسب‌وکار نسبت به دارایی‌های خالص (دارایی‌ها منهای بدهی‌ها).</p></div>
+            <div class="term"><h3>درآمد (Revenue)</h3><p>افزایش در حقوق مالکانه ناشی از فعالیت‌های اصلی شرکت (فروش کالا یا خدمات).</p></div>
+            <div class="term"><h3>هزینه (Expense)</h3><p>کاهش در حقوق مالکانه ناشی از مصرف منابع برای کسب درآمد (حقوق، اجاره، استهلاک).</p></div>
+            <div class="term"><h3>دفتر روزنامه (General Journal)</h3><p>محل ثبت اولیه رویدادهای مالی به ترتیب تاریخ وقوع.</p></div>
+            <div class="term"><h3>دفتر کل (General Ledger)</h3><p>مجموعه‌ای از حساب‌ها که ثبت‌های دفتر روزنامه به آن منتقل و تفکیک می‌شوند.</p></div>
+            <div class="term"><h3>تراز آزمایشی (Trial Balance)</h3><p>فهرستی از مانده تمام حساب‌های دفتر کل برای بررسی تساوی جمع بدهکاران و بستانکاران.</p></div>
+            <div class="term"><h3>صورت سود و زیان (Income Statement)</h3><p>گزارشی که درآمدها، هزینه‌ها و نتیجه عملیات (سود یا زیان) یک دوره مالی را نشان می‌دهد.</p></div>
+            <div class="term"><h3>ترازنامه (Balance Sheet)</h3><p>گزارشی که وضعیت مالی (دارایی‌ها، بدهی‌ها، سرمایه) را در یک تاریخ مشخص نشان می‌دهد.</p></div>
+            <div class="term"><h3>صورت جریان وجوه نقد (Cash Flow Statement)</h3><p>گزارشی که ورود و خروج واقعی پول نقد را در سه بخش عملیاتی، سرمایه‌گذاری و تأمین مالی نشان می‌دهد.</p></div>
+            <div class="term"><h3>مبنای نقدی (Cash Basis)</h3><p>روشی که درآمد را هنگام دریافت پول و هزینه را هنگام پرداخت شناسایی می‌کند.</p></div>
+            <div class="term"><h3>مبنای تعهدی (Accrual Basis)</h3><p>روشی که درآمد را هنگام کسب (فروش) و هزینه را هنگام تحمل شناسایی می‌کند، صرف‌نظر از زمان دریافت/پرداخت پول.</p></div>
+            <div class="term"><h3>استهلاک (Depreciation)</h3><p>تخصیص سیستماتیک بهای تمام‌شده دارایی‌های مشهود به دوره‌های استفاده از آن.</p></div>
+            <div class="term"><h3>استهلاک انباشته (Accumulated Depreciation)</h3><p>حساب دارایی کاهنده که مجموع استهلاک ثبت‌شده یک دارایی را نشان می‌دهد.</p></div>
+            <div class="term"><h3>ذخیره مطالبات مشکوک‌الوصول (Allowance for Doubtful Accounts)</h3><p>برآورد محافظه‌کارانه از مطالباتی که احتمالاً وصول نخواهند شد. یک دارایی کاهنده است.</p></div>
+            <div class="term"><h3>FIFO (اولین صادره از اولین وارده)</h3><p>روش ارزیابی موجودی که فرض می‌کند کالاهای قدیمی‌تر زودتر فروش می‌روند. در تورم سود بیشتری نشان می‌دهد.</p></div>
+            <div class="term"><h3>LIFO (اولین صادره از آخرین وارده)</h3><p>روش ارزیابی موجودی که فرض می‌کند کالاهای جدیدتر زودتر فروش می‌روند. در ایران مجاز نیست.</p></div>
+            <div class="term"><h3>میانگین موزون (Weighted Average)</h3><p>روش ارزیابی موجودی بر اساس میانگین قیمت تمام کالاهای خریداری‌شده.</p></div>
+            <div class="term"><h3>بهای تمام‌شده کالای فروش‌رفته (COGS)</h3><p>هزینه مستقیم کالاهایی که در طول دوره به فروش رفته‌اند.</p></div>
+            <div class="term"><h3>سود ناخالص (Gross Profit)</h3><p>تفاوت بین فروش خالص و بهای تمام‌شده کالای فروش‌رفته.</p></div>
+            <div class="term"><h3>سود عملیاتی (Operating Income)</h3><p>سود ناخالص منهای هزینه‌های عملیاتی (اداری، فروش، حقوق).</p></div>
+            <div class="term"><h3>سود خالص (Net Income)</h3><p>نتیجه نهایی عملیات پس از کسر مالیات از سود قبل از مالیات.</p></div>
+            <div class="term"><h3>نسبت جاری (Current Ratio)</h3><p>دارایی‌های جاری ÷ بدهی‌های جاری. توان پرداخت تعهدات کوتاه‌مدت را نشان می‌دهد.</p></div>
+            <div class="term"><h3>ROE (بازده حقوق صاحبان سهام)</h3><p>سود خالص ÷ حقوق صاحبان سهام. نشان‌دهنده بازدهی سرمایه‌گذاری صاحبان شرکت.</p></div>
+            <div class="term"><h3>نقطه سربه‌سر (Break-Even Point)</h3><p>سطحی از فروش که در آن درآمد کل با هزینه کل برابر و سود صفر است.</p></div>
+            <div class="term"><h3>حاشیه فروش (Contribution Margin)</h3><p>تفاوت بین قیمت فروش و هزینه متغیر هر واحد. برای پوشش هزینه‌های ثابت و ایجاد سود به کار می‌رود.</p></div>
+            <div class="term"><h3>هزینه ثابت (Fixed Cost)</h3><p>هزینه‌ای که با تغییر حجم تولید تغییر نمی‌کند (اجاره، استهلاک).</p></div>
+            <div class="term"><h3>هزینه متغیر (Variable Cost)</h3><p>هزینه‌ای که به تناسب حجم تولید تغییر می‌کند (مواد مستقیم، دستمزد مستقیم).</p></div>
+            <div class="term"><h3>بودجه (Budget)</h3><p>برنامه مالی برای آینده که منابع را تخصیص و عملکرد واقعی با آن مقایسه می‌شود.</p></div>
+            <div class="term"><h3>مالیات بر ارزش افزوده (VAT)</h3><p>مالیات غیرمستقیم که در هر مرحله از زنجیره تأمین به ارزش افزوده‌شده تعلق می‌گیرد. نرخ آن در ایران ۹٪ است.</p></div>
+            <div class="term"><h3>مالیات بر درآمد (Income Tax)</h3><p>مالیات مستقیم که بر سود خالص اشخاص حقیقی و حقوقی تعلق می‌گیرد (۲۵٪ برای اشخاص حقوقی).</p></div>
+            <div class="term"><h3>پیمانکاری (Contract Accounting)</h3><p>حسابداری پروژه‌های بلندمدت که در آن سود به تناسب پیشرفت کار شناسایی می‌شود.</p></div>
+            <div class="term"><h3>IFRS</h3><p>استانداردهای بین‌المللی گزارشگری مالی که توسط IASB تدوین می‌شود و بر ارزش منصفانه تأکید دارد.</p></div>
+            <div class="term"><h3>حساب‌های دریافتنی (Accounts Receivable)</h3><p>مطالبات شرکت از مشتریان بابت فروش‌های نسیه.</p></div>
+            <div class="term"><h3>حساب‌های پرداختنی (Accounts Payable)</h3><p>بدهی‌های شرکت به تأمین‌کنندگان بابت خریدهای نسیه.</p></div>
+            <div class="term"><h3>پیش‌پرداخت (Prepaid Expense)</h3><p>پرداخت‌هایی که برای خدمات یا کالاهای آینده انجام شده و هنوز به هزینه تبدیل نشده‌اند.</p></div>
+            <div class="term"><h3>هزینه معوق (Accrued Expense)</h3><p>هزینه‌هایی که تحمل شده‌اند اما هنوز پرداخت یا ثبت نشده‌اند (مثل حقوق معوق).</p></div>
+            <div class="term"><h3>درآمد معوق (Unearned Revenue)</h3><p>پیش‌دریافت‌هایی که هنوز کسب نشده‌اند و به عنوان بدهی ثبت می‌شوند.</p></div>
+            <div class="term"><h3>ثبت تعدیلی (Adjusting Entry)</h3><p>ثبتی که در پایان دوره برای تطبیق حساب‌ها با واقعیت (پیش‌پرداخت‌ها، استهلاک، معوقات) انجام می‌شود.</p></div>
+            <div class="term"><h3>بستن حساب‌ها (Closing Entries)</h3><p>فرایند انتقال مانده حساب‌های موقت (درآمد، هزینه) به حساب سود انباشته در پایان سال مالی.</p></div>
+            <div class="term"><h3>سود انباشته (Retained Earnings)</h3><p>مجموع سودهای خالص دوران گذشته که بین سهامداران تقسیم نشده و در شرکت باقی مانده است.</p></div>
+            <div class="term"><h3>سرمایه در گردش (Working Capital)</h3><p>تفاوت دارایی‌های جاری و بدهی‌های جاری. معیاری برای سنجش نقدینگی.</p></div>
+            <div class="term"><h3>نسبت بدهی (Debt Ratio)</h3><p>کل بدهی‌ها ÷ کل دارایی‌ها. نشان‌دهنده اهرم مالی و ریسک شرکت.</p></div>
+            <div class="term"><h3>گردش موجودی (Inventory Turnover)</h3><p>بهای تمام‌شده کالای فروش‌رفته ÷ متوسط موجودی. سرعت فروش موجودی را نشان می‌دهد.</p></div>
+            <div class="term"><h3>حقوق اقلیت (Minority Interest)</h3><p>سهم سهامداران جزء از خالص دارایی‌های شرکت فرعی در صورت‌های مالی تلفیقی.</p></div>
+            <div class="term"><h3>سرقفلی (Goodwill)</h3><p>مابه‌التفاوت ارزش خرید یک شرکت بیش از ارزش منصفانه خالص دارایی‌های آن.</p></div>
+            <div class="term"><h3>ذخیره ضرایب (Provision for Foreseeable Losses)</h3><p>ذخیره‌ای که در پروژه‌های پیمانکاری زیان‌ده برای شناسایی کل زیان پیش‌بینی‌شده استفاده می‌شود.</p></div>
+            <div class="term"><h3>اصل بهای تمام‌شده (Cost Principle)</h3><p>دارایی‌ها باید به بهای پرداخت‌شده در تاریخ تحصیل ثبت شوند، نه ارزش جاری.</p></div>
+            <div class="term"><h3>اصل تطابق (Matching Principle)</h3><p>هزینه‌ها باید در همان دوره‌ای شناسایی شوند که درآمدهای مرتبط با آن‌ها شناسایی می‌شوند.</p></div>
+            <div class="term"><h3>اصل محافظه‌کاری (Conservatism)</h3><p>در شرایط ابهام، حسابداری باید روشی را انتخاب کند که دارایی‌ها و سود را کمتر و بدهی‌ها و زیان را بیشتر نشان دهد.</p></div>
+            <div class="term"><h3>حسابداری صنعتی (Cost Accounting)</h3><p>شاخه‌ای از حسابداری که به اندازه‌گیری، ثبت و گزارش بهای تمام‌شده محصولات می‌پردازد.</p></div>
+            <div class="term"><h3>سربار ساخت (Manufacturing Overhead)</h3><p>هزینه‌های غیرمستقیم تولید (برق کارخانه، استهلاک ماشین‌آلات، سرپرستی) که باید به محصولات تخصیص یابد.</p></div>
+            <div class="term"><h3>هزینه‌یابی سفارش کار (Job Order Costing)</h3><p>سیستمی برای ردیابی هزینه‌های مواد، دستمزد و سربار برای هر سفارش منحصربه‌فرد.</p></div>
+            <div class="term"><h3>تحلیل CVP (Cost-Volume-Profit)</h3><p>ابزاری مدیریتی برای بررسی رابطه بین هزینه‌ها، حجم تولید/فروش و سود.</p></div>
+            <div class="term"><h3>صورت‌های مالی تلفیقی (Consolidated Financial Statements)</h3><p>صورت‌های مالی که وضعیت گروه (شرکت اصلی و فرعی) را به عنوان یک شخصیت واحد نشان می‌دهد.</p></div>
+            <div class="term"><h3>جذب سربار (Overhead Absorption)</h3><p>فرایند تخصیص سربار ساخت به محصولات بر اساس یک نرخ از پیش تعیین‌شده.</p></div>
+            <div class="term"><h3>کالای در جریان ساخت (Work in Process)</h3><p>محصولاتی که فرایند تولید آن‌ها آغاز شده اما هنوز تکمیل نشده‌اند.</p></div>
+            <div class="term"><h3>تعهدی (Accrual)</h3><p>شناسایی درآمد یا هزینه پیش از دریافت یا پرداخت وجه نقد.</p></div>
+            <div class="term"><h3>دفتر معین (Subsidiary Ledger)</h3><p>دفتری که جزئیات یک حساب خاص (مثل حساب‌های دریافتنی) را نشان می‌دهد و مکمل دفتر کل است.</p></div>
+            <div class="term"><h3>سند حسابداری (Voucher)</h3><p>مدرک مثبته‌ای (فاکتور، رسید، چک) که مبنای ثبت رویداد مالی در دفتر روزنامه است.</p></div>
+            <div class="term"><h3>مانده‌گیری (Balancing)</h3><p>محاسبه مانده یک حساب از طریق کسر جمع بستانکار از جمع بدهکار (یا برعکس).</p></div>
+            <div class="term"><h3>گزارش حسابرسی (Audit Report)</h3><p>نظر حسابرس مستقل درباره مطلوبیت صورت‌های مالی.</p></div>
+            <div class="term"><h3>اظهارنامه مالیاتی (Tax Return)</h3><p>فرمی که مؤدی مالیاتی برای گزارش درآمدها، هزینه‌ها و محاسبه مالیات به سازمان مالیاتی ارائه می‌دهد.</p></div>
+        </div>
+        <div class="footer">✍️ کیانوش کریمی | 📅 ۱۴۰۴ | ۶۰+ اصطلاح ضروری</div>
+    </div>
+    <script>
+        const pc=document.getElementById('pc');
+        for(let i=0;i<50;i++){
+            const p=document.createElement('div');p.classList.add('particle');
+            const s=Math.random()*5+2;
+            p.style.width=s+'px';p.style.height=s+'px';
+            p.style.left=Math.random()*100+'%';
+            p.style.animationDuration=Math.random()*18+10+'s';
+            p.style.animationDelay=Math.random()*12+'s';
+            const colors=['#fbbf24','#22c55e','#ef4444','#2dd4bf','#f59e0b'];
+            p.style.background=colors[Math.floor(Math.random()*colors.length)];
+            p.style.boxShadow=`0 0 ${s+3}px ${p.style.background}`;
+            pc.appendChild(p);
+        }
+        document.getElementById('searchInput').addEventListener('keyup',function(){
+            const filter=this.value.toLowerCase();
+            document.querySelectorAll('.term').forEach(term=>{
+                const text=term.textContent.toLowerCase();
+                term.style.display=text.includes(filter)?'block':'none';
+            });
+        });
+    </script>
+</body>
+</html>

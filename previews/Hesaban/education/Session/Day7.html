@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>جلسه هفتم: صورت جریان وجوه نقد | کیانوش کریمی</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: rgba(24, 24, 24, 0.75);
+            --surface2: rgba(40, 40, 40, 0.5);
+            --text: #f0f0f0;
+            --text2: #c0c0c0;
+            --primary: #fbbf24;
+            --primary-light: #fde68a;
+            --primary-dark: #92400e;
+            --accent: #2dd4bf;
+            --accent-light: rgba(45, 212, 191, 0.15);
+            --danger: #ef4444;
+            --danger-light: rgba(239, 68, 68, 0.15);
+            --success: #22c55e;
+            --success-light: rgba(34, 197, 94, 0.15);
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+            --shadow: 0 4px 20px rgba(0,0,0,0.5);
+            --shadow-lg: 0 12px 30px rgba(0,0,0,0.6);
+            --radius-sm: 10px;
+            --radius: 16px;
+            --radius-lg: 24px;
+            --transition: 0.2s ease;
+            direction: rtl;
+            font-size: 15px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Vazirmatn', 'B Nazanin', 'Tahoma', sans-serif;
+            background: #0a0a0a;
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            opacity: 0.55;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1.4); opacity: 0; }
+        }
+        .drift-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            animation: drift 12s ease-in-out infinite;
+            opacity: 0.2;
+            background: radial-gradient(circle at 30% 40%, #fbbf24 0%, transparent 40%),
+                radial-gradient(circle at 70% 60%, #22c55e 0%, transparent 40%),
+                radial-gradient(circle at 50% 20%, #ef4444 0%, transparent 35%);
+        }
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(18px); }
+            100% { transform: translateX(0); }
+        }
+
+        .container { position: relative; z-index: 1; max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 14px; }
+
+        .header {
+            background: rgba(24, 24, 24, 0.7);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-lg);
+            padding: 20px 18px 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #fbbf24, #22c55e, #fbbf24);
+            background-size: 200% 100%;
+            animation: headerBar 3s linear infinite;
+        }
+        @keyframes headerBar {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .session-badge {
+            display: inline-block;
+            background: rgba(251,191,36,0.2);
+            color: #fbbf24;
+            padding: 4px 18px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            border: 1px solid rgba(251,191,36,0.3);
+        }
+        .glow-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 6px 0;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 6px rgba(251,191,36,0.4)); }
+            100% { filter: drop-shadow(0 0 16px rgba(34,197,94,0.7)); }
+        }
+        .subtitle { font-size: 0.9rem; color: #c0c0c0; }
+
+        .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin-top: 8px; }
+        .toolbar button {
+            background: rgba(40,40,40,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #e0e0e0;
+            padding: 7px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .toolbar button:active { transform: scale(0.96); background: #fbbf24; color: #000; border-color: #fbbf24; }
+
+        .card {
+            background: rgba(24, 24, 24, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius);
+            padding: 18px 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+            transition: 0.2s;
+        }
+        .card:hover { border-color: rgba(251,191,36,0.25); }
+        .card h2 {
+            font-size: 1.25rem;
+            color: #fbbf24;
+            border-bottom: 2px solid rgba(251,191,36,0.2);
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .card h3 { font-size: 1.05rem; color: #2dd4bf; margin: 12px 0 6px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 500px) { .grid-2 { grid-template-columns: 1fr; } }
+
+        .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 12px 0; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.08); }
+        table { width: 100%; min-width: 450px; border-collapse: collapse; background: rgba(20,20,20,0.5); font-size: 0.85rem; }
+        th { background: #fbbf24; color: #000; padding: 10px 6px; font-weight: 700; text-align: center; font-size: 0.8rem; white-space: nowrap; }
+        td { padding: 9px 6px; border-bottom: 1px solid rgba(255,255,255,0.06); text-align: center; }
+        .highlight { background: rgba(251,191,36,0.18); font-weight: 700; }
+
+        .sim-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0; padding: 12px; background: rgba(40,40,40,0.4); border-radius: var(--radius-sm); font-size: 0.9rem; }
+        .sim-row label { font-weight: 600; white-space: nowrap; min-width: 70px; }
+        .sim-row input, .sim-row select {
+            flex: 1; min-width: 100px; padding: 10px 12px; border-radius: var(--radius-sm);
+            border: 2px solid rgba(255,255,255,0.15); font-family: inherit; font-size: 0.9rem;
+            background: #1a1a1a; color: #f0f0f0; transition: 0.2s;
+        }
+        .sim-row input:focus, .sim-row select:focus { border-color: #fbbf24; outline: none; box-shadow: 0 0 0 3px rgba(251,191,36,0.15); }
+
+        .btn {
+            display: inline-block; padding: 10px 22px; border-radius: 25px; border: none;
+            font-family: inherit; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: 0.2s; text-align: center;
+        }
+        .btn-primary { background: #fbbf24; color: #000; }
+        .btn-primary:active { background: #f59e0b; transform: scale(0.96); }
+        .btn-outline { background: transparent; border: 2px solid #fbbf24; color: #fbbf24; }
+
+        .result-box { text-align: center; padding: 14px; border-radius: var(--radius-sm); margin-top: 10px; font-weight: 700; font-size: 0.95rem; }
+        .result-box.success { background: var(--success-light); color: var(--success); border: 1px solid var(--success); }
+        .result-box.error { background: var(--danger-light); color: var(--danger); border: 1px solid var(--danger); }
+        .result-box.info { background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); }
+
+        .quiz-block { margin: 10px 0; padding: 14px; background: rgba(40,40,40,0.4); border-radius: var(--radius-sm); }
+        .quiz-block strong { display: block; margin-bottom: 8px; }
+        .quiz-opt {
+            display: block; width: 100%; text-align: right; padding: 10px 14px; margin: 5px 0;
+            background: rgba(20,20,20,0.6); border: 2px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm);
+            cursor: pointer; font-family: inherit; font-size: 0.9rem; transition: 0.2s; color: #e0e0e0;
+        }
+        .quiz-opt.correct { background: rgba(34,197,94,0.2); border-color: #22c55e; color: #22c55e; font-weight: 700; }
+        .quiz-opt.wrong { background: rgba(239,68,68,0.2); border-color: #ef4444; color: #ef4444; }
+        .quiz-opt:disabled { pointer-events: none; opacity: 0.85; }
+
+        .progress-bar { height: 6px; background: rgba(40,40,40,0.6); border-radius: 6px; overflow: hidden; margin: 4px 0 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #fbbf24, #22c55e); width: 0%; transition: width 0.4s; border-radius: 6px; }
+
+        details { margin: 8px 0; }
+        summary {
+            font-weight: 700; cursor: pointer; padding: 8px 0; color: #fbbf24;
+            border-bottom: 1px dashed rgba(251,191,36,0.2); outline: none;
+        }
+
+        .footer { text-align: center; font-size: 0.75rem; color: #666; padding: 10px; }
+        ::-webkit-scrollbar { height: 4px; width: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="particles" id="particlesContainer"></div>
+    <div class="drift-layer"></div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <span class="session-badge">💵 جلسه ۷ از ۲۴</span>
+            <h1 class="glow-text">صورت جریان وجوه نقد</h1>
+            <p class="subtitle">ورود و خروج واقعی پول — پادشاه گزارش‌های مالی</p>
+            <div class="toolbar">
+                <button id="printBtn">🖨️ چاپ</button>
+                <button id="resetBtn">🔄 بازنشانی</button>
+                <span style="font-size:0.75rem;color:#c0c0c0;">👤 کیانوش کریمی</span>
+            </div>
+        </div>
+
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+        <!-- ۱. مفهوم -->
+        <div class="card">
+            <h2>📖 صورت جریان وجوه نقد چیست؟</h2>
+            <p>صورت جریان وجوه نقد (Cash Flow Statement) نشان‌دهنده <strong>دریافت‌ها و پرداخت‌های واقعی پول</strong> طی یک دوره مالی است. برخلاف صورت سود و زیان که بر مبنای تعهدی تهیه می‌شود، این گزارش فقط پول نقدی که وارد یا خارج شده را نشان می‌دهد. به همین دلیل به آن «گزارش واقعی پول» گفته می‌شود.</p>
+            <details>
+                <summary>➕ چرا سود با پول نقد متفاوت است؟</summary>
+                <p style="margin-top:8px;">چون در حسابداری تعهدی، درآمد هنگام فروش شناسایی می‌شود (حتی اگر پولش وصول نشده باشد) و هزینه هنگام تحمل شناسایی می‌شود (حتی اگر پرداخت نشده باشد). اما صورت جریان وجوه نقد فقط حرکت واقعی پول را نشان می‌دهد. یک شرکت می‌تواند سودده باشد اما پول نقد نداشته باشد!</p>
+            </details>
+        </div>
+
+        <!-- ۲. سه بخش اصلی -->
+        <div class="card">
+            <h2>🧱 سه بخش اصلی</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>🔹 فعالیت‌های عملیاتی</h3>
+                    <p style="font-size:0.9rem;">جریان‌های نقدی ناشی از فعالیت‌های اصلی شرکت.</p>
+                    <ul style="padding-right:16px;font-size:0.9rem;color:#c0c0c0;">
+                        <li>دریافت از مشتریان</li>
+                        <li>پرداخت به تأمین‌کنندگان</li>
+                        <li>پرداخت حقوق و دستمزد</li>
+                        <li>پرداخت مالیات</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>🔹 فعالیت‌های سرمایه‌گذاری</h3>
+                    <p style="font-size:0.9rem;">خرید و فروش دارایی‌های بلندمدت.</p>
+                    <ul style="padding-right:16px;font-size:0.9rem;color:#c0c0c0;">
+                        <li>خرید ساختمان یا تجهیزات</li>
+                        <li>فروش دارایی‌های ثابت</li>
+                        <li>سرمایه‌گذاری در اوراق بهادار</li>
+                    </ul>
+                </div>
+                <div></div>
+                <div>
+                    <h3>🔹 فعالیت‌های تأمین مالی</h3>
+                    <p style="font-size:0.9rem;">تأمین منابع از مالکان و اعتباردهندگان.</p>
+                    <ul style="padding-right:16px;font-size:0.9rem;color:#c0c0c0;">
+                        <li>دریافت وام</li>
+                        <li>بازپرداخت وام</li>
+                        <li>افزایش سرمایه</li>
+                        <li>پرداخت سود سهام</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ۳. روش غیرمستقیم -->
+        <div class="card">
+            <h2>🪜 روش غیرمستقیم (بخش عملیاتی)</h2>
+            <p>در روش غیرمستقیم، از سود خالص شروع می‌کنیم و با حذف اقلام غیرنقدی (مانند استهلاک) و تعدیل تغییرات در دارایی‌ها و بدهی‌های جاری، به جریان نقدی عملیاتی می‌رسیم:</p>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>شرح</th><th>مبلغ (تومان)</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>سود خالص</strong></td><td>۱۵۰,۰۰۰,۰۰۰</td></tr>
+                        <tr><td>➕ استهلاک (غیرنقدی)</td><td>۲۰,۰۰۰,۰۰۰</td></tr>
+                        <tr><td>➕ افزایش حساب‌های پرداختنی</td><td>۱۰,۰۰۰,۰۰۰</td></tr>
+                        <tr><td>➖ افزایش حساب‌های دریافتنی</td><td>(۳۰,۰۰۰,۰۰۰)</td></tr>
+                        <tr><td>➖ افزایش موجودی کالا</td><td>(۱۵,۰۰۰,۰۰۰)</td></tr>
+                        <tr class="highlight"><td><strong>جریان نقدی عملیاتی</strong></td><td><strong>۱۳۵,۰۰۰,۰۰۰</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <details>
+                <summary>➕ نکته: افزایش دارایی جاری = مصرف پول | افزایش بدهی جاری = تولید پول</summary>
+                <p style="margin-top:8px;">وقتی حساب‌های دریافتنی افزایش می‌یابد، یعنی فروش انجام شده اما پولش وصول نشده ← مصرف پول. وقتی حساب‌های پرداختنی افزایش می‌یابد، یعنی خرید انجام شده اما پولش پرداخت نشده ← تولید پول.</p>
+            </details>
+        </div>
+
+        <!-- ۴. نمونه کامل -->
+        <div class="card">
+            <h2>🧾 نمونه کامل — شرکت «صبا»</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th colspan="2">صورت جریان وجوه نقد (سال ۱۴۰۳)</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>الف) جریان نقدی عملیاتی:</strong></td><td></td></tr>
+                        <tr><td>دریافت از مشتریان</td><td>۵۰۰,۰۰۰,۰۰۰</td></tr>
+                        <tr><td>پرداخت به تأمین‌کنندگان</td><td>(۲۵۰,۰۰۰,۰۰۰)</td></tr>
+                        <tr><td>پرداخت حقوق</td><td>(۱۰۰,۰۰۰,۰۰۰)</td></tr>
+                        <tr><td><strong>جریان عملیاتی</strong></td><td><strong>۱۵۰,۰۰۰,۰۰۰</strong></td></tr>
+                        <tr><td><strong>ب) جریان نقدی سرمایه‌گذاری:</strong></td><td></td></tr>
+                        <tr><td>خرید ماشین‌آلات</td><td>(۸۰,۰۰۰,۰۰۰)</td></tr>
+                        <tr><td><strong>جریان سرمایه‌گذاری</strong></td><td><strong>(۸۰,۰۰۰,۰۰۰)</strong></td></tr>
+                        <tr><td><strong>ج) جریان نقدی تأمین مالی:</strong></td><td></td></tr>
+                        <tr><td>دریافت وام بانکی</td><td>۱۰۰,۰۰۰,۰۰۰</td></tr>
+                        <tr><td><strong>جریان تأمین مالی</strong></td><td><strong>۱۰۰,۰۰۰,۰۰۰</strong></td></tr>
+                        <tr class="highlight"><td><strong>خالص افزایش (کاهش) وجه نقد</strong></td><td><strong>۱۷۰,۰۰۰,۰۰۰</strong></td></tr>
+                        <tr><td>وجه نقد ابتدای دوره</td><td>۵۰,۰۰۰,۰۰۰</td></tr>
+                        <tr class="highlight"><td><strong>وجه نقد پایان دوره</strong></td><td><strong>۲۲۰,۰۰۰,۰۰۰</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ۵. شبیه‌ساز -->
+        <div class="card">
+            <h2>🕹️ شبیه‌ساز جریان وجوه نقد</h2>
+            <p style="font-size:0.85rem;">داده‌ها را وارد کنید تا جریان نقدی عملیاتی، سرمایه‌گذاری، تأمین مالی و وجه نقد پایان دوره محاسبه شود:</p>
+            <div class="sim-row"><label>💰 دریافت از مشتریان:</label><input type="number" id="simSalesCash" value="500000000"></div>
+            <div class="sim-row"><label>📦 پرداخت به تأمین‌کنندگان:</label><input type="number" id="simSupplierPay" value="250000000"></div>
+            <div class="sim-row"><label>👥 پرداخت حقوق:</label><input type="number" id="simSalaryPay" value="100000000"></div>
+            <div class="sim-row"><label>🏭 خرید ماشین‌آلات:</label><input type="number" id="simMachineryBuy" value="80000000"></div>
+            <div class="sim-row"><label>🏦 دریافت وام:</label><input type="number" id="simLoanIn" value="100000000"></div>
+            <div class="sim-row"><label>📅 وجه نقد ابتدای دوره:</label><input type="number" id="simBegCash" value="50000000"></div>
+            <button class="btn btn-primary" id="simCalc" style="width:100%;margin-top:10px;">⚡ محاسبه</button>
+            <div id="simResult" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- ۶. تمرین -->
+        <div class="card">
+            <h2>✍️ تمرین عملی</h2>
+            <details>
+                <summary>📌 تمرین — شرکت «نیکان»</summary>
+                <div style="margin-top:8px;">
+                    <p>اطلاعات زیر برای سال ۱۴۰۴ است. جریان نقدی عملیاتی و وجه نقد پایان دوره را محاسبه کنید:</p>
+                    <ul style="padding-right:16px;font-size:0.9rem;">
+                        <li>دریافت از مشتریان: ۳۲۰,۰۰۰,۰۰۰</li>
+                        <li>پرداخت به تأمین‌کنندگان: ۱۴۰,۰۰۰,۰۰۰</li>
+                        <li>پرداخت حقوق: ۸۰,۰۰۰,۰۰۰</li>
+                        <li>فروش زمین (سرمایه‌گذاری): ۹۰,۰۰۰,۰۰۰</li>
+                        <li>بازپرداخت وام (تأمین مالی): ۵۰,۰۰۰,۰۰۰</li>
+                        <li>وجه نقد ابتدای دوره: ۳۰,۰۰۰,۰۰۰</li>
+                    </ul>
+                    <button class="btn btn-outline show-answer-btn">🔍 نمایش پاسخ</button>
+                    <div class="answer-content" style="display:none;margin-top:8px;">
+                        <p>عملیاتی: ۳۲۰ − ۱۴۰ − ۸۰ = <strong>۱۰۰,۰۰۰,۰۰۰</strong><br>
+                        سرمایه‌گذاری: +۹۰,۰۰۰,۰۰۰<br>
+                        تأمین مالی: −۵۰,۰۰۰,۰۰۰<br>
+                        خالص تغییر: ۱۰۰ + ۹۰ − ۵۰ = <strong>۱۴۰,۰۰۰,۰۰۰</strong><br>
+                        پایان دوره: ۳۰ + ۱۴۰ = <strong>۱۷۰,۰۰۰,۰۰۰</strong></p>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <!-- ۷. آزمونک -->
+        <div class="card">
+            <h2>🧠 آزمونک جلسه هفتم</h2>
+            <div id="quizContainer"></div>
+            <div id="quizScore" style="text-align:center;font-weight:700;margin-top:8px;"></div>
+        </div>
+
+        <!-- جمع‌بندی -->
+        <div class="card">
+            <h2>📌 جمع‌بندی</h2>
+            <ul style="padding-right:18px;font-size:0.9rem;">
+                <li>صورت جریان وجوه نقد حرکت واقعی پول را نشان می‌دهد.</li>
+                <li>سه بخش: <strong>عملیاتی</strong> (فعالیت اصلی)، <strong>سرمایه‌گذاری</strong> (دارایی‌های بلندمدت)، <strong>تأمین مالی</strong> (منابع مالی).</li>
+                <li>وجه نقد پایان دوره = وجه نقد ابتدای دوره + خالص جریان‌های سه بخش.</li>
+                <li>این گزارش برای تحلیل نقدینگی و توان پرداخت حیاتی است.</li>
+            </ul>
+        </div>
+
+        <div class="card" style="text-align:center;">
+            <p style="font-size:0.85rem;color:#c0c0c0;">🔜 جلسه هشتم: <strong>حسابداری نقدی و تعهدی</strong> — تفاوت مبنای شناسایی درآمد و هزینه</p>
+        </div>
+
+        <div class="footer">✍️ تهیه و تنظیم: کیانوش کریمی | 📅 ۱۴۰۴</div>
+    </div>
+
+    <script>
+        // ░░ ذرات پس‌زمینه ░░
+        const pc = document.getElementById('particlesContainer');
+        for (let i = 0; i < 50; i++) {
+            const p = document.createElement('div'); p.classList.add('particle');
+            const s = Math.random() * 5 + 2;
+            p.style.width = s + 'px'; p.style.height = s + 'px';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = Math.random() * 18 + 10 + 's';
+            p.style.animationDelay = Math.random() * 12 + 's';
+            const colors = ['#fbbf24', '#22c55e', '#ef4444', '#2dd4bf', '#f59e0b'];
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            p.style.boxShadow = `0 0 ${s+3}px ${p.style.background}`;
+            pc.appendChild(p);
+        }
+
+        const pf = document.getElementById('progressFill');
+        let done = 0;
+        const total = 3; // simulator, manual exercise, quiz
+        function upd() { pf.style.width = Math.round((done/total)*100) + '%'; }
+
+        // ░░ Toolbar ░░
+        document.getElementById('printBtn').addEventListener('click', () => window.print());
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            document.querySelectorAll('input[type=number]').forEach(i => {
+                if (i.id.startsWith('sim')) i.value = i.defaultValue;
+            });
+            document.getElementById('simResult').innerHTML = '';
+            document.querySelectorAll('.answer-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('correct','wrong'));
+            document.getElementById('quizScore').innerHTML = '';
+            done = 0; upd();
+            window.scrollTo({top:0,behavior:'smooth'});
+        });
+
+        // ░░ شبیه‌ساز جریان نقد ░░
+        document.getElementById('simCalc').addEventListener('click', () => {
+            const salesCash = parseFloat(document.getElementById('simSalesCash').value) || 0;
+            const supplierPay = parseFloat(document.getElementById('simSupplierPay').value) || 0;
+            const salaryPay = parseFloat(document.getElementById('simSalaryPay').value) || 0;
+            const machineryBuy = parseFloat(document.getElementById('simMachineryBuy').value) || 0;
+            const loanIn = parseFloat(document.getElementById('simLoanIn').value) || 0;
+            const begCash = parseFloat(document.getElementById('simBegCash').value) || 0;
+
+            const opCash = salesCash - supplierPay - salaryPay;
+            const invCash = -machineryBuy; // only purchase, assuming no sale
+            const finCash = loanIn;
+            const netChange = opCash + invCash + finCash;
+            const endCash = begCash + netChange;
+
+            const res = document.getElementById('simResult');
+            res.innerHTML = `
+                <div class="table-wrapper"><table>
+                    <tr><td>جریان عملیاتی</td><td>${opCash.toLocaleString()}</td></tr>
+                    <tr><td>جریان سرمایه‌گذاری</td><td>${invCash.toLocaleString()}</td></tr>
+                    <tr><td>جریان تأمین مالی</td><td>${finCash.toLocaleString()}</td></tr>
+                    <tr><td><strong>خالص تغییر</strong></td><td><strong>${netChange.toLocaleString()}</strong></td></tr>
+                    <tr><td>وجه نقد ابتدای دوره</td><td>${begCash.toLocaleString()}</td></tr>
+                    <tr class="highlight"><td><strong>وجه نقد پایان دوره</strong></td><td><strong>${endCash.toLocaleString()}</strong></td></tr>
+                </table></div>
+                <div class="result-box ${endCash >= 0 ? 'success' : 'error'}">${endCash >= 0 ? '✅ وجه نقد مثبت است' : '❌ وجه نقد منفی — شرکت در خطر کمبود نقدینگی'}</div>
+            `;
+            if (!window._simDone) { window._simDone = true; done++; upd(); }
+        });
+
+        // ░░ پاسخ‌های تمرین‌ها ░░
+        document.querySelectorAll('.show-answer-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                if (answer.style.display === 'none' || !answer.style.display) {
+                    answer.style.display = 'block';
+                    this.textContent = '🔒 مخفی‌کردن پاسخ';
+                    if (!this.dataset.marked) { this.dataset.marked = '1'; done++; upd(); }
+                } else {
+                    answer.style.display = 'none';
+                    this.textContent = '🔍 نمایش پاسخ';
+                }
+            });
+        });
+
+        // ░░ آزمونک ░░
+        const quizData = [
+            { q: 'صورت جریان وجوه نقد چه چیزی را نشان می‌دهد؟', opts: ['سود خالص', 'ورود و خروج واقعی پول', 'دارایی‌های ثابت', 'بدهی‌های بلندمدت'], ans: 1 },
+            { q: 'کدام یک جزو فعالیت‌های عملیاتی نیست؟', opts: ['دریافت از مشتریان', 'پرداخت حقوق', 'خرید ساختمان', 'پرداخت به تأمین‌کنندگان'], ans: 2 },
+            { q: 'دریافت وام بانکی در کدام بخش گزارش می‌شود؟', opts: ['عملیاتی', 'سرمایه‌گذاری', 'تأمین مالی', 'هیچ‌کدام'], ans: 2 },
+            { q: 'اگر جریان عملیاتی ۱۰۰، سرمایه‌گذاری (۴۰) و تأمین مالی ۲۰ باشد، خالص تغییر وجه نقد چند است؟', opts: ['۸۰', '۶۰', '۱۲۰', '۱۶۰'], ans: 0 },
+        ];
+        const quizContainer = document.getElementById('quizContainer');
+        let quizAnswered = 0, quizCorrect = 0, quizFinished = false;
+
+        quizData.forEach((q, idx) => {
+            const block = document.createElement('div'); block.className = 'quiz-block';
+            block.innerHTML = `<strong>${idx+1}. ${q.q}</strong>`;
+            q.opts.forEach((opt, optIdx) => {
+                const btn = document.createElement('button'); btn.className = 'quiz-opt'; btn.textContent = opt;
+                btn.addEventListener('click', () => {
+                    if (btn.disabled) return;
+                    const all = block.querySelectorAll('.quiz-opt'); all.forEach(b => b.disabled = true);
+                    if (optIdx === q.ans) { btn.classList.add('correct'); quizCorrect++; }
+                    else { btn.classList.add('wrong'); all[q.ans].classList.add('correct'); }
+                    quizAnswered++;
+                    if (quizAnswered === quizData.length && !quizFinished) {
+                        quizFinished = true;
+                        document.getElementById('quizScore').innerHTML = `🎯 نتیجه: ${quizCorrect} از ${quizData.length}`;
+                        done++; upd();
+                    }
+                });
+                block.appendChild(btn);
+            });
+            quizContainer.appendChild(block);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>مرکز ماشین‌حساب‌های حسابداری | کیانوش کریمی</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: rgba(24,24,24,0.75);
+            --surface2: rgba(40,40,40,0.5);
+            --text: #f0f0f0;
+            --text2: #c0c0c0;
+            --primary: #fbbf24;
+            --primary-light: #fde68a;
+            --accent: #2dd4bf;
+            --accent-light: rgba(45,212,191,0.15);
+            --danger: #ef4444;
+            --danger-light: rgba(239,68,68,0.15);
+            --success: #22c55e;
+            --success-light: rgba(34,197,94,0.15);
+            --border: rgba(255,255,255,0.1);
+            --shadow: 0 4px 20px rgba(0,0,0,0.5);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-lg: 24px;
+            direction: rtl;
+            font-size: 15px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Vazirmatn','B Nazanin','Tahoma',sans-serif;
+            background: #0a0a0a; color: var(--text); line-height: 1.8;
+            min-height: 100vh; padding: 12px; display: flex; justify-content: center;
+            position: relative; overflow-x: hidden;
+        }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0.55; }
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1.4); opacity: 0; }
+        }
+        .drift-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; animation: drift 12s ease-in-out infinite;
+            opacity: 0.2;
+            background: radial-gradient(circle at 30% 40%, #fbbf24 0%, transparent 40%),
+                radial-gradient(circle at 70% 60%, #22c55e 0%, transparent 40%),
+                radial-gradient(circle at 50% 20%, #ef4444 0%, transparent 35%);
+        }
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(18px); }
+            100% { transform: translateX(0); }
+        }
+        .container { position: relative; z-index: 1; max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 14px; }
+        .header {
+            background: rgba(24,24,24,0.7); backdrop-filter: blur(22px);
+            border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 20px 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .header::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #fbbf24, #22c55e, #fbbf24);
+            background-size: 200% 100%; animation: headerBar 3s linear infinite;
+        }
+        @keyframes headerBar { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+        .glow-text {
+            font-size: 1.8rem; font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #22c55e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .subtitle { font-size: 0.9rem; color: #c0c0c0; }
+        .card {
+            background: rgba(24,24,24,0.65); backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius);
+            padding: 18px 16px; box-shadow: var(--shadow);
+        }
+        .card h2 { font-size: 1.25rem; color: #fbbf24; border-bottom: 2px solid rgba(251,191,36,0.2); padding-bottom: 8px; margin-bottom: 14px; }
+        .sim-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0; padding: 12px; background: rgba(40,40,40,0.4); border-radius: var(--radius-sm); font-size: 0.9rem; }
+        .sim-row label { font-weight: 600; white-space: nowrap; min-width: 80px; }
+        .sim-row input {
+            flex: 1; min-width: 100px; padding: 10px 12px; border-radius: 8px;
+            border: 2px solid rgba(255,255,255,0.15); font-family: inherit; font-size: 0.9rem;
+            background: #1a1a1a; color: #f0f0f0; transition: 0.2s;
+        }
+        .sim-row input:focus { border-color: #fbbf24; outline: none; box-shadow: 0 0 0 3px rgba(251,191,36,0.15); }
+        .btn {
+            display: inline-block; padding: 10px 22px; border-radius: 25px; border: none;
+            font-family: inherit; font-weight: 700; cursor: pointer; font-size: 0.9rem;
+            background: #fbbf24; color: #000; text-align: center; transition: 0.2s;
+        }
+        .btn:active { background: #f59e0b; transform: scale(0.96); }
+        .result-box { text-align: center; padding: 14px; border-radius: var(--radius-sm); margin-top: 10px; font-weight: 700; font-size: 0.95rem; }
+        .result-box.success { background: var(--success-light); color: var(--success); border: 1px solid var(--success); }
+        .result-box.error { background: var(--danger-light); color: var(--danger); border: 1px solid var(--danger); }
+        .result-box.info { background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); }
+        .table-wrapper { overflow-x: auto; margin: 12px 0; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.08); }
+        table { width: 100%; min-width: 400px; border-collapse: collapse; background: rgba(20,20,20,0.5); font-size: 0.85rem; }
+        th { background: #fbbf24; color: #000; padding: 10px 6px; font-weight: 700; text-align: center; font-size: 0.8rem; white-space: nowrap; }
+        td { padding: 9px 6px; border-bottom: 1px solid rgba(255,255,255,0.06); text-align: center; }
+        .highlight { background: rgba(251,191,36,0.18); font-weight: 700; }
+        .footer { text-align: center; font-size: 0.75rem; color: #666; padding: 10px; }
+        ::-webkit-scrollbar { height: 4px; width: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="particles" id="pc"></div>
+    <div class="drift-layer"></div>
+    <div class="container">
+        <div class="header">
+            <h1 class="glow-text">🧮 مرکز ماشین‌حساب‌های حسابداری</h1>
+            <p class="subtitle">تمام ابزارهای محاسباتی در یک فایل — معادله، تراز، سود و زیان، استهلاک، نقطه سربه‌سر و...</p>
+        </div>
+
+        <!-- ۱. معادله حسابداری -->
+        <div class="card">
+            <h2>⚖️ ماشین‌حساب معادله حسابداری</h2>
+            <div class="sim-row"><label>💰 دارایی‌ها:</label><input type="number" id="eqAssets" placeholder="دارایی"></div>
+            <div class="sim-row"><label>📋 بدهی‌ها:</label><input type="number" id="eqLiabilities" placeholder="بدهی"></div>
+            <div class="sim-row"><label>💼 سرمایه:</label><input type="number" id="eqEquity" placeholder="سرمایه"></div>
+            <button class="btn" id="calcEq" style="width:100%;margin-top:10px;">⚡ محاسبه مقدار مجهول</button>
+            <div id="eqResult" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- ۲. تراز آزمایشی -->
+        <div class="card">
+            <h2>📊 ماشین‌حساب تراز آزمایشی</h2>
+            <div id="trialContainer"></div>
+            <button class="btn" id="addTrialRow" style="margin-top:8px;">➕ افزودن حساب</button>
+            <button class="btn" id="calcTrial" style="margin-top:8px;margin-right:8px;">⚖️ محاسبه تراز</button>
+            <div id="trialResult" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- ۳. صورت سود و زیان -->
+        <div class="card">
+            <h2>💰 ماشین‌حساب صورت سود و زیان</h2>
+            <div class="sim-row"><label>🛒 فروش کل:</label><input type="number" id="plSales" value="800000000"></div>
+            <div class="sim-row"><label>🏷️ تخفیفات:</label><input type="number" id="plDiscount" value="20000000"></div>
+            <div class="sim-row"><label>📦 بهای تمام‌شده:</label><input type="number" id="plCOGS" value="350000000"></div>
+            <div class="sim-row"><label>👥 هزینه‌های عملیاتی:</label><input type="number" id="plOpEx" value="170000000"></div>
+            <div class="sim-row"><label>📈 سایر درآمدها:</label><input type="number" id="plOtherInc" value="15000000"></div>
+            <div class="sim-row"><label>🧾 نرخ مالیات (%):</label><input type="number" id="plTaxRate" value="25"></div>
+            <button class="btn" id="calcPL" style="width:100%;margin-top:10px;">⚡ محاسبه سود خالص</button>
+            <div id="plResult" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- ۴. استهلاک -->
+        <div class="card">
+            <h2>⚙️ ماشین‌حساب استهلاک (سه روش)</h2>
+            <div class="sim-row"><label>🏭 بهای تمام‌شده:</label><input type="number" id="depCost" value="100000000"></div>
+            <div class="sim-row"><label>♻️ ارزش اسقاط:</label><input type="number" id="depSalvage" value="10000000"></div>
+            <div class="sim-row"><label>📅 عمر مفید (سال):</label><input type="number" id="depLife" value="5"></div>
+            <div class="sim-row"><label>📉 نرخ نزولی (%):</label><input type="number" id="depRate" value="40"></div>
+            <button class="btn" id="calcDep" style="width:100%;margin-top:10px;">⚡ محاسبه</button>
+            <div id="depResult" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- ۵. نقطه سربه‌سر -->
+        <div class="card">
+            <h2>🎯 ماشین‌حساب نقطه سربه‌سر</h2>
+            <div class="sim-row"><label>💵 قیمت فروش (واحد):</label><input type="number" id="bepPrice" value="500000"></div>
+            <div class="sim-row"><label>📉 هزینه متغیر (واحد):</label><input type="number" id="bepVC" value="300000"></div>
+            <div class="sim-row"><label>🏢 هزینه‌های ثابت:</label><input type="number" id="bepFC" value="80000000"></div>
+            <button class="btn" id="calcBEP" style="width:100%;margin-top:10px;">⚡ محاسبه نقطه سربه‌سر</button>
+            <div id="bepResult" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- ۶. بودجه نقدی -->
+        <div class="card">
+            <h2>💵 ماشین‌حساب بودجه نقدی</h2>
+            <div class="sim-row"><label>💰 موجودی ابتدا:</label><input type="number" id="budBeg" value="50000000"></div>
+            <div class="sim-row"><label>📈 دریافت‌ها:</label><input type="number" id="budIn" value="100000000"></div>
+            <div class="sim-row"><label>📉 پرداخت‌ها:</label><input type="number" id="budOut" value="130000000"></div>
+            <div class="sim-row"><label>🎯 حداقل موجودی:</label><input type="number" id="budMin" value="30000000"></div>
+            <button class="btn" id="calcBud" style="width:100%;margin-top:10px;">⚡ محاسبه</button>
+            <div id="budResult" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- ۷. مالیات بر ارزش افزوده -->
+        <div class="card">
+            <h2>🧾 ماشین‌حساب VAT</h2>
+            <div class="sim-row"><label>🛒 خرید مشمول:</label><input type="number" id="vatPurch" value="500000000"></div>
+            <div class="sim-row"><label>🛍️ فروش مشمول:</label><input type="number" id="vatSales" value="800000000"></div>
+            <div class="sim-row"><label>📊 نرخ VAT (%):</label><input type="number" id="vatRate" value="9"></div>
+            <button class="btn" id="calcVAT" style="width:100%;margin-top:10px;">⚡ محاسبه</button>
+            <div id="vatResult" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="footer">✍️ کیانوش کریمی | 📅 ۱۴۰۴ | تمام ابزارها در یک فایل</div>
+    </div>
+
+    <script>
+        // ذرات
+        const pc=document.getElementById('pc');
+        for(let i=0;i<50;i++){
+            const p=document.createElement('div');p.classList.add('particle');
+            const s=Math.random()*5+2;
+            p.style.width=s+'px';p.style.height=s+'px';
+            p.style.left=Math.random()*100+'%';
+            p.style.animationDuration=Math.random()*18+10+'s';
+            p.style.animationDelay=Math.random()*12+'s';
+            const colors=['#fbbf24','#22c55e','#ef4444','#2dd4bf','#f59e0b'];
+            p.style.background=colors[Math.floor(Math.random()*colors.length)];
+            p.style.boxShadow=`0 0 ${s+3}px ${p.style.background}`;
+            pc.appendChild(p);
+        }
+
+        // ۱. معادله
+        document.getElementById('calcEq').addEventListener('click',()=>{
+            const a=parseFloat(document.getElementById('eqAssets').value)||0;
+            const l=parseFloat(document.getElementById('eqLiabilities').value)||0;
+            const e=parseFloat(document.getElementById('eqEquity').value)||0;
+            const res=document.getElementById('eqResult');
+            if(a&&l&&!e){document.getElementById('eqEquity').value=a-l;res.innerHTML='<div class="result-box info">💡 سرمایه = '+(a-l).toLocaleString()+' تومان</div>';}
+            else if(a&&e&&!l){document.getElementById('eqLiabilities').value=a-e;res.innerHTML='<div class="result-box info">💡 بدهی = '+(a-e).toLocaleString()+' تومان</div>';}
+            else if(l&&e&&!a){document.getElementById('eqAssets').value=l+e;res.innerHTML='<div class="result-box info">💡 دارایی = '+(l+e).toLocaleString()+' تومان</div>';}
+            else if(a===l+e)res.innerHTML='<div class="result-box success">✅ معادله متعادل است</div>';
+            else res.innerHTML='<div class="result-box error">⚠️ مقادیر نامعتبر</div>';
+        });
+
+        // ۲. تراز آزمایشی
+        const trialC=document.getElementById('trialContainer');
+        function addTrialRow(){
+            const d=document.createElement('div');d.className='sim-row';
+            d.innerHTML='<input type="text" placeholder="نام حساب" class="t-acc" style="flex:2;"><input type="number" placeholder="بدهکار" class="t-deb" style="flex:1;"><input type="number" placeholder="بستانکار" class="t-cred" style="flex:1;"><button style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:1.2rem;" class="del-row">✕</button>';
+            d.querySelector('.del-row').addEventListener('click',()=>d.remove());
+            trialC.appendChild(d);
+        }
+        document.getElementById('addTrialRow').addEventListener('click',addTrialRow);
+        addTrialRow();
+        document.getElementById('calcTrial').addEventListener('click',()=>{
+            let td=0,tc=0;const rows=document.querySelectorAll('.sim-row');
+            let html='<div class="table-wrapper"><table><tr><th>شرح</th><th>بدهکار</th><th>بستانکار</th></tr>';
+            rows.forEach(r=>{
+                const a=r.querySelector('.t-acc')?.value.trim();
+                const d=parseFloat(r.querySelector('.t-deb')?.value)||0;
+                const c=parseFloat(r.querySelector('.t-cred')?.value)||0;
+                if(a){html+=`<tr><td>${a}</td><td>${d.toLocaleString()}</td><td>${c.toLocaleString()}</td></tr>`;td+=d;tc+=c;}
+            });
+            html+=`<tr class="highlight"><td><strong>جمع</strong></td><td><strong>${td.toLocaleString()}</strong></td><td><strong>${tc.toLocaleString()}</strong></td></tr></table></div>`;
+            html+=Math.abs(td-tc)<0.001?'<div class="result-box success">✅ تراز متعادل</div>':`<div class="result-box error">❌ اختلاف: ${Math.abs(td-tc).toLocaleString()}</div>`;
+            document.getElementById('trialResult').innerHTML=html;
+        });
+
+        // ۳. سود و زیان
+        document.getElementById('calcPL').addEventListener('click',()=>{
+            const s=parseFloat(document.getElementById('plSales').value)||0;
+            const d=parseFloat(document.getElementById('plDiscount').value)||0;
+            const c=parseFloat(document.getElementById('plCOGS').value)||0;
+            const o=parseFloat(document.getElementById('plOpEx').value)||0;
+            const oi=parseFloat(document.getElementById('plOtherInc').value)||0;
+            const tr=parseFloat(document.getElementById('plTaxRate').value)||0;
+            const ns=s-d;const gp=ns-c;const op=gp-o;const pt=op+oi;const tax=pt*(tr/100);const np=pt-tax;
+            document.getElementById('plResult').innerHTML=`
+                <div class="table-wrapper"><table>
+                    <tr><td>فروش خالص</td><td>${ns.toLocaleString()}</td></tr>
+                    <tr><td>سود ناخالص</td><td>${gp.toLocaleString()}</td></tr>
+                    <tr><td>سود عملیاتی</td><td>${op.toLocaleString()}</td></tr>
+                    <tr><td>سود قبل مالیات</td><td>${pt.toLocaleString()}</td></tr>
+                    <tr class="highlight"><td><strong>سود خالص</strong></td><td><strong>${np.toLocaleString()}</strong></td></tr>
+                </table></div>
+                <div class="result-box ${np>=0?'success':'error'}">${np>=0?'🟢 سود':'🔴 زیان'}: ${Math.abs(np).toLocaleString()} تومان</div>`;
+        });
+
+        // ۴. استهلاک
+        document.getElementById('calcDep').addEventListener('click',()=>{
+            const cost=parseFloat(document.getElementById('depCost').value)||0;
+            const salvage=parseFloat(document.getElementById('depSalvage').value)||0;
+            const life=parseInt(document.getElementById('depLife').value)||1;
+            const rate=parseFloat(document.getElementById('depRate').value)||0;
+            const straight=(cost-salvage)/life;
+            let html='<div class="table-wrapper"><table><tr><th>سال</th><th>خط مستقیم</th><th>نزولی</th><th>مجموع سنوات</th></tr>';
+            let bv=cost;const sum=(life*(life+1))/2;
+            for(let y=1;y<=life;y++){
+                let decl=bv*(rate/100);if(y===life)decl=bv-salvage;if(decl<0)decl=0;
+                const syd=(cost-salvage)*((life-y+1)/sum);
+                html+=`<tr><td>${y}</td><td>${straight.toLocaleString()}</td><td>${Math.round(decl).toLocaleString()}</td><td>${Math.round(syd).toLocaleString()}</td></tr>`;
+                bv-=decl;
+            }
+            html+='</table></div>';
+            document.getElementById('depResult').innerHTML=html;
+        });
+
+        // ۵. نقطه سربه‌سر
+        document.getElementById('calcBEP').addEventListener('click',()=>{
+            const p=parseFloat(document.getElementById('bepPrice').value)||0;
+            const v=parseFloat(document.getElementById('bepVC').value)||0;
+            const f=parseFloat(document.getElementById('bepFC').value)||0;
+            const cm=p-v;
+            const units=cm>0?Math.ceil(f/cm):'∞';
+            document.getElementById('bepResult').innerHTML=`
+                <div class="table-wrapper"><table>
+                    <tr><td>حاشیه فروش واحد</td><td>${cm.toLocaleString()}</td></tr>
+                    <tr class="highlight"><td><strong>نقطه سربه‌سر (واحد)</strong></td><td><strong>${typeof units==='number'?units.toLocaleString()+' واحد':units}</strong></td></tr>
+                    <tr><td>نقطه سربه‌سر (ریالی)</td><td>${typeof units==='number'?(units*p).toLocaleString():'—'} تومان</td></tr>
+                </table></div>`;
+        });
+
+        // ۶. بودجه نقدی
+        document.getElementById('calcBud').addEventListener('click',()=>{
+            const b=parseFloat(document.getElementById('budBeg').value)||0;
+            const i=parseFloat(document.getElementById('budIn').value)||0;
+            const o=parseFloat(document.getElementById('budOut').value)||0;
+            const m=parseFloat(document.getElementById('budMin').value)||0;
+            const end=b+i-o;const s=end-m;
+            document.getElementById('budResult').innerHTML=`
+                <div class="table-wrapper"><table>
+                    <tr><td>موجودی پایان</td><td>${end.toLocaleString()}</td></tr>
+                    <tr><td>حداقل موجودی</td><td>${m.toLocaleString()}</td></tr>
+                    <tr class="highlight"><td><strong>وضعیت</strong></td><td><strong>${s>=0?'✅ مازاد '+s.toLocaleString():'❌ کسری '+Math.abs(s).toLocaleString()}</strong></td></tr>
+                </table></div>`;
+        });
+
+        // ۷. VAT
+        document.getElementById('calcVAT').addEventListener('click',()=>{
+            const p=parseFloat(document.getElementById('vatPurch').value)||0;
+            const s=parseFloat(document.getElementById('vatSales').value)||0;
+            const r=parseFloat(document.getElementById('vatRate').value)||0;
+            const vp=p*(r/100);const vs=s*(r/100);const d=vs-vp;
+            document.getElementById('vatResult').innerHTML=`
+                <div class="table-wrapper"><table>
+                    <tr><td>VAT خرید</td><td>${vp.toLocaleString()}</td></tr>
+                    <tr><td>VAT فروش</td><td>${vs.toLocaleString()}</td></tr>
+                    <tr class="highlight"><td><strong>مابه‌التفاوت</strong></td><td><strong>${d.toLocaleString()} ${d>=0?'(پرداختنی)':'(طلبکار)'}</strong></td></tr>
+                </table></div>`;
+        });
+    </script>
+</body>
+</html>

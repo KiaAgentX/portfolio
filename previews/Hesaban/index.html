@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>حسابان | داشبورد یکپارچه v3.3</title>
+
+    <!-- PWA Config -->
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <meta name="theme-color" content="#05050c" />
+
+    <!-- فونت‌های فارسی لوکال -->
+    <style>
+        @font-face { font-family: 'Vazirmatn'; src: url('core/fonts/Vazirmatn-Regular.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+        @font-face { font-family: 'Vazirmatn'; src: url('core/fonts/Vazirmatn-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+        @font-face { font-family: 'Vazirmatn'; src: url('core/fonts/Vazirmatn-Black.woff2') format('woff2'); font-weight: 900; font-display: swap; }
+    </style>
+
+    <!-- استایل‌های ماژولار هسته -->
+    <link rel="stylesheet" href="core/styles/base.css" />
+    <link rel="stylesheet" href="core/styles/layout.css" />
+    <link rel="stylesheet" href="core/styles/components.css" />
+    <link rel="stylesheet" href="core/styles/animations.css" />
+    <link rel="stylesheet" href="core/styles/chat.css" />
+
+    <!-- کتابخانه‌های Three.js (فقط برای صحنه پس‌زمینه #three-canvas) -->
+    <script src="core/three/three.min.js" defer></script>
+    <script src="core/three/OrbitControls.js" defer></script>
+    <script src="core/three/CSS2DRenderer.js" defer></script>
+</head>
+<body>
+
+    <!-- ===== کانتینر سه‌بعدی پس‌زمینه ===== -->
+    <div id="three-canvas" style="position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none;"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <!-- ===== اپلیکیشن اصلی (داشبورد ماژولار) ===== -->
+    <div class="app" id="app">
+
+        <!-- نوار ناوبری -->
+        <nav class="navbar" id="navbar">
+            <div class="logo-area">
+                <div class="logo-icon">🏛️</div>
+                <div class="logo-text">
+                    <h1>حسابان</h1>
+                    <span class="live-clock" id="liveClock">⏳ بارگذاری زمان...</span>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="#education" class="nav-btn">📚 آموزش</a>
+                <a href="#audit" class="nav-btn">🧰 حسابرسی</a>
+                <a href="#business" class="nav-btn">📊 کسب‌وکار</a>
+                <a href="trading_hub/index.html" class="nav-btn" style="color:var(--gold); border:1px solid rgba(255,215,0,0.2);">📈 هاب ترید (دمو)</a>
+                <a href="ai_chat/index.html" class="nav-btn" style="color:var(--neon-cyan); border:1px solid rgba(0,240,255,0.2);">🤖 چت هوشمند (NOVA)</a>
+                <button id="chatToggleBtn" class="nav-btn" type="button" aria-label="باز و بسته کردن ویجت چت" aria-expanded="false" aria-controls="chatWindow" style="border:1px solid var(--neon-cyan); color:var(--neon-cyan); font-size:0.8rem;">💬 ویجت چت</button>
+            </div>
+        </nav>
+
+        <!-- بخش هیرو -->
+        <section class="hero" id="hero">
+            <div class="hero-content">
+                <div class="hero-badge">🚀 نسخه v3.3 · موتور سه‌بعدی</div>
+                <h1 class="hero-title">
+                    به <span class="green glow-text">حسابان</span> خوش آمدید
+                </h1>
+                <p class="hero-description">
+                    ۲۴ جلسه آموزشی، ۱۰ ابزار حرفه‌ای حسابرسی، سوئیت کسب‌وکار، <br>
+                    <strong style="color:var(--gold);">هاب تریدینگ اختصاصی</strong> و <strong style="color:var(--neon-cyan);">چت‌بات هوشمند NOVA</strong>.
+                </p>
+                <div class="hero-buttons">
+                    <a href="trading_hub/index.html" class="primary-btn">📈 ورود به هاب ترید</a>
+                    <a href="ai_chat/index.html" class="secondary-btn">🤖 گپ با NOVA</a>
+                </div>
+            </div>
+            <div class="hero-3d">
+                <!-- مکعب سه‌بعدی شفاف با شبکه بلاکچین -->
+                <div id="cube3D" class="cube">
+                    <div class="face front"></div>
+                    <div class="face back"></div>
+                    <div class="face left"></div>
+                    <div class="face right"></div>
+                    <div class="face top"></div>
+                    <div class="face bottom"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- بخش ۲۴ جلسه آموزشی -->
+        <section class="section-header" id="education">
+            <h2>📚 <span class="green">۲۴ جلسه آموزشی</span></h2>
+            <div class="sub">از مبانی تا پروژه نهایی</div>
+        </section>
+        <div class="sessions-grid" id="sessionsGrid">
+            <!-- توسط core/scripts/ui.js پر می‌شود -->
+        </div>
+
+        <!-- بخش ابزارهای حسابرسی -->
+        <section class="section-header" id="audit">
+            <h2>🧰 <span class="red">۱۰ ابزار حرفه‌ای حسابرسی</span></h2>
+            <div class="sub">تراز، نسبت‌ها، کنترل داخلی، کشف تقلب و...</div>
+        </section>
+        <div class="audit-grid" id="auditGrid">
+            <!-- توسط core/scripts/ui.js پر می‌شود -->
+        </div>
+
+        <!-- بخش سوئیت کسب‌وکار -->
+        <section class="section-header" id="business">
+            <h2>📊 <span class="gold">سوئیت کسب‌وکار</span></h2>
+            <div class="sub">حسابک، دفتر، انبارک، فاکتورساز و...</div>
+        </section>
+        <div class="business-grid" id="businessGrid">
+            <!-- توسط core/scripts/ui.js پر می‌شود -->
+        </div>
+
+        <!-- فوتر -->
+        <footer class="footer">
+            <p>🏛️ <strong>حسابان v3.3</strong> · طراحی شده با ❤️</p>
+            <p>
+                <a href="how_to_start.html" class="footer-link">📖 راهنما</a>
+                <span style="color:var(--text-muted); padding:0 8px;">|</span>
+                <a href="trading_hub/index.html" style="color:var(--gold);">📈 هاب ترید</a>
+                <span style="color:var(--text-muted); padding:0 8px;">|</span>
+                <a href="ai_chat/index.html" style="color:var(--neon-cyan);">🤖 NOVA</a>
+            </p>
+            <span class="copyright">© ۱۴۰۴ · کاملاً آفلاین و سه‌بعدی</span>
+        </footer>
+
+    </div>
+
+    <!-- ===== ویجت چت شناور ===== -->
+    <div class="chat-widget" id="chatWidget">
+        <button class="chat-toggle-btn" id="chatToggle" type="button" aria-label="باز کردن چت شناور" aria-expanded="false" aria-controls="chatWindow">💬</button>
+        <div class="chat-window" id="chatWindow" hidden>
+            <div class="chat-header">
+                <span>🤖 چت شناور</span>
+                <button class="chat-close-btn" id="chatClose" type="button" aria-label="بستن چت">✕</button>
+            </div>
+            <div class="chat-body">
+                <div class="chat-model-select">
+                    <label for="chatModelSelect">مدل:</label>
+                    <select id="chatModelSelect"></select>
+                    <button id="clearChatBtn" type="button" aria-label="پاک کردن گفتگو" style="background:none;border:none;color:var(--neon-red);cursor:pointer;font-size:0.7rem;">🗑️ پاک</button>
+                </div>
+                <div class="chat-messages" id="chatMessages" aria-live="polite">
+                    <div class="chat-msg bot">سلام! دستیار شناور شما.</div>
+                </div>
+                <div class="chat-input-area">
+                    <label for="chatInput" class="sr-only">پیام شما</label>
+                    <input type="text" id="chatInput" placeholder="سوال خود را بپرسید..." autocomplete="off" />
+                    <button id="chatSendBtn" type="button">ارسال ➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== بنر نصب PWA ===== -->
+    <div id="pwa-install-banner" class="pwa-banner" style="display:none;" role="dialog" aria-label="نصب برنامه">
+        <div class="pwa-content">
+            <p>📲 برنامه را روی دستگاه نصب کنید!</p>
+            <div class="pwa-actions">
+                <button id="install-btn" class="primary-btn pwa-btn" type="button">نصب</button>
+                <button id="close-banner-btn" class="secondary-btn pwa-btn" type="button">بستن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== اسکریپت‌های ماژولار (هسته) ===== -->
+    <script type="module" src="core/scripts/main.js"></script>
+
+    <!-- ===== اسکریپت ساعت زنده، رندر مکعب بلاکچین، ویجت چت و ثبت سرویس‌ورکر ===== -->
+    <script>
+        // ۱. ساعت زنده به وقت ایران
+        function updateClock() {
+            const now = new Date();
+            const el = document.getElementById('liveClock');
+            if (el) {
+                el.textContent = now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            }
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // ۲. رندر مکعب سه‌بعدی با گرید ۵x۵ از نمادهای بلاکچین/ریاضی
+        // باگ رفع‌شده: قبلاً document.querySelectorAll('.face') همه‌ی
+        // المان‌های .face صفحه را می‌گرفت؛ حالا فقط داخل #cube3D جستجو می‌شود.
+        (function renderMatrixCube() {
+            const symbols = ['0','1','×','+','÷','-','=','*','$','€','₩','¥','♤','◇','♡','♧','%','○','☆','£','#','@','!','?',':'];
+            const colors = ['#00ff88', '#00f0ff', '#ffd700'];
+            const cube = document.getElementById('cube3D');
+            if (!cube) return;
+            const faces = cube.querySelectorAll('.face');
+
+            faces.forEach(face => {
+                const frag = document.createDocumentFragment();
+                for (let i = 0; i < 25; i++) {
+                    const sym = symbols[Math.floor(Math.random() * symbols.length)];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const span = document.createElement('span');
+                    span.style.color = color;
+                    span.textContent = sym;
+                    frag.appendChild(span);
+                }
+                face.replaceChildren(frag);
+            });
+        })();
+
+        // ۳. ویجت چت شناور: هر دو دکمه (نوار بالا + دکمه شناور) باز/بسته می‌کنند
+        // باگ رفع‌شده: قبلاً فقط #chatToggleBtn یا #chatToggle جداگانه
+        // در main.js وایر می‌شد و دکمه دیگر کار نمی‌کرد.
+        (function chatWidgetController() {
+            const widget = document.getElementById('chatWidget');
+            const window_ = document.getElementById('chatWindow');
+            const navBtn = document.getElementById('chatToggleBtn');
+            const floatBtn = document.getElementById('chatToggle');
+            const closeBtn = document.getElementById('chatClose');
+            if (!widget || !window_) return;
+
+            function setOpen(open) {
+                widget.classList.toggle('open', open);
+                window_.hidden = !open;
+                [navBtn, floatBtn].forEach(btn => btn && btn.setAttribute('aria-expanded', String(open)));
+                if (open) {
+                    const input = document.getElementById('chatInput');
+                    if (input) input.focus();
+                }
+            }
+
+            function toggleOpen() {
+                setOpen(window_.hidden);
+            }
+
+            navBtn && navBtn.addEventListener('click', toggleOpen);
+            floatBtn && floatBtn.addEventListener('click', toggleOpen);
+            closeBtn && closeBtn.addEventListener('click', () => setOpen(false));
+
+            // بستن با کلید Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !window_.hidden) setOpen(false);
+            });
+        })();
+
+        // ۴. ثبت سرویس‌ورکر
+        // باگ رفع‌شده: مسیر مطلق '/sw.js' در دیپلوی روی ساب‌فولدر fail می‌خورد؛
+        // حالا با مسیر نسبیِ مبتنی بر محل خودِ index.html ثبت می‌شود.
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swUrl = new URL('sw.js', document.baseURI).href;
+                navigator.serviceWorker.register(swUrl)
+                    .then(() => console.log('✅ سرویس‌ورکر v3.3 ثبت شد'))
+                    .catch(err => console.log('❌ خطا در ثبت سرویس‌ورکر:', err));
+            });
+        }
+    </script>
+</body>
+</html>
+
