@@ -48,6 +48,8 @@ console.log('INDEX PAGE');
   check('feature cards rendered', d.querySelectorAll('#grid .card.feature').length === 2, 'got ' + d.querySelectorAll('#grid .card.feature').length);
   check('docs section visible', d.querySelector('#docs-section').style.display !== 'none');
   check('docs grid has 3 cards', d.querySelectorAll('#docs-grid .card').length === 3, 'got ' + d.querySelectorAll('#docs-grid .card').length);
+  check('roadmap has 10 cards', d.querySelectorAll('#roadmap .rm-card').length === 10, 'got ' + d.querySelectorAll('#roadmap .rm-card').length);
+  check('pipeline cell shown', /\$191,000/.test(d.querySelector('.spec')?.textContent || ''), (d.querySelector('.spec')?.textContent || '').slice(0, 120));
   check('est. value present', /\$4[0-9]{2},[0-9]{3}/.test(d.querySelector('.spec .v.gold')?.textContent || ''));
 
   const input = d.querySelector('#search');

@@ -11,6 +11,8 @@ const DIST = path.join(PORT, 'dist');
 
 const config = JSON.parse(fs.readFileSync(path.join(SRC, 'config.json'), 'utf8'));
 const projects = JSON.parse(fs.readFileSync(path.join(SRC, 'projects.json'), 'utf8'));
+const roadmap = JSON.parse(fs.readFileSync(path.join(SRC, 'roadmap.json'), 'utf8'));
+const pipelineValue = roadmap.reduce((a, r) => a + r.value, 0);
 
 execFileSync(process.execPath, [path.join(HERE, 'scan.mjs'), ROOT, path.join(PORT, 'scan.json')], { stdio: 'inherit' });
 const scan = JSON.parse(fs.readFileSync(path.join(PORT, 'scan.json'), 'utf8'));
@@ -178,6 +180,7 @@ ${navHtml('.')}
       <div class="cell"><span class="v cyan">${fmt(stats.loc)}</span><span class="k">Lines of code</span></div>
       <div class="cell"><span class="v gold">${money(stats.value)}</span><span class="k">Est. portfolio value</span></div>
       <div class="cell"><span class="v">${stats.previews}</span><span class="k">Live previews</span></div>
+      <div class="cell"><span class="v" style="color:var(--purple)">${money(pipelineValue)}</span><span class="k">Roadmap pipeline</span></div>
     </div>
     <div class="toolbar" id="projects">
       <div class="search"><input id="search" type="search" placeholder="Search projects, stacks, categories…" autocomplete="off"></div>
@@ -193,6 +196,10 @@ ${navHtml('.')}
       <div class="docs-head"><h2>Docs &amp; Strategy</h2><span>architecture · roadmap · company</span></div>
       <div class="grid" id="docs-grid" style="padding-bottom:0"></div>
     </section>
+    <section class="roadmap-section" id="roadmap-section">
+      <div class="docs-head"><h2>Roadmap — Next 10</h2><span>observed patterns → planned builds · est. ${money(pipelineValue)} pipeline</span></div>
+      <div class="roadmap" id="roadmap"></div>
+    </section>
   </div></section>
 </main>
 <footer class="footer"><div class="container row">
@@ -200,6 +207,7 @@ ${navHtml('.')}
   <div><a href="${esc(config.owner.github)}" target="_blank" rel="noopener">GitHub</a>${config.site.repoUrl ? ` · <a href="${esc(config.site.repoUrl)}" target="_blank" rel="noopener">Site source</a>` : ''}</div>
 </div></footer>
 <script>window.__PROJECTS__ = ${safeJson(cards)};</script>
+<script>window.__ROADMAP__ = ${safeJson(roadmap)};</script>
 <script src="assets/index.js"></script>
 </body>
 </html>`;
