@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rain on the Window — Café Nocturne</title>
+<style>
+  :root{
+    --ink:#e8e2d6;
+    --dim:#9a917f;
+    --amber:#e0a458;
+    --panel:rgba(16,14,12,0.72);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;background:#0a0908;}
+  body{
+    font-family:Georgia,'Times New Roman',serif;
+    color:var(--ink);
+    -webkit-user-select:none;user-select:none;
+  }
+  #scene{position:fixed;inset:0;display:block;}
+
+  /* ---------- vignette & grain overlay ---------- */
+  #vignette{
+    position:fixed;inset:0;pointer-events:none;z-index:5;
+    background:radial-gradient(ellipse at 50% 42%, transparent 42%, rgba(4,3,2,0.55) 100%);
+  }
+  #grain{
+    position:fixed;inset:-100px;pointer-events:none;z-index:6;opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 0.7s steps(4) infinite;
+  }
+  @keyframes grain{
+    0%{transform:translate(0,0)} 25%{transform:translate(-30px,18px)}
+    50%{transform:translate(22px,-26px)} 75%{transform:translate(-14px,-8px)}
+    100%{transform:translate(0,0)}
+  }
+
+  /* ---------- title card ---------- */
+  #title{
+    position:fixed;top:34px;left:40px;z-index:10;pointer-events:none;
+    opacity:0;animation:fadein 2.4s ease 0.8s forwards;
+  }
+  #title h1{
+    font-weight:400;font-size:clamp(19px,2.3vw,27px);letter-spacing:0.35em;
+    text-transform:uppercase;color:var(--ink);
+    text-shadow:0 1px 12px rgba(0,0,0,0.9);
+  }
+  #title p{
+    margin-top:7px;font-style:italic;font-size:13px;letter-spacing:0.12em;
+    color:var(--dim);text-shadow:0 1px 8px rgba(0,0,0,0.9);
+  }
+  @keyframes fadein{to{opacity:1}}
+
+  /* ---------- control panel ---------- */
+  #panel{
+    position:fixed;bottom:30px;left:40px;z-index:10;
+    display:flex;align-items:center;gap:10px;
+    opacity:0;animation:fadein 2s ease 1.6s forwards;
+  }
+  .btn{
+    background:var(--panel);
+    border:1px solid rgba(232,226,214,0.16);
+    color:var(--ink);
+    font-family:inherit;font-size:11.5px;letter-spacing:0.18em;text-transform:uppercase;
+    padding:11px 18px;cursor:pointer;border-radius:2px;
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    transition:border-color .35s,color .35s,background .35s;
+    display:flex;align-items:center;gap:9px;
+  }
+  .btn:hover{border-color:var(--amber);color:var(--amber);}
+  .btn.active{border-color:var(--amber);color:var(--amber);background:rgba(224,164,88,0.08);}
+  .btn .dot{
+    width:6px;height:6px;border-radius:50%;background:currentColor;
+    opacity:0.45;transition:opacity .3s;
+  }
+  .btn.active .dot{opacity:1;box-shadow:0 0 8px currentColor;animation:pulse 2.2s ease-in-out infinite;}
+  @keyframes pulse{50%{opacity:.4}}
+
+  #hint{
+    position:fixed;bottom:36px;right:44px;z-index:10;pointer-events:none;
+    font-style:italic;font-size:12px;letter-spacing:0.1em;color:var(--dim);
+    text-shadow:0 1px 8px #000;
+    opacity:0;animation:fadein 2s ease 2.4s forwards;
+  }
+
+  /* ---------- loading veil (fades out instantly on first frame) ---------- */
+  #veil{
+    position:fixed;inset:0;background:#0a0908;z-index:20;pointer-events:none;
+    transition:opacity 1.6s ease;
+  }
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div id="vignette"></div>
+<div id="grain"></div>
+
+<div id="title">
+  <h1>Café Nocturne</h1>
+  <p>a rainy evening, seat by the window</p>
+</div>
+
+<div id="panel">
+  <button class="btn" id="audioBtn"><span class="dot"></span><span>Rain Audio</span></button>
+  <button class="btn active" id="wiperBtn"><span class="dot"></span><span>Heavy Rain</span></button>
+</div>
+<div id="hint">move your mouse to lean toward the glass</div>
+<div id="veil"></div>
+
+<script>
+'use strict';
+/* ============================================================
+   CAFÉ NOCTURNE — looking through a rain-streaked window
+   Single-file Three.js scene. The world outside the window is
+   painted once onto an offscreen canvas (a photographic night
+   street: buildings, lit windows, street lamps, car lights,
+   wet asphalt reflections) and used as a texture. A full-screen
+   custom shader then applies the *glass*: real droplet physics
+   (static beads, growing drips that break and slide, trails
+   that refract), condensation blur, and interior reflections.
+   This layered approach = cinematic realism + rock-solid 60fps.
+   ============================================================ */
+
+(function(){
+
+/* ------------------------------------------------------------
+   0.  Tiny guard so any failure shows a message, never black
+------------------------------------------------------------ */
+window.addEventListener('error', function(e){
+  var v = document.getElementById('veil');
+  if (v && v.style.opacity !== '0'){
+    v.innerHTML = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#9a917f;font-family:Georgia,serif;font-style:italic;text-align:center">The rain refused to fall.<br><small>'+ (e.message||'unknown error') +'</small></div>';
+  }
+});
+
+/* ------------------------------------------------------------
+   1.  Minimal WebGL bootstrap — we implement the scene as a
+       full-screen quad with custom shaders (raw WebGL through
+       Three.js), so init cannot stall on asset loads.
+------------------------------------------------------------ */
+var THREE = null;
+
+function boot(){
+  buildWorldTexture();     // paint the outside world (canvas 2D, instant)
+  buildInteriorTexture();  // paint the café interior reflection layer
+  initGL();                // three.js scene: one quad + shader
+  initAudio();             // WebAudio rain synth (starts on toggle)
+  initUI();
+  requestAnimationFrame(loop);
+}
+
+/* ------------------------------------------------------------
+   2.  THE WORLD OUTSIDE — painted night street, 2048x1024
+       Painted with care: sky glow, building silhouettes with
+       randomized lit windows, distant signage glow, two street
+       lamps with halos, parked car with taillights, wet road
+       with smeared vertical reflections, sidewalk, rain haze.
+------------------------------------------------------------ */
+var worldCanvas, worldTex = null;
+var W = 2048, H = 1024;
+
+function buildWorldTexture(){
+  worldCanvas = document.createElement('canvas');
+  worldCanvas.width = W; worldCanvas.height = H;
+  var c = worldCanvas.getContext('2d');
+
+  var horizon = H*0.62;   // road starts here
+
+  /* --- sky: deep rain-cloud gradient with sodium glow from city --- */
+  var sky = c.createLinearGradient(0,0,0,horizon);
+  sky.addColorStop(0.00,'#0b0d12');
+  sky.addColorStop(0.45,'#12141b');
+  sky.addColorStop(0.80,'#1d1c20');
+  sky.addColorStop(1.00,'#2b2523');
+  c.fillStyle = sky; c.fillRect(0,0,W,horizon+2);
+
+  /* city glow patches on clouds */
+  function glow(x,y,r,col,a){
+    var g = c.createRadialGradient(x,y,0,x,y,r);
+    g.addColorStop(0,col); g.addColorStop(1,'rgba(0,0,0,0)');
+    c.globalAlpha = a; c.fillStyle = g;
+    c.fillRect(x-r,y-r,r*2,r*2); c.globalAlpha = 1;
+  }
+  glow(W*0.28, horizon*0.75, 420, 'rgba(214,140,70,1)', 0.10);
+  glow(W*0.70, horizon*0.70, 520, 'rgba(120,140,190,1)', 0.09);
+  glow(W*0.50, horizon*0.95, 700, 'rgba(200,130,80,1)', 0.08);
+
+  /* --- distant building layer (far, hazier) --- */
+  var rng = mulberry(1337);
+  c.save();
+  for (var b=0;b<9;b++){
+    var bw = 120+rng()*200, bx = b*(W/8.4)+rng()*60-90;
+    var bh = horizon*0.28 + rng()*horizon*0.30;
+    c.fillStyle = 'rgba(22,23,30,0.9)';
+    c.fillRect(bx, horizon-bh, bw, bh);
+    /* faint far windows */
+    c.fillStyle = 'rgba(0,0,0,0)';
+    for (var wy=horizon-bh+18; wy<horizon-14; wy+=26){
+      for (var wx=bx+10; wx<bx+bw-14; wx+=22){
+        if (rng()<0.22){
+          var warm = rng()<0.7;
+          c.fillStyle = warm ? 'rgba(230,170,90,'+(0.12+rng()*0.25)+')'
+                             : 'rgba(150,180,230,'+(0.10+rng()*0.2)+')';
+          c.fillRect(wx,wy,9,13);
+        }
+      }
+    }
+  }
+  c.restore();
+  /* haze veil over distant layer */
+  var haze = c.createLinearGradient(0,horizon*0.35,0,horizon);
+  haze.addColorStop(0,'rgba(18,20,27,0)');
+  haze.addColorStop(1,'rgba(30,28,30,0.55)');
+  c.fillStyle = haze; c.fillRect(0,0,W,horizon);
+
+  /* --- near buildings, left & right, framing the street --- */
+  function building(bx,bw,bh,tone,winSeed){
+    var r2 = mulberry(winSeed);
+    c.fillStyle = tone;
+    c.fillRect(bx,horizon-bh,bw,bh);
+    /* subtle facade gradient */
+    var fg = c.createLinearGradient(bx,0,bx+bw,0);
+    fg.addColorStop(0,'rgba(0,0,0,0.35)');
+    fg.addColorStop(0.5,'rgba(0,0,0,0)');
+    fg.addColorStop(1,'rgba(0,0,0,0.4)');
+    c.fillStyle = fg; c.fillRect(bx,horizon-bh,bw,bh);
+    /* floor lines */
+    c.fillStyle='rgba(0,0,0,0.28)';
+    for (var fy=horizon-bh+44; fy<horizon; fy+=52) c.fillRect(bx,fy,bw,2);
+    /* windows: warm apartments, some with curtains, some dark */
+    for (var wy2=horizon-bh+16; wy2<horizon-40; wy2+=52){
+      for (var wx2=bx+14; wx2<bx+bw-26; wx2+=36){
+        var lit = r2()<0.42;
+        var ww=22, wh=30;
+        if (lit){
+          var t = r2();
+          var col = t<0.6 ? [235,178,96] : (t<0.85 ? [246,214,150] : [160,190,235]);
+          var a = 0.5+r2()*0.5;
+          var g2 = c.createRadialGradient(wx2+ww/2,wy2+wh/2,2,wx2+ww/2,wy2+wh/2,26);
+          g2.addColorStop(0,'rgba('+col[0]+','+col[1]+','+col[2]+','+a+')');
+          g2.addColorStop(1,'rgba('+col[0]+','+col[1]+','+col[2]+',0)');
+          c.fillStyle=g2; c.fillRect(wx2-14,wy2-14,ww+28,wh+28);
+          c.fillStyle='rgba('+col[0]+','+col[1]+','+col[2]+','+Math.min(1,a+0.25)+')';
+          c.fillRect(wx2,wy2,ww,wh);
+          /* mullion */
+          c.fillStyle='rgba(20,16,12,0.6)';
+          c.fillRect(wx2+ww/2-1,wy2,2,wh);
+          if (r2()<0.4) c.fillRect(wx2,wy2+wh/2-1,ww,2);
+          /* curtain silhouette */
+          if (r2()<0.3){
+            c.fillStyle='rgba(30,20,14,0.55)';
+            c.fillRect(wx2,wy2,ww*(0.25+r2()*0.3),wh);
+          }
+        } else {
+          c.fillStyle='rgba(10,11,15,0.85)';
+          c.fillRect(wx2,wy2,ww,wh);
+          c.fillStyle='rgba(90,110,150,0.10)';
+          c.fillRect(wx2,wy2,ww,8);
+        }
+      }
+    }
+  }
+  building(-60, 470, horizon*0.86, '#191a20', 21);
+  building(W-430, 500, horizon*0.92, '#17181d', 77);
+  building(W*0.44, 300, horizon*0.52, '#1c1b20', 55);
+
+  /* --- neon sign on right building --- */
+  (function(){
+    var sx=W-360, sy=horizon-horizon*0.92+70;
+    glow(sx+70, sy+26, 150, 'rgba(255,80,90,1)', 0.35);
+    c.save();
+    c.shadowColor='rgba(255,90,100,0.9)'; c.shadowBlur=26;
+    c.fillStyle='rgba(255,120,130,0.95)';
+    c.font='italic 42px Georgia';
+    c.fillText('HOTEL', sx, sy+42);
+    c.restore();
+    /* little blue sign lower */
+    glow(W*0.52, horizon-140, 90, 'rgba(90,170,255,1)', 0.3);
+    c.save();
+    c.shadowColor='rgba(120,190,255,0.9)'; c.shadowBlur=18;
+    c.fillStyle='rgba(170,215,255,0.95)';
+    c.font='24px Georgia';
+    c.fillText('BAR', W*0.505, horizon-128);
+    c.restore();
+  })();
+
+  /* --- road & sidewalk --- */
+  var road = c.createLinearGradient(0,horizon,0,H);
+  road.addColorStop(0,'#232120');
+  road.addColorStop(0.25,'#1a1817');
+  road.addColorStop(1,'#0e0d0c');
+  c.fillStyle=road; c.fillRect(0,horizon,W,H-horizon);
+  /* sidewalk band near us */
+  c.fillStyle='#181614';
+  c.fillRect(0,H*0.88,W,H*0.12);
+  c.fillStyle='rgba(200,190,170,0.07)';
+  c.fillRect(0,H*0.88,W,3);
+  /* curb reflective line */
+  c.fillStyle='rgba(220,200,160,0.05)';
+  c.fillRect(0,H*0.878,W,1);
+
+  /* lane markings, perspective-ish */
+  c.fillStyle='rgba(210,195,160,0.20)';
+  for (var lm=0; lm<6; lm++){
+    var ly = horizon+34+lm*((H*0.86-horizon)/6)*1.12;
+    var lw2 = 34+lm*22, lh2 = 4+lm*2.4;
+    c.fillRect(W*0.485-lw2/2, ly, lw2, lh2);
+  }
+
+  /* --- street lamps: two, with cone glow & wet-road halo --- */
+  function lamp(lx, scale){
+    var topY = horizon - 300*scale;
+    /* pole */
+    c.fillStyle='rgba(8,8,9,0.95)';
+    c.fillRect(lx-3*scale, topY, 6*scale, 300*scale);
+    c.fillRect(lx-3*scale, topY, 42*scale, 5*scale);
+    var hx = lx+40*scale, hy = topY+10*scale;
+    /* lamp head */
+    c.fillStyle='rgba(255,214,150,1)';
+    c.beginPath(); c.ellipse(hx,hy,9*scale,6*scale,0,0,7); c.fill();
+    /* halo */
+    glow(hx,hy,120*scale,'rgba(255,200,120,1)',0.5);
+    glow(hx,hy,260*scale,'rgba(255,190,110,1)',0.16);
+    /* light cone to ground */
+    var cg = c.createLinearGradient(0,hy,0,horizon+20);
+    cg.addColorStop(0,'rgba(255,205,130,0.20)');
+    cg.addColorStop(1,'rgba(255,205,130,0)');
+    c.fillStyle=cg;
+    c.beginPath();
+    c.moveTo(hx-6*scale,hy);
+    c.lineTo(hx+6*scale,hy);
+    c.lineTo(hx+95*scale,horizon+16);
+    c.lineTo(hx-95*scale,horizon+16);
+    c.closePath(); c.fill();
+    /* pool of light on road */
+    var pg = c.createRadialGradient(hx,horizon+22,0,hx,horizon+22,110*scale);
+    pg.addColorStop(0,'rgba(255,205,135,0.30)');
+    pg.addColorStop(1,'rgba(255,205,135,0)');
+    c.fillStyle=pg;
+    c.save(); c.translate(hx,horizon+22); c.scale(1,0.32); c.translate(-hx,-(horizon+22));
+    c.fillRect(hx-120*scale,horizon-90,240*scale,240); c.restore();
+    return {x:hx, y:hy, s:scale};
+  }
+  var lampA = lamp(W*0.30, 1.0);
+  var lampB = lamp(W*0.635, 0.72);
+
+  /* --- parked car, right side, taillights glowing --- */
+  (function(){
+    var cx=W*0.76, cy=horizon+64, cw=250, chh=74;
+    /* body */
+    c.fillStyle='#141518';
+    roundRect(c,cx,cy-chh,cw,chh,14); c.fill();
+    /* cabin */
+    c.fillStyle='#101114';
+    roundRect(c,cx+40,cy-chh-38,cw-90,44,12); c.fill();
+    /* window glint */
+    c.fillStyle='rgba(150,180,220,0.14)';
+    roundRect(c,cx+50,cy-chh-32,70,30,6); c.fill();
+    /* wheels */
+    c.fillStyle='#050506';
+    c.beginPath(); c.arc(cx+52,cy+2,26,0,7); c.arc(cx+cw-52,cy+2,26,0,7); c.fill();
+    c.fillStyle='rgba(120,120,130,0.35)';
+    c.beginPath(); c.arc(cx+52,cy+2,10,0,7); c.arc(cx+cw-52,cy+2,10,0,7); c.fill();
+    /* taillights */
+    glow(cx+8,cy-chh+26,60,'rgba(255,60,60,1)',0.5);
+    c.fillStyle='rgba(255,90,80,0.95)';
+    roundRect(c,cx+2,cy-chh+18,10,16,3); c.fill();
+    /* roof highlight from lamp */
+    c.fillStyle='rgba(255,210,150,0.10)';
+    roundRect(c,cx+30,cy-chh+2,cw-60,8,4); c.fill();
+  })();
+
+  /* --- lone pedestrian with umbrella under lampA --- */
+  (function(){
+    var px=W*0.335, py=horizon+18;
+    c.fillStyle='rgba(10,9,9,0.92)';
+    /* body */
+    c.beginPath();
+    c.moveTo(px-9,py); c.quadraticCurveTo(px,py-64,px+9,py);
+    c.closePath(); c.fill();
+    /* head */
+    c.beginPath(); c.arc(px,py-70,7,0,7); c.fill();
+    /* umbrella */
+    c.beginPath(); c.moveTo(px-26,py-84);
+    c.quadraticCurveTo(px,py-108,px+26,py-84);
+    c.closePath(); c.fill();
+    c.fillRect(px-1,py-84,2,20);
+    /* rim light from lamp */
+    c.strokeStyle='rgba(255,205,140,0.5)'; c.lineWidth=2;
+    c.beginPath(); c.moveTo(px-24,py-85);
+    c.quadraticCurveTo(px,py-106,px+24,py-85); c.stroke();
+  })();
+
+  /* --------------------------------------------------------
+     WET ROAD REFLECTIONS: sample everything above horizon,
+     draw flipped, stretched, smeared and dimmed below.
+  -------------------------------------------------------- */
+  (function(){
+    var strip = document.createElement('canvas');
+    strip.width=W; strip.height=horizon;
+    strip.getContext('2d').drawImage(worldCanvas,0,0,W,horizon,0,0,W,horizon);
+    c.save();
+    c.globalAlpha=0.34;
+    c.translate(0,horizon*2);
+    c.scale(1,-1.55);                     // stretched reflection
+    c.drawImage(strip,0,0);
+    c.restore();
+    /* vertical smear: redraw at low alpha with small y offsets */
+    c.save(); c.globalAlpha=0.10;
+    for (var s2=1;s2<=4;s2++){
+      c.save();
+      c.translate(0,horizon*2 + s2*7);
+      c.scale(1,-1.55);
+      c.drawImage(strip,0,0);
+      c.restore();
+    }
+    c.restore();
+    /* darken reflection with road tone & ripple bands */
+    var rr = c.createLinearGradient(0,horizon,0,H);
+    rr.addColorStop(0,'rgba(14,13,12,0.18)');
+    rr.addColorStop(1,'rgba(10,9,8,0.72)');
+    c.fillStyle=rr; c.fillRect(0,horizon,W,H-horizon);
+    c.globalAlpha=0.08; c.fillStyle='#000';
+    var r3 = mulberry(9);
+    for (var rb=horizon; rb<H; rb+=5+((r3()*6)|0)) c.fillRect(0,rb,W,2);
+    c.globalAlpha=1;
+    /* extra bright streaks under lamps & taillight */
+    streak(lampA.x, 'rgba(255,200,120,', 0.34, 60);
+    streak(lampB.x, 'rgba(255,200,120,', 0.26, 44);
+    streak(W*0.762, 'rgba(255,70,60,', 0.28, 26);
+    streak(W*0.52,  'rgba(120,190,255,', 0.16, 30);
+    streak(W-320,   'rgba(255,90,100,', 0.16, 60);
+    function streak(x,col,a,w2){
+      var g3=c.createLinearGradient(0,horizon,0,H*0.985);
+      g3.addColorStop(0,col+a+')');
+      g3.addColorStop(1,col+'0)');
+      c.fillStyle=g3;
+      c.beginPath();
+      c.moveTo(x-w2*0.18,horizon);
+      c.lineTo(x+w2*0.18,horizon);
+      c.lineTo(x+w2, H*0.985);
+      c.lineTo(x-w2, H*0.985);
+      c.closePath(); c.fill();
+    }
+  })();
+
+  /* --- atmospheric falling-rain haze layered into the world --- */
+  (function(){
+    var r4 = mulberry(4242);
+    c.strokeStyle='rgba(190,200,215,0.05)'; c.lineWidth=1;
+    c.beginPath();
+    for (var i=0;i<420;i++){
+      var x=r4()*W, y=r4()*H, len=10+r4()*26;
+      c.moveTo(x,y); c.lineTo(x-len*0.12,y+len);
+    }
+    c.stroke();
+    /* brighter rain inside lamp halos */
+    c.strokeStyle='rgba(255,225,180,0.10)';
+    c.beginPath();
+    for (var j=0;j<130;j++){
+      var a2=r4()*Math.PI*2, rr2=r4()*130;
+      var x2=lampA.x+Math.cos(a2)*rr2, y2=lampA.y+Math.sin(a2)*rr2*1.6;
+      var l2=8+r4()*16;
+      c.moveTo(x2,y2); c.lineTo(x2-l2*0.12,y2+l2);
+    }
+    c.stroke();
+  })();
+}
+
+function roundRect(c,x,y,w,h,r){
+  c.beginPath();
+  c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r);
+  c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath();
+}
+function mulberry(a){
+  return function(){
+    a|=0; a=a+0x6D2B79F5|0;
+    var t=Math.imul(a^a>>>15,1|a);
+    t=t+Math.imul(t^t>>>7,61|t)^t;
+    return ((t^t>>>14)>>>0)/4294967296;
+  };
+}
+
+/* ------------------------------------------------------------
+   3.  INTERIOR REFLECTION — faint café inside, mirrored in
+       the glass: a hanging pendant lamp, table edge, mug.
+------------------------------------------------------------ */
+var intCanvas;
+function buildInteriorTexture(){
+  intCanvas = document.createElement('canvas');
+  intCanvas.width=1024; intCanvas.height=512;
+  var c = intCanvas.getContext('2d');
+  c.fillStyle='rgba(0,0,0,0)'; c.clearRect(0,0,1024,512);
+
+  function glow(x,y,r,col,a){
+    var g=c.createRadialGradient(x,y,0,x,y,r);
+    g.addColorStop(0,col); g.addColorStop(1,'rgba(0,0,0,0)');
+    c.globalAlpha=a; c.fillStyle=g; c.fillRect(x-r,y-r,r*2,r*2); c.globalAlpha=1;
+  }
+  /* pendant lamp reflection, upper right */
+  glow(790, 90, 130, 'rgba(255,190,110,1)', 0.9);
+  c.fillStyle='rgba(255,215,150,0.95)';
+  c.beginPath(); c.ellipse(790,92,26,16,0,0,7); c.fill();
+  c.fillStyle='rgba(60,40,25,0.8)';
+  c.beginPath(); c.moveTo(760,84); c.quadraticCurveTo(790,52,820,84);
+  c.lineTo(812,92); c.quadraticCurveTo(790,68,768,92); c.closePath(); c.fill();
+  c.fillStyle='rgba(40,30,20,0.7)'; c.fillRect(788,0,4,58);
+
+  /* second pendant, dimmer, left */
+  glow(210, 130, 90, 'rgba(255,180,100,1)', 0.55);
+  c.fillStyle='rgba(255,205,140,0.7)';
+  c.beginPath(); c.ellipse(210,132,18,11,0,0,7); c.fill();
+  c.fillStyle='rgba(40,30,20,0.5)'; c.fillRect(208,0,3,100);
+
+  /* table edge + mug with steam, bottom */
+  var tg=c.createLinearGradient(0,400,0,512);
+  tg.addColorStop(0,'rgba(90,58,34,0)');
+  tg.addColorStop(0.3,'rgba(96,62,36,0.55)');
+  tg.addColorStop(1,'rgba(60,38,22,0.7)');
+  c.fillStyle=tg; c.fillRect(0,400,1024,112);
+  c.fillStyle='rgba(255,200,130,0.16)'; c.fillRect(0,404,1024,3);
+  /* mug */
+  glow(640,430,70,'rgba(255,190,120,1)',0.25);
+  c.fillStyle='rgba(214,196,178,0.85)';
+  roundRect(c,612,404,58,52,8); c.fill();
+  c.strokeStyle='rgba(214,196,178,0.75)'; c.lineWidth=7;
+  c.beginPath(); c.arc(676,428,15,-1.2,1.2); c.stroke();
+  c.fillStyle='rgba(58,36,22,0.9)';
+  c.beginPath(); c.ellipse(641,407,26,5,0,0,7); c.fill();
+  /* steam wisps */
+  c.strokeStyle='rgba(240,235,225,0.30)'; c.lineWidth=3; c.lineCap='round';
+  c.beginPath();
+  c.moveTo(632,396); c.bezierCurveTo(622,372,648,362,638,336);
+  c.moveTo(652,394); c.bezierCurveTo(664,370,640,356,654,330);
+  c.stroke();
+}
+
+/* ------------------------------------------------------------
+   4.  THREE.JS — full-screen quad + glass shader
+------------------------------------------------------------ */
+var renderer, camera, scene, uniforms, startT = performance.now();
+var mouse = {x:0.5,y:0.5,tx:0.5,ty:0.5};
+var rainIntensity = {v:1.0, target:1.0};   // toggled Heavy/Soft
+var firstFrame = true;
+
+var VERT = [
+'varying vec2 vUv;',
+'void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }'
+].join('\n');
+
+/* Glass shader: adapted, hand-tuned droplet field.
+   Three layers of moving drips + static beads + trails.
+   Droplets refract (offset uv), non-droplet area is blurred
+   (condensation) via mip bias. */
+var FRAG = [
+'precision highp float;',
+'varying vec2 vUv;',
+'uniform sampler2D uWorld;',
+'uniform sampler2D uInterior;',
+'uniform float uTime;',
+'uniform vec2  uRes;',
+'uniform vec2  uMouse;',
+'uniform float uRain;',       // 0.35 soft .. 1.0 heavy
+
+'#define S(a,b,t) smoothstep(a,b,t)',
+
+'vec3 N13(float p){',
+'  vec3 p3 = fract(vec3(p) * vec3(.1031,.11369,.13787));',
+'  p3 += dot(p3, p3.yzx + 19.19);',
+'  return fract(vec3((p3.x+p3.y)*p3.z, (p3.x+p3.z)*p3.y, (p3.y+p3.z)*p3.x));',
+'}',
+'float N(float t){ return fract(sin(t*12345.564)*7658.76); }',
+'float Saw(float b, float t){ return S(0.,b,t)*S(1.,b,t); }',
+
+/* moving drip layer */
+'vec2 DropLayer2(vec2 uv, float t){',
+'  vec2 UV = uv;',
+'  uv.y += t*0.75;',
+'  vec2 a = vec2(6.,1.);',
+'  vec2 grid = a*2.;',
+'  vec2 id = floor(uv*grid);',
+'  float colShift = N(id.x);',
+'  uv.y += colShift;',
+'  id = floor(uv*grid);',
+'  vec3 n = N13(id.x*35.2+id.y*2376.1);',
+'  vec2 st = fract(uv*grid)-vec2(.5,0);',
+'  float x = n.x-.5;',
+'  float y = UV.y*20.;',
+'  float wiggle = sin(y+sin(y));',
+'  x += wiggle*(.5-abs(x))*(n.z-.5);',
+'  x *= .7;',
+'  float ti = fract(t+n.z);',
+'  y = (Saw(.85, ti)-.5)*.9+.5;',
+'  vec2 p = vec2(x, y);',
+'  float d = length((st-p)*a.yx);',
+'  float mainDrop = S(.4, .0, d);',
+'  float r = sqrt(S(1., y, st.y));',
+'  float cd = abs(st.x-x);',
+'  float trail = S(.23*r, .15*r*r, cd);',
+'  float trailFront = S(-.02, .02, st.y-y);',
+'  trail *= trailFront*r*r;',
+'  y = UV.y;',
+'  float trail2 = S(.2*r, .0, cd);',
+'  float droplets = max(0., (sin(y*(1.-y)*120.)-st.y))*trail2*trailFront*n.z;',
+'  y = fract(y*10.)+ (st.y-.5);',
+'  float dd = length(st-vec2(x,y));',
+'  droplets = S(.3, 0., dd);',
+'  float m = mainDrop+droplets*r*trailFront;',
+'  return vec2(m, trail);',
+'}',
+
+/* static beads */
+'float StaticDrops(vec2 uv, float t){',
+'  uv *= 40.;',
+'  vec2 id = floor(uv);',
+'  uv = fract(uv)-.5;',
+'  vec3 n = N13(id.x*107.45+id.y*3543.654);',
+'  vec2 p = (n.xy-.5)*.7;',
+'  float d = length(uv-p);',
+'  float fade = Saw(.025, fract(t+n.z));',
+'  float c = S(.3, 0., d)*fract(n.z*10.)*fade;',
+'  return c;',
+'}',
+
+'vec2 Drops(vec2 uv, float t, float l0, float l1, float l2){',
+'  float s  = StaticDrops(uv, t)*l0;',
+'  vec2 m1  = DropLayer2(uv, t)*l1;',
+'  vec2 m2  = DropLayer2(uv*1.85, t)*l2;',
+'  float c  = s+m1.x+m2.x;',
+'  c = S(.3, 1., c);',
+'  return vec2(c, max(m1.y*l0, m2.y*l1));',
+'}',
+
+'void main(){',
+'  vec2 uv = (gl_FragCoord.xy - .5*uRes) / uRes.y;',
+'  vec2 UV = vUv;',
+'  float T = uTime;',
+
+/* subtle camera drift + mouse lean */
+'  vec2 lean = (uMouse-.5)*vec2(.055,.035);',
+'  UV = (UV-.5)*(1.0 - .045) + .5 + lean;',
+'  UV.x += sin(T*.10)*.0035;',
+'  UV.y += cos(T*.13)*.0022;',
+
+'  float t = T*.2;',
+'  float rainAmount = uRain;',
+'  float staticDrops = S(-.5, 1., rainAmount)*2.;',
+'  float layer1 = S(.25, .75, rainAmount);',
+'  float layer2 = S(.0, .5, rainAmount);',
+
+'  vec2 c = Drops(uv, t, staticDrops, layer1, layer2);',
+/* normal from droplet heightfield */
+'  vec2 e = vec2(.001, 0.);',
+'  float cx = Drops(uv+e, t, staticDrops, layer1, layer2).x;',
+'  float cy = Drops(uv+e.yx, t, staticDrops, layer1, layer2).x;',
+'  vec2 n = vec2(cx-c.x, cy-c.x);',
+
+/* condensation blur amount: high where no droplet/trail */
+'  float focus = mix(4.5, 0.4, S(.1, .2, c.x + c.y*0.6));',
+
+/* refracted sample through droplets, blurred elsewhere */
+'  vec3 col = texture2D(uWorld, UV + n*1.8, focus).rgb;',
+
+/* droplets brighten slightly (lens gathering light) */
+'  col += c.x * vec3(1.05,1.0,0.92) * 0.10;',
+
+/* wet-glass chromatic fringe on strong droplets */
+'  float fr = c.x*0.35;',
+'  col.r += texture2D(uWorld, UV + n*2.1, focus).r * fr * 0.4;',
+'  col.b += texture2D(uWorld, UV + n*1.5, focus).b * fr * 0.4;',
+'  col /= (1.0 + fr*0.4);',
+
+/* interior reflection in the glass: stronger where glass is
+   clean/condensed, broken up by droplets, angled slightly */
+'  vec2 riv = vec2(1.0-UV.x, UV.y);',
+'  riv = (riv-.5)*vec2(1.06,1.1)+.5 + n*1.2;',
+'  vec3 refl = texture2D(uInterior, riv, 2.2).rgb;',
+'  float reflAmt = (0.16 + 0.10*S(.2,.0,c.x)) * (0.6+0.4*UV.x);',
+'  col += refl * reflAmt;',
+
+/* cold glass tint & lamp warmth from the right (interior lamp) */
+'  col = mix(col, col*vec3(.93,.97,1.06), .35);',
+'  float lampGlow = S(1.1,.45,distance(UV,vec2(.86,.18)));',
+'  col += vec3(1.0,.72,.42)*lampGlow*.045;',
+
+/* window frame: dark blurred mullions in the foreground */
+'  float fx = min(UV.x, 1.-UV.x);',
+'  float fy = min(UV.y, 1.-UV.y);',
+'  float frame = S(.012,.030,fx)*S(.015,.036,fy);',
+'  float mull = S(.004,.016,abs(UV.x-.315));',   // vertical mullion
+'  frame *= (0.25+0.75*mull);',
+'  vec3 frameCol = vec3(.045,.032,.024);',
+'  col = mix(frameCol, col, clamp(frame,0.,1.));',
+'  float sill = S(.10,.02,UV.y);',
+'  col = mix(col, frameCol*1.4 + vec3(.05,.03,.02)*S(.06,.0,UV.y), sill*.9);',
+
+/* breathing condensation at the glass edges */
+'  float breathe = (sin(T*0.45)*.5+.5)*.35+.4;',
+'  float edgeFog = (1.-S(.05,.38,fx)) + (1.-S(.05,.32,fy));',
+'  edgeFog = clamp(edgeFog,0.,1.)*breathe;',
+'  vec3 fogged = texture2D(uWorld, UV, 5.5).rgb;',
+'  col = mix(col, fogged*vec3(.9,.93,1.0)+vec3(.02,.022,.028), edgeFog*.5*frame);',
+
+/* filmic-ish grade */
+'  col = col*col*(3.0-2.0*col);',       // soft contrast
+'  col *= vec3(1.04,1.0,.97);',          // warm bias
+'  float vig = 1.-.45*dot(uv,uv);',
+'  col *= vig;',
+
+'  gl_FragColor = vec4(col, 1.0);',
+'}'
+].join('\n');
+
+function initGL(){
+  var canvas = document.getElementById('scene');
+  renderer = new THREE.WebGLRenderer({
+    canvas:canvas, antialias:false,
+    powerPreference:'high-performance'
+  });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  scene = new THREE.Scene();
+  camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+
+  worldTex = new THREE.CanvasTexture(worldCanvas);
+  worldTex.minFilter = THREE.LinearMipmapLinearFilter;
+  worldTex.magFilter = THREE.LinearFilter;
+  worldTex.generateMipmaps = true;
+  worldTex.wrapS = worldTex.wrapT = THREE.ClampToEdgeWrapping;
+  worldTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+  var intTex = new THREE.CanvasTexture(intCanvas);
+  intTex.minFilter = THREE.LinearMipmapLinearFilter;
+  intTex.generateMipmaps = true;
+  intTex.wrapS = intTex.wrapT = THREE.ClampToEdgeWrapping;
+
+  uniforms = {
+    uWorld:   {value: worldTex},
+    uInterior:{value: intTex},
+    uTime:    {value: 0},
+    uRes:     {value: new THREE.Vector2(window.innerWidth*renderer.getPixelRatio(), window.innerHeight*renderer.getPixelRatio())},
+    uMouse:   {value: new THREE.Vector2(0.5,0.5)},
+    uRain:    {value: 1.0}
+  };
+
+  var mat = new THREE.ShaderMaterial({
+    vertexShader:VERT, fragmentShader:FRAG, uniforms:uniforms
+  });
+  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2), mat));
+
+  window.addEventListener('resize', function(){
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    uniforms.uRes.value.set(
+      window.innerWidth*renderer.getPixelRatio(),
+      window.innerHeight*renderer.getPixelRatio());
+  });
+  window.addEventListener('pointermove', function(e){
+    mouse.tx = e.clientX/window.innerWidth;
+    mouse.ty = 1.0 - e.clientY/window.innerHeight;
+  });
+}
+
+function loop(){
+  requestAnimationFrame(loop);
+  var t = (performance.now()-startT)/1000;
+  /* smooth mouse + rain intensity easing */
+  mouse.x += (mouse.tx-mouse.x)*0.04;
+  mouse.y += (mouse.ty-mouse.y)*0.04;
+  rainIntensity.v += (rainIntensity.target-rainIntensity.v)*0.03;
+
+  uniforms.uTime.value = t;
+  uniforms.uMouse.value.set(mouse.x, mouse.y);
+  uniforms.uRain.value = rainIntensity.v;
+  renderer.render(scene, camera);
+
+  if (firstFrame){
+    firstFrame = false;
+    var v = document.getElementById('veil');
+    v.style.opacity = '0';
+    setTimeout(function(){ v.remove(); }, 1800);
+  }
+}
+
+/* ------------------------------------------------------------
+   5.  AUDIO — procedural rain + distant rumble, WebAudio only
+------------------------------------------------------------ */
+var audioCtx=null, audioOn=false, rainGain=null;
+
+function initAudio(){ /* lazy — created on first toggle */ }
+
+function startAudio(){
+  if (!audioCtx){
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    audioCtx = new AC();
+
+    /* --- rain bed: filtered noise, two bands --- */
+    var len = audioCtx.sampleRate*2;
+    var buf = audioCtx.createBuffer(1,len,audioCtx.sampleRate);
+    var d = buf.getChannelData(0);
+    for (var i=0;i<len;i++) d[i]=Math.random()*2-1;
+
+    rainGain = audioCtx.createGain(); rainGain.gain.value=0;
+    rainGain.connect(audioCtx.destination);
+
+    /* hiss layer (drops on glass) */
+    var src1 = audioCtx.createBufferSource();
+    src1.buffer=buf; src1.loop=true;
+    var bp = audioCtx.createBiquadFilter();
+    bp.type='bandpass'; bp.frequency.value=5200; bp.Q.value=0.55;
+    var g1 = audioCtx.createGain(); g1.gain.value=0.32;
+    src1.connect(bp); bp.connect(g1); g1.connect(rainGain);
+    src1.start();
+
+    /* body layer (rain mass outside, muffled by glass) */
+    var src2 = audioCtx.createBufferSource();
+    src2.buffer=buf; src2.loop=true;
+    var lp = audioCtx.createBiquadFilter();
+    lp.type='lowpass'; lp.frequency.value=750; lp.Q.value=0.4;
+    var g2 = audioCtx.createGain(); g2.gain.value=0.65;
+    src2.connect(lp); lp.connect(g2); g2.connect(rainGain);
+    src2.start();
+
+    /* slow swell LFO on body — gusts of rain */
+    var lfo = audioCtx.createOscillator();
+    lfo.frequency.value=0.07;
+    var lfoG = audioCtx.createGain(); lfoG.gain.value=0.18;
+    lfo.connect(lfoG); lfoG.connect(g2.gain);
+    lfo.start();
+
+    /* occasional soft distant thunder rumble */
+    (function thunder(){
+      if (!audioCtx) return;
+      var wait = 18000 + Math.random()*30000;
+      setTimeout(function(){
+        if (audioCtx && audioOn){
+          var s = audioCtx.createBufferSource();
+          s.buffer = buf; s.loop = false;
+          s.playbackRate.value = 0.12;
+          var f = audioCtx.createBiquadFilter();
+          f.type='lowpass'; f.frequency.value=110;
+          var g = audioCtx.createGain();
+          var now = audioCtx.currentTime;
+          g.gain.setValueAtTime(0, now);
+          g.gain.linearRampToValueAtTime(0.5, now+1.4);
+          g.gain.exponentialRampToValueAtTime(0.001, now+7);
+          s.connect(f); f.connect(g); g.connect(audioCtx.destination);
+          s.start(); s.stop(now+8);
+        }
+        thunder();
+      }, wait);
+    })();
+  }
+  if (audioCtx.state==='suspended') audioCtx.resume();
+  rainGain.gain.cancelScheduledValues(audioCtx.currentTime);
+  rainGain.gain.setTargetAtTime(0.5, audioCtx.currentTime, 1.2);
+  audioOn=true;
+}
+function stopAudio(){
+  if (rainGain && audioCtx){
+    rainGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    rainGain.gain.setTargetAtTime(0.0, audioCtx.currentTime, 0.6);
+  }
+  audioOn=false;
+}
+
+/* ------------------------------------------------------------
+   6.  UI
+------------------------------------------------------------ */
+function initUI(){
+  var ab = document.getElementById('audioBtn');
+  ab.addEventListener('click', function(){
+    if (audioOn){ stopAudio(); ab.classList.remove('active'); }
+    else { startAudio(); ab.classList.add('active'); }
+  });
+  var wb = document.getElementById('wiperBtn');
+  var heavy = true;
+  wb.addEventListener('click', function(){
+    heavy = !heavy;
+    rainIntensity.target = heavy ? 1.0 : 0.42;
+    wb.classList.toggle('active', heavy);
+    wb.querySelector('span:last-child').textContent = heavy ? 'Heavy Rain' : 'Soft Drizzle';
+  });
+}
+
+/* ------------------------------------------------------------
+   7.  LOAD THREE.JS — CDN with fallback, then boot.
+------------------------------------------------------------ */
+function loadThree(urls, i){
+  i = i||0;
+  if (i>=urls.length){
+    document.getElementById('veil').innerHTML =
+      '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#9a917f;font-family:Georgia,serif;font-style:italic;">Could not load Three.js (offline?)</div>';
+    return;
+  }
+  var s = document.createElement('script');
+  s.src = urls[i];
+  s.onload = function(){
+    if (window.THREE){ THREE = window.THREE; boot(); }
+    else loadThree(urls, i+1);
+  };
+  s.onerror = function(){ loadThree(urls, i+1); };
+  document.head.appendChild(s);
+}
+loadThree([
+  'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
+  'https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js',
+  'https://unpkg.com/three@0.149.0/build/three.min.js'
+]);
+
+})();
+</script>
+</body>
+</html>
