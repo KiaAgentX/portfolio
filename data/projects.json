@@ -22,7 +22,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 444,
-      "fileCount": 6
+      "fileCount": 6,
+      "thumb": "projects/-DropAgentX-/gallery/shot-full.jpg"
     },
     {
       "id": "0.6.0",
@@ -42,7 +43,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 38309,
-      "fileCount": 242
+      "fileCount": 242,
+      "thumb": "projects/0.6.0/gallery/poster-ai-chat.jpg"
     },
     {
       "id": "0xElon",
@@ -61,7 +63,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 15606,
-      "fileCount": 90
+      "fileCount": 90,
+      "thumb": "projects/0xElon/gallery/shot-full.jpg"
     },
     {
       "id": "3DMIND",
@@ -81,7 +84,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 4709,
-      "fileCount": 33
+      "fileCount": 33,
+      "thumb": "projects/3DMIND/gallery/shot-images.jpg"
     },
     {
       "id": "3dspace",
@@ -101,7 +105,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 4708,
-      "fileCount": 30
+      "fileCount": 30,
+      "thumb": null
     },
     {
       "id": "accounting",
@@ -120,7 +125,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 21676,
-      "fileCount": 24
+      "fileCount": 24,
+      "thumb": "projects/accounting/gallery/shot-trial.jpg"
     },
     {
       "id": "AGI",
@@ -139,7 +145,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 120788,
-      "fileCount": 457
+      "fileCount": 457,
+      "thumb": "projects/AGI/gallery/shot-landing.jpg"
     },
     {
       "id": "antigravity-lab",
@@ -158,7 +165,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 2967,
-      "fileCount": 27
+      "fileCount": 27,
+      "thumb": "projects/antigravity-lab/gallery/shot-dashboard.jpg"
     },
     {
       "id": "antigravity-ts",
@@ -178,7 +186,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 2527,
-      "fileCount": 23
+      "fileCount": 23,
+      "thumb": "projects/antigravity-ts/gallery/shot-archives.jpg"
     },
     {
       "id": "api",
@@ -197,7 +206,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 1060,
-      "fileCount": 8
+      "fileCount": 8,
+      "thumb": "projects/api/gallery/shot-desk.jpg"
     },
     {
       "id": "craft",
@@ -217,7 +227,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 1457,
-      "fileCount": 18
+      "fileCount": 18,
+      "thumb": "projects/craft/gallery/shot-story.jpg"
     },
     {
       "id": "DOGE",
@@ -236,7 +247,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 42703,
-      "fileCount": 29
+      "fileCount": 29,
+      "thumb": null
     },
     {
       "id": "DropAgentX",
@@ -256,7 +268,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 2664,
-      "fileCount": 34
+      "fileCount": 34,
+      "thumb": "projects/DropAgentX/gallery/overview.jpg"
     },
     {
       "id": "DropAgentXBot",
@@ -275,7 +288,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 39937,
-      "fileCount": 226
+      "fileCount": 226,
+      "thumb": "projects/DropAgentXBot/gallery/poster-ai-chat.jpg"
     },
     {
       "id": "DropAgentXmain",
@@ -295,7 +309,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 32443,
-      "fileCount": 148
+      "fileCount": 148,
+      "thumb": "projects/DropAgentXmain/gallery/web-next.jpg"
     },
     {
       "id": "fishkal",
@@ -314,7 +329,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 5363,
-      "fileCount": 35
+      "fileCount": 35,
+      "thumb": "projects/fishkal/gallery/dhow.jpg"
     },
     {
       "id": "fishkalv1",
@@ -332,7 +348,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 549,
-      "fileCount": 15
+      "fileCount": 15,
+      "thumb": "projects/fishkalv1/gallery/hero.jpg"
     },
     {
       "id": "fly-gold-trader",
@@ -351,7 +368,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 5123,
-      "fileCount": 80
+      "fileCount": 80,
+      "thumb": "projects/fly-gold-trader/gallery/dashboard-live.jpg"
     },
     {
       "id": "fly",
@@ -371,7 +389,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 6472,
-      "fileCount": 112
+      "fileCount": 112,
+      "thumb": "projects/fly/gallery/teaser.jpg"
     },
     {
       "id": "ghost",
@@ -391,7 +410,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 2417,
-      "fileCount": 23
+      "fileCount": 23,
+      "thumb": "projects/ghost/gallery/shot-marketplace.jpg"
     },
     {
       "id": "GQR-v1",
@@ -410,7 +430,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 2086,
-      "fileCount": 55
+      "fileCount": 55,
+      "thumb": "projects/GQR-v1/gallery/shot-guide.jpg"
     },
     {
       "id": "GQR-v2",
@@ -430,7 +451,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 4053,
-      "fileCount": 25
+      "fileCount": 25,
+      "thumb": "projects/GQR-v2/gallery/shot-indicators.jpg"
     },
     {
       "id": "GQR-v3",
@@ -450,7 +472,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 8719,
-      "fileCount": 35
+      "fileCount": 35,
+      "thumb": "projects/GQR-v3/gallery/shot-arena.jpg"
     },
     {
       "id": "Hermes",
@@ -468,7 +491,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 0,
-      "fileCount": 10
+      "fileCount": 10,
+      "thumb": null
     },
     {
       "id": "Hesaban",
@@ -487,7 +511,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 69335,
-      "fileCount": 115
+      "fileCount": 115,
+      "thumb": "projects/Hesaban/gallery/shot-session.jpg"
     },
     {
       "id": "key",
@@ -506,7 +531,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 1222,
-      "fileCount": 9
+      "fileCount": 9,
+      "thumb": "projects/key/gallery/shot-desk.jpg"
     },
     {
       "id": "khanehesabdari-v1",
@@ -524,7 +550,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 36266,
-      "fileCount": 69
+      "fileCount": 69,
+      "thumb": "projects/khanehesabdari-v1/gallery/shot-quiz.jpg"
     },
     {
       "id": "Kia-Agent",
@@ -541,7 +568,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 0,
-      "fileCount": 3
+      "fileCount": 3,
+      "thumb": null
     },
     {
       "id": "kiarouter",
@@ -558,7 +586,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 0,
-      "fileCount": 3
+      "fileCount": 3,
+      "thumb": null
     },
     {
       "id": "mt5-fetcher",
@@ -578,7 +607,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 3165,
-      "fileCount": 15
+      "fileCount": 15,
+      "thumb": "projects/mt5-fetcher/gallery/shot-llm.jpg"
     },
     {
       "id": "Neon-Prompt-Studio",
@@ -596,7 +626,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 3326,
-      "fileCount": 23
+      "fileCount": 23,
+      "thumb": "projects/Neon-Prompt-Studio/gallery/screenshot-desktop.jpg"
     },
     {
       "id": "nova",
@@ -616,7 +647,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 2346,
-      "fileCount": 20
+      "fileCount": 20,
+      "thumb": "projects/nova/gallery/shot-chat.jpg"
     },
     {
       "id": "pad",
@@ -634,7 +666,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 0,
-      "fileCount": 6
+      "fileCount": 6,
+      "thumb": "projects/pad/gallery/shot-brain.jpg"
     },
     {
       "id": "Pyhub",
@@ -653,7 +686,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 5258,
-      "fileCount": 11
+      "fileCount": 11,
+      "thumb": "projects/Pyhub/gallery/shot-desktop.jpg"
     },
     {
       "id": "SenP",
@@ -673,7 +707,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 14420,
-      "fileCount": 43
+      "fileCount": 43,
+      "thumb": "projects/SenP/gallery/shot-mission.jpg"
     },
     {
       "id": "senpai-bot",
@@ -692,7 +727,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 8025,
-      "fileCount": 13
+      "fileCount": 13,
+      "thumb": "projects/senpai-bot/gallery/shot-desk.jpg"
     },
     {
       "id": "skill",
@@ -711,7 +747,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 13417,
-      "fileCount": 57
+      "fileCount": 57,
+      "thumb": "projects/skill/gallery/shot-uitemplates.jpg"
     },
     {
       "id": "solmarket",
@@ -731,7 +768,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 8719,
-      "fileCount": 36
+      "fileCount": 36,
+      "thumb": "projects/solmarket/gallery/shot-arena.jpg"
     },
     {
       "id": "startagent",
@@ -748,7 +786,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 0,
-      "fileCount": 3
+      "fileCount": 3,
+      "thumb": null
     },
     {
       "id": "tidewater",
@@ -767,7 +806,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 82746,
-      "fileCount": 424
+      "fileCount": 424,
+      "thumb": "projects/tidewater/gallery/screenshot.jpg"
     },
     {
       "id": "typesafe-jev-1.13",
@@ -785,7 +825,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 322,
-      "fileCount": 12
+      "fileCount": 12,
+      "thumb": "projects/typesafe-jev-1.13/gallery/chat.jpg"
     },
     {
       "id": "W12",
@@ -804,7 +845,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 3993,
-      "fileCount": 32
+      "fileCount": 32,
+      "thumb": "projects/W12/gallery/shot-terminal.jpg"
     },
     {
       "id": "WaterCuda",
@@ -823,7 +865,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 5697,
-      "fileCount": 157
+      "fileCount": 157,
+      "thumb": null
     },
     {
       "id": "win12",
@@ -842,7 +885,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 3578,
-      "fileCount": 31
+      "fileCount": 31,
+      "thumb": "projects/win12/gallery/shot-desktop.jpg"
     },
     {
       "id": "xA",
@@ -862,7 +906,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 4115,
-      "fileCount": 161
+      "fileCount": 161,
+      "thumb": "projects/xA/gallery/shot-desk.jpg"
     },
     {
       "id": "Xbot",
@@ -881,7 +926,8 @@
       "preview": "none",
       "previewReady": false,
       "loc": 4963,
-      "fileCount": 45
+      "fileCount": 45,
+      "thumb": "projects/Xbot/gallery/shot-hokm.jpg"
     },
     {
       "id": "Xmarket-0.1",
@@ -901,7 +947,8 @@
       "preview": "build",
       "previewReady": true,
       "loc": 2992,
-      "fileCount": 27
+      "fileCount": 27,
+      "thumb": "projects/Xmarket-0.1/gallery/shot-explore.jpg"
     },
     {
       "id": "zenovix",
@@ -920,7 +967,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 13023,
-      "fileCount": 50
+      "fileCount": 50,
+      "thumb": "projects/zenovix/gallery/shot-demo.jpg"
     },
     {
       "id": "ag",
@@ -939,7 +987,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 0,
-      "fileCount": 2
+      "fileCount": 2,
+      "thumb": null
     },
     {
       "id": "dropagentx-architecture",
@@ -957,7 +1006,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 531,
-      "fileCount": 2
+      "fileCount": 2,
+      "thumb": null
     },
     {
       "id": "dropagentx-roadmap",
@@ -975,7 +1025,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 385,
-      "fileCount": 2
+      "fileCount": 2,
+      "thumb": null
     },
     {
       "id": "fable-berger",
@@ -993,7 +1044,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 582,
-      "fileCount": 2
+      "fileCount": 2,
+      "thumb": null
     },
     {
       "id": "hermes-company-structure",
@@ -1011,7 +1063,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 366,
-      "fileCount": 2
+      "fileCount": 2,
+      "thumb": null
     },
     {
       "id": "imx-landing-3d",
@@ -1030,7 +1083,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 832,
-      "fileCount": 2
+      "fileCount": 2,
+      "thumb": null
     },
     {
       "id": "sc-studio",
@@ -1048,7 +1102,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 0,
-      "fileCount": 2
+      "fileCount": 2,
+      "thumb": null
     },
     {
       "id": "fishkal-deep-catch",
@@ -1066,7 +1121,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 0,
-      "fileCount": 2
+      "fileCount": 2,
+      "thumb": null
     },
     {
       "id": "trading-god-arena",
@@ -1085,7 +1141,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 4013,
-      "fileCount": 2
+      "fileCount": 2,
+      "thumb": null
     },
     {
       "id": "guide-9router",
@@ -1104,7 +1161,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 1184,
-      "fileCount": 2
+      "fileCount": 2,
+      "thumb": null
     },
     {
       "id": "guide-railway",
@@ -1122,7 +1180,8 @@
       "preview": "static",
       "previewReady": true,
       "loc": 864,
-      "fileCount": 2
+      "fileCount": 2,
+      "thumb": null
     }
   ]
 }
