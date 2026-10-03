@@ -57,7 +57,7 @@ function extractSource(folder) {
     const isText = TEXT_EXT.has(ext) || TEXT_BASE.has(base) || base.startsWith('.env');
     if (!isText) continue;
     let st; try { st = fs.statSync(f); } catch { continue; }
-    if (st.size > 512 * 1024) continue;
+    if (st.size > 1024 * 1024) continue;
     const depth = rel.split('/').length;
     candidates.push({ rel, f, ext, depth, size: st.size });
   }

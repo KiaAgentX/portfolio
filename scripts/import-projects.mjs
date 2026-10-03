@@ -5,7 +5,7 @@ import { spawnSync } from 'child_process';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PORT = path.resolve(HERE, '..');
-const CHUNK = 9 * 1024 * 1024;
+const CHUNK = 4 * 1024 * 1024;
 const NUL = String.fromCharCode(0);
 
 function sh(cmd, args, cwd = PORT, input = undefined) {
@@ -31,10 +31,10 @@ let local = sh('git', ['rev-parse', 'HEAD']).out.trim();
 let remote = sh('git', ['rev-parse', 'origin/main']).out.trim();
 
 function pushWithRetry() {
-  for (let a = 1; a <= 3; a++) {
+  for (let a = 1; a <= 5; a++) {
     log(`push main (attempt ${a})...`);
     if (sh('git', ['push', 'origin', 'main']).code === 0) return true;
-    pause(8);
+    pause(20);
   }
   return false;
 }
@@ -45,8 +45,12 @@ if (local !== remote) {
     log('local behind remote - fast-forwarding');
     if (sh('git', ['merge', '--ff-only', 'origin/main']).code !== 0) { log('FF FAILED'); process.exit(1); }
   } else if (mergeBase === remote) {
-    log('local ahead - pushing pending commits first');
-    if (!pushWithRetry()) { log('PUSH OF EXISTING COMMITS FAILED - re-run to retry'); process.exit(1); }
+    log('local ahead - trying to push pending commits first');
+    if (!pushWithRetry()) {
+      const ahead = sh('git', ['rev-list', '--count', 'origin/main..HEAD']).out.trim();
+      log('splitting ' + ahead + ' unpushed commit(s) back for smaller chunks');
+      if (sh('git', ['reset', '--mixed', 'origin/main']).code !== 0) { log('RESET FAILED'); process.exit(1); }
+    }
   } else {
     log('DIVERGED - resolve manually'); process.exit(1);
   }

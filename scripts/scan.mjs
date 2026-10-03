@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
+const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(process.argv[2] || '.');
 const OUT = path.resolve(process.argv[3] || './scan.json');
 const SKIP = new Set(['node_modules', '.git', 'venv', '__pycache__', 'dist', 'build', '.next', '.turbo', 'coverage']);
@@ -57,11 +59,25 @@ const LANG_BY_EXT = {
   '.vue': 'Vue', '.svelte': 'Svelte', '.ipynb': 'Jupyter', '.ps1': 'PowerShell',
 };
 
+/* enumerate folders: prefer explicit list from projects.json (supports nested paths) */
+let targets = null;
+try {
+  const pj = JSON.parse(fs.readFileSync(path.join(HERE, '..', 'src', 'projects.json'), 'utf8'));
+  targets = pj.map(p => ({ key: p.folder.replace(/\\/g, '/'), abs: path.join(ROOT, p.folder) }));
+} catch { /* fall back to top-level dirs */ }
+if (!targets) {
+  targets = fs.readdirSync(ROOT)
+    .filter(name => {
+      const p = path.join(ROOT, name);
+      return fs.statSync(p).isDirectory() && name !== 'portfolio' && !name.startsWith('.');
+    })
+    .map(name => ({ key: name, abs: path.join(ROOT, name) }));
+}
+
 const projects = [];
-for (const name of fs.readdirSync(ROOT)) {
-  const dir = path.join(ROOT, name);
-  if (!fs.statSync(dir).isDirectory()) continue;
-  if (name === 'portfolio' || name.startsWith('.')) continue;
+for (const t of targets) {
+  const dir = t.abs;
+  if (!fs.existsSync(dir)) continue;
 
   const files = walk(dir);
   const extCount = {};
@@ -109,8 +125,8 @@ for (const name of fs.readdirSync(ROOT)) {
   const isDocsOnly = files.length <= 12 && !hasStaticIndex && !pkg && (codeExtCount['Python'] || 0) === 0;
 
   projects.push({
-    id: name.replace(/-main$/, ''),
-    folder: name,
+    id: t.key.replace(/-main$/, ''),
+    folder: t.key,
     title: readme.title || name.replace(/-main$/, ''),
     description: readme.desc || '',
     fileCount: files.length,

@@ -42,9 +42,9 @@ console.log('INDEX PAGE');
   const dom = await load(BASE + '/');
   const d = dom.window.document;
   const cards = d.querySelectorAll('#grid .card');
-  check('48 cards rendered', cards.length === 48, `got ${cards.length}`);
+  check('59 cards rendered', cards.length === 59, `got ${cards.length}`);
   check('category chips rendered', d.querySelectorAll('#chips .chip').length >= 8);
-  check('stats show 48 projects', d.querySelector('.stat .v.green')?.textContent === '48');
+  check('stats show 59 projects', d.querySelector('.stat .v.green')?.textContent === '59');
   check('est. value present', /\$4[0-9]{2},[0-9]{3}/.test(d.querySelector('.stat .v.gold')?.textContent || ''));
 
   const input = d.querySelector('#search');
@@ -62,7 +62,7 @@ console.log('INDEX PAGE');
   const chip = Array.from(d.querySelectorAll('#chips .chip')).find(c => c.dataset.c === 'Trading & Fintech');
   chip.dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true }));
   const m = d.querySelectorAll('#grid .card').length;
-  check('category filter works', m === 9, `got ${m}`);
+  check('category filter works', m === 10, `got ${m}`);
   dom.window.close();
 }
 
