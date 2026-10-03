@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Easy Run Â· DOGE Vault Premium Â· Setup & Guide</title>
+    <meta name="theme-color" content="#0a0a12" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="Complete guide to run DOGE Vault Premium locally – 100+ features, server setup, PWA install, and more." />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+    <style>
+        /* ============================================================
+               MODERN UI – Easy Run DOGE Vault Premium v3.0
+               ============================================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        :root {
+            --doge-gold: #F2C94C;
+            --doge-orange: #F2994A;
+            --doge-red: #eb5757;
+            --musk-blue: #00b4d8;
+            --neon-green: #00ff88;
+            --neon-green-dim: rgba(0, 255, 136, 0.12);
+            --neon-red-dim: rgba(255, 34, 85, 0.10);
+            --neon-white: #f0f0ff;
+            --dark-bg: #0a0a12;
+            --card-bg: rgba(18, 18, 30, 0.85);
+            --glass-border: rgba(242, 201, 76, 0.10);
+            --glass-border-strong: rgba(242, 201, 76, 0.20);
+            --shadow-gold: 0 0 40px rgba(242, 201, 76, 0.06);
+            --shadow-hover: 0 0 60px rgba(242, 201, 76, 0.12);
+            --radius: 24px;
+            --radius-sm: 14px;
+            --radius-xs: 8px;
+            --font: 'Orbitron', 'Inter', Tahoma, sans-serif;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --touch-min: 44px;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--dark-bg);
+            color: var(--neon-white);
+            min-height: 100vh;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #10101a; }
+        ::-webkit-scrollbar-thumb { background: var(--doge-gold); border-radius: 10px; }
+
+        /* ===== Glassmorphism Card ===== */
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 24px 28px;
+            margin: 20px 0;
+            box-shadow: var(--shadow-gold);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card:hover { border-color: var(--glass-border-strong); box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+        .glass-card .glow-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--doge-gold), transparent);
+            opacity: 0.2;
+        }
+        .glass-card-sm { padding: 16px 20px; border-radius: var(--radius-sm); }
+
+        /* ===== Typography ===== */
+        h1 { font-size: 2.8rem; text-align: center; letter-spacing: -0.5px; font-weight: 900; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.8rem; margin-top: 40px; font-weight: 700; color: var(--doge-gold); border-bottom: 2px solid var(--glass-border); padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; margin-top: 20px; font-weight: 700; color: var(--musk-blue); }
+        h4 { font-size: 1rem; margin-top: 14px; font-weight: 700; color: var(--neon-white); }
+
+        .text-gold { color: var(--doge-gold); }
+        .text-blue { color: var(--musk-blue); }
+        .text-green { color: var(--neon-green); }
+        .text-red { color: var(--doge-red); }
+        .text-dim { color: rgba(240, 240, 255, 0.4); }
+
+        /* ===== Buttons ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--doge-gold), var(--doge-orange));
+            border: none;
+            border-radius: 50px;
+            color: #0a0e17;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 0 30px rgba(242, 201, 76, 0.15);
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+        }
+        .btn:hover { transform: scale(1.03); box-shadow: 0 0 50px rgba(242, 201, 76, 0.3); }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            color: var(--neon-white);
+            box-shadow: none;
+        }
+        .btn-secondary:hover { border-color: var(--doge-gold); color: var(--doge-gold); }
+        .btn-blue {
+            background: linear-gradient(135deg, var(--musk-blue), #0077b6);
+            color: #fff;
+            box-shadow: 0 0 30px rgba(0, 180, 216, 0.2);
+        }
+        .btn-blue:hover { box-shadow: 0 0 50px rgba(0, 180, 216, 0.3); }
+        .btn-green {
+            background: linear-gradient(135deg, var(--neon-green), #00cc66);
+            color: #0a0a12;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+        }
+        .btn-green:hover { box-shadow: 0 0 50px rgba(0, 255, 136, 0.3); }
+
+        /* ===== Header ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(16px);
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-gold);
+            position: relative;
+        }
+        .header .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--doge-gold);
+            text-shadow: 0 0 30px rgba(242, 201, 76, 0.15);
+        }
+        .header .logo span { color: var(--neon-white); font-weight: 300; font-size: 1.1rem; }
+        .header .logo .badge {
+            background: var(--doge-red);
+            color: #fff;
+            font-size: 0.5rem;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 25px rgba(235, 87, 87, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.4rem 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .nav-links a:hover { color: var(--neon-white); border-color: var(--glass-border); }
+        .nav-links a.active { color: var(--doge-gold); border-color: var(--glass-border-strong); background: rgba(242, 201, 76, 0.05); }
+
+        /* ===== Hero ===== */
+        .hero {
+            text-align: center;
+            padding: 40px 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(16px);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-gold);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero .hero-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(242, 201, 76, 0.03), transparent 70%);
+            animation: heroGlow 8s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        @keyframes heroGlow {
+            0% { opacity: 0.5; transform: scale(1) rotate(0deg); }
+            100% { opacity: 1; transform: scale(1.1) rotate(5deg); }
+        }
+        .hero h1 { font-size: 2.8rem; font-weight: 900; position: relative; }
+        .hero .subtitle { font-size: 1.1rem; color: var(--text-dim); max-width: 750px; margin: 0.5rem auto 1rem auto; position: relative; }
+        .hero .badge-row {
+            display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; justify-content: center; position: relative; margin-top: 0.5rem;
+        }
+        .hero .badge-row .badge {
+            display: inline-block; padding: 0.2rem 1rem; border-radius: 30px; font-size: 0.65rem; font-weight: 700;
+            border: 1px solid var(--glass-border); background: var(--card-bg); color: var(--doge-gold);
+        }
+        .hero .badge-row .badge.green { border-color: var(--neon-green); color: var(--neon-green); background: var(--neon-green-dim); }
+        .hero .badge-row .badge.blue { border-color: var(--musk-blue); color: var(--musk-blue); background: rgba(0, 180, 216, 0.1); }
+
+        /* ===== Progress Bar ===== */
+        .progress-container {
+            background: rgba(255, 255, 255, 0.05); border-radius: 30px; padding: 4px; margin: 20px auto 0 auto; max-width: 400px;
+        }
+        .progress-bar {
+            height: 6px; background: linear-gradient(90deg, var(--doge-gold), var(--musk-blue), var(--neon-green));
+            border-radius: 30px; width: 100%; transition: width 0.5s;
+        }
+
+        /* ===== Feature Grid ===== */
+        .feature-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin: 12px 0;
+        }
+        .feature-item {
+            background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: var(--radius-sm);
+            padding: 12px 16px; font-size: 0.85rem; transition: var(--transition);
+        }
+        .feature-item:hover { border-color: var(--doge-gold); transform: translateY(-3px); background: rgba(242, 201, 76, 0.02); }
+        .feature-item .icon { margin-right: 6px; font-size: 1.1rem; }
+
+        /* ===== Steps ===== */
+        .step {
+            padding: 16px 20px; border-radius: var(--radius-sm); margin: 12px 0;
+            border-left: 4px solid var(--musk-blue); background: rgba(0, 180, 216, 0.03);
+        }
+        .step.gold { border-left-color: var(--doge-gold); background: rgba(242, 201, 76, 0.03); }
+        .step.green { border-left-color: var(--neon-green); background: rgba(0, 255, 136, 0.03); }
+        .step h3 { margin-top: 0; color: var(--neon-white); }
+
+        /* ===== Code & Pre ===== */
+        code {
+            background: #0a0a15; padding: 2px 10px; border-radius: 6px; font-size: 0.85rem;
+            border: 1px solid #333; font-family: 'JetBrains Mono', monospace; color: var(--doge-gold);
+        }
+        pre {
+            background: #0a0a15; padding: 14px 18px; border-radius: 10px; border: 1px solid #333; overflow-x: auto;
+            font-size: 0.85rem; margin: 8px 0; color: #e0e0f0; position: relative;
+        }
+        pre .copy-btn {
+            position: absolute; top: 8px; right: 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid #333;
+            color: #aaa; padding: 2px 10px; border-radius: 4px; font-size: 0.7rem; cursor: pointer; transition: var(--transition);
+        }
+        pre .copy-btn:hover { background: var(--doge-gold); color: #0a0a12; }
+
+        /* ===== Table ===== */
+        .table-wrap { overflow-x: auto; margin: 12px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        td, th { padding: 8px 12px; border-bottom: 1px solid var(--glass-border); text-align: left; }
+        th { color: var(--doge-gold); font-weight: 700; }
+
+        /* ===== Accordion ===== */
+        .accordion { margin: 8px 0; }
+        .accordion-header {
+            background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: var(--radius-sm);
+            padding: 12px 18px; cursor: pointer; transition: var(--transition); font-weight: 700;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .accordion-header:hover { background: rgba(242, 201, 76, 0.03); border-color: var(--doge-gold); }
+        .accordion-header .arrow { transition: var(--transition); }
+        .accordion-header.open .arrow { transform: rotate(180deg); }
+        .accordion-body {
+            padding: 12px 18px; border-left: 1px solid var(--glass-border); border-right: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border); border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+            display: none; color: var(--text-dim);
+        }
+        .accordion-body.open { display: block; }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.4rem; }
+            .header { flex-direction: column; align-items: stretch; text-align: center; padding: 1rem; }
+            .nav-links { justify-content: center; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .glass-card { padding: 18px; }
+            .hero { padding: 30px 20px; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            h1 { font-size: 1.4rem; }
+            .hero h1 { font-size: 1.6rem; }
+        }
+
+        /* ===== Toast ===== */
+        .toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--card-bg); border: 1px solid var(--glass-border-strong); border-radius: var(--radius-sm);
+            padding: 0.8rem 2rem; backdrop-filter: blur(16px); color: var(--neon-white); font-size: 0.9rem; font-weight: 700;
+            z-index: 9999; opacity: 0; transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6); max-width: 92%; pointer-events: none;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+        .toast.success { border-color: var(--neon-green); }
+        .toast.error { border-color: var(--doge-red); }
+        .toast.gold { border-color: var(--doge-gold); }
+
+        /* ===== Footer ===== */
+        .footer { text-align: center; padding: 30px 10px 10px 10px; border-top: 1px solid var(--glass-border); margin-top: 30px; }
+        .footer .links { display: flex; flex-wrap: wrap; gap: 12px 20px; justify-content: center; margin-bottom: 10px; }
+        .footer .links a { color: var(--text-dim); text-decoration: none; font-size: 0.8rem; transition: var(--transition); }
+        .footer .links a:hover { color: var(--doge-gold); }
+        .footer .copy { color: rgba(240, 240, 255, 0.15); font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+
+    <!-- ===== Toast ===== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ===== Header ===== -->
+    <header class="header">
+        <div class="logo"> DOGE<span>Vault</span> <span class="badge">Easy Run</span></div>
+        <nav class="nav-links">
+            <a href="#quickstart" class="active"> Quick Start</a>
+            <a href="#features"> 100+ Features</a>
+            <a href="#server"> Server</a>
+            <a href="#pwa"> PWA</a>
+            <a href="#troubleshoot"> Troubleshoot</a>
+            <a href="#advanced"> Advanced</a>
+            <a href="#faq"> FAQ</a>
+        </nav>
+    </header>
+
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+        <div class="hero-glow"></div>
+        <h1> Easy Run Â· 100+ Features</h1>
+        <p class="subtitle">
+            Run DOGE Vault Premium locally on <span class="text-gold">any device</span> with a Python server.
+            Then <span class="text-green">install as a PWA</span> on your phone in under 2 minutes.
+        </p>
+        <div class="badge-row">
+            <span class="badge green"> 100% Offline</span>
+            <span class="badge blue"> PWA Ready</span>
+            <span class="badge"> Gamified</span>
+            <span class="badge green"> Pattern Scanner</span>
+            <span class="badge blue"> Musk Mentor</span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" style="width:100%;"></div>
+        </div>
+        <p style="margin-top: 6px; font-size: 0.75rem; color: var(--text-dim);">100% ready — all features included</p>
+    </section>
+
+    <!-- ============================================================
+    SECTION 1 – QUICK START
+    ============================================================ -->
+    <h2 id="quickstart"> 1. Quick Start – 3 Steps</h2>
+
+    <div class="step gold">
+        <h3> Step 1 – Unzip & Open Terminal</h3>
+        <p>Unzip the package into a folder on your <strong>computer</strong>. Then open the terminal:</p>
+        <pre><code>cd /path/to/your/unzipped/folder
+# Example: cd ~/Downloads/DOGE_Vault_Premium_Edition_v3</code></pre>
+        <p style="font-size:0.85rem; color:var(--text-dim);">On Windows, use <code>cd C:\Users\YourName\Downloads\DOGE_Vault...</code></p>
+    </div>
+
+    <div class="step blue">
+        <h3> Step 2 – Start Python Server</h3>
+        <p>Run this single command:</p>
+        <pre><code>python3 -m http.server 8000</code></pre>
+        <p>You'll see: <span class="text-gold">Serving HTTP on 0.0.0.0 port 8000</span></p>
+        <p style="font-size:0.85rem; color:var(--text-dim);">If <code>python3</code> doesn't work, try <code>python -m http.server 8000</code></p>
+    </div>
+
+    <div class="step green">
+        <h3> Step 3 – Open on Your Phone</h3>
+        <p>On your phone (same Wi-Fi), open the browser and type:</p>
+        <pre><code>http://192.168.x.x:8000/</code></pre>
+        <p>Replace <code>192.168.x.x</code> with your computer's IP address.</p>
+        <p style="font-size:0.85rem; color:var(--text-dim);">Find your IP: <code>ifconfig</code> (Mac/Linux) or <code>ipconfig</code> (Windows)</p>
+    </div>
+
+    <!-- ============================================================
+    SECTION 2 – 100+ FEATURES
+    ============================================================ -->
+    <h2 id="features"> 100+ Features Â· The Complete List</h2>
+
+    <div class="glass-card"><div class="glow-line"></div>
+        <h3> Package Features</h3>
+        <div class="feature-grid">
+            <div class="feature-item"><span class="icon"></span> 9 files in one ZIP</div>
+            <div class="feature-item"><span class="icon"></span> Fully offline – no internet</div>
+            <div class="feature-item"><span class="icon"></span> PWA ready (manifest + SW)</div>
+            <div class="feature-item"><span class="icon"></span> Installable on home screen</div>
+            <div class="feature-item"><span class="icon"></span> Works on Android & iOS</div>
+            <div class="feature-item"><span class="icon"></span> Works on desktop & laptop</div>
+            <div class="feature-item"><span class="icon"></span> No server fees – free forever</div>
+            <div class="feature-item"><span class="icon"></span> No registration required</div>
+            <div class="feature-item"><span class="icon"></span> No data tracking</div>
+            <div class="feature-item"><span class="icon"></span> 100% private – local only</div>
+            <div class="feature-item"><span class="icon"></span> Single ZIP – easy to share</div>
+            <div class="feature-item"><span class="icon"></span> Professional Etsy listing ready</div>
+        </div>
+    </div>
+
+    <div class="glass-card"><div class="glow-line"></div>
+        <h3> Simulator Features (doge-vault.html)</h3>
+        <div class="feature-grid">
+            <div class="feature-item"><span class="icon"></span> Live candlestick chart</div>
+            <div class="feature-item"><span class="icon"></span> 10 timeframes (1s to 1D)</div>
+            <div class="feature-item"><span class="icon"></span> Volume indicator</div>
+            <div class="feature-item"><span class="icon"></span> Fibonacci levels</div>
+            <div class="feature-item"><span class="icon"></span> Support & resistance</div>
+            <div class="feature-item"><span class="icon"></span> MA (20 & 50)</div>
+            <div class="feature-item"><span class="icon"></span> Bollinger Bands</div>
+            <div class="feature-item"><span class="icon"></span> MACD</div>
+            <div class="feature-item"><span class="icon"></span> RSI (with overbought/oversold)</div>
+            <div class="feature-item"><span class="icon"></span> Pattern Scanner (5 patterns)</div>
+            <div class="feature-item"><span class="icon"></span> G-61 pattern detection</div>
+            <div class="feature-item"><span class="icon"></span> T-61 pattern detection</div>
+            <div class="feature-item"><span class="icon"></span> 2-DIV pattern detection</div>
+            <div class="feature-item"><span class="icon"></span> 2-INV pattern detection</div>
+            <div class="feature-item"><span class="icon"></span> T-LH pattern detection</div>
+            <div class="feature-item"><span class="icon"></span> Scanner for 5s & 30s</div>
+            <div class="feature-item"><span class="icon"></span> Elon Musk tweet simulation</div>
+            <div class="feature-item"><span class="icon"></span> Musk Mentor AI advice</div>
+            <div class="feature-item"><span class="icon"></span> Equity curve chart</div>
+            <div class="feature-item"><span class="icon"></span> Sharpe Ratio</div>
+            <div class="feature-item"><span class="icon"></span> Expectancy</div>
+            <div class="feature-item"><span class="icon"></span> Profit Factor</div>
+            <div class="feature-item"><span class="icon"></span> Max Drawdown</div>
+            <div class="feature-item"><span class="icon"></span> Win Rate</div>
+            <div class="feature-item"><span class="icon"></span> Net P&L</div>
+            <div class="feature-item"><span class="icon"></span> Average P&L</div>
+            <div class="feature-item"><span class="icon"></span> Best & Worst trade</div>
+            <div class="feature-item"><span class="icon"></span> XP & Level system</div>
+            <div class="feature-item"><span class="icon"></span> 10+ Achievements</div>
+            <div class="feature-item"><span class="icon"></span> Confetti celebrations</div>
+            <div class="feature-item"><span class="icon"></span> Win streak tracker</div>
+            <div class="feature-item"><span class="icon"></span> OCO orders</div>
+            <div class="feature-item"><span class="icon"></span> Auto-Breakeven (BE)</div>
+            <div class="feature-item"><span class="icon"></span> Trailing Stop</div>
+            <div class="feature-item"><span class="icon"></span> Limit & Stop orders</div>
+            <div class="feature-item"><span class="icon"></span> Leverage (1x – 150x)</div>
+            <div class="feature-item"><span class="icon"></span> Risk management (0.5% – 5%)</div>
+            <div class="feature-item"><span class="icon"></span> Quick risk buttons (1%, 2%, 5%)</div>
+            <div class="feature-item"><span class="icon"></span> Built-in trade journal</div>
+            <div class="feature-item"><span class="icon"></span> Journal entry with notes</div>
+            <div class="feature-item"><span class="icon"></span> Pattern tagging in journal</div>
+            <div class="feature-item"><span class="icon"></span> Export journal to CSV</div>
+            <div class="feature-item"><span class="icon"></span> Export journal to JSON</div>
+            <div class="feature-item"><span class="icon"></span> Clear journal history</div>
+            <div class="feature-item"><span class="icon"></span> Full trade history</div>
+            <div class="feature-item"><span class="icon"></span> Trade filtering (result, direction, date)</div>
+            <div class="feature-item"><span class="icon"></span> Search by pair or note</div>
+            <div class="feature-item"><span class="icon"></span> Date range filter</div>
+            <div class="feature-item"><span class="icon"></span> Reset all trades</div>
+            <div class="feature-item"><span class="icon"></span> Speed control (0.1s – 5s)</div>
+            <div class="feature-item"><span class="icon"></span> Historical speed multiplier (10x – 200x)</div>
+            <div class="feature-item"><span class="icon"></span> Custom colors (up/down/bg)</div>
+            <div class="feature-item"><span class="icon"></span> Sound alerts (trade, alert, win)</div>
+            <div class="feature-item"><span class="icon"></span> Dark/light mode toggle</div>
+            <div class="feature-item"><span class="icon"></span> Import/Export config JSON</div>
+            <div class="feature-item"><span class="icon"></span> Reset everything (full reset)</div>
+            <div class="feature-item"><span class="icon"></span> Initial balance adjustment</div>
+            <div class="feature-item"><span class="icon"></span> Screenshot chart</div>
+            <div class="feature-item"><span class="icon"></span> Keyboard shortcuts (B,S,C,T,F,1-0)</div>
+            <div class="feature-item"><span class="icon"></span> Fullscreen mode</div>
+            <div class="feature-item"><span class="icon"></span> PWA installable</div>
+            <div class="feature-item"><span class="icon"></span> Touch-optimized UI</div>
+            <div class="feature-item"><span class="icon"></span> Responsive design</div>
+            <div class="feature-item"><span class="icon"></span> Works on 5+ platforms</div>
+            <div class="feature-item"><span class="icon"></span> Setup library (5 patterns)</div>
+            <div class="feature-item"><span class="icon"></span> Educational pattern cards</div>
+            <div class="feature-item"><span class="icon"></span> DOGE history timeline (2013–2026)</div>
+            <div class="feature-item"><span class="icon"></span> Filter timeline (all, major, ATH, crash)</div>
+            <div class="feature-item"><span class="icon"></span> Click events to see price</div>
+            <div class="feature-item"><span class="icon"></span> Real-time Elon feed</div>
+            <div class="feature-item"><span class="icon"></span> Signal status (LONG/SHORT)</div>
+            <div class="feature-item"><span class="icon"></span> Tweet history log</div>
+            <div class="feature-item"><span class="icon"></span> Price alerts</div>
+            <div class="feature-item"><span class="icon"></span> Sound notifications</div>
+            <div class="feature-item"><span class="icon"></span> Visual notifications (toast)</div>
+            <div class="feature-item"><span class="icon"></span> Realistic market simulation</div>
+            <div class="feature-item"><span class="icon"></span> Historical replay (2013–2026)</div>
+            <div class="feature-item"><span class="icon"></span> Live mode after history</div>
+            <div class="feature-item"><span class="icon"></span> Regime detection (trending/ranging/volatile)</div>
+            <div class="feature-item"><span class="icon"></span> Laplace noise generator</div>
+            <div class="feature-item"><span class="icon"></span> Market bias from Elon tweets</div>
+            <div class="feature-item"><span class="icon"></span> Order book simulation</div>
+            <div class="feature-item"><span class="icon"></span> Bid/Ask spread display</div>
+            <div class="feature-item"><span class="icon"></span> Spread value</div>
+            <div class="feature-item"><span class="icon"></span> Live clock</div>
+            <div class="feature-item"><span class="icon"></span> Position tracker (entry, PL, volume)</div>
+            <div class="feature-item"><span class="icon"></span> SL/TP display on chart</div>
+            <div class="feature-item"><span class="icon"></span> Position time counter</div>
+            <div class="feature-item"><span class="icon"></span> Total trades counter</div>
+            <div class="feature-item"><span class="icon"></span> Balance display</div>
+            <div class="feature-item"><span class="icon"></span> Profit/Loss color coding</div>
+            <div class="feature-item"><span class="icon"></span> Status bar (regime, bid, ask, spread)</div>
+            <div class="feature-item"><span class="icon"></span> Hero stats (trades, PL, win rate, level)</div>
+            <div class="feature-item"><span class="icon"></span> Sidebar menu with 10+ items</div>
+            <div class="feature-item"><span class="icon"></span> Export CSV/JSON from sidebar</div>
+            <div class="feature-item"><span class="icon"></span> Reset everything from sidebar</div>
+            <div class="feature-item"><span class="icon"></span> Toggle dark mode from sidebar</div>
+            <div class="feature-item"><span class="icon"></span> PWA install banner</div>
+            <div class="feature-item"><span class="icon"></span> Dedicated "The Dogefather" banner</div>
+        </div>
+    </div>
+
+    <div class="glass-card"><div class="glow-line"></div>
+        <h3> Walkthrough Features (walkthrough.html)</h3>
+        <div class="feature-grid">
+            <div class="feature-item"><span class="icon"></span> 9 interactive tabs</div>
+            <div class="feature-item"><span class="icon"></span> Step-by-step guides</div>
+            <div class="feature-item"><span class="icon"></span> Pattern demo charts</div>
+            <div class="feature-item"><span class="icon"></span> Quiz (10 questions)</div>
+            <div class="feature-item"><span class="icon"></span> Progress tracking (0–100%)</div>
+            <div class="feature-item"><span class="icon"></span> Confetti on completion</div>
+            <div class="feature-item"><span class="icon"></span> Mark done for each section</div>
+            <div class="feature-item"><span class="icon"></span> Keyboard navigation (1-9, M)</div>
+            <div class="feature-item"><span class="icon"></span> Automatic quiz scoring</div>
+            <div class="feature-item"><span class="icon"></span> Quiz retry option</div>
+            <div class="feature-item"><span class="icon"></span> Mobile-friendly layout</div>
+        </div>
+    </div>
+
+    <div class="glass-card"><div class="glow-line"></div>
+        <h3> Mini Journal Features (mini-journal.html)</h3>
+        <div class="feature-grid">
+            <div class="feature-item"><span class="icon"></span> Offline journal</div>
+            <div class="feature-item"><span class="icon"></span> Local storage persistence</div>
+            <div class="feature-item"><span class="icon"></span> Entry, exit, volume, result</div>
+            <div class="feature-item"><span class="icon"></span> Notes field</div>
+            <div class="feature-item"><span class="icon"></span> Delete individual entries</div>
+            <div class="feature-item"><span class="icon"></span> Clear all entries</div>
+            <div class="feature-item"><span class="icon"></span> Export to CSV</div>
+            <div class="feature-item"><span class="icon"></span> Reverse chronological display</div>
+            <div class="feature-item"><span class="icon"></span> Entry count display</div>
+        </div>
+    </div>
+
+    <div class="glass-card"><div class="glow-line"></div>
+        <h3> Setup Features (setup.html)</h3>
+        <div class="feature-grid">
+            <div class="feature-item"><span class="icon"></span> Complete package list</div>
+            <div class="feature-item"><span class="icon"></span> 5 platform hosting guide</div>
+            <div class="feature-item"><span class="icon"></span> Netlify, GitHub, Vercel, Render, Firebase</div>
+            <div class="feature-item"><span class="icon"></span> Pricing & discounts section</div>
+            <div class="feature-item"><span class="icon"></span> Licence terms</div>
+            <div class="feature-item"><span class="icon"></span> Thanks & acknowledgements</div>
+            <div class="feature-item"><span class="icon"></span> Quick reference features</div>
+            <div class="feature-item"><span class="icon"></span> Support & refund policy</div>
+            <div class="feature-item"><span class="icon"></span> 100% satisfaction guarantee</div>
+        </div>
+    </div>
+
+    <div class="glass-card"><div class="glow-line"></div>
+        <h3> Index Features (index.html – Dashboard)</h3>
+        <div class="feature-grid">
+            <div class="feature-item"><span class="icon"></span> Professional dashboard</div>
+            <div class="feature-item"><span class="icon"></span> Particle background</div>
+            <div class="feature-item"><span class="icon"></span> Hero stats (from localStorage)</div>
+            <div class="feature-item"><span class="icon"></span> Feature grid with 6 cards</div>
+            <div class="feature-item"><span class="icon"></span> CTA button to simulator</div>
+            <div class="feature-item"><span class="icon"></span> PWA install banner</div>
+            <div class="feature-item"><span class="icon"></span> Footer with all links</div>
+            <div class="feature-item"><span class="icon"></span> Responsive design</div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    SECTION 3 – SERVER SETUP
+    ============================================================ -->
+    <h2 id="server"> 2. Server Setup – 5 Platforms</h2>
+
+    <div class="glass-card"><div class="glow-line"></div>
+        <h3> Python Local Server (recommended for testing)</h3>
+        <div class="step green">
+            <p><strong>1.</strong> Open terminal in the unzipped folder.</p>
+            <pre><code>cd ~/Downloads/DOGE_Vault_Premium_Edition_v3</code></pre>
+            <p><strong>2.</strong> Start the server:</p>
+            <pre><code>python3 -m http.server 8000</code></pre>
+            <p><strong>3.</strong> Find your computer IP:</p>
+            <pre><code>ifconfig  # Mac/Linux
+ipconfig  # Windows</code></pre>
+            <p><strong>4.</strong> On your phone, open: <code class="text-gold">http://192.168.x.x:8000/</code></p>
+        </div>
+    </div>
+
+    <div class="glass-card"><div class="glow-line"></div>
+        <h3> Hosting on 5 Free Platforms</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Platform</th><th>Method</th><th>PWA Support</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Netlify</strong></td><td>Drag &amp; drop folder to app.netlify.com</td><td> Yes</td></tr>
+                    <tr><td><strong>GitHub Pages</strong></td><td>Push to GitHub  Enable Pages  branch main</td><td> Yes</td></tr>
+                    <tr><td><strong>Vercel</strong></td><td>Drag &amp; drop or <code>vercel deploy</code></td><td> Yes</td></tr>
+                    <tr><td><strong>Render</strong></td><td>Static Site  Connect repo or upload</td><td> Yes</td></tr>
+                    <tr><td><strong>Firebase Hosting</strong></td><td><code>firebase init hosting</code>  <code>firebase deploy</code></td><td> Yes</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="border-left:4px solid var(--musk-blue); background:rgba(0,180,216,0.03); padding:10px 16px; margin-top:6px;">
+            <span class="text-blue"></span> All platforms support <code>manifest.json</code> and <code>service-worker.js</code>. After deployment, users can <strong>install the PWA</strong> from their phone browser.
+        </div>
+    </div>
+
+    <!-- ============================================================
+    SECTION 4 – PWA INSTALLATION
+    ============================================================ -->
+    <h2 id="pwa"> 3. PWA Installation – Add to Home Screen</h2>
+
+    <div class="glass-card"><div class="glow-line"></div>
+        <h3>On Android (Chrome)</h3>
+        <ol>
+            <li>Open the page in <strong class="text-gold">Chrome</strong>.</li>
+            <li>Tap the <strong class="text-gold">three-dot menu</strong> at the top right.</li>
+            <li>Tap <strong class="text-green">Add to Home screen</strong>.</li>
+            <li>Tap <strong class="text-green">Add</strong> – the icon will appear on your home screen.</li>
+        </ol>
+        <div class="step green"><span class="text-green"></span> The app will open in <strong>fullscreen mode</strong> with no address bar.</div>
+
+        <h3>On iPhone (Safari)</h3>
+        <ol>
+            <li>Open the page in <strong class="text-gold">Safari</strong>.</li>
+            <li>Tap the <strong class="text-gold">Share button</strong> (box with arrow).</li>
+            <li>Tap <strong class="text-green">Add to Home Screen</strong>.</li>
+            <li>Tap <strong class="text-green">Add</strong> – the icon will appear on your home screen.</li>
+        </ol>
+        <div class="step green"><span class="text-green"></span> The app will open in <strong>standalone mode</strong> (no browser UI).</div>
+
+        <h3>On iPhone (Chrome)</h3>
+        <ol>
+            <li>Open the page in <strong class="text-gold">Chrome</strong>.</li>
+            <li>Tap the <strong class="text-gold">Share button</strong> (box with arrow).</li>
+            <li>Tap <strong class="text-green">Add to Home Screen</strong>.</li>
+            <li>Tap <strong class="text-green">Add</strong> – the icon will appear on your home screen.</li>
+        </ol>
+        <div class="step green"><span class="text-green"></span> The app will work <strong>100% offline</strong> once cached.</div>
+    </div>
+
+    <div class="glass-card box-glow" style="text-align:center;">
+        <h3 style="margin-top:0; color:var(--doge-gold);"> PWA Success Checklist</h3>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:10px 0;">
+            <span class="badge green"> manifest.json exists</span>
+            <span class="badge green"> service-worker.js exists</span>
+            <span class="badge green"> Icons (192/512) included</span>
+            <span class="badge green"> Start URL set to index.html</span>
+            <span class="badge green"> Display mode: standalone</span>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-dim);">All set. Your DOGE Vault is ready to install.</p>
+    </div>
+
+    <!-- ============================================================
+    SECTION 5 – TROUBLESHOOTING
+    ============================================================ -->
+    <h2 id="troubleshoot"> 4. Troubleshooting – Common Issues & Fixes</h2>
+
+    <div class="glass-card"><div class="glow-line"></div>
+        <h3>"python3 not found"</h3>
+        <p>Install Python 3 from <a href="https://python.org" target="_blank" class="text-gold">python.org</a> or use <code>python</code> instead:</p>
+        <pre><code>python -m http.server 8000</code></pre>
+
+        <h3>"Cannot connect from phone"</h3>
+        <ul>
+            <li>Ensure both devices are on the <strong class="text-gold">same Wi-Fi</strong>.</li>
+            <li>Check your firewall – allow port <code class="text-gold">8000</code>.</li>
+            <li>Use the correct IP address (not <code>localhost</code>).</li>
+            <li>Try <code class="text-gold">http://192.168.x.x:8000/</code> in your phone browser.</li>
+            <li>If using Windows, disable Windows Firewall temporarily (or add an inbound rule for port 8000).</li>
+        </ul>
+
+        <h3>"PWA not installing"</h3>
+        <ul>
+            <li>Make sure <code class="text-gold">manifest.json</code> is in the root folder.</li>
+            <li>Make sure <code class="text-gold">service-worker.js</code> is in the root folder.</li>
+            <li>Open the page via <strong class="text-gold">HTTP</strong> (not file://).</li>
+            <li>Clear browser cache and reload.</li>
+            <li>On iPhone, use <strong class="text-gold">Safari</strong> – PWA works best there.</li>
+            <li>On Android, use <strong class="text-gold">Chrome</strong> – tap the three-dot menu  Add to Home screen.</li>
+        </ul>
+
+        <h3>"Data not saving / localStorage empty"</h3>
+        <ul>
+            <li>Your browser must allow <strong class="text-gold">localStorage</strong>.</li>
+            <li>Check if you are in <strong class="text-gold">Incognito / Private mode</strong> – it doesn't save.</li>
+            <li>Clear browser cache but <strong>keep storage</strong>.</li>
+        </ul>
+
+        <h3>"All files missing after unzip"</h3>
+        <ul>
+            <li>Download the ZIP again from <strong class="text-gold">Etsy</strong>.</li>
+            <li>Use a proper unzip tool (e.g., <strong class="text-gold">7-Zip</strong>, WinRAR, or built-in extractor).</li>
+            <li>Do not open the ZIP directly – <strong>extract</strong> it first.</li>
+            <li>Check that <code>manifest.json</code>, <code>service-worker.js</code>, and all HTML files are present.</li>
+        </ul>
+
+        <h3>"Simulator doesn't load / blank page"</h3>
+        <ul>
+            <li>Open the browser <strong class="text-gold">Developer Console</strong> (F12) to see errors.</li>
+            <li>Ensure all files are in the <strong>same folder</strong>.</li>
+            <li>Try opening <code class="text-gold">index.html</code> first, then navigate to the simulator.</li>
+            <li>Clear browser cache and reload.</li>
+        </ul>
+
+        <h3>"Server stops after closing terminal"</h3>
+        <p>By default, the Python server stops when you close the terminal. To keep it running:</p>
+        <ul>
+            <li><strong>Mac/Linux:</strong> Use <code class="text-gold">nohup</code> or a terminal multiplexer like <code class="text-gold">tmux</code>.</li>
+            <li><strong>Windows:</strong> Use <code class="text-gold">start /B</code> or run in a separate terminal.</li>
+            <li>For permanent use, deploy to a free platform like <strong class="text-gold">Netlify</strong> or <strong class="text-gold">GitHub Pages</strong>.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================
+    SECTION 6 – ADVANCED TIPS
+    ============================================================ -->
+    <h2 id="advanced"> 5. Advanced Tips & Tricks</h2>
+
+    <div class="glass-card"><div class="glow-line"></div>
+        <h3> Pro Tip 1 – Speed up historical replay</h3>
+        <p>In the simulator, go to <strong class="text-gold">Settings  Historical Speed Multiplier</strong>.</p>
+        <p>Set it to <code class="text-gold">200x</code> to fly through 2013–2026 in seconds.</p>
+
+        <h3> Pro Tip 2 – Load professional config</h3>
+        <p>Go to <strong class="text-gold">Settings  Import Config</strong> and choose <code>doge-config.json</code>.</p>
+        <p>This instantly sets <strong class="text-green">leverage 10x</strong>, <strong class="text-green">trailing stop ON</strong>, <strong class="text-green">breakeven ON</strong>, and indicators enabled.</p>
+
+        <h3> Pro Tip 3 – Use keyboard shortcuts for speed</h3>
+        <ul>
+            <li><kbd style="background:#222;padding:2px 8px;border-radius:4px;border:1px solid #444;">B</kbd> – Buy</li>
+            <li><kbd style="background:#222;padding:2px 8px;border-radius:4px;border:1px solid #444;">S</kbd> – Sell</li>
+            <li><kbd style="background:#222;padding:2px 8px;border-radius:4px;border:1px solid #444;">C</kbd> – Close</li>
+            <li><kbd style="background:#222;padding:2px 8px;border-radius:4px;border:1px solid #444;">T</kbd> – Toggle dark mode</li>
+            <li><kbd style="background:#222;padding:2px 8px;border-radius:4px;border:1px solid #444;">F</kbd> – Fullscreen</li>
+            <li><kbd style="background:#222;padding:2px 8px;border-radius:4px;border:1px solid #444;">1</kbd>–<kbd style="background:#222;padding:2px 8px;border-radius:4px;border:1px solid #444;">0</kbd> – Change timeframe</li>
+        </ul>
+
+        <h3> Pro Tip 4 – Use OCO for breakouts</h3>
+        <p>Set <strong class="text-gold">OCO</strong> to place a Buy order above market and a Sell order below market.</p>
+        <p>Whichever triggers first cancels the other – perfect for <strong class="text-green">breakout trading</strong>.</p>
+
+        <h3> Pro Tip 5 – Watch Musk Mentor for guidance</h3>
+        <p>The <strong class="text-gold">Musk Mentor</strong> analyzes the market regime and detected patterns, then gives you plain-English advice.</p>
+        <p>Use it as a <strong class="text-green">second opinion</strong> before opening a trade.</p>
+
+        <h3> Pro Tip 6 – Export data for analysis</h3>
+        <p>Go to <strong class="text-gold">Sidebar  Export CSV</strong> or <strong class="text-gold">Export JSON</strong>.</p>
+        <p>You can then import your trades into <strong class="text-gold">Excel</strong>, <strong class="text-gold">Google Sheets</strong>, or <strong class="text-gold">TradingView</strong> for deeper analysis.</p>
+
+        <h3> Pro Tip 7 – Customize your colors</h3>
+        <p>Go to <strong class="text-gold">Settings  Custom Colors</strong> to change Up/Down/BG colors.</p>
+        <p>Match it to your personal trading style or brand.</p>
+
+        <h3> Pro Tip 8 – Reset everything to start fresh</h3>
+        <p>Use <strong class="text-gold">Settings  Reset Everything</strong> or the <strong class="text-gold">Reset Game</strong> button in the History tab.</p>
+        <p>This clears all trades, journal, position, and achievements – perfect for a fresh start.</p>
+
+        <h3> Pro Tip 9 – Install PWA for offline access</h3>
+        <p>Once installed via <strong class="text-gold">Add to Home Screen</strong>, the app works <strong class="text-green">100% offline</strong>.</p>
+        <p>You can even delete the ZIP file after installing – the PWA runs from your phone's cache.</p>
+
+        <h3> Pro Tip 10 – Use the Walkthrough for quick learning</h3>
+        <p>Open <code class="text-gold">walkthrough.html</code> to learn every feature in under 10 minutes.</p>
+        <p>It includes a <strong class="text-gold">quiz</strong> and <strong class="text-gold">progress tracking</strong> to help you master the simulator.</p>
+    </div>
+
+    <!-- ============================================================
+    SECTION 7 – FAQ
+    ============================================================ -->
+    <h2 id="faq"> 6. FAQ – Frequently Asked Questions</h2>
+
+    <div class="glass-card"><div class="glow-line"></div>
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span> Do I need Python installed?</span>
+                <span class="arrow"></span>
+            </div>
+            <div class="accordion-body">
+                <p><strong class="text-green">Yes</strong> – Python 3 is required for the local server. Download it from <a href="https://python.org" target="_blank" class="text-gold">python.org</a>.</p>
+                <p>If you can't install Python, use <strong class="text-gold">Netlify</strong>, <strong class="text-gold">GitHub Pages</strong>, or any other free hosting platform.</p>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span> Do I need internet to use the simulator?</span>
+                <span class="arrow"></span>
+            </div>
+            <div class="accordion-body">
+                <p><strong class="text-green">No</strong> – once loaded, all files work <strong class="text-gold">100% offline</strong>.</p>
+                <p>The first load caches the files via the service worker. After that, you can use it without any internet connection.</p>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span> Can I use this on my phone without a computer?</span>
+                <span class="arrow"></span>
+            </div>
+            <div class="accordion-body">
+                <p><strong class="text-gold">Yes</strong> – you have two options:</p>
+                <ol>
+                    <li><strong>Local server method:</strong> Run Python on a computer, then connect your phone via Wi-Fi.</li>
+                    <li><strong>Hosted method:</strong> Upload the files to <strong class="text-gold">Netlify</strong> or <strong class="text-gold">GitHub Pages</strong> – then open the URL on your phone.</li>
+                </ol>
+                <p>Both methods allow you to <strong class="text-green">install the PWA</strong> on your phone.</p>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span> Is this safe? Does it send my data anywhere?</span>
+                <span class="arrow"></span>
+            </div>
+            <div class="accordion-body">
+                <p><strong class="text-green">Yes, it's safe.</strong> All data is stored <strong class="text-gold">locally in your browser</strong> using localStorage.</p>
+                <p><strong class="text-red">Nothing</strong> is sent to any server. No tracking, no analytics, no third-party services.</p>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span> Can I share this with a friend?</span>
+                <span class="arrow"></span>
+            </div>
+            <div class="accordion-body">
+                <p><strong class="text-gold">Yes</strong> – you can share the <code>.zip</code> file with anyone who has purchased the product.</p>
+                <p>However, please respect the <strong class="text-gold">Licence</strong> – do not redistribute or resell the files.</p>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span> What if I want a different coin (e.g., BTC, ETH)?</span>
+                <span class="arrow"></span>
+            </div>
+            <div class="accordion-body">
+                <p><strong class="text-gold">Custom versions</strong> are available – send a message through <strong class="text-gold">Etsy</strong>.</p>
+                <p>I can create a simulator for any coin with its own historical data and pattern detection.</p>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span> How do I get a refund if I'm not satisfied?</span>
+                <span class="arrow"></span>
+            </div>
+            <div class="accordion-body">
+                <p><strong class="text-gold">100% satisfaction guarantee</strong> – if the simulator doesn't work as described, I will give you a <strong class="text-green">full refund within 7 days</strong>.</p>
+                <p>Just send a message through <strong class="text-gold">Etsy</strong> and I'll process it immediately.</p>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span> Can I use this for real trading?</span>
+                <span class="arrow"></span>
+            </div>
+            <div class="accordion-body">
+                <p><strong class="text-red">No</strong> – this product is <strong class="text-gold">educational and for fun only</strong>.</p>
+                <p>You cannot use it to execute real trades or manage real cryptocurrency. It is a <strong class="text-gold">simulator</strong>, not a broker.</p>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span> Where can I get help if I'm stuck?</span>
+                <span class="arrow"></span>
+            </div>
+            <div class="accordion-body">
+                <p>Send a message through <strong class="text-gold">Etsy</strong> – I respond within <strong class="text-green">24 hours</strong>.</p>
+                <p>You can also check the <strong class="text-gold">Walkthrough</strong> (<code>walkthrough.html</code>) and <strong class="text-gold">Setup Guide</strong> (<code>setup.html</code>) for detailed instructions.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    SECTION 8 – QUICK LINKS
+    ============================================================ -->
+    <h2> 7. Quick Links</h2>
+
+    <div class="glass-card" style="text-align:center;">
+        <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+            <a href="index.html" class="btn"> Dashboard</a>
+            <a href="doge-vault.html" class="btn btn-secondary"> Simulator</a>
+            <a href="setup.html" class="btn btn-blue"> Setup Guide</a>
+            <a href="walkthrough.html" class="btn btn-green"> Walkthrough</a>
+            <a href="mini-journal.html" class="btn btn-secondary"> Mini Journal</a>
+            <a href="doge-history.txt" class="btn btn-secondary" download> History (TXT)</a>
+            <a href="doge-config.json" class="btn btn-secondary" download> Config (JSON)</a>
+        </div>
+        <p style="font-size:0.8rem; color:var(--text-dim); margin-top:12px;">
+            All files are in the same folder. Open any file in your browser.
+        </p>
+    </div>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <div class="footer">
+        <div class="links">
+            <a href="#quickstart">Quick Start</a>
+            <a href="#features">Features</a>
+            <a href="#server">Server</a>
+            <a href="#pwa">PWA</a>
+            <a href="#troubleshoot">Troubleshoot</a>
+            <a href="#advanced">Advanced</a>
+            <a href="#faq">FAQ</a>
+        </div>
+        <div class="copy">
+            <span style="color:rgba(242,201,76,0.3);"> DOGE Vault Premium</span> Â· The Dogefather Edition Â· v3.0 Â· © 2026
+        </div>
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ===== TOAST =====
+            function showToast(msg, type) {
+                const toast = document.getElementById('toast');
+                toast.textContent = msg;
+                toast.className = 'toast ' + (type || 'gold');
+                toast.classList.add('show');
+                clearTimeout(toast._t);
+                toast._t = setTimeout(() => toast.classList.remove('show'), 3000);
+            }
+            window.showToast = showToast;
+
+            // ===== COPY TO CLIPBOARD =====
+            document.querySelectorAll('pre code').forEach((block, index) => {
+                const parent = block.closest('pre');
+                if (!parent) return;
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn';
+                btn.textContent = ' Copy';
+                btn.onclick = function(e) {
+                    e.stopPropagation();
+                    const text = block.textContent;
+                    navigator.clipboard.writeText(text).then(() => {
+                        btn.textContent = ' Copied!';
+                        setTimeout(() => { btn.textContent = ' Copy'; }, 2000);
+                        showToast(' Copied to clipboard!', 'success');
+                    }).catch(() => {
+                        // Fallback
+                        const textarea = document.createElement('textarea');
+                        textarea.value = text;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        btn.textContent = ' Copied!';
+                        setTimeout(() => { btn.textContent = ' Copy'; }, 2000);
+                        showToast(' Copied to clipboard!', 'success');
+                    });
+                };
+                parent.appendChild(btn);
+            });
+
+            // ===== ACCORDION =====
+            function toggleAccordion(header) {
+                const body = header.nextElementSibling;
+                header.classList.toggle('open');
+                body.classList.toggle('open');
+            }
+            window.toggleAccordion = toggleAccordion;
+
+            // ===== NAVIGATION SMOOTH SCROLL =====
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId && targetId.startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.querySelector(targetId);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+                            this.classList.add('active');
+                        }
+                    }
+                });
+            });
+
+            // ===== HIGHLIGHT ACTIVE NAV LINK ON SCROLL =====
+            window.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('h2[id]');
+                const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+                let current = '';
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+                });
+            });
+
+            // ===== KEYBOARD SHORTCUTS FOR THIS PAGE =====
+            document.addEventListener('keydown', function(e) {
+                const tag = document.activeElement?.tagName;
+                if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+                const key = e.key.toLowerCase();
+                if (key === 'n') {
+                    const h2s = document.querySelectorAll('h2');
+                    let current = null;
+                    h2s.forEach(h => {
+                        const rect = h.getBoundingClientRect();
+                        if (rect.top > 100 && (!current || rect.top < current.getBoundingClientRect().top)) {
+                            current = h;
+                        }
+                    });
+                    if (current) current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                if (key === 'p') {
+                    const h2s = document.querySelectorAll('h2');
+                    let current = null;
+                    h2s.forEach(h => {
+                        const rect = h.getBoundingClientRect();
+                        if (rect.top < -50) current = h;
+                    });
+                    if (current) current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                if (key === 'h') { window.location.href = 'index.html'; }
+                if (key === 's') { window.location.href = 'doge-vault.html'; }
+            });
+
+            // ===== CONSOLE WELCOME =====
+            console.log(' DOGE Vault Premium – Easy Run v3.0');
+            console.log(' 100+ Features Â· PWA Ready Â· The Dogefather Edition');
+
+        })();
+    </script>
+
+<script>
+// DOGE global error surface (debug v1.1)
+(function(){window.esc=window.esc||function(s){var d=document.createElement('div');d.textContent=String(s==null?'':s);return d.innerHTML;};function t(m){try{var d=document.createElement("div");d.style.cssText="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#3a1015;color:#ffd7dc;border:1px solid #ff5566;padding:8px 14px;border-radius:10px;font-size:12px;z-index:99999;max-width:92vw;";d.textContent="WARN "+String(m).slice(0,160);document.body.appendChild(d);setTimeout(function(){d.remove();},5000);}catch(e){}}
+window.addEventListener("error",function(e){t(e.message||"Script error");});window.addEventListener("unhandledrejection",function(e){t((e.reason&&e.reason.message)||"Async error");});})();
+</script>
+</body>
+</html>

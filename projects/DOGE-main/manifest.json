@@ -1,0 +1,39 @@
+{
+  "name": "DOGE Vault Premium – The Dogefather Edition",
+  "short_name": "DOGE Vault",
+  "description": "Advanced offline Dogecoin trading simulator with pattern detection, Musk Mentor, and education.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a12",
+  "theme_color": "#0a0a12",
+  "categories": ["education", "finance", "games"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Launch Simulator",
+      "short_name": "Trade",
+      "description": "Open DOGE Vault trading simulator",
+      "url": "./doge-vault.html"
+    },
+    {
+      "name": "Setup Guide",
+      "short_name": "Setup",
+      "description": "Read the quick start guide",
+      "url": "./setup.html"
+    }
+  ]
+}

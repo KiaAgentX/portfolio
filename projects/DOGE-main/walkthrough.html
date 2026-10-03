@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>DOGE Vault · Walkthrough · 10x Better Academy</title>
+    <meta name="theme-color" content="#0a0a12" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="description" content="Interactive walkthrough for DOGE Vault Premium – Master pattern detection, Musk Mentor, OCO, and more." />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+    <style>
+        /* ============================================================
+           WALKTHROUGH 2.0 – 10X BETTER
+           ============================================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root {
+            --doge-gold: #F2C94C;
+            --doge-orange: #F2994A;
+            --doge-red: #eb5757;
+            --musk-blue: #00b4d8;
+            --bg: #0a0a12;
+            --card: rgba(18, 18, 30, 0.92);
+            --border: rgba(242, 201, 76, 0.12);
+            --text: #f0f0ff;
+            --text-dim: rgba(240, 240, 255, 0.35);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --font: 'Inter', system-ui, sans-serif;
+            --shadow-glow: 0 0 30px rgba(242, 201, 76, 0.05);
+            --shadow-hover: 0 0 40px rgba(242, 201, 76, 0.12);
+            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        html, body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            height: 100%;
+            overflow-y: auto;
+            padding: 8px;
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #10101a; }
+        ::-webkit-scrollbar-thumb { background: var(--doge-gold); border-radius: 10px; }
+
+        /* ---------- UTILITY ---------- */
+        .flex { display: flex; }
+        .gap-4 { gap: 4px; }
+        .gap-8 { gap: 8px; }
+        .gap-12 { gap: 12px; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .wrap { flex-wrap: wrap; }
+        .w-full { width: 100%; }
+        .text-center { text-align: center; }
+        .text-gold { color: var(--doge-gold); }
+        .text-green { color: #00ff88; }
+        .text-red { color: var(--doge-red); }
+        .text-blue { color: var(--musk-blue); }
+        .text-dim { color: var(--text-dim); }
+        .text-sm { font-size: 0.8rem; }
+        .text-xs { font-size: 0.6rem; }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 18px 22px;
+            box-shadow: var(--shadow-glow);
+            transition: var(--transition);
+        }
+        .card:hover { box-shadow: var(--shadow-hover); border-color: rgba(242, 201, 76, 0.2); }
+        .card-sm { border-radius: var(--radius-sm); padding: 12px 14px; }
+
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .btn:active { transform: scale(0.96); }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--doge-gold), var(--doge-orange));
+            color: #0a0e17;
+            box-shadow: 0 4px 30px rgba(242, 201, 76, 0.25);
+        }
+        .btn-gold:hover { box-shadow: 0 0 50px rgba(242, 201, 76, 0.4); transform: scale(1.02); }
+        .btn-musk {
+            background: linear-gradient(135deg, var(--musk-blue), #0077b6);
+            color: #fff;
+            box-shadow: 0 4px 30px rgba(0, 180, 216, 0.25);
+        }
+        .btn-musk:hover { box-shadow: 0 0 50px rgba(0, 180, 216, 0.4); transform: scale(1.02); }
+        .btn-green {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #0a0e17;
+            box-shadow: 0 4px 30px rgba(0, 255, 136, 0.25);
+        }
+        .btn-green:hover { box-shadow: 0 0 50px rgba(0, 255, 136, 0.4); transform: scale(1.02); }
+        .btn-red {
+            background: linear-gradient(135deg, var(--doge-red), #cc0044);
+            color: #fff;
+            box-shadow: 0 4px 30px rgba(235, 87, 87, 0.25);
+        }
+        .btn-red:hover { box-shadow: 0 0 50px rgba(235, 87, 87, 0.4); transform: scale(1.02); }
+        .btn-sm { padding: 6px 16px; font-size: 0.65rem; }
+        .btn-xs { padding: 4px 10px; font-size: 0.5rem; }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 1px solid var(--border);
+            background: rgba(242, 201, 76, 0.05);
+            color: var(--doge-gold);
+        }
+        .badge.green { border-color: rgba(0, 255, 136, 0.2); color: #00ff88; background: rgba(0, 255, 136, 0.05); }
+        .badge.red { border-color: rgba(235, 87, 87, 0.2); color: var(--doge-red); background: rgba(235, 87, 87, 0.05); }
+        .badge.blue { border-color: rgba(0, 180, 216, 0.2); color: var(--musk-blue); background: rgba(0, 180, 216, 0.05); }
+
+        /* ---------- HEADER ---------- */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 18px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+        }
+        .header .logo {
+            background: linear-gradient(135deg, var(--doge-gold), var(--doge-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+        }
+        .header .logo .badge-musk {
+            border: 1px solid var(--musk-blue);
+            background: rgba(0, 180, 216, 0.05);
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.45rem;
+            color: var(--musk-blue);
+            font-weight: 700;
+            text-transform: uppercase;
+            -webkit-text-fill-color: var(--musk-blue);
+        }
+        .header .progress {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header .progress .bar {
+            width: 120px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .header .progress .bar .fill {
+            height: 100%;
+            background: var(--doge-gold);
+            width: 0%;
+            transition: width 0.5s;
+        }
+        .header .progress .count {
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        /* ---------- TABS ---------- */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            background: rgba(0,0,0,0.2);
+            padding: 6px 10px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+        .tabs .tab-btn {
+            padding: 6px 16px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
+            color: var(--text-dim);
+            font-family: var(--font);
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .tabs .tab-btn.active {
+            border-color: var(--doge-gold);
+            color: var(--doge-gold);
+            background: rgba(242, 201, 76, 0.05);
+        }
+        .tabs .tab-btn:hover { border-color: var(--doge-gold); color: var(--doge-gold); }
+        .tabs .tab-btn .check {
+            display: inline-block;
+            margin-left: 4px;
+            font-size: 0.6rem;
+        }
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(6px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        /* ---------- SECTION CARDS ---------- */
+        .section-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 22px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-glow);
+        }
+        .section-card .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--doge-gold);
+            margin-bottom: 8px;
+        }
+        .section-card .section-title .icon { font-size: 1.6rem; }
+        .section-card .section-body { font-size: 0.9rem; line-height: 1.7; color: #d0d0e8; }
+
+        /* ---------- PATTERN DEMO ---------- */
+        .pattern-demo-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .pattern-demo-box .demo-chart {
+            height: 120px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        .pattern-demo-box .demo-chart svg { width: 100%; height: 100%; }
+
+        /* ---------- QUIZ ---------- */
+        .quiz-option {
+            display: block;
+            padding: 10px 16px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 4px 0;
+            font-weight: 600;
+        }
+        .quiz-option:hover { border-color: var(--doge-gold); background: rgba(242, 201, 76, 0.03); }
+        .quiz-option.correct { border-color: #00ff88; background: rgba(0, 255, 136, 0.05); color: #00ff88; }
+        .quiz-option.wrong { border-color: var(--doge-red); background: rgba(235, 87, 87, 0.05); color: var(--doge-red); }
+        .quiz-option.disabled { pointer-events: none; opacity: 0.6; }
+
+        /* ---------- KEYBOARD TRAINER ---------- */
+        .keyboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+            gap: 4px;
+            max-width: 450px;
+            margin: 12px auto;
+        }
+        .keyboard-grid .key {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.2);
+            transition: 0.15s;
+            color: var(--text-dim);
+        }
+        .keyboard-grid .key.highlight {
+            border-color: var(--doge-gold);
+            color: var(--doge-gold);
+            background: rgba(242, 201, 76, 0.05);
+            transform: scale(1.05);
+        }
+        .keyboard-grid .key.pressed {
+            border-color: #00ff88;
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.05);
+            transform: scale(0.95);
+        }
+
+        /* ---------- PROGRESS DOTS ---------- */
+        .progress-dots {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .progress-dots .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.02);
+            transition: var(--transition);
+        }
+        .progress-dots .dot.done { border-color: #00ff88; background: rgba(0, 255, 136, 0.2); }
+        .progress-dots .dot.active { border-color: var(--doge-gold); background: rgba(242, 201, 76, 0.2); transform: scale(1.2); }
+
+        /* ---------- TOAST ---------- */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 20px;
+            backdrop-filter: blur(16px);
+            color: var(--text);
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+            max-width: 92%;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+        .toast.success { border-color: #00ff88; }
+        .toast.error { border-color: var(--doge-red); }
+        .toast.gold { border-color: var(--doge-gold); }
+
+        /* ---------- CONFETTI ---------- */
+        .confetti-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 99999;
+            overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 8px; height: 8px;
+            border-radius: 2px;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% { opacity: 1; transform: translateY(-20px) rotate(0deg) scale(1); }
+            100% { opacity: 0; transform: translateY(100vh) rotate(720deg) scale(0.3); }
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 600px) {
+            .header .logo { font-size: 1.1rem; }
+            .header .progress .bar { width: 80px; }
+            .keyboard-grid { grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); }
+            .tabs .tab-btn { font-size: 0.55rem; padding: 4px 12px; }
+            .section-card { padding: 14px 16px; }
+        }
+        @media (max-width: 380px) {
+            .header .progress .bar { width: 60px; }
+            .keyboard-grid { grid-template-columns: repeat(auto-fit, minmax(35px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    TOAST & CONFETTI
+    ============================================================ -->
+    <div class="toast" id="toast"></div>
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
+    <header class="header">
+        <div class="logo">
+            ⚡ DOGE<span>Vault</span>
+            <span class="badge-musk">Walkthrough</span>
+        </div>
+        <div class="progress">
+            <span id="progressLabel">0%</span>
+            <div class="bar"><div class="fill" id="progressFill"></div></div>
+            <span class="count" id="progressCount">0 / 8</span>
+        </div>
+        <button class="btn btn-sm btn-red" onclick="resetAllProgress()" style="font-size:0.5rem;">🔄 Reset</button>
+    </header>
+
+    <!-- ============================================================
+    TABS NAVIGATION
+    ============================================================ -->
+    <div class="tabs" id="tabNav">
+        <button class="tab-btn active" data-tab="tab1">🚀 Start</button>
+        <button class="tab-btn" data-tab="tab2">📈 Patterns</button>
+        <button class="tab-btn" data-tab="tab3">📊 Indicators</button>
+        <button class="tab-btn" data-tab="tab4">🧠 Mentor</button>
+        <button class="tab-btn" data-tab="tab5">📡 Scanner</button>
+        <button class="tab-btn" data-tab="tab6">⚡ Orders</button>
+        <button class="tab-btn" data-tab="tab7">📓 Journal</button>
+        <button class="tab-btn" data-tab="tab8">⌨️ Shortcuts</button>
+        <button class="tab-btn" data-tab="tab9">🎯 Quiz</button>
+    </div>
+
+    <!-- ============================================================
+    TAB 1 – START
+    ============================================================ -->
+    <div class="tab-content active" id="tab1">
+        <div class="section-card">
+            <div class="section-title"><span class="icon">🚀</span> Welcome, Dogefather</div>
+            <div class="section-body">
+                <p>You have just purchased the <strong class="text-gold">DOGE Vault Premium Edition</strong> – the most advanced offline trading simulator for Dogecoin.</p>
+                <p style="margin-top:6px;">This walkthrough will guide you through every feature, from pattern detection to Musk Mentor, so you can trade like a pro – without risking real money.</p>
+                <div class="progress-dots" id="progressDots">
+                    <span class="dot active" data-tab="tab1"></span>
+                    <span class="dot" data-tab="tab2"></span>
+                    <span class="dot" data-tab="tab3"></span>
+                    <span class="dot" data-tab="tab4"></span>
+                    <span class="dot" data-tab="tab5"></span>
+                    <span class="dot" data-tab="tab6"></span>
+                    <span class="dot" data-tab="tab7"></span>
+                    <span class="dot" data-tab="tab8"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title"><span class="icon">📦</span> What's Inside This Package</div>
+            <div class="section-body">
+                <ul style="padding-left:20px;">
+                    <li><strong>doge-easy.html</strong> – Beginner mode.</li>
+                    <li><strong>doge-normal.html</strong> – Balanced experience.</li>
+                    <li><strong>doge-hard.html</strong> – Advanced volatility.</li>
+                    <li><strong>doge-veryhard.html</strong> – Expert challenge.</li>
+                    <li><strong>doge-legendry.html</strong> – Ultimate challenge.</li>
+                    <li><strong>doge-ict.html</strong> – Smart Money Concepts.</li>
+                    <li><strong>doge-starter.html</strong> – RTM terminal.</li>
+                    <li><strong>doge-starterpro.html</strong> – 120+ features.</li>
+                    <li><strong>doge-history.html</strong> – Historical timeline.</li>
+                    <li><strong>setup.html</strong> – Complete setup guide.</li>
+                    <li><strong>doge-config.json</strong> – Professional settings.</li>
+                    <li><strong>manifest.json</strong> – PWA manifest.</li>
+                </ul>
+                <div style="margin-top:10px; background:rgba(0,180,216,0.05); padding:10px 14px; border-radius:8px; border-left:3px solid var(--musk-blue);">
+                    <span class="text-blue">💡 Tip:</span> Open <code>index.html</code> in your browser to see the complete dashboard.
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title"><span class="icon">⚡</span> 2‑Minute Quick Start</div>
+            <div class="section-body">
+                <ol style="padding-left:20px;">
+                    <li>Unzip the package to any folder.</li>
+                    <li>Open <code>index.html</code> in Chrome, Firefox, Safari, or Edge.</li>
+                    <li>Choose your version from the dashboard.</li>
+                    <li>Load the professional settings: go to <strong>Settings → Import Config</strong> and choose <code>doge-config.json</code>.</li>
+                    <li>Use the keyboard shortcuts (see Tab 8) to trade fast.</li>
+                </ol>
+                <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-gold btn-sm" onclick="markDone('tab1')">✅ Mark as Done</button>
+                    <button class="btn btn-musk btn-sm" onclick="switchTab('tab2')">Next: Patterns →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    TAB 2 – PATTERNS
+    ============================================================ -->
+    <div class="tab-content" id="tab2">
+        <div class="section-card">
+            <div class="section-title"><span class="icon">📈</span> Pattern Scanner – The Heart of DOGE Vault</div>
+            <div class="section-body">
+                <p>The simulator automatically detects <strong class="text-gold">5 advanced patterns</strong> on 5s and 30s timeframes. Each pattern gives you a <strong class="text-green">LONG</strong> or <strong class="text-red">SHORT</strong> signal.</p>
+                
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:12px 0;">
+                    <div class="pattern-demo-box">
+                        <div class="text-gold" style="font-weight:700;">G-61</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">Gap + Fibo 61.8%</div>
+                        <div class="demo-chart">
+                            <svg viewBox="0 0 200 60">
+                                <polyline points="0,10 30,10 30,25 60,25 60,40 90,40 90,20 120,20 120,35 150,35 150,15 200,15" fill="none" stroke="#F2C94C" stroke-width="1.5"/>
+                                <text x="170" y="20" fill="#00ff88" font-size="7" font-weight="700">LONG</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="pattern-demo-box">
+                        <div class="text-gold" style="font-weight:700;">T-61</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">Trendline + Fibo 61.8%</div>
+                        <div class="demo-chart">
+                            <svg viewBox="0 0 200 60">
+                                <polyline points="0,10 40,20 80,30 120,40 160,45 200,45" fill="none" stroke="#eb5757" stroke-width="1" stroke-dasharray="3,3"/>
+                                <polyline points="0,45 40,35 80,25 120,15 160,10 200,10" fill="none" stroke="#F2C94C" stroke-width="1.5"/>
+                                <text x="170" y="18" fill="#00ff88" font-size="7" font-weight="700">LONG</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="pattern-demo-box">
+                        <div class="text-gold" style="font-weight:700;">2-DIV</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">Double Top + RSI Divergence</div>
+                        <div class="demo-chart">
+                            <svg viewBox="0 0 200 60">
+                                <polyline points="0,30 20,20 40,10 60,20 80,10 100,20 120,30 140,40 160,50 200,50" fill="none" stroke="#eb5757" stroke-width="1.5"/>
+                                <text x="150" y="20" fill="#eb5757" font-size="7" font-weight="700">SHORT</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="pattern-demo-box">
+                        <div class="text-gold" style="font-weight:700;">2-INV</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">Double Top + Inverted Hanging Man</div>
+                        <div class="demo-chart">
+                            <svg viewBox="0 0 200 60">
+                                <polyline points="0,40 20,25 40,10 60,25 80,10 100,25 120,40 140,50 160,55 200,55" fill="none" stroke="#eb5757" stroke-width="1.5"/>
+                                <rect x="70" y="5" width="8" height="12" fill="#eb5757" opacity="0.5"/>
+                                <text x="150" y="20" fill="#eb5757" font-size="7" font-weight="700">SHORT</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="pattern-demo-box">
+                        <div class="text-gold" style="font-weight:700;">T-LH</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">Trendline + Lower High</div>
+                        <div class="demo-chart">
+                            <svg viewBox="0 0 200 60">
+                                <polyline points="0,10 30,15 60,25 90,35 120,40 150,45 200,45" fill="none" stroke="#eb5757" stroke-width="1" stroke-dasharray="3,3"/>
+                                <polyline points="0,45 30,40 60,30 90,20 120,15 150,10 200,10" fill="none" stroke="#F2C94C" stroke-width="1.5"/>
+                                <text x="170" y="18" fill="#00ff88" font-size="7" font-weight="700">LONG</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div style="background:rgba(242,201,76,0.05); padding:8px 14px; border-radius:8px; border-left:3px solid var(--doge-gold);">
+                    <span class="text-gold">🔍 How to use:</span> Open the <strong>Scanner</strong> tab in the simulator. When a pattern appears, the scanner will show <span class="text-green">LONG</span> or <span class="text-red">SHORT</span>.
+                </div>
+                <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-gold btn-sm" onclick="markDone('tab2')">✅ Mark as Done</button>
+                    <button class="btn btn-musk btn-sm" onclick="switchTab('tab3')">Next: Indicators →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    TAB 3 – INDICATORS
+    ============================================================ -->
+    <div class="tab-content" id="tab3">
+        <div class="section-card">
+            <div class="section-title"><span class="icon">📊</span> Technical Indicators</div>
+            <div class="section-body">
+                <p>DOGE Vault includes <strong class="text-gold">4 essential indicators</strong> to help you confirm patterns and make better decisions.</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:12px 0;">
+                    <div class="card-sm" style="border-left:3px solid #00b4d8;">
+                        <div class="text-blue" style="font-weight:700;">MA (Moving Average)</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">20 &amp; 50 periods. Blue = 20, Gold = 50.</div>
+                    </div>
+                    <div class="card-sm" style="border-left:3px solid #F2C94C;">
+                        <div class="text-gold" style="font-weight:700;">Bollinger Bands</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">20 period, 2 standard deviations.</div>
+                    </div>
+                    <div class="card-sm" style="border-left:3px solid #00ff88;">
+                        <div class="text-green" style="font-weight:700;">MACD</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">12, 26, 9. Histogram + signal line.</div>
+                    </div>
+                    <div class="card-sm" style="border-left:3px solid #eb5757;">
+                        <div class="text-red" style="font-weight:700;">RSI</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">14 periods. Overbought > 70, oversold < 30.</div>
+                    </div>
+                </div>
+                <div style="background:rgba(0,180,216,0.05); padding:8px 14px; border-radius:8px; border-left:3px solid var(--musk-blue);">
+                    <span class="text-blue">💡 Tip:</span> Toggle indicators on/off using the buttons above the chart in any version.
+                </div>
+                <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-gold btn-sm" onclick="markDone('tab3')">✅ Mark as Done</button>
+                    <button class="btn btn-musk btn-sm" onclick="switchTab('tab4')">Next: Musk Mentor →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    TAB 4 – MUSK MENTOR
+    ============================================================ -->
+    <div class="tab-content" id="tab4">
+        <div class="section-card">
+            <div class="section-title"><span class="icon">🧠</span> Musk Mentor – Your AI Trading Assistant</div>
+            <div class="section-body">
+                <p>The <strong class="text-blue">Musk Mentor</strong> is a built‑in AI that analyzes the current market regime (trending, ranging, volatile), RSI, and detected patterns to give you <strong class="text-gold">plain‑English trading advice</strong>.</p>
+                <div style="margin:10px 0; background:rgba(0,180,216,0.05); padding:12px 16px; border-radius:12px; border:1px solid var(--musk-blue);">
+                    <div class="text-blue" style="font-weight:700;">🧠 Example Mentor Output:</div>
+                    <div style="font-size:0.8rem; margin-top:4px; color:#d0d0e8;">"Pattern Alert: <strong class="text-gold">G-61</strong> detected on 5s. Direction: <strong class="text-green">LONG</strong> at $0.00032. Consider a LONG position with a tight stop below the recent swing low. R:R 1:2 recommended."</div>
+                </div>
+                <ul style="padding-left:20px; font-size:0.8rem;">
+                    <li>Open the <strong>Musk Mentor</strong> tab in the simulator.</li>
+                    <li>Click <strong>"Analyze Now"</strong> to get fresh advice.</li>
+                    <li>The mentor adapts to the market regime – it will tell you when to be aggressive or cautious.</li>
+                </ul>
+                <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-gold btn-sm" onclick="markDone('tab4')">✅ Mark as Done</button>
+                    <button class="btn btn-musk btn-sm" onclick="switchTab('tab5')">Next: Scanner →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    TAB 5 – SCANNER
+    ============================================================ -->
+    <div class="tab-content" id="tab5">
+        <div class="section-card">
+            <div class="section-title"><span class="icon">📡</span> Pattern Scanner – Live Detection</div>
+            <div class="section-body">
+                <p>The <strong class="text-gold">Pattern Scanner</strong> runs in real‑time on <strong class="text-blue">5s and 30s</strong> timeframes. When it detects a pattern, it updates the scanner panel immediately.</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
+                    <div class="card-sm" style="text-align:center;">
+                        <div style="font-size:0.7rem;color:var(--text-dim);">5s Timeframe</div>
+                        <div class="text-gold" style="font-weight:700;">G-61: <span class="text-green">LONG</span></div>
+                        <div class="text-gold" style="font-weight:700;">T-61: <span class="text-dim">—</span></div>
+                        <div class="text-gold" style="font-weight:700;">2-DIV: <span class="text-red">SHORT</span></div>
+                    </div>
+                    <div class="card-sm" style="text-align:center;">
+                        <div style="font-size:0.7rem;color:var(--text-dim);">30s Timeframe</div>
+                        <div class="text-gold" style="font-weight:700;">G-61: <span class="text-dim">—</span></div>
+                        <div class="text-gold" style="font-weight:700;">T-61: <span class="text-green">LONG</span></div>
+                        <div class="text-gold" style="font-weight:700;">T-LH: <span class="text-green">LONG</span></div>
+                    </div>
+                </div>
+                <div style="background:rgba(242,201,76,0.05); padding:8px 14px; border-radius:8px; border-left:3px solid var(--doge-gold);">
+                    <span class="text-gold">⚡ How to use:</span> When the scanner shows a signal, switch to the <strong>Trade</strong> tab and open a trade in that direction.
+                </div>
+                <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-gold btn-sm" onclick="markDone('tab5')">✅ Mark as Done</button>
+                    <button class="btn btn-musk btn-sm" onclick="switchTab('tab6')">Next: Orders →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    TAB 6 – ORDERS
+    ============================================================ -->
+    <div class="tab-content" id="tab6">
+        <div class="section-card">
+            <div class="section-title"><span class="icon">⚡</span> Advanced Order Types</div>
+            <div class="section-body">
+                <p>DOGE Vault supports <strong class="text-gold">4 advanced order types</strong> beyond simple Buy/Sell:</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:12px 0;">
+                    <div class="card-sm" style="border-left:3px solid #00ff88;">
+                        <div class="text-green" style="font-weight:700;">Limit</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">Buy below market / Sell above market.</div>
+                    </div>
+                    <div class="card-sm" style="border-left:3px solid #eb5757;">
+                        <div class="text-red" style="font-weight:700;">Stop</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">Buy above market / Sell below market.</div>
+                    </div>
+                    <div class="card-sm" style="border-left:3px solid #00b4d8;">
+                        <div class="text-blue" style="font-weight:700;">OCO</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">One‑Cancels‑Other. Two orders – one triggers, the other is cancelled.</div>
+                    </div>
+                    <div class="card-sm" style="border-left:3px solid #F2C94C;">
+                        <div class="text-gold" style="font-weight:700;">Auto‑BE</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">Moves SL to entry when price moves in your favor.</div>
+                    </div>
+                </div>
+                <div style="background:rgba(0,180,216,0.05); padding:8px 14px; border-radius:8px; border-left:3px solid var(--musk-blue);">
+                    <span class="text-blue">💡 Tip:</span> Use <strong>OCO</strong> to set a Buy and a Sell at the same time – whichever triggers first cancels the other. This is great for pending breakouts.
+                </div>
+                <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-gold btn-sm" onclick="markDone('tab6')">✅ Mark as Done</button>
+                    <button class="btn btn-musk btn-sm" onclick="switchTab('tab7')">Next: Journal →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    TAB 7 – JOURNAL
+    ============================================================ -->
+    <div class="tab-content" id="tab7">
+        <div class="section-card">
+            <div class="section-title"><span class="icon">📓</span> Trade Journal – Your Secret Weapon</div>
+            <div class="section-body">
+                <p>The <strong class="text-gold">Journal</strong> tab lets you record every trade, including entry, exit, target, result, and notes. This is how you become a better trader.</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
+                    <div class="card-sm" style="border-left:3px solid #00ff88;">
+                        <div class="text-green" style="font-weight:700;">✅ Profit</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">Record winning trades to learn what worked.</div>
+                    </div>
+                    <div class="card-sm" style="border-left:3px solid #eb5757;">
+                        <div class="text-red" style="font-weight:700;">❌ Loss</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">Record losing trades to identify mistakes.</div>
+                    </div>
+                    <div class="card-sm" style="border-left:3px solid #F2C94C;">
+                        <div class="text-gold" style="font-weight:700;">⚖️ Breakeven</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">Learn from trades that went nowhere.</div>
+                    </div>
+                    <div class="card-sm" style="border-left:3px solid #00b4d8;">
+                        <div class="text-blue" style="font-weight:700;">🔍 Pattern</div>
+                        <div style="font-size:0.7rem;color:var(--text-dim);">Tag each trade with the pattern you used.</div>
+                    </div>
+                </div>
+                <div style="background:rgba(242,201,76,0.05); padding:8px 14px; border-radius:8px; border-left:3px solid var(--doge-gold);">
+                    <span class="text-gold">📊 Pro tip:</span> After 20 journal entries, go to the <strong>Analytics</strong> tab – you'll see your <strong>Best Pattern</strong> and <strong>Profit Factor</strong>.
+                </div>
+                <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-gold btn-sm" onclick="markDone('tab7')">✅ Mark as Done</button>
+                    <button class="btn btn-musk btn-sm" onclick="switchTab('tab8')">Next: Shortcuts →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    TAB 8 – SHORTCUTS
+    ============================================================ -->
+    <div class="tab-content" id="tab8">
+        <div class="section-card">
+            <div class="section-title"><span class="icon">⌨️</span> Keyboard Shortcuts – Trade Like a Pro</div>
+            <div class="section-body">
+                <p>All shortcuts work inside the <code>doge-vault.html</code> simulator. Press the keys below to execute actions instantly.</p>
+                <div class="keyboard-grid" id="keyboardGrid">
+                    <div class="key highlight" data-key="B">B</div>
+                    <div class="key highlight" data-key="S">S</div>
+                    <div class="key highlight" data-key="C">C</div>
+                    <div class="key highlight" data-key="T">T</div>
+                    <div class="key highlight" data-key="F">F</div>
+                    <div class="key" data-key="1">1</div>
+                    <div class="key" data-key="2">2</div>
+                    <div class="key" data-key="3">3</div>
+                    <div class="key" data-key="4">4</div>
+                    <div class="key" data-key="5">5</div>
+                    <div class="key" data-key="6">6</div>
+                    <div class="key" data-key="7">7</div>
+                    <div class="key" data-key="8">8</div>
+                    <div class="key" data-key="9">9</div>
+                    <div class="key" data-key="0">0</div>
+                    <div class="key" data-key="?">?</div>
+                </div>
+                <div style="margin:12px 0; font-size:0.8rem; color:var(--text-dim); text-align:center;">
+                    <strong class="text-gold">How it works:</strong> Press a key on your actual keyboard – the corresponding key above will <span style="color:#00ff88;font-weight:700;">light up green</span>.
+                </div>
+                <div style="background:rgba(0,180,216,0.05); padding:8px 14px; border-radius:8px; border-left:3px solid var(--musk-blue);">
+                    <span class="text-blue">🎯 Try it now:</span> Open <code>doge-vault.html</code>, press <kbd style="background:#222;padding:2px 6px;border-radius:4px;border:1px solid #444;">1</kbd> for 1s timeframe, then <kbd style="background:#222;padding:2px 6px;border-radius:4px;border:1px solid #444;">B</kbd> to buy.
+                </div>
+                <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-gold btn-sm" onclick="markDone('tab8')">✅ Mark as Done</button>
+                    <button class="btn btn-musk btn-sm" onclick="switchTab('tab9')">Next: Quiz →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    TAB 9 – QUIZ
+    ============================================================ -->
+    <div class="tab-content" id="tab9">
+        <div class="section-card">
+            <div class="section-title"><span class="icon">🎯</span> Knowledge Check – 10 Questions</div>
+            <div class="section-body">
+                <p>Test your understanding of DOGE Vault Premium. <span class="text-gold">80% or higher</span> unlocks a <span class="text-green">🎉 achievement</span>.</p>
+                <div id="quizContainer"></div>
+                <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-green btn-sm" onclick="checkQuiz()">✅ Check Answers</button>
+                    <button class="btn btn-gold btn-sm" onclick="resetQuiz()">🔄 Reset</button>
+                </div>
+                <div id="quizResult" style="margin-top:10px; font-weight:700; text-align:center;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <div style="text-align:center; padding:20px; font-size:0.65rem; color:var(--text-dim); border-top:1px solid var(--border); margin-top:12px;">
+        DOGE Vault · Premium Edition · Walkthrough v4.0 · © 2026<br>
+        "The future is not a gift. It is an achievement."
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT – 10x BETTER ENGINE
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ─────────────────────────────────────────────────────────────
+            //  STATE
+            // ─────────────────────────────────────────────────────────────
+            const state = {
+                done: {},
+                quizAnswers: {}, // track which questions have been answered
+                quizScore: 0,
+                _confettiFired: false,
+            };
+
+            // ─────────────────────────────────────────────────────────────
+            //  QUIZ DATA
+            // ─────────────────────────────────────────────────────────────
+            const quizData = [{
+                q: 'Which pattern is a bullish reversal with a gap and Fibo 61.8% confluence?',
+                options: ['G-61', '2-DIV', '2-INV', 'T-LH'],
+                correct: 0
+            }, {
+                q: 'What does the Musk Mentor use to generate advice?',
+                options: ['Market regime + RSI + patterns', 'Only RSI', 'Only patterns', 'Random tweets'],
+                correct: 0
+            }, {
+                q: 'Which order type cancels one order when the other triggers?',
+                options: ['Limit', 'Stop', 'OCO', 'Auto-BE'],
+                correct: 2
+            }, {
+                q: 'What timeframe does the Pattern Scanner watch?',
+                options: ['1s and 5s', '5s and 30s', '1m and 5m', 'All timeframes'],
+                correct: 1
+            }, {
+                q: 'Which indicator is best for overbought/oversold signals?',
+                options: ['MA', 'Bollinger Bands', 'MACD', 'RSI'],
+                correct: 3
+            }, {
+                q: 'What does Auto-BE do?',
+                options: ['Closes trade automatically', 'Moves SL to entry when in profit', 'Adds leverage',
+                    'Sends an alert'
+                ],
+                correct: 1
+            }, {
+                q: 'How do you load the professional config in the simulator?',
+                options: ['Settings → Import Config', 'Trade → Load Config', 'Journal → Import', 'Analytics → Load'],
+                correct: 0
+            }, {
+                q: 'What is the keyboard shortcut for Sell (Short)?',
+                options: ['B', 'S', 'C', 'T'],
+                correct: 1
+            }, {
+                q: 'Which pattern is a bearish reversal with Double Top + RSI Divergence?',
+                options: ['G-61', 'T-61', '2-DIV', 'T-LH'],
+                correct: 2
+            }, {
+                q: 'Where can you see your best performing pattern?',
+                options: ['Trade tab', 'Analytics tab', 'Settings tab', 'Journal tab'],
+                correct: 1
+            }];
+
+            // ─────────────────────────────────────────────────────────────
+            //  TOAST
+            // ─────────────────────────────────────────────────────────────
+            function showToast(msg, type) {
+                const el = document.getElementById('toast');
+                el.textContent = msg;
+                el.className = 'toast ' + (type || 'gold');
+                el.classList.add('show');
+                clearTimeout(el._t);
+                el._t = setTimeout(() => el.classList.remove('show'), 2500);
+            }
+            window.showToast = showToast;
+
+            // ─────────────────────────────────────────────────────────────
+            //  CONFETTI
+            // ─────────────────────────────────────────────────────────────
+            function launchConfetti() {
+                const container = document.getElementById('confettiContainer');
+                const colors = ['#F2C94C', '#F2994A', '#00ff88', '#00b4d8', '#eb5757'];
+                for (let i = 0; i < 45; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'confetti-piece';
+                    p.style.left = Math.random() * 100 + '%';
+                    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    p.style.width = (4 + Math.random() * 8) + 'px';
+                    p.style.height = (4 + Math.random() * 8) + 'px';
+                    p.style.animationDuration = (1.5 + Math.random() * 2.5) + 's';
+                    p.style.animationDelay = (Math.random() * 0.8) + 's';
+                    container.appendChild(p);
+                    setTimeout(() => p.remove(), 4000);
+                }
+            }
+
+            // ─────────────────────────────────────────────────────────────
+            //  TAB SWITCHING
+            // ─────────────────────────────────────────────────────────────
+            function switchTab(id) {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.querySelector(`.tab-btn[data-tab="${id}"]`)?.classList.add('active');
+                document.getElementById(id)?.classList.add('active');
+                updateProgress();
+                updateDots(id);
+            }
+            window.switchTab = switchTab;
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchTab(this.dataset.tab);
+                });
+            });
+
+            // ─────────────────────────────────────────────────────────────
+            //  MARK DONE
+            // ─────────────────────────────────────────────────────────────
+            function markDone(tabId) {
+                if (tabId === 'tab9') return; // Cannot mark the quiz as done externally
+                state.done[tabId] = true;
+                const btn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+                if (btn && !btn.innerHTML.includes('✅')) btn.innerHTML += ' ✅';
+                updateProgress();
+                updateDots(tabId);
+                showToast('✅ Section marked as done!', 'success');
+            }
+            window.markDone = markDone;
+
+            // ─────────────────────────────────────────────────────────────
+            //  PROGRESS
+            // ─────────────────────────────────────────────────────────────
+            const TOTAL_SECTIONS = 8;
+
+            function updateProgress() {
+                const doneCount = Object.keys(state.done).length;
+                const pct = Math.round((doneCount / TOTAL_SECTIONS) * 100);
+                document.getElementById('progressFill').style.width = pct + '%';
+                document.getElementById('progressLabel').textContent = pct + '%';
+                document.getElementById('progressCount').textContent = doneCount + ' / ' + TOTAL_SECTIONS;
+
+                if (pct === 100 && !state._confettiFired) {
+                    state._confettiFired = true;
+                    launchConfetti();
+                    showToast('🎉 100% Complete! You are a true Dogefather!', 'gold');
+                }
+            }
+
+            function updateDots(activeId) {
+                document.querySelectorAll('.progress-dots .dot').forEach(dot => {
+                    dot.classList.toggle('active', dot.dataset.tab === activeId);
+                    dot.classList.toggle('done', state.done[dot.dataset.tab] === true);
+                });
+            }
+
+            // ─────────────────────────────────────────────────────────────
+            //  QUIZ
+            // ─────────────────────────────────────────────────────────────
+            function renderQuiz() {
+                const container = document.getElementById('quizContainer');
+                let html = '';
+                quizData.forEach((item, idx) => {
+                    html += `<div style="margin-bottom:16px; background:rgba(0,0,0,0.15); padding:12px 16px; border-radius:10px;">
+                        <div style="font-weight:700; font-size:0.9rem; color:var(--doge-gold); margin-bottom:6px;">${idx+1}. ${item.q}</div>
+                        <div class="flex wrap" style="gap:4px;">`;
+                    item.options.forEach((opt, oi) => {
+                        html += `<div class="quiz-option" data-q="${idx}" data-opt="${oi}" onclick="selectQuizOption(${idx}, ${oi})">${opt}</div>`;
+                    });
+                    html += `</div></div>`;
+                });
+                container.innerHTML = html;
+            }
+
+            function selectQuizOption(qIdx, optIdx) {
+                if (state.quizAnswers[qIdx] !== undefined) return; // Already answered
+
+                const parent = document.querySelector(`.quiz-option[data-q="${qIdx}"]`)?.parentNode;
+                if (!parent) return;
+                const correct = quizData[qIdx].correct;
+                const options = parent.querySelectorAll('.quiz-option');
+
+                // Disable all options in this question
+                options.forEach(el => { el.style.pointerEvents = 'none'; el.classList.add('disabled'); });
+
+                // Add visual feedback
+                const selected = options[optIdx];
+                const correctEl = options[correct];
+                if (optIdx === correct) {
+                    selected.classList.add('correct');
+                } else {
+                    selected.classList.add('wrong');
+                    correctEl.classList.add('correct');
+                }
+
+                // Mark as answered
+                state.quizAnswers[qIdx] = true;
+
+                // Check if all questions are answered
+                if (Object.keys(state.quizAnswers).length === quizData.length) {
+                    checkQuiz();
+                }
+            }
+
+            function checkQuiz() {
+                let correct = 0;
+                let total = quizData.length;
+                for (let i = 0; i < total; i++) {
+                    const parent = document.querySelector(`.quiz-option[data-q="${i}"]`)?.parentNode;
+                    if (!parent) continue;
+                    const correctEl = parent.querySelector('.quiz-option.correct');
+                    if (correctEl) correct++;
+                }
+                const score = Math.round((correct / total) * 100);
+                state.quizScore = score;
+                const result = document.getElementById('quizResult');
+                if (score >= 80) {
+                    result.innerHTML = `<span class="text-green">🎉 ${score}% – Excellent! You've mastered DOGE Vault! 🚀</span>`;
+                    launchConfetti();
+                    showToast('🎉 Master of DOGE Vault!', 'success');
+                } else if (score >= 60) {
+                    result.innerHTML = `<span class="text-gold">${score}% – Good! Review the sections you missed and try again. 💪</span>`;
+                } else {
+                    result.innerHTML = `<span class="text-red">${score}% – Keep studying! Go back through the walkthrough and retake the quiz. 🔄</span>`;
+                }
+                // Disable all options permanently
+                document.querySelectorAll('.quiz-option').forEach(el => {
+                    el.style.pointerEvents = 'none';
+                    el.classList.add('disabled');
+                });
+            }
+
+            function resetQuiz() {
+                state.quizAnswers = {};
+                state.quizScore = 0;
+                document.getElementById('quizResult').innerHTML = '';
+                document.querySelectorAll('.quiz-option').forEach(el => {
+                    el.classList.remove('correct', 'wrong', 'disabled');
+                    el.style.pointerEvents = 'auto';
+                });
+                showToast('🔄 Quiz reset. Try again!', 'gold');
+            }
+
+            window.selectQuizOption = selectQuizOption;
+            window.checkQuiz = checkQuiz;
+            window.resetQuiz = resetQuiz;
+
+            // ─────────────────────────────────────────────────────────────
+            //  INTERACTIVE KEYBOARD TRAINER
+            // ─────────────────────────────────────────────────────────────
+            const keyMap = {
+                'B': 'B', 'S': 'S', 'C': 'C', 'T': 'T', 'F': 'F',
+                '1': '1', '2': '2', '3': '3', '4': '4', '5': '5',
+                '6': '6', '7': '7', '8': '8', '9': '9', '0': '0',
+                '?': '?'
+            };
+
+            document.addEventListener('keydown', function(e) {
+                const key = e.key.toUpperCase();
+                if (keyMap[key]) {
+                    const keyEl = document.querySelector(`.keyboard-grid .key[data-key="${key}"]`);
+                    if (keyEl) {
+                        keyEl.classList.add('pressed');
+                        setTimeout(() => keyEl.classList.remove('pressed'), 200);
+                    }
+                }
+            });
+
+            // ─────────────────────────────────────────────────────────────
+            //  RESET ALL PROGRESS
+            // ─────────────────────────────────────────────────────────────
+            function resetAllProgress() {
+                if (!confirm('Reset all walkthrough progress?')) return;
+                state.done = {};
+                state.quizAnswers = {};
+                state.quizScore = 0;
+                state._confettiFired = false;
+                
+                // Reset UI
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.innerHTML = btn.innerHTML.replace(' ✅', '');
+                });
+                document.getElementById('quizResult').innerHTML = '';
+                document.querySelectorAll('.quiz-option').forEach(el => {
+                    el.classList.remove('correct', 'wrong', 'disabled');
+                    el.style.pointerEvents = 'auto';
+                });
+                document.querySelectorAll('.progress-dots .dot').forEach(dot => {
+                    dot.classList.remove('done', 'active');
+                });
+                updateProgress();
+                showToast('🔄 Walkthrough progress reset.', 'gold');
+            }
+            window.resetAllProgress = resetAllProgress;
+
+            // ─────────────────────────────────────────────────────────────
+            //  KEYBOARD SHORTCUTS FOR THE WALKTHROUGH
+            // ─────────────────────────────────────────────────────────────
+            document.addEventListener('keydown', function(e) {
+                const tag = document.activeElement?.tagName;
+                if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+                const key = e.key.toLowerCase();
+                if (key >= '1' && key <= '9') {
+                    const tabs = ['tab1', 'tab2', 'tab3', 'tab4', 'tab5', 'tab6', 'tab7', 'tab8', 'tab9'];
+                    const idx = parseInt(key) - 1;
+                    if (tabs[idx]) switchTab(tabs[idx]);
+                }
+                if (key === 'n') {
+                    const tabs = document.querySelectorAll('.tab-btn');
+                    let current = Array.from(tabs).findIndex(b => b.classList.contains('active'));
+                    if (current === -1) current = 0;
+                    const next = (current + 1) % tabs.length;
+                    tabs[next]?.click();
+                }
+                if (key === 'p') {
+                    const tabs = document.querySelectorAll('.tab-btn');
+                    let current = Array.from(tabs).findIndex(b => b.classList.contains('active'));
+                    if (current === -1) current = 0;
+                    const prev = (current - 1 + tabs.length) % tabs.length;
+                    tabs[prev]?.click();
+                }
+            });
+
+            // ─────────────────────────────────────────────────────────────
+            //  INIT
+            // ─────────────────────────────────────────────────────────────
+            function init() {
+                // Load state from localStorage
+                try {
+                    const raw = localStorage.getItem('doge_walkthrough_state_v2');
+                    if (raw) {
+                        const d = JSON.parse(raw);
+                        state.done = d.done || {};
+                        state.quizAnswers = d.quizAnswers || {};
+                        if (d._confettiFired) state._confettiFired = true;
+                    }
+                } catch (e) {}
+
+                renderQuiz();
+                updateProgress();
+
+                // Auto-mark sections that were already done
+                for (const key in state.done) {
+                    const btn = document.querySelector(`.tab-btn[data-tab="${key}"]`);
+                    if (btn && !btn.innerHTML.includes('✅')) btn.innerHTML += ' ✅';
+                }
+
+                // Save on page leave
+                window.addEventListener('beforeunload', function() {
+                    try {
+                        localStorage.setItem('doge_walkthrough_state_v2', JSON.stringify({
+                            done: state.done,
+                            quizAnswers: state.quizAnswers,
+                            _confettiFired: state._confettiFired || false
+                        }));
+                    } catch (e) {}
+                });
+
+                // If all quiz answers are already answered, disable them
+                if (Object.keys(state.quizAnswers).length === quizData.length) {
+                    document.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.pointerEvents = 'none';
+                        el.classList.add('disabled');
+                    });
+                    // Re-apply visual feedback
+                    for (let i = 0; i < quizData.length; i++) {
+                        const parent = document.querySelector(`.quiz-option[data-q="${i}"]`)?.parentNode;
+                        if (!parent) continue;
+                        const correct = quizData[i].correct;
+                        const options = parent.querySelectorAll('.quiz-option');
+                        if (state.quizAnswers[i] !== undefined) {
+                            options.forEach((el, idx) => {
+                                if (idx === correct) el.classList.add('correct');
+                                if (idx === state.quizAnswers[i] && idx !== correct) el.classList.add('wrong');
+                            });
+                        }
+                    }
+                }
+
+                console.log('✅ DOGE Vault Walkthrough v4.0 loaded.');
+            }
+
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+            else init();
+
+        })();
+    </script>
+
+<script>
+// DOGE global error surface (debug v1.1)
+(function(){window.esc=window.esc||function(s){var d=document.createElement('div');d.textContent=String(s==null?'':s);return d.innerHTML;};function t(m){try{var d=document.createElement("div");d.style.cssText="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#3a1015;color:#ffd7dc;border:1px solid #ff5566;padding:8px 14px;border-radius:10px;font-size:12px;z-index:99999;max-width:92vw;";d.textContent="WARN "+String(m).slice(0,160);document.body.appendChild(d);setTimeout(function(){d.remove();},5000);}catch(e){}}
+window.addEventListener("error",function(e){t(e.message||"Script error");});window.addEventListener("unhandledrejection",function(e){t((e.reason&&e.reason.message)||"Async error");});})();
+</script>
+</body>
+</html>

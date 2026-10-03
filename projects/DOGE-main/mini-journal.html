@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trade Journal X · DOGE Vault · Pro Edition</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0a0a12;
+      color: #e0e0f0;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.light-mode {
+      background: #f5f5fa;
+      color: #1a1a2e;
+    }
+
+    /* ---------- HEADER ---------- */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 10px 20px;
+      background: rgba(18,18,30,0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(242,201,76,0.1);
+      border-radius: 16px;
+    }
+    body.light-mode .header {
+      background: rgba(255,255,255,0.8);
+      border-color: #ddd;
+    }
+    .header h1 {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #F2C94C;
+      margin: 0;
+    }
+    .header h1 span {
+      color: #00b4d8;
+      font-weight: 400;
+      font-size: 1rem;
+    }
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .header-actions button {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 6px 14px;
+      color: #aaa;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    body.light-mode .header-actions button {
+      border-color: #ddd;
+      color: #555;
+    }
+    .header-actions button:hover {
+      border-color: #F2C94C;
+      color: #F2C94C;
+    }
+    .header-actions .theme-btn {
+      font-size: 1.2rem;
+      padding: 4px 10px;
+    }
+
+    /* ---------- TAB NAV ---------- */
+    .tab-nav {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      background: rgba(0,0,0,0.2);
+      padding: 8px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+    body.light-mode .tab-nav {
+      background: rgba(0,0,0,0.03);
+      border-color: #ddd;
+    }
+    .tab-nav button {
+      background: transparent;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    body.light-mode .tab-nav button {
+      color: rgba(0,0,0,0.5);
+    }
+    .tab-nav button:hover {
+      background: rgba(242,201,76,0.05);
+      color: #F2C94C;
+    }
+    .tab-nav button.active {
+      background: #F2C94C;
+      color: #0a0a12;
+      font-weight: 700;
+    }
+    body.light-mode .tab-nav button.active {
+      color: #0a0a12;
+    }
+
+    /* ---------- CARDS ---------- */
+    .card {
+      background: rgba(18,18,30,0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 16px;
+      padding: 22px 24px;
+      margin: 14px 0;
+      transition: background 0.3s;
+    }
+    body.light-mode .card {
+      background: rgba(255,255,255,0.85);
+      border-color: #e0e0e8;
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #F2C94C;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card h2 .badge-pro {
+      background: #00b4d8;
+      font-size: 0.6rem;
+      padding: 2px 10px;
+      border-radius: 30px;
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* ---------- GRID FOR FORMS ---------- */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .form-group label {
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    body.light-mode .form-group label {
+      color: rgba(0,0,0,0.5);
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      color: #e0e0f0;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    body.light-mode .form-group input, 
+    body.light-mode .form-group select,
+    body.light-mode .form-group textarea {
+      background: #fff;
+      border-color: #ddd;
+      color: #111;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: #F2C94C;
+      box-shadow: 0 0 0 3px rgba(242,201,76,0.1);
+    }
+    .form-group textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    /* ---------- BUTTONS ---------- */
+    .btn {
+      padding: 10px 22px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: 'Inter', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #F2C94C, #f5b342);
+      color: #0a0a12;
+      box-shadow: 0 4px 20px rgba(242,201,76,0.15);
+    }
+    .btn-primary:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 30px rgba(242,201,76,0.25);
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.04);
+      color: #aaa;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .btn-secondary:hover {
+      border-color: #F2C94C;
+      color: #F2C94C;
+    }
+    body.light-mode .btn-secondary {
+      background: rgba(0,0,0,0.03);
+      border-color: #ddd;
+      color: #555;
+    }
+    .btn-danger {
+      background: #eb5757;
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: #cc4444;
+    }
+    .btn-sm {
+      padding: 6px 14px;
+      font-size: 0.75rem;
+      border-radius: 8px;
+    }
+
+    /* ---------- TRADE LOG ENTRIES ---------- */
+    .entry-item {
+      background: rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 8px 0;
+      position: relative;
+      transition: 0.2s;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    body.light-mode .entry-item {
+      background: rgba(0,0,0,0.02);
+      border-color: #e0e0e8;
+    }
+    .entry-item:hover {
+      border-color: rgba(242,201,76,0.2);
+    }
+    .entry-item .pair {
+      font-weight: 700;
+      color: #F2C94C;
+    }
+    .entry-item .result-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .result-badge.win {
+      background: rgba(0,255,136,0.12);
+      color: #00ff88;
+      border: 1px solid rgba(0,255,136,0.15);
+    }
+    .result-badge.loss {
+      background: rgba(235,87,87,0.12);
+      color: #eb5757;
+      border: 1px solid rgba(235,87,87,0.15);
+    }
+    .result-badge.be {
+      background: rgba(242,201,76,0.12);
+      color: #F2C94C;
+      border: 1px solid rgba(242,201,76,0.15);
+    }
+    .entry-item .tag-badge {
+      font-size: 0.65rem;
+      padding: 2px 10px;
+      border-radius: 30px;
+      background: rgba(0,180,216,0.08);
+      color: #00b4d8;
+      border: 1px solid rgba(0,180,216,0.08);
+    }
+    .entry-item .del-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      cursor: pointer;
+      color: rgba(255,255,255,0.2);
+      font-size: 1.1rem;
+      transition: 0.2s;
+    }
+    .entry-item .del-btn:hover {
+      color: #eb5757;
+    }
+
+    /* ---------- STATS GRID ---------- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+    }
+    .stat-card {
+      background: rgba(0,0,0,0.15);
+      border-radius: 12px;
+      padding: 12px 10px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    body.light-mode .stat-card {
+      background: rgba(0,0,0,0.02);
+      border-color: #e0e0e8;
+    }
+    .stat-card .stat-num {
+      font-size: 1.2rem;
+      font-weight: 900;
+      display: block;
+    }
+    .stat-card .stat-num.green { color: #00ff88; }
+    .stat-card .stat-num.gold { color: #F2C94C; }
+    .stat-card .stat-label {
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* ---------- CHART CANVAS ---------- */
+    #equityCanvas {
+      width: 100%;
+      height: 280px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 12px;
+      margin-top: 6px;
+    }
+    body.light-mode #equityCanvas {
+      background: rgba(0,0,0,0.02);
+    }
+
+    /* ---------- TRADINGVIEW IFRAME ---------- */
+    .tv-container {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.04);
+      margin-top: 12px;
+    }
+    .tv-container iframe {
+      width: 100%;
+      height: 480px;
+      display: block;
+      border: none;
+    }
+
+    /* ---------- FOOTER ---------- */
+    .footer {
+      text-align: center;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.2);
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.03);
+    }
+    body.light-mode .footer {
+      color: rgba(0,0,0,0.2);
+      border-color: #ddd;
+    }
+
+    /* ---------- UTILITY ---------- */
+    .flex { display: flex; gap: 8px; flex-wrap: wrap; }
+    .flex-center { align-items: center; }
+    .gap-4 { gap: 4px; }
+    .mt-8 { margin-top: 8px; }
+    .text-gold { color: #F2C94C; }
+    .text-green { color: #00ff88; }
+    .text-red { color: #eb5757; }
+
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.2rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .tab-nav button { font-size: 0.7rem; padding: 6px 12px; }
+      .stats-grid { grid-template-columns: repeat(3, 1fr); }
+      .entry-item { flex-direction: column; align-items: stretch; }
+      .tv-container iframe { height: 300px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header">
+    <h1>📓 Trade Journal <span>X · Pro</span></h1>
+    <div class="header-actions">
+      <button class="theme-btn" id="themeToggle" title="Toggle Theme">🌓</button>
+      <button onclick="exportAllData()">📦 Backup</button>
+      <button onclick="document.getElementById('restoreFile').click()">📤 Restore</button>
+      <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreJournal(this)">
+    </div>
+  </header>
+
+  <!-- ========== TAB NAV ========== -->
+  <div class="tab-nav">
+    <button class="active" onclick="switchTab('trades')">📋 Trades</button>
+    <button onclick="switchTab('dashboard')">📊 Dashboard</button>
+    <button onclick="switchTab('analytics')">📈 Analytics</button>
+    <button onclick="switchTab('calculator')">🧮 Risk</button>
+    <button onclick="switchTab('journal')">📝 Notes</button>
+    <button onclick="switchTab('psychology')">🧠 Psychology</button>
+    <button onclick="switchTab('strategies')">⚙️ Strategies</button>
+    <button onclick="switchTab('settings')">🔧 Settings</button>
+  </div>
+
+  <!-- ========== TAB: TRADES ========== -->
+  <div id="tab-trades" class="tab-content" style="display:block;">
+    <div class="card">
+      <h2>✏️ New Trade <span class="badge-pro">Pro</span></h2>
+      <div class="form-grid">
+        <div class="form-group"><label>Pair</label><input type="text" id="jPair" value="DOGE/USDT"></div>
+        <div class="form-group"><label>Date</label><input type="datetime-local" id="jDate"></div>
+        <div class="form-group"><label>Timeframe</label><select id="jTimeframe"><option value="1m">1m</option><option value="5m">5m</option><option value="15m" selected>15m</option><option value="1h">1h</option><option value="4h">4h</option><option value="1D">1D</option></select></div>
+        <div class="form-group"><label>Direction</label><select id="jDirection"><option value="buy">Buy (Long)</option><option value="sell">Sell (Short)</option></select></div>
+        <div class="form-group"><label>Entry Price</label><input type="number" id="jEntry" step="any"></div>
+        <div class="form-group"><label>Exit Price</label><input type="number" id="jExit" step="any"></div>
+        <div class="form-group"><label>Stop Loss</label><input type="number" id="jSL" step="any"></div>
+        <div class="form-group"><label>Take Profit</label><input type="number" id="jTP" step="any"></div>
+        <div class="form-group"><label>Volume (Lots)</label><input type="number" id="jVolume" value="0.1" step="0.01"></div>
+        <div class="form-group"><label>Fees (USDT)</label><input type="number" id="jFees" value="0" step="0.01"></div>
+        <div class="form-group"><label>Slippage (%)</label><input type="number" id="jSlippage" value="0" step="0.01"></div>
+        <div class="form-group"><label>Strategy / Tag</label>
+          <div class="flex gap-4">
+            <select id="jStrategySelect" style="flex:1;"></select>
+            <input type="text" id="jTag" placeholder="Custom tag" style="flex:1;">
+          </div>
+        </div>
+        <div class="form-group"><label>Screenshot</label><input type="file" id="jScreenshot" accept="image/*" style="padding:5px;"></div>
+      </div>
+      <div class="form-group mt-8"><label>Notes</label><textarea id="jNote" rows="2" placeholder="Trade rationale, mistakes, etc."></textarea></div>
+      <div class="flex mt-8">
+        <button class="btn btn-primary" onclick="saveEntry()">💾 Save Trade</button>
+        <button class="btn btn-secondary" onclick="calculateQuickPnL()">🧮 Quick P&L</button>
+      </div>
+      <div id="quickPnL" class="text-gold mt-8" style="font-weight:700;"></div>
+    </div>
+
+    <div class="card">
+      <h2>📋 Trade Log <span id="entryCount" style="font-size:0.8rem;color:rgba(255,255,255,0.4);"></span></h2>
+      <div class="flex" style="margin-bottom:12px;flex-wrap:wrap;">
+        <input type="text" id="filterSearch" placeholder="🔍 Search" style="padding:6px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.3);color:#e0e0f0;flex:1;min-width:100px;">
+        <select id="filterResult" style="padding:6px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.3);color:#e0e0f0;"><option value="all">All</option><option value="win">Win</option><option value="loss">Loss</option><option value="breakeven">BE</option></select>
+        <select id="filterPair" style="padding:6px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.3);color:#e0e0f0;"><option value="all">All pairs</option></select>
+        <select id="filterTag" style="padding:6px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.3);color:#e0e0f0;"><option value="all">All tags</option></select>
+        <button class="btn btn-primary btn-sm" onclick="applyFilters()">Apply</button>
+      </div>
+      <div id="entriesList"></div>
+      <div class="flex mt-8">
+        <button class="btn btn-danger btn-sm" onclick="clearAllEntries()">🗑️ Clear</button>
+        <button class="btn btn-secondary btn-sm" onclick="exportCSV()">📥 CSV</button>
+        <button class="btn btn-secondary btn-sm" onclick="exportJSON()">📦 JSON</button>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('importCSV').click()">📤 Import CSV</button>
+        <input type="file" id="importCSV" accept=".csv" style="display:none;" onchange="importFromCSV(this)">
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TAB: DASHBOARD ========== -->
+  <div id="tab-dashboard" class="tab-content" style="display:none;">
+    <div class="card">
+      <h2>📊 Dashboard</h2>
+      <div class="stats-grid" id="statsContainer">
+        <div class="stat-card"><span class="stat-num" id="statTotal">0</span><span class="stat-label">Total</span></div>
+        <div class="stat-card"><span class="stat-num" id="statWinRate">-</span><span class="stat-label">Win Rate</span></div>
+        <div class="stat-card"><span class="stat-num" id="statNetPL">0.00</span><span class="stat-label">Net P&L</span></div>
+        <div class="stat-card"><span class="stat-num" id="statProfitFactor">-</span><span class="stat-label">Profit Factor</span></div>
+        <div class="stat-card"><span class="stat-num" id="statExpectancy">-</span><span class="stat-label">Expectancy</span></div>
+        <div class="stat-card"><span class="stat-num" id="statMaxDD">-</span><span class="stat-label">Max Drawdown</span></div>
+      </div>
+      <canvas id="equityCanvas"></canvas>
+      <button class="btn btn-secondary btn-sm mt-8" onclick="drawEquityCurve()">🔄 Refresh Chart</button>
+    </div>
+  </div>
+
+  <!-- ========== TAB: ANALYTICS ========== -->
+  <div id="tab-analytics" class="tab-content" style="display:none;">
+    <div class="card">
+      <h2>📈 Advanced Analytics</h2>
+      <div id="analyticsContent" style="font-size:0.9rem;color:rgba(255,255,255,0.6);">Select trades in the Trades tab and return here for deep analysis.</div>
+      <button class="btn btn-primary btn-sm mt-8" onclick="runAdvancedAnalytics()">Run Analysis</button>
+    </div>
+  </div>
+
+  <!-- ========== TAB: CALCULATOR ========== -->
+  <div id="tab-calculator" class="tab-content" style="display:none;">
+    <div class="card">
+      <h2>🧮 Position Size Calculator</h2>
+      <div class="form-grid">
+        <div class="form-group"><label>Account Balance (USDT)</label><input type="number" id="calcBalance" value="1000"></div>
+        <div class="form-group"><label>Risk % per Trade</label><input type="number" id="calcRiskPercent" value="1" step="0.1"></div>
+        <div class="form-group"><label>Stop Loss (%)</label><input type="number" id="calcSLPercent" value="2" step="0.1"></div>
+      </div>
+      <button class="btn btn-primary btn-sm mt-8" onclick="calculatePosition()">Calculate</button>
+      <div id="calcResult" class="text-gold mt-8" style="font-weight:700;"></div>
+    </div>
+  </div>
+
+  <!-- ========== TAB: JOURNAL (NOTES) ========== -->
+  <div id="tab-journal" class="tab-content" style="display:none;">
+    <div class="card">
+      <h2>📝 Daily Notes & Ideas</h2>
+      <textarea id="dailyNote" rows="4" style="width:100%;padding:10px;border-radius:10px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);color:#e0e0f0;font-family:'Inter',sans-serif;" placeholder="Pre-market analysis, lessons, etc."></textarea>
+      <button class="btn btn-primary btn-sm mt-8" onclick="saveDailyNote()">💾 Save Note</button>
+      <div id="dailyNotesList" class="mt-8" style="font-size:0.85rem;color:rgba(255,255,255,0.6);"></div>
+    </div>
+  </div>
+
+  <!-- ========== TAB: PSYCHOLOGY ========== -->
+  <div id="tab-psychology" class="tab-content" style="display:none;">
+    <div class="card">
+      <h2>🧠 Post-Trade Psychology</h2>
+      <p style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:10px;">Select a trade first from the Trades tab, then assess your mindset.</p>
+      <div id="psychForm" style="display:none;">
+        <div class="form-grid">
+          <div class="form-group"><label>Emotion Before</label><select id="psychBefore"><option>Calm</option><option>Anxious</option><option>Confident</option><option>Fearful</option></select></div>
+          <div class="form-group"><label>Emotion After</label><select id="psychAfter"><option>Satisfied</option><option>Regretful</option><option>Relieved</option><option>Frustrated</option></select></div>
+          <div class="form-group"><label>Discipline (1-10)</label><input type="number" id="psychDiscipline" min="1" max="10" value="7"></div>
+        </div>
+        <button class="btn btn-primary btn-sm mt-8" onclick="savePsychology()">Save Assessment</button>
+      </div>
+      <div id="psychHistory" class="mt-8" style="font-size:0.8rem;color:rgba(255,255,255,0.5);"></div>
+    </div>
+  </div>
+
+  <!-- ========== TAB: STRATEGIES ========== -->
+  <div id="tab-strategies" class="tab-content" style="display:none;">
+    <div class="card">
+      <h2>⚙️ Strategy Library</h2>
+      <div class="flex gap-4">
+        <input type="text" id="newStrategyName" placeholder="Strategy name" style="flex:1;padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.3);color:#e0e0f0;">
+        <button class="btn btn-primary btn-sm" onclick="saveStrategy()">Save</button>
+      </div>
+      <textarea id="newStrategyDesc" rows="2" style="width:100%;padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.3);color:#e0e0f0;margin-top:4px;" placeholder="Rules..."></textarea>
+      <div id="strategiesList" class="mt-8" style="font-size:0.85rem;color:rgba(255,255,255,0.6);"></div>
+    </div>
+  </div>
+
+  <!-- ========== TAB: SETTINGS ========== -->
+  <div id="tab-settings" class="tab-content" style="display:none;">
+    <div class="card">
+      <h2>🔧 Settings & Data Management</h2>
+      <div class="flex gap-4">
+        <button class="btn btn-primary btn-sm" onclick="exportAllData()">📦 Full Backup (JSON)</button>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('restoreFile').click()">📤 Restore Backup</button>
+        <button class="btn btn-danger btn-sm" onclick="resetAllData()">⚠️ Factory Reset</button>
+      </div>
+      <p style="font-size:0.7rem;color:rgba(255,255,255,0.3);margin-top:10px;">All data is stored locally in your browser's localStorage.</p>
+    </div>
+  </div>
+
+  <!-- ========== TRADINGVIEW LIVE CHART ========== -->
+  <div class="card">
+    <h2>📈 Live Chart (TradingView) <span class="badge-pro">Real-time</span></h2>
+    <div class="tv-container">
+      <iframe 
+        src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_123&symbol=DOGEUSDT&interval=60&theme=dark&style=1&timezone=Etc/UTC&studies=[]&hide_side_toolbar=0&symbol_edit=0&save_image=1">
+      </iframe>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <div class="footer">
+    Trade Journal X · DOGE Vault · Pro Edition · 100% Offline · v2.0
+  </div>
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <script>
+    (function() {
+      'use strict';
+
+      // ---------- DATA ----------
+      const STORAGE_KEY = 'trade_journal_x';
+      let trades = [];
+      let dailyNotes = [];
+      let strategies = [];
+      let psychAssessments = [];
+      let selectedTradeId = null;
+
+      function loadAll() {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          let data = {}; try { data = JSON.parse(raw) || {}; } catch (e) { console.warn('Journal storage corrupted, starting fresh.', e); }
+          trades = data.trades || [];
+          dailyNotes = data.dailyNotes || [];
+          strategies = data.strategies || [];
+          psychAssessments = data.psychAssessments || [];
+        } else {
+          const old = localStorage.getItem('doge_trade_journal_pro');
+          if (old) { try { trades = JSON.parse(old); } catch (e) { console.warn('Legacy journal data corrupted, skipped.', e); } }
+        }
+        updateUI();
+      }
+
+      function saveAll() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ trades, dailyNotes, strategies, psychAssessments }));
+        updateUI();
+      }
+
+      // ---------- HELPERS ----------
+      function computeResult(entry, exit, dir) {
+        if (!entry || !exit) return 'breakeven';
+        if ((dir === 'buy' && exit > entry) || (dir === 'sell' && exit < entry)) return 'profit';
+        return 'loss';
+      }
+
+      function computePnL(entry, exit, dir, vol, fees = 0) {
+        if (!entry || !exit || !vol) return 0;
+        const diff = dir === 'buy' ? (exit - entry) : (entry - exit);
+        return (diff * vol) - fees;
+      }
+
+      // ---------- UI SWITCHING ----------
+      window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.tab-nav button').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-' + tab).style.display = 'block';
+        document.querySelector(`.tab-nav button[onclick="switchTab('${tab}')"]`).classList.add('active');
+        if (tab === 'dashboard') drawEquityCurve();
+        if (tab === 'trades') renderTradeList();
+      };
+
+      // ---------- TRADES ----------
+      function updatePairFilter() {
+        const pairs = [...new Set(trades.map(t => t.pair).filter(Boolean))];
+        const sel = document.getElementById('filterPair');
+        sel.innerHTML = '<option value="all">All pairs</option>' + pairs.map(p => `<option>${esc(p)}</option>`).join('');
+      }
+
+      function updateTagFilter() {
+        const tags = [...new Set(trades.map(t => t.tag).filter(Boolean))];
+        const sel = document.getElementById('filterTag');
+        sel.innerHTML = '<option value="all">All tags</option>' + tags.map(t => `<option>${esc(t)}</option>`).join('');
+        const stratSel = document.getElementById('jStrategySelect');
+        stratSel.innerHTML = '<option value="">--</option>' + strategies.map(s => `<option>${esc(s.name)}</option>`).join('') + tags.map(t => `<option>${esc(t)}</option>`).join('');
+      }
+
+      window.saveEntry = function() {
+        const pair = document.getElementById('jPair').value.trim() || 'DOGE/USDT';
+        const dir = document.getElementById('jDirection').value;
+        const entry = parseFloat(document.getElementById('jEntry').value);
+        const exit = parseFloat(document.getElementById('jExit').value);
+        if (isNaN(entry) || isNaN(exit)) { alert('Please enter valid Entry and Exit prices.'); return; }
+        const sl = parseFloat(document.getElementById('jSL').value) || null;
+        const tp = parseFloat(document.getElementById('jTP').value) || null;
+        const vol = parseFloat(document.getElementById('jVolume').value) || 0.1;
+        const fees = parseFloat(document.getElementById('jFees').value) || 0;
+        const slippage = parseFloat(document.getElementById('jSlippage').value) || 0;
+        const tag = document.getElementById('jTag').value.trim() || document.getElementById('jStrategySelect').value;
+        const note = document.getElementById('jNote').value.trim();
+        const date = document.getElementById('jDate').value || new Date().toISOString().slice(0, 16);
+        const tf = document.getElementById('jTimeframe').value;
+        const fileInput = document.getElementById('jScreenshot');
+        let screenshot = null;
+
+        const finish = function() {
+          const id = Date.now().toString();
+          trades.push({ id, pair, direction: dir, entry, exit, sl, tp, volume: vol, fees, slippage, tag, note, date, timeframe: tf, screenshot });
+          saveAll();
+          document.getElementById('jEntry').value = '';
+          document.getElementById('jExit').value = '';
+          document.getElementById('jSL').value = '';
+          document.getElementById('jTP').value = '';
+          document.getElementById('jFees').value = '0';
+          document.getElementById('jSlippage').value = '0';
+          document.getElementById('jTag').value = '';
+          document.getElementById('jNote').value = '';
+          document.getElementById('jScreenshot').value = '';
+          alert('Trade saved!');
+        };
+
+        if (fileInput && fileInput.files && fileInput.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) { screenshot = e.target.result; finish(); };
+          reader.readAsDataURL(fileInput.files[0]);
+        } else {
+          finish();
+        }
+      };
+
+      function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+      function renderTradeList(filtered) {
+        const list = document.getElementById('entriesList');
+        const display = filtered || trades;
+        document.getElementById('entryCount').textContent = `(${esc(display.length)})`;
+        if (!display.length) { list.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.3);padding:20px;">No trades yet.</div>'; return; }
+        list.innerHTML = display.slice().reverse().map(t => {
+          const res = computeResult(t.entry, t.exit, t.direction);
+          const pnl = computePnL(t.entry, t.exit, t.direction, t.volume, t.fees);
+          const badge = res === 'profit' ? 'win' : (res === 'loss' ? 'loss' : 'be');
+          return `<div class="entry-item" onclick="selectTrade('${esc(t.id)}')">
+            <span class="del-btn" onclick="event.stopPropagation();deleteTrade('${esc(t.id)}')">✕</span>
+            <span class="pair">${esc(t.pair)}</span>
+            <span class="result-badge ${badge}">${res}</span>
+            <span>${esc(t.entry)} → ${esc(t.exit)}</span>
+            <span style="font-weight:700;">$${pnl.toFixed(2)}</span>
+            ${t.tag ? `<span class="tag-badge">${esc(t.tag)}</span>` : ''}
+            <span style="font-size:0.7rem;color:rgba(255,255,255,0.3);">${new Date(t.date).toLocaleString()}</span>
+          </div>`;
+        }).join('');
+      }
+
+      window.applyFilters = function() {
+        const search = document.getElementById('filterSearch').value.toLowerCase();
+        const resF = document.getElementById('filterResult').value;
+        const pairF = document.getElementById('filterPair').value;
+        const tagF = document.getElementById('filterTag').value;
+        let filtered = trades.filter(t => {
+          if (pairF !== 'all' && t.pair !== pairF) return false;
+          if (tagF !== 'all' && t.tag !== tagF) return false;
+          const res = computeResult(t.entry, t.exit, t.direction);
+          if (resF !== 'all') {
+            if (resF === 'win' && res !== 'profit') return false;
+            if (resF === 'loss' && res !== 'loss') return false;
+            if (resF === 'breakeven' && res !== 'breakeven') return false;
+          }
+          if (search && !JSON.stringify(t).toLowerCase().includes(search)) return false;
+          return true;
+        });
+        renderTradeList(filtered);
+      };
+
+      window.selectTrade = function(id) {
+        selectedTradeId = id;
+        document.getElementById('psychForm').style.display = 'block';
+        document.getElementById('psychHistory').innerHTML = '';
+        const assessments = psychAssessments.filter(a => a.tradeId === id);
+        if (assessments.length) {
+          document.getElementById('psychHistory').innerHTML = assessments.map(a =>
+            `<div style="padding:6px 10px;background:rgba(0,0,0,0.1);border-radius:8px;margin:4px 0;">Before: ${esc(a.before)}, After: ${esc(a.after)}, Discipline: ${esc(a.discipline)}/10</div>`
+          ).join('');
+        }
+        switchTab('psychology');
+      };
+
+      window.deleteTrade = function(id) {
+        if (confirm('Delete this trade?')) {
+          trades = trades.filter(t => t.id !== id);
+          psychAssessments = psychAssessments.filter(a => a.tradeId !== id);
+          saveAll();
+        }
+      };
+
+      window.clearAllEntries = function() {
+        if (confirm('Delete ALL trades?')) { trades = []; psychAssessments = []; saveAll(); }
+      };
+
+      window.calculateQuickPnL = function() {
+        const entry = parseFloat(document.getElementById('jEntry').value);
+        const exit = parseFloat(document.getElementById('jExit').value);
+        const dir = document.getElementById('jDirection').value;
+        const vol = parseFloat(document.getElementById('jVolume').value) || 0.1;
+        const fees = parseFloat(document.getElementById('jFees').value) || 0;
+        if (!entry || !exit) { document.getElementById('quickPnL').textContent = 'Please enter Entry and Exit.'; return; }
+        const pnl = computePnL(entry, exit, dir, vol, fees);
+        document.getElementById('quickPnL').textContent = `Estimated P&L: $${pnl.toFixed(2)}`;
+      };
+
+      // ---------- EXPORT / IMPORT ----------
+      window.exportCSV = function() {
+        let csv = 'Pair,Direction,Entry,Exit,Volume,Result,P&L,Fees,Date,Tag\n';
+        trades.forEach(t => {
+          const res = computeResult(t.entry, t.exit, t.direction);
+          const pnl = computePnL(t.entry, t.exit, t.direction, t.volume, t.fees);
+          csv += `"${esc(t.pair)}","${esc(t.direction)}",${esc(t.entry)},${esc(t.exit)},${esc(t.volume)},"${res}",${pnl},${esc(t.fees)},"${esc(t.date)}","${esc(t.tag)}"\n`;
+        });
+        downloadBlob(csv, 'trades.csv', 'text/csv');
+      };
+
+      window.exportJSON = function() {
+        downloadBlob(JSON.stringify({ trades, dailyNotes, strategies, psychAssessments }), 'backup.json', 'application/json');
+      };
+
+      window.restoreJournal = function(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const data = JSON.parse(e.target.result);
+            if (data.trades) { trades = data.trades;
+              dailyNotes = data.dailyNotes || [];
+              strategies = data.strategies || [];
+              psychAssessments = data.psychAssessments || [];
+              saveAll();
+              alert('Restored successfully!'); }
+            else alert('Invalid backup file.');
+          } catch (ex) { alert('Error reading file.'); }
+        };
+        reader.readAsText(file);
+      };
+
+      window.importFromCSV = function(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const lines = e.target.result.split('\n').filter(l => l.trim());
+          if (lines.length < 2) { alert('CSV must have a header row.'); return; }
+          const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+          const pairIdx = headers.indexOf('pair');
+          const dirIdx = headers.indexOf('direction');
+          const entryIdx = headers.indexOf('entry');
+          const exitIdx = headers.indexOf('exit');
+          const volIdx = headers.indexOf('volume');
+          const dateIdx = headers.indexOf('date');
+          let count = 0;
+          for (let i = 1; i < lines.length; i++) {
+            const cols = lines[i].split(',').map(c => c.replace(/"/g, '').trim());
+            if (cols.length < 4) continue;
+            const pair = pairIdx >= 0 ? cols[pairIdx] : 'DOGE/USDT';
+            const dir = dirIdx >= 0 ? cols[dirIdx].toLowerCase() : 'buy';
+            const entry = parseFloat(cols[entryIdx]);
+            const exit = parseFloat(cols[exitIdx]);
+            const vol = volIdx >= 0 ? parseFloat(cols[volIdx]) : 0.1;
+            const date = dateIdx >= 0 ? cols[dateIdx] : new Date().toISOString().slice(0, 16);
+            if (isNaN(entry) || isNaN(exit)) continue;
+            trades.push({ id: Date.now() + Math.random().toString(), pair, direction: dir, entry, exit, sl: null, tp: null,
+              volume: vol, fees: 0, tag: '', note: '', date, timeframe: '15m' });
+            count++;
+          }
+          saveAll();
+          alert(`Imported ${count} trades.`);
+        };
+        reader.readAsText(file);
+      };
+
+      // ---------- DASHBOARD / ANALYTICS ----------
+      window.drawEquityCurve = function() {
+        const canvas = document.getElementById('equityCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const rect = canvas.parentElement.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = rect.width * dpr;
+        canvas.height = 280 * dpr;
+        canvas.style.width = rect.width + 'px';
+        canvas.style.height = '280px';
+        ctx.scale(dpr, dpr);
+        const w = rect.width;
+        const h = 280;
+        const sorted = [...trades].sort((a, b) => new Date(a.date) - new Date(b.date));
+        if (!sorted.length) { ctx.clearRect(0, 0, w, h); return; }
+        let equity = 0;
+        const points = sorted.map(t => { equity += computePnL(t.entry, t.exit, t.direction, t.volume, t.fees); return equity; });
+        const maxEq = Math.max(...points, 0);
+        const minEq = Math.min(...points, 0);
+        const range = maxEq - minEq || 1;
+        ctx.clearRect(0, 0, w, h);
+        ctx.beginPath();
+        ctx.strokeStyle = '#F2C94C';
+        ctx.lineWidth = 2.5;
+        ctx.shadowColor = 'rgba(242,201,76,0.3)';
+        ctx.shadowBlur = 8;
+        points.forEach((p, i) => {
+          const x = (i / (points.length - 1)) * w;
+          const y = h - ((p - minEq) / range) * h;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        if (minEq < 0 && maxEq > 0) {
+          const zeroY = h - ((0 - minEq) / range) * h;
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+          ctx.setLineDash([5, 5]);
+          ctx.moveTo(0, zeroY);
+          ctx.lineTo(w, zeroY);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+        updateStats();
+      };
+
+      function updateStats() {
+        const total = trades.length;
+        document.getElementById('statTotal').textContent = total;
+        if (!total) { document.querySelectorAll('.stat-num').forEach(el => { if (el.id !== 'statTotal' && el.id !==
+              'statNetPL') el.textContent = '-'; });
+          document.getElementById('statNetPL').textContent = '0.00'; return; }
+        let wins = 0,
+          losses = 0,
+          grossProfit = 0,
+          grossLoss = 0,
+          net = 0;
+        trades.forEach(t => {
+          const pnl = computePnL(t.entry, t.exit, t.direction, t.volume, t.fees);
+          net += pnl;
+          if (pnl > 0) { wins++;
+            grossProfit += pnl; } else if (pnl < 0) { losses++;
+            grossLoss += Math.abs(pnl); }
+        });
+        document.getElementById('statWinRate').textContent = (wins + losses) ? (wins / (wins + losses) * 100).toFixed(1) + '%' :
+          '-';
+        document.getElementById('statNetPL').textContent = net.toFixed(2);
+        document.getElementById('statProfitFactor').textContent = grossLoss ? (grossProfit / grossLoss).toFixed(2) : (wins ?
+          '∞' : '-');
+        document.getElementById('statExpectancy').textContent = total ? (net / total).toFixed(2) : '-';
+        let peak = -Infinity,
+          maxDD = 0,
+          currEquity = 0;
+        [...trades].sort((a, b) => new Date(a.date) - new Date(b.date)).forEach(t => {
+          currEquity += computePnL(t.entry, t.exit, t.direction, t.volume, t.fees);
+          if (currEquity > peak) peak = currEquity;
+          const dd = peak - currEquity;
+          if (dd > maxDD) maxDD = dd;
+        });
+        document.getElementById('statMaxDD').textContent = maxDD.toFixed(2);
+      }
+
+      window.runAdvancedAnalytics = function() {
+        if (!trades.length) { document.getElementById('analyticsContent').innerHTML = 'No trades to analyze.'; return; }
+        const byMonth = {};
+        trades.forEach(t => {
+          const m = new Date(t.date).toISOString().slice(0, 7);
+          if (!byMonth[m]) byMonth[m] = { count: 0, pnl: 0 };
+          byMonth[m].count++;
+          byMonth[m].pnl += computePnL(t.entry, t.exit, t.direction, t.volume, t.fees);
+        });
+        let html = `<p style="font-size:1.1rem;font-weight:700;">Monthly P&L Breakdown</p><ul style="list-style:none;padding:0;">`;
+        Object.entries(byMonth).sort().forEach(([m, d]) => {
+          html += `<li style="padding:4px 8px;background:rgba(0,0,0,0.1);border-radius:6px;margin:4px 0;">${m}: ${esc(d.count)} trades, <span style="color:${d.pnl>=0?'#00ff88':'#eb5757'};">$${d.pnl.toFixed(2)}</span></li>`;
+        });
+        html += `</ul>`;
+        document.getElementById('analyticsContent').innerHTML = html;
+      };
+
+      // ---------- CALCULATOR ----------
+      window.calculatePosition = function() {
+        const bal = parseFloat(document.getElementById('calcBalance').value);
+        const riskP = parseFloat(document.getElementById('calcRiskPercent').value);
+        const slP = parseFloat(document.getElementById('calcSLPercent').value);
+        if (isNaN(bal) || isNaN(riskP) || isNaN(slP)) return;
+        const riskAmt = bal * (riskP / 100);
+        const posSize = riskAmt / (slP / 100);
+        document.getElementById('calcResult').textContent = `Position size: $${posSize.toFixed(2)} (Risk: $${riskAmt.toFixed(2)})`;
+      };
+
+      // ---------- JOURNAL NOTES ----------
+      window.saveDailyNote = function() {
+        const note = document.getElementById('dailyNote').value.trim();
+        if (!note) return;
+        dailyNotes.push({ date: new Date().toISOString().slice(0, 10), text: note });
+        document.getElementById('dailyNote').value = '';
+        saveAll();
+        renderDailyNotes();
+      };
+
+      function renderDailyNotes() {
+        const list = document.getElementById('dailyNotesList');
+        list.innerHTML = dailyNotes.slice().reverse().map(n =>
+          `<div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.03);"><strong>${esc(n.date)}</strong>: ${esc(n.text)}</div>`
+        ).join('');
+      }
+
+      // ---------- PSYCHOLOGY ----------
+      window.savePsychology = function() {
+        if (!selectedTradeId) { alert('Select a trade first from the Trades tab.'); return; }
+        psychAssessments.push({
+          tradeId: selectedTradeId,
+          before: document.getElementById('psychBefore').value,
+          after: document.getElementById('psychAfter').value,
+          discipline: parseInt(document.getElementById('psychDiscipline').value) || 7
+        });
+        saveAll();
+        selectTrade(selectedTradeId);
+      };
+
+      // ---------- STRATEGIES ----------
+      window.saveStrategy = function() {
+        const name = document.getElementById('newStrategyName').value.trim();
+        const desc = document.getElementById('newStrategyDesc').value.trim();
+        if (!name) return;
+        strategies.push({ name, desc });
+        document.getElementById('newStrategyName').value = '';
+        document.getElementById('newStrategyDesc').value = '';
+        saveAll();
+        renderStrategies();
+      };
+
+      function renderStrategies() {
+        const list = document.getElementById('strategiesList');
+        list.innerHTML = strategies.map(s =>
+          `<div style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.03);"><strong>${esc(s.name)}</strong>: ${esc(s.desc)}</div>`
+        ).join('');
+        updateTagFilter();
+      }
+
+      // ---------- SETTINGS ----------
+      window.exportAllData = function() {
+        downloadBlob(JSON.stringify({ trades, dailyNotes, strategies, psychAssessments }), 'full_backup.json',
+          'application/json');
+      };
+
+      window.resetAllData = function() {
+        if (confirm('Delete ALL data? This cannot be undone.')) {
+          localStorage.removeItem(STORAGE_KEY);
+          location.reload();
+        }
+      };
+
+      // ---------- UTILS ----------
+      function downloadBlob(content, name, type) {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([content], { type }));
+        a.download = name;
+        a.click();
+      }
+
+      function updateUI() {
+        renderTradeList();
+        updatePairFilter();
+        updateTagFilter();
+        renderDailyNotes();
+        renderStrategies();
+        if (document.getElementById('tab-dashboard').style.display !== 'none') drawEquityCurve();
+      }
+
+      // ---------- THEME ----------
+      const themeToggle = document.getElementById('themeToggle');
+      if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+      });
+
+      // ---------- INIT ----------
+      loadAll();
+
+      // Auto-refresh chart on window resize
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(drawEquityCurve, 300);
+      });
+
+      console.log('📓 Trade Journal X · Pro Edition loaded');
+    })();
+  </script>
+
+<script>
+// DOGE global error surface (debug v1.1)
+(function(){window.esc=window.esc||function(s){var d=document.createElement('div');d.textContent=String(s==null?'':s);return d.innerHTML;};function t(m){try{var d=document.createElement("div");d.style.cssText="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#3a1015;color:#ffd7dc;border:1px solid #ff5566;padding:8px 14px;border-radius:10px;font-size:12px;z-index:99999;max-width:92vw;";d.textContent="WARN "+String(m).slice(0,160);document.body.appendChild(d);setTimeout(function(){d.remove();},5000);}catch(e){}}
+window.addEventListener("error",function(e){t(e.message||"Script error");});window.addEventListener("unhandledrejection",function(e){t((e.reason&&e.reason.message)||"Async error");});})();
+</script>
+</body>
+</html>

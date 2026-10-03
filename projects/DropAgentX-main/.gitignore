@@ -1,0 +1,12 @@
+# deps
+node_modules/
+# next
+.next/
+out/
+# env
+.env*
+!.env.example
+# misc
+*.tsbuildinfo
+# next
+next-env.d.ts

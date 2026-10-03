@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>DOGE Vault Premium · The Dogefather · Ultimate Index 2026</title>
+    <meta name="theme-color" content="#0a0a12" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="description" content="The most advanced Dogecoin trading simulator in the world. 9 versions, Pattern Scanner, Musk Mentor, PWA support, 100% offline." />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon-512.png" />
+    <link rel="icon" sizes="192x192" href="icon-192.png" />
+    <link rel="icon" sizes="512x512" href="icon-512.png" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --doge-gold: #F2C94C;
+            --doge-orange: #F2994A;
+            --doge-red: #eb5757;
+            --musk-blue: #00b4d8;
+            --neon-green: #00ff88;
+            --green-dim: rgba(0, 255, 136, 0.10);
+            --gold-dim: rgba(255, 215, 0, 0.10);
+            --bg: #0a0a12;
+            --card: rgba(18, 18, 30, 0.94);
+            --border: rgba(0, 255, 136, 0.07);
+            --border-strong: rgba(0, 255, 136, 0.15);
+            --text: #f0f0ff;
+            --text-dim: rgba(240, 240, 255, 0.35);
+            --radius: 18px;
+            --radius-sm: 10px;
+            --radius-xs: 6px;
+            --font: 'Inter', system-ui, -apple-system, sans-serif;
+            --shadow-glow: 0 0 60px rgba(0, 255, 136, 0.05);
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 0 12px 60px 12px;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 3px;
+            height: 3px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #10101a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 10px;
+        }
+
+        a, a:hover, a:focus, a:active,
+        .nav-links a, .header-actions a, .file-card a, .footer .links a, .hero-cta {
+            text-decoration: none !important;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            margin: 10px 0 16px 0;
+            flex-wrap: wrap;
+            gap: 8px;
+            position: relative;
+        }
+        .header .logo {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--doge-gold);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header .logo .badge {
+            background: var(--doge-red);
+            color: #fff;
+            font-size: 0.45rem;
+            padding: 1px 10px;
+            border-radius: 20px;
+            font-weight: 900;
+        }
+        .header .logo .version {
+            background: var(--gold-dim);
+            color: var(--doge-gold);
+            font-size: 0.4rem;
+            padding: 1px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+        .header .setup-badge {
+            background: var(--musk-blue);
+            color: #0a0a12;
+            font-size: 0.55rem;
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-weight: 900;
+            letter-spacing: 0.3px;
+        }
+        .header .nav-links {
+            display: flex;
+            gap: 6px 14px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .header .nav-links a {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+        .header .nav-links a:hover {
+            color: var(--text);
+            border-color: var(--border);
+        }
+        .header .nav-links a.green {
+            color: var(--neon-green);
+            border-color: rgba(0, 255, 136, 0.1);
+            background: var(--green-dim);
+        }
+        .header .nav-links a.gold {
+            color: var(--doge-gold);
+            border-color: rgba(255, 215, 0, 0.1);
+            background: var(--gold-dim);
+        }
+        .header-actions {
+            display: flex;
+            gap: 4px 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .header-actions a {
+            color: var(--text-dim);
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            transition: 0.3s;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+        }
+        .header-actions a:hover {
+            border-color: var(--neon-green);
+            color: var(--text);
+        }
+        .header-actions .install-btn {
+            background: var(--doge-gold);
+            color: #0a0a12;
+            border-color: var(--doge-gold);
+            font-weight: 700;
+        }
+        .header-actions .install-btn:hover {
+            box-shadow: 0 0 30px rgba(242, 201, 76, 0.3);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            padding: 40px 24px 32px 24px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(14px);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle at 30% 40%, rgba(242, 201, 76, 0.04), transparent 70%);
+            animation: heroGlow 12s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        @keyframes heroGlow {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+            100% { transform: translate(8%, 12%) scale(1.2); opacity: 1; }
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            line-height: 1.2;
+            position: relative;
+        }
+        .hero h1 .gold { color: var(--doge-gold); text-shadow: 0 0 40px rgba(242, 201, 76, 0.2); }
+        .hero h1 .red { color: var(--doge-red); text-shadow: 0 0 30px rgba(235, 87, 87, 0.15); }
+        .hero h1 .green { color: var(--neon-green); text-shadow: 0 0 30px rgba(0, 255, 136, 0.15); }
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 8px auto 16px auto;
+            line-height: 1.8;
+            position: relative;
+        }
+        .hero .subtitle strong { color: var(--text); }
+        .hero .start-row {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+            position: relative;
+        }
+        .hero-cta {
+            padding: 14px 40px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .hero-cta.green {
+            background: var(--neon-green);
+            color: #0a0a12;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.12);
+        }
+        .hero-cta.green:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 60px rgba(0, 255, 136, 0.2);
+        }
+        .hero-cta.gold {
+            background: var(--doge-gold);
+            color: #0a0a12;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.08);
+        }
+        .hero-cta.gold:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.15);
+        }
+        .hero-cta.outline {
+            background: transparent;
+            border: 2px solid var(--border-strong);
+            color: var(--text);
+        }
+        .hero-cta.outline:hover {
+            border-color: var(--doge-gold);
+            color: var(--doge-gold);
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            justify-content: center;
+            padding: 12px 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            margin-bottom: 16px;
+            backdrop-filter: blur(12px);
+        }
+        .stats-bar .stat {
+            text-align: center;
+        }
+        .stats-bar .stat .num {
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--text);
+            display: block;
+        }
+        .stats-bar .stat .num.green { color: var(--neon-green); }
+        .stats-bar .stat .num.gold { color: var(--doge-gold); }
+        .stats-bar .stat .num.red { color: var(--doge-red); }
+        .stats-bar .stat .num.blue { color: var(--musk-blue); }
+        .stats-bar .stat .label {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stats-bar .action-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: var(--font);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .stats-bar .action-btn:hover {
+            border-color: var(--neon-green);
+            color: var(--text);
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(8px);
+        }
+        .section .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .section .section-header h2 {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--doge-gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section .section-header h2 .sub {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+        .section .section-header .badge-count {
+            background: var(--green-dim);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--neon-green);
+        }
+
+        /* ===== FEATURE GRID ===== */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px;
+            margin: 10px 0;
+        }
+        .feature-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            transition: var(--transition);
+            cursor: default;
+            position: relative;
+        }
+        .feature-card:hover {
+            border-color: rgba(0, 255, 136, 0.1);
+            transform: translateY(-3px);
+        }
+        .feature-card .icon {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .feature-card .title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .feature-card .title .tag {
+            font-size: 0.45rem;
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+        .feature-card .title .tag.core {
+            background: var(--green-dim);
+            color: var(--neon-green);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+        }
+        .feature-card .title .tag.pro {
+            background: var(--gold-dim);
+            color: var(--doge-gold);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+        .feature-card .title .tag.fun {
+            background: var(--red-dim);
+            color: var(--doge-red);
+            border: 1px solid rgba(235, 87, 87, 0.1);
+        }
+        .feature-card .desc {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 4px;
+            line-height: 1.6;
+        }
+        .feature-card .example {
+            font-size: 0.6rem;
+            color: var(--doge-gold);
+            margin-top: 4px;
+            padding: 4px 8px;
+            background: var(--gold-dim);
+            border-radius: 4px;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+        }
+
+        /* ===== FILE GRID ===== */
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 8px 0;
+        }
+        .file-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            transition: var(--transition);
+            display: block;
+        }
+        .file-card:hover {
+            border-color: rgba(0, 255, 136, 0.1);
+            transform: translateY(-3px);
+        }
+        .file-card .file-icon {
+            font-size: 1.6rem;
+            display: block;
+        }
+        .file-card .file-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .file-card .file-name .tag {
+            font-size: 0.5rem;
+            padding: 1px 8px;
+            border-radius: 12px;
+            background: var(--green-dim);
+            color: var(--neon-green);
+            border: 1px solid rgba(0, 255, 136, 0.05);
+        }
+        .file-card .file-desc {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-top: 2px;
+        }
+        .file-card a {
+            display: inline-block;
+            margin-top: 4px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: var(--doge-gold);
+            color: #0a0a12;
+            font-size: 0.55rem;
+            font-weight: 700;
+        }
+        .file-card a.download { background: var(--musk-blue); }
+
+        /* ===== CONTROLS ===== */
+        .controls-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+        .controls-row .filter-tabs {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .controls-row .filter-tabs .tab-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: var(--font);
+        }
+        .controls-row .filter-tabs .tab-btn:hover {
+            border-color: var(--neon-green);
+            color: var(--text);
+        }
+        .controls-row .filter-tabs .tab-btn.active {
+            background: var(--green-dim);
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+        .controls-row .sort-btns {
+            display: flex;
+            gap: 4px;
+        }
+        .controls-row .sort-btns .sort-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: var(--font);
+        }
+        .controls-row .sort-btns .sort-btn:hover {
+            border-color: var(--neon-green);
+            color: var(--text);
+        }
+        .controls-row .sort-btns .sort-btn.active {
+            background: var(--green-dim);
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+        .controls-row .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 150px;
+            max-width: 300px;
+        }
+        .controls-row .search-box input {
+            width: 100%;
+            padding: 6px 12px 6px 32px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 0.8rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .controls-row .search-box input:focus {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.05);
+        }
+        .controls-row .search-box .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            pointer-events: none;
+        }
+        .controls-row .action-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: var(--font);
+        }
+        .controls-row .action-btn:hover {
+            border-color: var(--neon-green);
+            color: var(--text);
+        }
+
+        .results-count {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+        .results-count strong {
+            color: var(--text);
+        }
+
+        /* ===== TROPHY GRID ===== */
+        .trophy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 8px;
+            margin: 6px 0;
+        }
+        .trophy-item {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-xs);
+            padding: 10px 10px 8px 10px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .trophy-item .trophy-icon {
+            font-size: 1.8rem;
+            display: block;
+        }
+        .trophy-item .trophy-name {
+            font-weight: 700;
+            font-size: 0.7rem;
+            margin: 2px 0;
+        }
+        .trophy-item .trophy-desc {
+            font-size: 0.55rem;
+            color: var(--text-dim);
+        }
+        .trophy-item .trophy-badge {
+            font-size: 0.45rem;
+            padding: 1px 8px;
+            border-radius: 10px;
+            background: var(--green-dim);
+            color: var(--neon-green);
+            border: 1px solid rgba(0, 255, 136, 0.05);
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        /* ===== BUTTON REF ===== */
+        .btn-ref-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 8px;
+            margin: 8px 0;
+        }
+        .btn-ref {
+            padding: 8px 12px;
+            border-radius: var(--radius-xs);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .btn-ref .btn-label {
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-ref .btn-desc {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+        }
+        .btn-ref .btn-key {
+            font-size: 0.55rem;
+            color: var(--doge-gold);
+            background: var(--gold-dim);
+            padding: 0 6px;
+            border-radius: 4px;
+            display: inline-block;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+        }
+        .btn-ref .btn-key.green {
+            color: var(--neon-green);
+            background: var(--green-dim);
+            border-color: rgba(0, 255, 136, 0.05);
+        }
+
+        /* ===== HOSTING ===== */
+        .os-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .os-selector .os-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: var(--font);
+        }
+        .os-selector .os-btn:hover {
+            border-color: var(--neon-green);
+            color: var(--text);
+        }
+        .os-selector .os-btn.active {
+            background: var(--green-dim);
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+        .os-instructions {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 12px 16px;
+            border-radius: var(--radius-xs);
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: var(--text-dim);
+        }
+        .os-instructions strong {
+            color: var(--text);
+        }
+        .os-instructions .cmd {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0 6px;
+            border-radius: 4px;
+            color: var(--doge-gold);
+            border: 1px solid rgba(255, 215, 0, 0.05);
+            font-family: monospace;
+        }
+
+        /* ===== FAQ ===== */
+        .faq-item {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: var(--radius-xs);
+            padding: 10px 14px;
+            margin-bottom: 8px;
+        }
+        .faq-item strong {
+            color: var(--text);
+            display: block;
+            margin-bottom: 2px;
+        }
+        .faq-item p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-top: 2px;
+        }
+        .faq-item p strong {
+            display: inline;
+            color: var(--neon-green);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 20px 10px 4px 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            margin-top: 10px;
+        }
+        .footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            justify-content: center;
+        }
+        .footer .links a {
+            color: var(--text-dim);
+            font-size: 0.7rem;
+            transition: 0.3s;
+        }
+        .footer .links a:hover {
+            color: var(--neon-green);
+        }
+        .footer .links a.gold:hover {
+            color: var(--doge-gold);
+        }
+        .footer .copy {
+            color: rgba(240, 240, 255, 0.08);
+            font-size: 0.6rem;
+            margin-top: 10px;
+        }
+        .footer .copy .green {
+            color: rgba(0, 255, 136, 0.2);
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--card);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-sm);
+            padding: 8px 20px;
+            backdrop-filter: blur(16px);
+            color: var(--text);
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            max-width: 90%;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.success {
+            border-color: var(--neon-green);
+        }
+        .toast.error {
+            border-color: var(--doge-red);
+        }
+        .toast.gold {
+            border-color: var(--doge-gold);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 12px 16px;
+            }
+            .header .nav-links {
+                justify-content: center;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero .subtitle {
+                font-size: 0.95rem;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            .file-grid {
+                grid-template-columns: 1fr;
+            }
+            .btn-ref-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .trophy-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .section {
+                padding: 16px 14px;
+            }
+            .controls-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .controls-row .search-box {
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            .hero-cta {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+            }
+            .btn-ref-grid {
+                grid-template-columns: 1fr;
+            }
+            .trophy-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+            <div class="logo">
+                ⚡ DOGE<span style="color:var(--text)">Vault</span>
+                <span class="badge">Premium</span>
+                <span class="version">v9.0</span>
+                <span class="setup-badge">🚀 ULTIMATE</span>
+            </div>
+            <div class="nav-links">
+                <a href="#welcome" class="green">🏠 Home</a>
+                <a href="#files">📁 Files</a>
+                <a href="#features">⚙️ Features</a>
+                <a href="#buttons">🎮 Buttons</a>
+                <a href="#trophies">🏆 Trophies</a>
+                <a href="#hosting">🌐 Host</a>
+                <a href="#faq">❓ FAQ</a>
+            </div>
+            <div class="header-actions">
+                <a href="https://t.me/NexusDigitalArt" target="_blank" style="border-color:rgba(0,180,216,0.2);color:var(--musk-blue);">💬 Telegram</a>
+                <a href="https://www.etsy.com/shop/NexusDigitalArtShop" target="_blank" style="border-color:rgba(255,215,0,0.2);color:var(--doge-gold);">🛒 Etsy</a>
+                <a href="#" id="installBtn" class="install-btn" style="display:none;">📲 Install</a>
+            </div>
+        </header>
+
+        <!-- ===== HERO ===== -->
+        <section class="hero" id="welcome">
+            <h1>
+                <span class="gold">⚡ DOGE Vault</span>
+                <span style="color:var(--text);">·</span>
+                <span class="red">The Dogefather</span>
+            </h1>
+            <p class="subtitle">
+                <strong>The most complete Dogecoin trading simulator ever built.</strong><br />
+                9 unique versions from <strong class="green">Easy</strong> to <strong class="red">Legendary</strong>.<br />
+                <span style="color:var(--text-dim);font-size:0.9rem;">100% offline · PWA ready · No risk · No tracking.</span>
+            </p>
+            <div class="start-row">
+                <a href="doge-legendry.html" class="hero-cta gold">🔥 Start Legendary</a>
+                <a href="doge-easy.html" class="hero-cta green">🌀 Try Easy Mode</a>
+                <a href="#features" class="hero-cta outline">📖 Explore All Features</a>
+            </div>
+        </section>
+
+        <!-- ===== STATS BAR ===== -->
+        <div class="stats-bar" id="statsBar">
+            <div class="stat"><span class="num green" id="totalFeatures">0</span><span class="label">Features</span></div>
+            <div class="stat"><span class="num blue" id="totalVisited">0</span><span class="label">Visited</span></div>
+            <div class="stat"><span class="num gold" id="totalBookmarks">0</span><span class="label">Bookmarks</span></div>
+            <div class="stat"><span class="num red" id="totalRatings">0</span><span class="label">Ratings</span></div>
+            <button class="action-btn" id="resetBtn">🔄 Reset All</button>
+            <button class="action-btn" id="exportCSVBtn">📤 Export CSV</button>
+            <button class="action-btn" id="printBtn">🖨️ Print</button>
+        </div>
+
+        <!-- ===== CONTROLS ===== -->
+        <div class="controls-row" id="controlsRow">
+            <div class="filter-tabs" id="filterTabs">
+                <button class="tab-btn active" data-filter="all">🌍 All</button>
+                <button class="tab-btn" data-filter="core">⚡ Core</button>
+                <button class="tab-btn" data-filter="pro">💎 Pro</button>
+                <button class="tab-btn" data-filter="fun">🎮 Fun</button>
+            </div>
+            <div class="sort-btns" id="sortBtns">
+                <button class="sort-btn active" id="sortNum">🔢 #</button>
+                <button class="sort-btn" id="sortAlpha">🔤 A‑Z</button>
+                <button class="sort-btn" id="sortRated">⭐ Rated</button>
+            </div>
+            <button class="action-btn" id="randomBtn">🎲 Random</button>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchBox" placeholder="Search features..." autocomplete="off" />
+            </div>
+        </div>
+
+        <div class="results-count" id="resultsCount">Showing 0 of 0 features</div>
+
+        <!-- ===== FEATURES ===== -->
+        <section class="section" id="features">
+            <div class="section-header">
+                <h2>⚙️ All Features Explained <span class="sub">— with examples</span></h2>
+                <span class="badge-count">35+ tools</span>
+            </div>
+            <div class="feature-grid" id="featureGrid">
+            </div>
+        </section>
+
+        <!-- ===== FILES ===== -->
+        <section class="section" id="files">
+            <div class="section-header">
+                <h2>📁 Complete Root File List <span class="sub">— everything in one place</span></h2>
+                <span class="badge-count">20+ files</span>
+            </div>
+            <div class="file-grid" id="fileGrid">
+                <div class="file-card"><span class="file-icon">🌀</span><div class="file-name">doge-easy.html <span class="tag">html</span></div><div class="file-desc">Easy mode – beginner friendly</div><a href="doge-easy.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">📊</span><div class="file-name">doge-normal.html <span class="tag">html</span></div><div class="file-desc">Normal mode – balanced experience</div><a href="doge-normal.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">⚔️</span><div class="file-name">doge-hard.html <span class="tag">html</span></div><div class="file-desc">Hard mode – advanced volatility</div><a href="doge-hard.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">💀</span><div class="file-name">doge-veryhard.html <span class="tag">html</span></div><div class="file-desc">Very Hard – expert challenge</div><a href="doge-veryhard.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">🔥</span><div class="file-name">doge-legendry.html <span class="tag">html</span></div><div class="file-desc">Legendary – ultimate challenge</div><a href="doge-legendry.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">🧠</span><div class="file-name">doge-ict.html <span class="tag">html</span></div><div class="file-desc">ICT Smart Money Concepts</div><a href="doge-ict.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">🌱</span><div class="file-name">doge-starter.html <span class="tag">html</span></div><div class="file-desc">Starter – RTM terminal</div><a href="doge-starter.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">🚀</span><div class="file-name">doge-starterpro.html <span class="tag">html</span></div><div class="file-desc">Starter Pro – 120+ features</div><a href="doge-starterpro.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">📜</span><div class="file-name">doge-history.html <span class="tag">html</span></div><div class="file-desc">Historical timeline 2013–2026</div><a href="doge-history.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">📘</span><div class="file-name">setup.html <span class="tag">html</span></div><div class="file-desc">Setup &amp; hosting guide</div><a href="setup.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">🎓</span><div class="file-name">walkthrough.html <span class="tag">html</span></div><div class="file-desc">Interactive academy &amp; quiz</div><a href="walkthrough.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">📓</span><div class="file-name">mini-journal.html <span class="tag">html</span></div><div class="file-desc">Offline trade journal</div><a href="mini-journal.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">🏠</span><div class="file-name">index.html <span class="tag">html</span></div><div class="file-desc">Master dashboard (this page)</div><a href="index.html">Open</a></div>
+                <div class="file-card"><span class="file-icon">⚙️</span><div class="file-name">doge-config.json <span class="tag">json</span></div><div class="file-desc">Professional config</div><a href="doge-config.json" class="download">Download</a></div>
+                <div class="file-card"><span class="file-icon">📱</span><div class="file-name">manifest.json <span class="tag">json</span></div><div class="file-desc">PWA manifest</div><a href="manifest.json" class="download">Download</a></div>
+                <div class="file-card"><span class="file-icon">⚡</span><div class="file-name">service-worker.js <span class="tag">js</span></div><div class="file-desc">Offline caching engine</div><a href="service-worker.js" class="download">Download</a></div>
+                <div class="file-card"><span class="file-icon">📄</span><div class="file-name">readme.md <span class="tag">md</span></div><div class="file-desc">Full documentation</div><a href="readme.md" class="download">Download</a></div>
+                <div class="file-card"><span class="file-icon">🖼️</span><div class="file-name">icon-192.png <span class="tag">png</span></div><div class="file-desc">Icon 192x192</div><a href="icon-192.png">View</a></div>
+                <div class="file-card"><span class="file-icon">🖼️</span><div class="file-name">icon-512.png <span class="tag">png</span></div><div class="file-desc">Icon 512x512</div><a href="icon-512.png">View</a></div>
+                <div class="file-card"><span class="file-icon">🖼️</span><div class="file-name">favicon.ico <span class="tag">ico</span></div><div class="file-desc">Favicon</div><a href="favicon.ico">View</a></div>
+            </div>
+        </section>
+
+        <!-- ===== BUTTON REFERENCE ===== -->
+        <section class="section" id="buttons">
+            <div class="section-header">
+                <h2>🎮 Button &amp; Key Reference <span class="sub">— every action explained</span></h2>
+                <span class="badge-count">25+ actions</span>
+            </div>
+            <h3 style="font-size:0.9rem;color:var(--doge-gold);margin:6px 0 6px 0;">📊 Dashboard Buttons</h3>
+            <div class="btn-ref-grid">
+                <div class="btn-ref"><span class="btn-label">📈 BUY <span class="btn-key green">B</span></span><span class="btn-desc">Open long position at current ask price.</span></div>
+                <div class="btn-ref"><span class="btn-label">📉 SELL <span class="btn-key green">S</span></span><span class="btn-desc">Open short position at current bid price.</span></div>
+                <div class="btn-ref"><span class="btn-label">✕ Close <span class="btn-key green">C</span></span><span class="btn-desc">Close current position with confirmation.</span></div>
+                <div class="btn-ref"><span class="btn-label">⏳ Pending</span><span class="btn-desc">Add limit or stop pending order.</span></div>
+                <div class="btn-ref"><span class="btn-label">🔗 OCO</span><span class="btn-desc">Add one-cancels-other order (buy above + sell below).</span></div>
+                <div class="btn-ref"><span class="btn-label">🔔 Alert</span><span class="btn-desc">Set price alert with notification + sound.</span></div>
+                <div class="btn-ref"><span class="btn-label">📸 Screenshot</span><span class="btn-desc">Save chart as PNG image.</span></div>
+                <div class="btn-ref"><span class="btn-label">🌓 Dark/Light</span><span class="btn-desc">Toggle theme (also <span class="btn-key green">T</span>).</span></div>
+                <div class="btn-ref"><span class="btn-label">MA / BB / Vol / MACD</span><span class="btn-desc">Toggle indicators on/off.</span></div>
+                <div class="btn-ref"><span class="btn-label">📐 / 📏</span><span class="btn-desc">Trendline / Fibonacci drawing tools.</span></div>
+                <div class="btn-ref"><span class="btn-label">📤 CSV / JSON</span><span class="btn-desc">Export trade history.</span></div>
+                <div class="btn-ref"><span class="btn-label">📊 Report</span><span class="btn-desc">Generate A–F trading report card.</span></div>
+                <div class="btn-ref"><span class="btn-label">⏱ M1 · M5 · M15 · H1 · H4</span><span class="btn-desc">Switch timeframes (or keys <span class="btn-key green">1-5</span>).</span></div>
+                <div class="btn-ref"><span class="btn-label">▶️ Run Backtest</span><span class="btn-desc">Run quick/full backtest.</span></div>
+            </div>
+            <h3 style="font-size:0.9rem;color:var(--doge-gold);margin:14px 0 6px 0;">⌨️ Keyboard Shortcuts (Dashboard)</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:0.75rem;color:var(--text-dim);padding:4px 10px;background:rgba(0,0,0,0.2);border-radius:var(--radius-xs);">
+                <span><span class="btn-key green">B</span> Buy</span>
+                <span><span class="btn-key green">S</span> Sell</span>
+                <span><span class="btn-key green">C</span> Close</span>
+                <span><span class="btn-key green">T</span> Dark mode</span>
+                <span><span class="btn-key green">F</span> Fullscreen</span>
+                <span><span class="btn-key green">1</span> M1</span>
+                <span><span class="btn-key green">2</span> M5</span>
+                <span><span class="btn-key green">3</span> M15</span>
+                <span><span class="btn-key green">4</span> H1</span>
+                <span><span class="btn-key green">5</span> H4</span>
+            </div>
+        </section>
+
+        <!-- ===== TROPHIES ===== -->
+        <section class="section" id="trophies">
+            <div class="section-header">
+                <h2>🏆 Achievement System <span class="sub">— 16+ trophies to unlock</span></h2>
+                <span class="badge-count">🎯 16 trophies</span>
+            </div>
+            <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:8px;">
+                Every achievement unlocks automatically when you complete the required action. Each one triggers <strong>confetti + toast + dopamine boost</strong>.
+            </p>
+            <div class="trophy-grid">
+                <div class="trophy-item"><span class="trophy-icon">🎯</span><div class="trophy-name">First Trade</div><div class="trophy-desc">Open your first trade</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">🏆</span><div class="trophy-name">First Win</div><div class="trophy-desc">First profitable trade</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">📈</span><div class="trophy-name">10 Trades</div><div class="trophy-desc">Complete 10 trades</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">🔥</span><div class="trophy-name">5‑Win Streak</div><div class="trophy-desc">5 wins in a row</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">⭐</span><div class="trophy-name">10 Wins</div><div class="trophy-desc">10 winning trades</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">📓</span><div class="trophy-name">5 Journal Entries</div><div class="trophy-desc">Log 5 FTP setups</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">💰</span><div class="trophy-name">$1,000 Profit</div><div class="trophy-desc">Net profit reaches $1,000</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">📊</span><div class="trophy-name">Sharpe ≥ 2</div><div class="trophy-desc">Achieve Sharpe ratio ≥ 2</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">🌟</span><div class="trophy-name">Level 5</div><div class="trophy-desc">Reach Level 5</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">👑</span><div class="trophy-name">Level 10</div><div class="trophy-desc">Reach Level 10</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">🏅</span><div class="trophy-name">50 Trades</div><div class="trophy-desc">Complete 50 trades</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">💎</span><div class="trophy-name">100 Trades</div><div class="trophy-desc">Complete 100 trades</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">🔥</span><div class="trophy-name">10‑Win Streak</div><div class="trophy-desc">10 wins in a row</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">📓</span><div class="trophy-name">20 Journal Entries</div><div class="trophy-desc">Log 20 FTP setups</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">🚀</span><div class="trophy-name">$5,000 Profit</div><div class="trophy-desc">Net profit reaches $5,000</div><span class="trophy-badge">🔓 unlocked</span></div>
+                <div class="trophy-item"><span class="trophy-icon">🏔️</span><div class="trophy-name">Level 25</div><div class="trophy-desc">Reach Level 25</div><span class="trophy-badge">🔓 unlocked</span></div>
+            </div>
+            <div style="font-size:0.7rem;color:var(--text-dim);margin-top:6px;">
+                💡 <strong>Hidden mechanic:</strong> When you unlock a trophy, <span style="color:var(--doge-gold);">confetti</span> rains and a <span style="color:var(--neon-green);">toast</span> announces it. Check the <strong>Achievements tab</strong> in Dashboard.
+            </div>
+        </section>
+
+        <!-- ===== HOSTING ===== -->
+        <section class="section" id="hosting">
+            <div class="section-header">
+                <h2>🌐 Local &amp; Cloud Hosting <span class="sub">— run anywhere</span></h2>
+                <span class="badge-count">11 platforms</span>
+            </div>
+            <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:10px;">
+                Choose your platform below for step‑by‑step instructions. From local development to global deployment, every option is covered.
+            </p>
+
+            <div class="os-selector">
+                <button class="os-btn active" data-os="python" onclick="showOS('python')"><span class="icon">🐍</span> Python</button>
+                <button class="os-btn" data-os="node" onclick="showOS('node')"><span class="icon">🟢</span> Node.js</button>
+                <button class="os-btn" data-os="vscode" onclick="showOS('vscode')"><span class="icon">💻</span> VS Code</button>
+                <button class="os-btn" data-os="android" onclick="showOS('android')"><span class="icon">📱</span> Android</button>
+                <button class="os-btn" data-os="ios" onclick="showOS('ios')"><span class="icon">🍎</span> iOS</button>
+                <button class="os-btn" data-os="windows" onclick="showOS('windows')"><span class="icon">🪟</span> Windows</button>
+                <button class="os-btn" data-os="linux" onclick="showOS('linux')"><span class="icon">🐧</span> Linux</button>
+                <button class="os-btn" data-os="docker" onclick="showOS('docker')"><span class="icon">🐳</span> Docker</button>
+                <button class="os-btn" data-os="github_pages" onclick="showOS('github_pages')"><span class="icon">🌐</span> GitHub Pages</button>
+                <button class="os-btn" data-os="netlify" onclick="showOS('netlify')"><span class="icon">🌐</span> Netlify</button>
+                <button class="os-btn" data-os="vercel" onclick="showOS('vercel')"><span class="icon">🌐</span> Vercel</button>
+            </div>
+
+            <div id="os-instructions" class="os-instructions">
+                <strong>🐍 Python (any OS)</strong><br />
+                1. Open terminal in the project folder.<br />
+                2. Run <span class="cmd">python3 -m http.server 8000</span><br />
+                3. Open browser to <span class="cmd">http://localhost:8000</span><br />
+                4. On phone, use <span class="cmd">http://[your-ip]:8000</span><br />
+                <span style="color:var(--doge-gold);font-weight:700;display:block;margin-top:4px;">✅ Works on Windows, macOS, Linux, Android (Termux), iOS (iSH).</span>
+            </div>
+
+            <div style="font-size:0.7rem;color:var(--text-dim);margin-top:8px;padding:8px 12px;background:rgba(255,215,0,0.03);border-radius:var(--radius-xs);border:1px solid rgba(255,215,0,0.05);">
+                💡 <strong>Local IP:</strong> <span class="cmd">ip addr</span> (Linux/macOS) or <span class="cmd">ipconfig</span> (Windows).<br />
+                💡 <strong>Firewall:</strong> Allow <span class="cmd">port 8000</span> on your OS firewall for local network access.
+            </div>
+        </section>
+
+        <!-- ===== FAQ ===== -->
+        <section class="section" id="faq">
+            <div class="section-header">
+                <h2>❓ FAQ <span class="sub">— first‑time trader</span></h2>
+                <span class="badge-count">common questions</span>
+            </div>
+            <div style="display:grid;gap:10px;font-size:0.85rem;color:var(--text-dim);">
+                <div class="faq-item">
+                    <strong>🤔 I've never traded before. Where do I start?</strong>
+                    <p>Open <span style="color:var(--neon-green);">Dashboard</span> → read the <strong>status bar</strong> and <strong>order book</strong> → click <strong>BUY</strong> to open your first trade. Don't worry — it's a simulator, so no real money is at risk. Experiment!</p>
+                </div>
+                <div class="faq-item">
+                    <strong>📊 What's the difference between Dashboard and Journal?</strong>
+                    <p><span style="color:var(--neon-green);">Dashboard</span> is for <strong>trading</strong> — you buy/sell, see charts, and earn XP. <span style="color:var(--doge-gold);">Journal</span> is for <strong>tracking</strong> — you log every trade, filter, export, and view analytics. Use both!</p>
+                </div>
+                <div class="faq-item">
+                    <strong>🏆 How do I unlock trophies?</strong>
+                    <p>Just keep trading! Each achievement unlocks automatically when you hit the requirement. For example: <strong>First Trade</strong> → open your first trade. <strong>5-Win Streak</strong> → win 5 trades in a row. You'll see confetti and a toast when you unlock one.</p>
+                </div>
+                <div class="faq-item">
+                    <strong>📱 Can I use this on my phone?</strong>
+                    <p>Yes! The Dashboard and Journal are both <strong>mobile-responsive</strong> and <strong>PWA-ready</strong>. Open in Chrome/Safari → tap <strong>"Add to Home Screen"</strong> → install as an app. Works offline.</p>
+                </div>
+                <div class="faq-item">
+                    <strong>💾 Where is my data saved?</strong>
+                    <p>All data is saved in your browser's <span style="color:var(--doge-gold);">localStorage</span>. It stays on your device only. Nothing is sent anywhere. You can export your trades to <strong>CSV</strong> or <strong>JSON</strong> at any time.</p>
+                </div>
+                <div class="faq-item">
+                    <strong>🔄 How do I reset everything?</strong>
+                    <p>In <span style="color:var(--neon-green);">Dashboard</span>, go to <strong>Settings</strong> tab → click <span style="color:var(--doge-red);">🔄 Reset Everything</span>. Or delete <span class="cmd">localStorage</span> manually via browser dev tools.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="footer">
+            <div class="links">
+                <a href="doge-easy.html">🌀 Easy</a>
+                <a href="doge-normal.html">📊 Normal</a>
+                <a href="doge-hard.html">⚔️ Hard</a>
+                <a href="doge-veryhard.html">💀 Very Hard</a>
+                <a href="doge-legendry.html">🔥 Legendary</a>
+                <a href="doge-ict.html">🧠 ICT</a>
+                <a href="doge-starter.html">🌱 Starter</a>
+                <a href="doge-starterpro.html">🚀 Starter Pro</a>
+                <a href="doge-history.html">📜 History</a>
+                <a href="https://t.me/NexusDigitalArt" target="_blank" style="color:var(--musk-blue);">💬 Telegram</a>
+                <a href="https://www.etsy.com/shop/NexusDigitalArtShop" target="_blank" class="gold">🛒 Etsy</a>
+                <a href="#" onclick="alert('🔒 All data is stored locally. No tracking.')">🔒 Privacy</a>
+            </div>
+            <div class="copy">
+                <span class="green">⚡ DOGE Vault Premium</span> · The Dogefather Edition · v9.0 · Built for traders, by traders.
+            </div>
+        </footer>
+
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const featuresData = [
+                { id: 'chart', icon: '📊', title: 'Live Chart', tags: ['core'], desc: 'Real-time candlestick chart with OHLC data. Supports M1, M5, M15, H1, H4 timeframes. Auto-updates every second.', example: '📌 Click M1 → M5 → H1 to switch. Chart shows 20 candles with Fibonacci levels.' },
+                { id: 'indicators', icon: '📈', title: 'Indicators', tags: ['core'], desc: 'RSI, MACD, Bollinger Bands, Moving Average, Volume. Toggle each with one click.', example: '📌 Press MA → moving average line appears. RSI appears in indicator panel below.' },
+                { id: 'drawing', icon: '📐', title: 'Drawing Tools', tags: ['pro'], desc: 'Trendline & Fibonacci drawing. Click on chart to place points. Great for technical analysis.', example: '📌 Click 📐 → tap chart for first point → tap again to finish line. 📏 for Fibonacci.' },
+                { id: 'alerts', icon: '🔔', title: 'Price Alerts', tags: ['pro'], desc: 'Set custom price alerts. When price reaches your level, you get a notification + sound + confetti.', example: '📌 Enter 2350.50 → click 🔔 Alert → when price hits, you are alerted!' },
+                { id: 'trading', icon: '📈', title: 'Trading Panel', tags: ['core'], desc: 'Buy/Sell with SL/TP, volume control, trailing stop, OCO mode, auto-breakeven. Real-time P&L.', example: '📌 Set volume 0.1, SL 2330, TP 2360 → click BUY → position opens.' },
+                { id: 'pending', icon: '⏳', title: 'Pending Orders', tags: ['pro'], desc: 'Limit, Stop, and OCO (one-cancels-other) orders. Place orders at specific prices.', example: '📌 Click ⏳ Pending → choose limit → price 2320 → order waits.' },
+                { id: 'journal', icon: '📓', title: 'Trade Journal', tags: ['pro'], desc: 'Log your FTP setups with FO dp (Entry), Eng FL (Breakout), FO FL (Target). Track X.618 levels.', example: '📌 Entry 2345.50, Breakout 2347.00, Target 2351.20 → choose 1.618 → save.' },
+                { id: 'analytics', icon: '📊', title: 'Analytics', tags: ['pro'], desc: 'Total trades, net P&L, win rate, Sharpe, Sortino, drawdown, profit factor, expectancy. Equity curve.', example: '📌 Win rate 68% · Sharpe 2.1 · Profit factor 2.8 — all auto-calculated.' },
+                { id: 'achievements', icon: '🏆', title: 'Achievements', tags: ['fun'], desc: '16+ achievements: First Trade, 10 Wins, 5-Win Streak, Level 5, Sharpe ≥ 2, and more.', example: '📌 🏆 First Win unlocks after your first profitable trade. 🔥 5-Win Streak after 5 wins in a row.' },
+                { id: 'leveling', icon: '🎮', title: 'Level & XP', tags: ['fun'], desc: 'Earn XP from each trade. Level up, see progress bar. Every level increases XP requirement.', example: '📌 Trade with $10 profit → earn 1 XP. Reach 100 XP → Level 2!' },
+                { id: 'dopamine', icon: '🎉', title: 'Dopamine Feedback', tags: ['fun'], desc: 'Confetti, banners, emojis, win streak counter, sound effects. Celebrate wins and stay motivated.', example: '📌 Win a trade → 🎉 confetti + 🔥 3 wins streak + sound + banner.' },
+                { id: 'theme', icon: '🌓', title: 'Dark / Light Mode', tags: ['core'], desc: 'Toggle between dark and light themes. Customize up/down/bg colors.', example: '📌 Click 🌓 or press T key → switch instantly. Colors adjust via Settings.' },
+                { id: 'pwa', icon: '📱', title: 'PWA Ready', tags: ['pro'], desc: 'Install on any device (phone, tablet, desktop) as a native app. Works offline.', example: '📌 On Chrome/Safari → tap "Add to Home Screen" → name it → install.' },
+                { id: 'shortcuts', icon: '⌨️', title: 'Keyboard Shortcuts', tags: ['core'], desc: 'B = Buy, S = Sell, C = Close, T = Dark mode, 1-5 = Timeframes, F = Fullscreen.', example: '📌 Press B → opens BUY. Press 1 → switches to M1 timeframe.' },
+                { id: 'export', icon: '📤', title: 'Export', tags: ['pro'], desc: 'Export trades to CSV or JSON. Backup your data or analyze in external tools.', example: '📌 Click 📥 Export CSV → download all trades as spreadsheet.' },
+                { id: 'backtest', icon: '🔄', title: 'Backtest', tags: ['pro'], desc: 'Quick (10 candles) or Full (50 candles) backtest. Test strategies on historical data.', example: '📌 Set Quick Test → click ▶️ Run → see simulated performance.' }
+            ];
+
+            let currentFilter = 'all';
+            let searchQuery = '';
+            let sortAlpha = false;
+            let sortRated = false;
+            function safeParse(raw, fallback) { try { return (raw === null || raw === undefined) ? fallback : JSON.parse(raw); } catch (e) { console.warn('Corrupt local data, using defaults.', e); return fallback; } }
+            let favorites = new Set(safeParse(localStorage.getItem('doge_features_favorites'), []));
+            let ratings = safeParse(localStorage.getItem('doge_features_ratings'), {});
+            let visited = new Set(safeParse(localStorage.getItem('doge_features_visited'), []));
+            let visitCounts = safeParse(localStorage.getItem('doge_features_visit_counts'), {});
+
+            function saveState() {
+                localStorage.setItem('doge_features_favorites', JSON.stringify([...favorites]));
+                localStorage.setItem('doge_features_ratings', JSON.stringify(ratings));
+                localStorage.setItem('doge_features_visited', JSON.stringify([...visited]));
+                localStorage.setItem('doge_features_visit_counts', JSON.stringify(visitCounts));
+                localStorage.setItem('doge_features_filter', currentFilter);
+                localStorage.setItem('doge_features_sort_alpha', JSON.stringify(sortAlpha));
+                localStorage.setItem('doge_features_sort_rated', JSON.stringify(sortRated));
+            }
+
+            function loadState() {
+                const savedFilter = localStorage.getItem('doge_features_filter');
+                if (savedFilter) currentFilter = savedFilter;
+                const savedSortAlpha = localStorage.getItem('doge_features_sort_alpha');
+                if (savedSortAlpha) sortAlpha = safeParse(savedSortAlpha, false);
+                const savedSortRated = localStorage.getItem('doge_features_sort_rated');
+                if (savedSortRated) sortRated = safeParse(savedSortRated, false);
+            }
+
+            function showToast(msg, type) {
+                const toast = document.getElementById('toast');
+                toast.textContent = msg;
+                toast.className = 'toast ' + type;
+                toast.classList.add('show');
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+            }
+
+            function getFilteredFeatures() {
+                let filtered = featuresData;
+                if (currentFilter !== 'all') {
+                    filtered = filtered.filter(f => f.tags.includes(currentFilter));
+                }
+                if (searchQuery.trim()) {
+                    const q = searchQuery.trim().toLowerCase();
+                    filtered = filtered.filter(f =>
+                        f.title.toLowerCase().includes(q) ||
+                        f.desc.toLowerCase().includes(q) ||
+                        f.example.toLowerCase().includes(q)
+                    );
+                }
+                return filtered;
+            }
+
+            function getSortedFeatures(filtered) {
+                if (sortRated) {
+                    return filtered.slice().sort((a, b) => (ratings[b.id] || 0) - (ratings[a.id] || 0));
+                } else if (sortAlpha) {
+                    return filtered.slice().sort((a, b) => a.title.localeCompare(b.title));
+                } else {
+                    return filtered.slice().sort((a, b) => featuresData.indexOf(a) - featuresData.indexOf(b));
+                }
+            }
+
+            function render() {
+                const filtered = getFilteredFeatures();
+                const sorted = getSortedFeatures(filtered);
+                const grid = document.getElementById('featureGrid');
+                const count = document.getElementById('resultsCount');
+                const totalFeatures = document.getElementById('totalFeatures');
+                const totalVisited = document.getElementById('totalVisited');
+                const totalBookmarks = document.getElementById('totalBookmarks');
+                const totalRatings = document.getElementById('totalRatings');
+
+                count.innerHTML = 'Showing <strong>' + sorted.length + '</strong> of <strong>' + featuresData.length +
+                    '</strong> features';
+                totalFeatures.textContent = featuresData.length;
+                totalVisited.textContent = visited.size;
+                totalBookmarks.textContent = favorites.size;
+                totalRatings.textContent = Object.keys(ratings).length;
+
+                if (sorted.length === 0) {
+                    grid.innerHTML =
+                        '<div style="grid-column:1/-1;text-align:center;padding:30px 10px;color:var(--text-dim);"><span style="font-size:2rem;">🔍</span><p>No features found matching your criteria.</p><p style="font-size:0.8rem;color:var(--text-dim);">Try adjusting your filters or search.</p></div>';
+                    return;
+                }
+
+                grid.innerHTML = sorted.map(function(f) {
+                    var isFav = favorites.has(f.id);
+                    var rating = ratings[f.id] || 0;
+                    var tagClass = f.tags[0];
+                    return '<div class="feature-card" data-id="' + f.id + '">' +
+                        '<span class="icon">' + f.icon + '</span>' +
+                        '<div class="title">' + f.title +
+                        '<span class="tag ' + tagClass + '">' + tagClass + '</span></div>' +
+                        '<div class="desc">' + f.desc + '</div>' +
+                        '<div class="example">' + f.example + '</div>' +
+                        '</div>';
+                }).join('');
+
+                grid.querySelectorAll('.feature-card').forEach(function(card) {
+                    card.addEventListener('click', function(e) {
+                        var id = this.dataset.id;
+                        if (!visited.has(id)) {
+                            visited.add(id);
+                            visitCounts[id] = (visitCounts[id] || 0) + 1;
+                            saveState();
+                            render();
+                            showToast('📖 Visited: ' + featuresData.find(function(f) { return f.id === id; })
+                                .title, 'info');
+                        }
+                    });
+                });
+            }
+
+            function setupControls() {
+                document.querySelectorAll('#filterTabs .tab-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        document.querySelectorAll('#filterTabs .tab-btn').forEach(function(b) { b
+                                .classList.remove('active'); });
+                        this.classList.add('active');
+                        currentFilter = this.dataset.filter;
+                        saveState();
+                        render();
+                    });
+                });
+
+                document.getElementById('sortNum').addEventListener('click', function() {
+                    sortAlpha = false;
+                    sortRated = false;
+                    document.querySelectorAll('#sortBtns .sort-btn').forEach(function(b) { b.classList.remove(
+                            'active'); });
+                    this.classList.add('active');
+                    saveState();
+                    render();
+                });
+                document.getElementById('sortAlpha').addEventListener('click', function() {
+                    sortAlpha = true;
+                    sortRated = false;
+                    document.querySelectorAll('#sortBtns .sort-btn').forEach(function(b) { b.classList.remove(
+                            'active'); });
+                    this.classList.add('active');
+                    saveState();
+                    render();
+                });
+                document.getElementById('sortRated').addEventListener('click', function() {
+                    sortRated = true;
+                    sortAlpha = false;
+                    document.querySelectorAll('#sortBtns .sort-btn').forEach(function(b) { b.classList.remove(
+                            'active'); });
+                    this.classList.add('active');
+                    saveState();
+                    render();
+                });
+
+                document.getElementById('searchBox').addEventListener('input', function() {
+                    searchQuery = this.value;
+                    render();
+                });
+
+                document.getElementById('randomBtn').addEventListener('click', function() {
+                    var filtered = getFilteredFeatures();
+                    if (filtered.length === 0) return;
+                    var random = filtered[Math.floor(Math.random() * filtered.length)];
+                    document.getElementById('searchBox').value = '';
+                    searchQuery = '';
+                    currentFilter = 'all';
+                    document.querySelectorAll('#filterTabs .tab-btn').forEach(function(b) { b.classList.remove(
+                            'active'); });
+                    document.querySelector('#filterTabs .tab-btn[data-filter="all"]').classList.add('active');
+                    render();
+                    var target = document.querySelector('.feature-card[data-id="' + random.id + '"]');
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        target.style.borderColor = 'var(--doge-gold)';
+                        setTimeout(function() { target.style.borderColor = ''; }, 3000);
+                    }
+                    showToast('🎲 Random: ' + random.title, 'gold');
+                });
+
+                document.getElementById('resetBtn').addEventListener('click', function() {
+                    if (confirm('Clear all visited, bookmarks, ratings, and settings?')) {
+                        localStorage.removeItem('doge_features_favorites');
+                        localStorage.removeItem('doge_features_ratings');
+                        localStorage.removeItem('doge_features_visited');
+                        localStorage.removeItem('doge_features_visit_counts');
+                        localStorage.removeItem('doge_features_filter');
+                        localStorage.removeItem('doge_features_sort_alpha');
+                        localStorage.removeItem('doge_features_sort_rated');
+                        favorites.clear();
+                        ratings = {};
+                        visited.clear();
+                        visitCounts = {};
+                        currentFilter = 'all';
+                        sortAlpha = false;
+                        sortRated = false;
+                        document.querySelectorAll('#filterTabs .tab-btn').forEach(function(b) { b.classList.remove(
+                                'active'); });
+                        document.querySelector('#filterTabs .tab-btn[data-filter="all"]').classList.add('active');
+                        document.querySelectorAll('#sortBtns .sort-btn').forEach(function(b) { b.classList.remove(
+                                'active'); });
+                        document.getElementById('sortNum').classList.add('active');
+                        document.getElementById('searchBox').value = '';
+                        searchQuery = '';
+                        render();
+                        showToast('🔄 All data has been reset.', 'info');
+                    }
+                });
+
+                document.getElementById('exportCSVBtn').addEventListener('click', function() {
+                    if (featuresData.length === 0) {
+                        showToast('No data to export.', 'error');
+                        return;
+                    }
+                    var rows = [
+                        ['ID', 'Title', 'Tags', 'Visited', 'Bookmark', 'Rating']
+                    ];
+                    featuresData.forEach(function(f) {
+                        rows.push([
+                            f.id,
+                            f.title,
+                            f.tags.join(','),
+                            visited.has(f.id) ? 'Yes' : 'No',
+                            favorites.has(f.id) ? 'Yes' : 'No',
+                            ratings[f.id] || '0'
+                        ]);
+                    });
+                    var csv = rows.map(function(row) {
+                        return row.map(function(cell) {
+                            var str = String(cell);
+                            if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                                return '"' + str.replace(/"/g, '""') + '"';
+                            }
+                            return str;
+                        }).join(',');
+                    }).join('\n');
+                    var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+                    var link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'doge_features_export.csv';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    showToast('📤 CSV downloaded!', 'success');
+                });
+
+                document.getElementById('printBtn').addEventListener('click', function() {
+                    window.print();
+                });
+            }
+
+            var osData = {
+                python: {
+                    icon: '🐍',
+                    title: 'Python (any OS)',
+                    steps: [
+                        'Open terminal in the project folder.',
+                        'Run <span class="cmd">python3 -m http.server 8000</span>',
+                        'Open browser to <span class="cmd">http://localhost:8000</span>',
+                        'On phone, use <span class="cmd">http://[your-ip]:8000</span>'
+                    ],
+                    note: '✅ Works on Windows, macOS, Linux, Android (Termux), iOS (iSH).'
+                },
+                node: {
+                    icon: '🟢',
+                    title: 'Node.js (any OS)',
+                    steps: [
+                        'Install Node.js from <span class="cmd">nodejs.org</span>',
+                        'Open terminal in the project folder.',
+                        'Run <span class="cmd">npx serve</span> (or <span class="cmd">npx http-server .</span>)',
+                        'Open <span class="cmd">http://localhost:3000</span> (or 8080)'
+                    ],
+                    note: '✅ Fast, lightweight, works everywhere Node.js is installed.'
+                },
+                vscode: {
+                    icon: '💻',
+                    title: 'VS Code + Live Server',
+                    steps: [
+                        'Open project in VS Code.',
+                        'Install the <span class="cmd">Live Server</span> extension (by Ritwick Dey).',
+                        'Right-click <span class="cmd">dashboard.html</span> → <span class="cmd">"Open with Live Server"</span>',
+                        'Use the generated URL on any device on your network.'
+                    ],
+                    note: '✅ Great for development, auto‑refresh, and debugging.'
+                },
+                android: {
+                    icon: '📱',
+                    title: 'Android (Termux)',
+                    steps: [
+                        'Install <span class="cmd">Termux</span> from F-Droid or Google Play.',
+                        'Run: <span class="cmd">pkg update && pkg install python</span>',
+                        'Copy project files to <span class="cmd">/sdcard/Download/</span>',
+                        'Run: <span class="cmd">cd /sdcard/Download && python3 -m http.server 8080</span>',
+                        'Open <span class="cmd">http://192.168.1.x:8080</span> on any device.'
+                    ],
+                    note: '✅ Full Python on Android — works like a mini server.'
+                },
+                ios: {
+                    icon: '🍎',
+                    title: 'iOS (iSH)',
+                    steps: [
+                        'Install <span class="cmd">iSH</span> from the App Store.',
+                        'Run: <span class="cmd">apk update && apk add python3</span>',
+                        'Upload project files via iSH (or use a cloud service).',
+                        'Run: <span class="cmd">cd /root && python3 -m http.server 8080</span>',
+                        'Open <span class="cmd">http://[your-ip]:8080</span> on your phone or another device.'
+                    ],
+                    note: '✅ iSH brings Python to iOS — perfect for hosting on the go.'
+                },
+                windows: {
+                    icon: '🪟',
+                    title: 'Windows (CMD / WSL)',
+                    steps: [
+                        'Open <span class="cmd">CMD</span> or <span class="cmd">PowerShell</span> in the project folder.',
+                        'Run: <span class="cmd">python -m http.server 8000</span> (if Python is installed).',
+                        'Or use WSL: Open WSL terminal, navigate to the folder, run <span class="cmd">python3 -m http.server 8000</span>.',
+                        'Find your local IP: <span class="cmd">ipconfig</span> → look for <span class="cmd">IPv4 Address</span>.'
+                    ],
+                    note: '✅ Works natively on Windows + WSL. No additional tools needed.'
+                },
+                linux: {
+                    icon: '🐧',
+                    title: 'Linux (Nginx)',
+                    steps: [
+                        'Install Nginx: <span class="cmd">sudo apt install nginx</span> (Ubuntu/Debian).',
+                        'Copy project files to <span class="cmd">/var/www/html/</span>: <span class="cmd">sudo cp -r . /var/www/html/</span>.',
+                        'Start Nginx: <span class="cmd">sudo systemctl start nginx</span>.',
+                        'Open <span class="cmd">http://localhost</span> in your browser.'
+                    ],
+                    note: '✅ Static hosting with Nginx — the most performance‑oriented method for Linux.'
+                },
+                docker: {
+                    icon: '🐳',
+                    title: 'Docker (Containerized)',
+                    steps: [
+                        'Create a <span class="cmd">Dockerfile</span> in the project root with <span class="cmd">FROM nginx:alpine</span> and <span class="cmd">COPY . /usr/share/nginx/html</span>.',
+                        'Build the image: <span class="cmd">docker build -t doge-vault .</span>',
+                        'Run the container: <span class="cmd">docker run -p 8080:80 doge-vault</span>.',
+                        'Open <span class="cmd">http://localhost:8080</span> in your browser.'
+                    ],
+                    note: '✅ Portable container — works on any platform with Docker.'
+                },
+                github_pages: {
+                    icon: '🌐',
+                    title: 'GitHub Pages',
+                    steps: [
+                        'Create a new repository on GitHub (e.g., <span class="cmd">doge-vault</span>).',
+                        'Upload all project files to the repository.',
+                        'Go to <span class="cmd">Settings</span> → <span class="cmd">Pages</span> → select <span class="cmd">main</span> branch → <span class="cmd">Save</span>.',
+                        'Access your site at: <span class="cmd">https://[username].github.io/doge-vault/</span>.'
+                    ],
+                    note: '✅ 100% free static hosting with built‑in SSL.'
+                },
+                netlify: {
+                    icon: '🌐',
+                    title: 'Netlify',
+                    steps: [
+                        'Sign up at <span class="cmd">netlify.com</span>.',
+                        'Drag and drop your project folder onto the Netlify dashboard.',
+                        'Netlify automatically deploys your site and provides a public URL.',
+                        'You can also connect your GitHub repository for automatic deploys.'
+                    ],
+                    note: '✅ Free plan includes SSL, global CDN, and automatic deploys.'
+                },
+                vercel: {
+                    icon: '🌐',
+                    title: 'Vercel',
+                    steps: [
+                        'Sign up at <span class="cmd">vercel.com</span>.',
+                        'Install Vercel CLI: <span class="cmd">npm i -g vercel</span>.',
+                        'Run <span class="cmd">vercel</span> in the project folder and follow the prompts.',
+                        'Vercel will deploy your site and provide a public URL (e.g., <span class="cmd">https://doge-vault.vercel.app</span>).'
+                    ],
+                    note: '✅ Free plan with great performance and edge network.'
+                }
+            };
+
+            window.showOS = function(osKey) {
+                var data = osData[osKey];
+                if (!data) return;
+                document.querySelectorAll('.os-btn').forEach(function(btn) {
+                    btn.classList.toggle('active', btn.dataset.os === osKey);
+                });
+                var container = document.getElementById('os-instructions');
+                var stepsHTML = data.steps.map(function(s, i) {
+                    return '<strong>' + (i + 1) + '.</strong> ' + s + '<br />';
+                }).join('');
+                container.innerHTML = '<strong>' + data.icon + ' ' + data.title + '</strong><br />' + stepsHTML +
+                    '<span style="color:var(--doge-gold);font-weight:700;display:block;margin-top:4px;">' + data.note +
+                    '</span>';
+                showToast('📡 Switched to ' + data.title, 'success');
+            };
+
+            document.addEventListener('keydown', function(e) {
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'P') {
+                    e.preventDefault();
+                    window.print();
+                }
+                if (e.key === 'r' || e.key === 'R') {
+                    document.getElementById('randomBtn').click();
+                }
+                if (e.key === '?' && !e.ctrlKey && !e.metaKey) {
+                    e.preventDefault();
+                    showToast(
+                        '⌨️ Shortcuts: R=Random, Ctrl+Shift+P=Print, 1-5=Timeframes, B=Buy, S=Sell, C=Close, T=Theme',
+                        'gold');
+                }
+            });
+
+            function init() {
+                loadState();
+                var filterBtn = document.querySelector('#filterTabs .tab-btn[data-filter="' + currentFilter + '"]');
+                if (filterBtn) {
+                    document.querySelectorAll('#filterTabs .tab-btn').forEach(function(b) { b.classList.remove(
+                        'active'); });
+                    filterBtn.classList.add('active');
+                }
+                if (sortRated) {
+                    document.querySelectorAll('#sortBtns .sort-btn').forEach(function(b) { b.classList.remove(
+                        'active'); });
+                    document.getElementById('sortRated').classList.add('active');
+                } else if (sortAlpha) {
+                    document.querySelectorAll('#sortBtns .sort-btn').forEach(function(b) { b.classList.remove(
+                        'active'); });
+                    document.getElementById('sortAlpha').classList.add('active');
+                } else {
+                    document.querySelectorAll('#sortBtns .sort-btn').forEach(function(b) { b.classList.remove(
+                        'active'); });
+                    document.getElementById('sortNum').classList.add('active');
+                }
+                render();
+                setupControls();
+                showOS('python');
+
+                document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+                    anchor.addEventListener('click', function(e) {
+                        var target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            e.preventDefault();
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    });
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('service-worker.js').catch(function() {});
+            }
+
+        })();
+    </script>
+
+<script>
+// DOGE global error surface (debug v1.1)
+(function(){window.esc=window.esc||function(s){var d=document.createElement('div');d.textContent=String(s==null?'':s);return d.innerHTML;};function t(m){try{var d=document.createElement("div");d.style.cssText="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#3a1015;color:#ffd7dc;border:1px solid #ff5566;padding:8px 14px;border-radius:10px;font-size:12px;z-index:99999;max-width:92vw;";d.textContent="WARN "+String(m).slice(0,160);document.body.appendChild(d);setTimeout(function(){d.remove();},5000);}catch(e){}}
+window.addEventListener("error",function(e){t(e.message||"Script error");});window.addEventListener("unhandledrejection",function(e){t((e.reason&&e.reason.message)||"Async error");});})();
+</script>
+<script>
+// DOGE-PWA-INSTALL (v1.1): floating install button, appears only when installable
+(function(){var d=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();d=e;show();});function show(){if(document.getElementById("dogeInstall"))return;var b=document.createElement("button");b.id="dogeInstall";b.textContent="Install App";b.style.cssText="position:fixed;bottom:16px;right:16px;z-index:99990;background:#ffd700;color:#111;border:none;padding:10px 16px;border-radius:12px;font-weight:800;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.5)";b.onclick=function(){if(d){d.prompt();d.userChoice.then(function(){d=null;b.remove();});}};document.body.appendChild(b);}})();
+</script>
+</body>
+</html>
