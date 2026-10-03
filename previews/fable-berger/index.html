@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>برگرساز سه‌بعدی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#1a0f0a; --bg2:#3b1d0e; --accent:#ffb02e; --accent2:#ff6a3d;
+    --panel:rgba(20,12,8,.72); --line:rgba(255,255,255,.09); --text:#fff4e6; --muted:#c9a98a;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%;overflow:hidden;background:var(--bg1);color:var(--text);
+    font-family:'Vazirmatn',Tahoma,system-ui,sans-serif;}
+  #bg{position:fixed;inset:0;z-index:0;
+    background:
+      radial-gradient(60% 55% at 50% 40%, #6b3418 0%, rgba(107,52,24,0) 70%),
+      radial-gradient(90% 90% at 80% 100%, #2c1508 0%, rgba(44,21,8,0) 60%),
+      linear-gradient(180deg,var(--bg2) 0%,var(--bg1) 100%);}
+  #bg::after{content:"";position:absolute;inset:0;opacity:.25;mix-blend-mode:overlay;
+    background-image:radial-gradient(rgba(255,255,255,.35) 1px,transparent 1px);background-size:3px 3px;}
+  #c{position:fixed;inset:0;z-index:1;display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+  #c.grabbing{cursor:grabbing}
+
+  #ui{position:fixed;top:0;right:0;bottom:0;z-index:3;width:min(340px,100%);padding:18px 16px;
+    background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border-left:1px solid var(--line);display:flex;flex-direction:column;gap:14px;overflow:auto;
+    scrollbar-width:thin;}
+  h1{margin:0;font-size:22px;font-weight:800;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
+  h1 span{color:var(--accent)}
+  .sub{margin:0;font-size:12px;color:var(--muted)}
+  .card{border:1px solid var(--line);border-radius:14px;padding:12px;background:rgba(255,255,255,.03)}
+  .card h2{margin:0 0 10px;font-size:13px;font-weight:600;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+  .row{display:flex;gap:8px;align-items:center}
+  button{font-family:inherit;color:var(--text);background:rgba(255,255,255,.06);border:1px solid var(--line);
+    border-radius:10px;padding:9px 10px;font-size:13px;cursor:pointer;transition:transform .12s,background .15s,border-color .15s}
+  button:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2)}
+  button:active{transform:scale(.96)}
+  button.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#241006;font-weight:800;border:none;flex:1;font-size:14px}
+  button.primary:hover{filter:brightness(1.08)}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+  .grid button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;font-size:12px}
+  .grid button b{font-size:20px;font-weight:400;line-height:1}
+  input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer}
+  #layers{display:flex;flex-direction:column;gap:6px;min-height:40px}
+  .layer{display:flex;align-items:center;gap:6px;padding:7px 8px;border-radius:10px;background:rgba(255,255,255,.05);
+    border:1px solid var(--line);animation:pop .25s ease-out;font-size:13px}
+  @keyframes pop{from{transform:translateY(-6px);opacity:0}to{transform:none;opacity:1}}
+  .layer .nm{flex:1;display:flex;align-items:center;gap:7px}
+  .layer .nm i{font-style:normal;font-size:16px}
+  .layer button{padding:4px 7px;font-size:12px;border-radius:7px;line-height:1}
+  .layer button:disabled{opacity:.3;cursor:default;transform:none}
+  .layer button.del{color:#ff8d7a}
+  .stat{display:flex;justify-content:space-between;font-size:13px;padding:2px 2px}
+  .stat b{color:var(--accent);font-weight:800}
+  .empty{font-size:12px;color:var(--muted);text-align:center;padding:10px 0}
+  .presets{display:flex;gap:6px;flex-wrap:wrap}
+  .presets button{flex:1;font-size:12px;padding:7px 6px}
+
+  #hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:2;font-size:13px;color:var(--muted);
+    background:rgba(0,0,0,.35);padding:8px 14px;border-radius:999px;border:1px solid var(--line);
+    backdrop-filter:blur(8px);white-space:nowrap;pointer-events:none;transition:opacity .5s}
+  #hint.hide{opacity:0}
+  #err{position:fixed;inset:0;z-index:10;display:none;align-items:center;justify-content:center;padding:30px;text-align:center;background:var(--bg1);font-size:16px;line-height:1.9}
+  #toggleUi{display:none;position:fixed;top:12px;right:12px;z-index:4;border-radius:999px;padding:8px 12px;background:rgba(0,0,0,.45);backdrop-filter:blur(8px)}
+
+  @media (max-width:760px){
+    #ui{top:auto;left:0;right:0;width:100%;max-height:46vh;border-left:none;border-top:1px solid var(--line);
+      border-radius:22px 22px 0 0;padding:14px 14px 20px;transition:transform .3s}
+    #ui.collapsed{transform:translateY(calc(100% - 52px))}
+    #toggleUi{display:block}
+    h1{font-size:18px}
+    #hint{bottom:auto;top:14px;left:14px;transform:none;font-size:12px}
+    .grid{grid-template-columns:repeat(4,1fr)}
+  }
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<canvas id="c"></canvas>
+<div id="hint">🖱️ برای مونتاژ اسکرول کنید · برای چرخش بکشید</div>
+<button id="toggleUi" aria-label="پنل">☰ ساخت برگر</button>
+
+<aside id="ui">
+  <div>
+    <h1>🍔 برگرساز <span>سه‌بعدی</span></h1>
+    <p class="sub">لایه‌ها را اضافه، حذف یا جابه‌جا کنید و برگر خود را زنده ببینید</p>
+  </div>
+
+  <div class="card">
+    <h2>مونتاژ برگر <span id="asmPct">۰٪</span></h2>
+    <input id="asm" type="range" min="0" max="1000" value="0" aria-label="میزان مونتاژ">
+    <div class="row" style="margin-top:8px">
+      <button class="primary" id="btnAssemble">▼ مونتاژ کن</button>
+      <button id="btnExplode" title="حالت شناور">✦ شناور</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>افزودن لایه</h2>
+    <div class="grid" id="addGrid"></div>
+  </div>
+
+  <div class="card">
+    <h2>لایه‌های برگر <span id="layerCount"></span></h2>
+    <div id="layers"></div>
+    <div class="row" style="margin-top:10px">
+      <div class="stat" style="flex:1"><span>قیمت تقریبی</span><b id="price">۰ تومان</b></div>
+      <button id="btnClear" title="حذف همه" style="color:#ff8d7a">🗑</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>پیشنهاد سرآشپز</h2>
+    <div class="presets">
+      <button data-preset="classic">کلاسیک</button>
+      <button data-preset="double">دبل چیز</button>
+      <button data-preset="veggie">گیاهی</button>
+      <button data-preset="tower">برج بیکن</button>
+    </div>
+  </div>
+</aside>
+
+<div id="err">متأسفانه مرورگر شما از WebGL پشتیبانی نمی‌کند یا آن را غیرفعال کرده است.<br>لطفاً با مرورگر به‌روز (Chrome / Firefox / Safari) دوباره امتحان کنید.</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+/* ───────────────────────── helpers ───────────────────────── */
+const $ = s => document.querySelector(s);
+const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+const clamp = (v,a,b) => v<a?a:v>b?b:v;
+const lerp = (a,b,t) => a+(b-a)*t;
+
+/* seeded RNG so textures look the same every load */
+let seed = 1337;
+const rnd = () => { seed = (seed*1664525 + 1013904223) >>> 0; return seed/4294967296; };
+
+/* value-noise + fbm on a small lattice */
+const LAT = 64, lattice = new Float32Array(LAT*LAT);
+for (let i=0;i<lattice.length;i++) lattice[i]=rnd();
+function vnoise(x,y){
+  const xi=Math.floor(x), yi=Math.floor(y), xf=x-xi, yf=y-yi;
+  const sx=xf*xf*(3-2*xf), sy=yf*yf*(3-2*yf);
+  const g=(a,b)=>lattice[((b%LAT+LAT)%LAT)*LAT + ((a%LAT+LAT)%LAT)];
+  return lerp(lerp(g(xi,yi),g(xi+1,yi),sx), lerp(g(xi,yi+1),g(xi+1,yi+1),sx), sy);
+}
+function fbm(x,y,oct){ let v=0,a=.5,f=1,n=0; for(let i=0;i<(oct||4);i++){ v+=vnoise(x*f,y*f)*a; n+=a; a*=.5; f*=2.1;} return v/n; }
+
+/* canvas texture factory */
+function makeTex(size, painter, opts){
+  const cv=document.createElement('canvas'); cv.width=cv.height=size;
+  const ctx=cv.getContext('2d');
+  painter(ctx,size);
+  const t=new THREE.CanvasTexture(cv);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=4;
+  if(opts&&opts.srgb) t.encoding=THREE.sRGBEncoding;
+  if(opts&&opts.repeat){ t.repeat.set(opts.repeat,opts.repeat); }
+  return t;
+}
+/* per-pixel painter: fn(u,v,x,y) -> [r,g,b] */
+function pixelPaint(ctx,size,fn){
+  const img=ctx.createImageData(size,size), d=img.data;
+  for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+    const c=fn(x/size,y/size,x,y), i=(y*size+x)*4;
+    d[i]=c[0]; d[i+1]=c[1]; d[i+2]=c[2]; d[i+3]=255;
+  }
+  ctx.putImageData(img,0,0);
+}
+
+/* ───────────────────────── procedural materials ───────────────────────── */
+const TEX = {};
+function buildTextures(){
+  const S=256;
+  /* ---- bun: color / bump / roughness with sesame seeds ---- */
+  const seeds=[]; for(let i=0;i<110;i++) seeds.push({x:rnd(),y:rnd()*.72,r:rnd()*Math.PI,s:.55+rnd()*.5});
+  const drawSeeds=(ctx,size,fill,shade)=>{
+    seeds.forEach(s=>{ ctx.save(); ctx.translate(s.x*size,s.y*size); ctx.rotate(s.r); ctx.scale(s.s,s.s);
+      if(shade){ const g=ctx.createRadialGradient(-2,-2,1,0,0,9); g.addColorStop(0,shade[0]); g.addColorStop(1,shade[1]); ctx.fillStyle=g; } else ctx.fillStyle=fill;
+      ctx.beginPath(); ctx.ellipse(0,0,9,5.2,0,0,Math.PI*2); ctx.fill(); ctx.restore(); });
+  };
+  TEX.bunMap=makeTex(S,(ctx,size)=>{
+    pixelPaint(ctx,size,(u,v)=>{ const n=fbm(u*9,v*9,4), m=fbm(u*40,v*40,2);
+      const t=.55+n*.5, dark=v>.62?lerp(1,.86,(v-.62)/.38):1;   // lighter rim near the bottom edge
+      return [ (205+40*t-25*m)*dark, (128+40*t-30*m)*dark, (55+30*t-20*m)*dark ]; });
+    drawSeeds(ctx,size,null,['#fff4d0','#d9b77a']);
+  },{srgb:true});
+  TEX.bunBump=makeTex(S,(ctx,size)=>{
+    pixelPaint(ctx,size,(u,v)=>{ const n=fbm(u*30,v*30,3), g=110+n*40; return [g,g,g]; });
+    drawSeeds(ctx,size,null,['#ffffff','#a0a0a0']);
+  });
+  TEX.bunRough=makeTex(S,(ctx,size)=>{
+    pixelPaint(ctx,size,(u,v)=>{ const n=fbm(u*20,v*20,3), g=170+n*60; return [g,g,g]; });
+    drawSeeds(ctx,size,'#5a5a5a');
+  });
+  TEX.bunBottomMap=makeTex(S,(ctx,size)=>{
+    pixelPaint(ctx,size,(u,v)=>{ const n=fbm(u*9+3,v*9,4), m=fbm(u*40,v*40+5,2); const t=.5+n*.5;
+      return [ 200+40*t-25*m, 125+38*t-30*m, 52+28*t-20*m ]; });
+  },{srgb:true});
+  TEX.bunBottomBump=makeTex(S,(ctx,size)=>{ pixelPaint(ctx,size,(u,v)=>{ const g=110+fbm(u*30+7,v*30,3)*40; return [g,g,g]; }); });
+
+  /* ---- patty: charred grain ---- */
+  TEX.pattyMap=makeTex(S,(ctx,size)=>{
+    pixelPaint(ctx,size,(u,v)=>{ const n=fbm(u*14,v*14,5), m=fbm(u*60,v*60,2), c=fbm(u*5+9,v*5,3);
+      const char=c>.62?(c-.62)*2.4:0;                      // dark charred patches
+      const base=.35+n*.55;
+      return [ (95*base+40*m)*(1-char)+18*char, (52*base+22*m)*(1-char)+9*char, (30*base+10*m)*(1-char)+5*char ]; });
+    /* grill scores */
+    ctx.globalAlpha=.55; ctx.strokeStyle='#1c0b04'; ctx.lineWidth=7; ctx.lineCap='round';
+    for(let i=0;i<5;i++){ ctx.beginPath(); ctx.moveTo(0, i*size/5+20); ctx.lineTo(size, i*size/5+20); ctx.stroke(); }
+    ctx.globalAlpha=1;
+  },{srgb:true});
+  TEX.pattyBump=makeTex(S,(ctx,size)=>{
+    pixelPaint(ctx,size,(u,v)=>{ const n=fbm(u*45,v*45,4), m=fbm(u*12,v*12,3); const g=90+n*90+m*40; return [g,g,g]; });
+    ctx.strokeStyle='#202020'; ctx.lineWidth=7; ctx.lineCap='round';
+    for(let i=0;i<5;i++){ ctx.beginPath(); ctx.moveTo(0, i*size/5+20); ctx.lineTo(size, i*size/5+20); ctx.stroke(); }
+  });
+  TEX.pattyRough=makeTex(S,(ctx,size)=>{
+    pixelPaint(ctx,size,(u,v)=>{ const n=fbm(u*18,v*18,3), grease=fbm(u*7+2,v*7,2); const g=grease>.58?95:(165+n*70); return [g,g,g]; });
+  });
+
+  /* ---- cheese: bubbles + slick sheen ---- */
+  TEX.cheeseMap=makeTex(S,(ctx,size)=>{
+    pixelPaint(ctx,size,(u,v)=>{ const n=fbm(u*8,v*8,3); return [ 248-10*n, 178-45*n, 30+20*n ]; });
+    for(let i=0;i<45;i++){ const x=rnd()*size,y=rnd()*size,r=3+rnd()*7; const g=ctx.createRadialGradient(x,y,0,x,y,r); g.addColorStop(0,'rgba(255,220,120,.0)'); g.addColorStop(.8,'rgba(215,120,20,.35)'); g.addColorStop(1,'rgba(215,120,20,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); }
+  },{srgb:true});
+  TEX.cheeseBump=makeTex(S,(ctx,size)=>{
+    pixelPaint(ctx,size,(u,v)=>{ const g=120+fbm(u*10,v*10,3)*30; return [g,g,g]; });
+    seed=99; for(let i=0;i<45;i++){ const x=rnd()*size,y=rnd()*size,r=3+rnd()*7; const g=ctx.createRadialGradient(x,y,0,x,y,r); g.addColorStop(0,'#ffffff'); g.addColorStop(.7,'#c8c8c8'); g.addColorStop(1,'rgba(120,120,120,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); }
+  });
+  TEX.cheeseRough=makeTex(S,(ctx,size)=>{ pixelPaint(ctx,size,(u,v)=>{ const g=60+fbm(u*12,v*12,3)*90; return [g,g,g]; }); });
+
+  /* ---- tomato slice cap ---- */
+  TEX.tomatoTop=makeTex(S,(ctx,size)=>{
+    const c=size/2;
+    let g=ctx.createRadialGradient(c,c,0,c,c,c); g.addColorStop(0,'#ffb8a0'); g.addColorStop(.35,'#ff7a5c'); g.addColorStop(.72,'#e8402a'); g.addColorStop(.9,'#c9241a'); g.addColorStop(1,'#a51410');
+    ctx.fillStyle=g; ctx.fillRect(0,0,size,size);
+    /* seed chambers */
+    for(let k=0;k<6;k++){ const a=k*Math.PI/3+.4; ctx.save(); ctx.translate(c+Math.cos(a)*size*.27, c+Math.sin(a)*size*.27); ctx.rotate(a);
+      const jg=ctx.createRadialGradient(0,0,2,0,0,size*.12); jg.addColorStop(0,'rgba(255,190,150,.9)'); jg.addColorStop(1,'rgba(230,80,50,.2)');
+      ctx.fillStyle=jg; ctx.beginPath(); ctx.ellipse(0,0,size*.13,size*.08,0,0,7); ctx.fill();
+      ctx.fillStyle='#f6e9a8'; for(let s=0;s<6;s++){ ctx.beginPath(); ctx.ellipse((s-2.5)*size*.035,(s%2?1:-1)*size*.02,size*.017,size*.01,.6,0,7); ctx.fill(); }
+      ctx.restore(); }
+    ctx.strokeStyle='rgba(255,200,180,.55)'; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(c,c,size*.44,0,7); ctx.stroke();
+  },{srgb:true});
+  TEX.tomatoRough=makeTex(S,(ctx,size)=>{ pixelPaint(ctx,size,(u,v)=>{ const g=60+fbm(u*10,v*10,2)*60; return [g,g,g]; }); });
+
+  /* ---- lettuce ---- */
+  TEX.lettuceMap=makeTex(S,(ctx,size)=>{
+    pixelPaint(ctx,size,(u,v)=>{ const n=fbm(u*6,v*6,4), m=fbm(u*30,v*30,2); return [ 90+80*n+20*m, 165+60*n+15*m, 40+40*n ]; });
+    ctx.strokeStyle='rgba(235,250,190,.55)'; ctx.lineCap='round';
+    const c=size/2; for(let i=0;i<14;i++){ const a=i/14*Math.PI*2; ctx.lineWidth=2+rnd()*2; ctx.beginPath(); ctx.moveTo(c,c);
+      let x=c,y=c; for(let s=0;s<6;s++){ x+=Math.cos(a+Math.sin(s*1.7)*.4)*size*.09; y+=Math.sin(a+Math.cos(s*1.3)*.4)*size*.09; ctx.lineTo(x,y);} ctx.stroke(); }
+  },{srgb:true});
+  TEX.lettuceBump=makeTex(S,(ctx,size)=>{ pixelPaint(ctx,size,(u,v)=>{ const g=100+fbm(u*14,v*14,3)*60; return [g,g,g]; }); });
+
+  /* ---- bacon stripes ---- */
+  TEX.baconMap=makeTex(S,(ctx,size)=>{
+    pixelPaint(ctx,size,(u,v)=>{ const s=Math.sin(v*Math.PI*5+Math.sin(u*9)*.8)*.5+.5, n=fbm(u*10,v*10,3);
+      const fat=Math.pow(s,3); return [ lerp(150,235,fat)+20*n, lerp(45,180,fat)+10*n, lerp(30,140,fat) ]; });
+  },{srgb:true});
+  TEX.baconBump=makeTex(S,(ctx,size)=>{ pixelPaint(ctx,size,(u,v)=>{ const g=100+fbm(u*25,v*25,3)*60; return [g,g,g]; }); });
+
+  /* ---- pickle ---- */
+  TEX.pickleTop=makeTex(S,(ctx,size)=>{
+    const c=size/2; const g=ctx.createRadialGradient(c,c,0,c,c,c); g.addColorStop(0,'#c9d67a'); g.addColorStop(.5,'#8fa63a'); g.addColorStop(.85,'#5e7a22'); g.addColorStop(1,'#3e561a');
+    ctx.fillStyle=g; ctx.fillRect(0,0,size,size);
+    ctx.fillStyle='rgba(255,255,220,.5)'; for(let k=0;k<7;k++){ const a=k*.9; ctx.beginPath(); ctx.ellipse(c+Math.cos(a)*size*.2,c+Math.sin(a)*size*.2,size*.03,size*.018,a,0,7); ctx.fill(); }
+  },{srgb:true});
+}
+
+const MAT = {};
+function buildMaterials(){
+  MAT.bunTop = new THREE.MeshStandardMaterial({ map:TEX.bunMap, bumpMap:TEX.bunBump, bumpScale:.035, roughnessMap:TEX.bunRough, roughness:1, metalness:0 });
+  MAT.bunBottom = new THREE.MeshStandardMaterial({ map:TEX.bunBottomMap, bumpMap:TEX.bunBottomBump, bumpScale:.02, roughness:.85 });
+  MAT.patty = new THREE.MeshStandardMaterial({ map:TEX.pattyMap, bumpMap:TEX.pattyBump, bumpScale:.06, roughnessMap:TEX.pattyRough, roughness:1, metalness:.05 });
+  MAT.cheese = new THREE.MeshPhysicalMaterial({ map:TEX.cheeseMap, bumpMap:TEX.cheeseBump, bumpScale:.02, roughnessMap:TEX.cheeseRough, roughness:.45,
+    clearcoat:.8, clearcoatRoughness:.35, transparent:true, opacity:.9, side:THREE.DoubleSide, color:0xffe7a8, emissive:0x3a1e00, emissiveIntensity:.35 });
+  MAT.tomatoSide = new THREE.MeshPhysicalMaterial({ color:0xd8321f, roughness:.25, clearcoat:1, clearcoatRoughness:.15 });
+  MAT.tomatoTop = new THREE.MeshPhysicalMaterial({ map:TEX.tomatoTop, roughnessMap:TEX.tomatoRough, roughness:.4, clearcoat:.9, clearcoatRoughness:.3 });
+  MAT.lettuce = new THREE.MeshStandardMaterial({ map:TEX.lettuceMap, bumpMap:TEX.lettuceBump, bumpScale:.03, roughness:.6, side:THREE.DoubleSide });
+  MAT.lettuce2 = MAT.lettuce.clone(); MAT.lettuce2.color.set(0xcfe8a0);
+  MAT.onion = new THREE.MeshPhysicalMaterial({ color:0xf3e6f5, roughness:.35, transparent:true, opacity:.8, clearcoat:.6, side:THREE.DoubleSide });
+  MAT.onionRim = new THREE.MeshPhysicalMaterial({ color:0xb46bb8, roughness:.35, transparent:true, opacity:.85, clearcoat:.6 });
+  MAT.bacon = new THREE.MeshStandardMaterial({ map:TEX.baconMap, bumpMap:TEX.baconBump, bumpScale:.03, roughness:.55, side:THREE.DoubleSide });
+  MAT.pickleTop = new THREE.MeshPhysicalMaterial({ map:TEX.pickleTop, roughness:.35, clearcoat:.9 });
+  MAT.pickleSide = new THREE.MeshPhysicalMaterial({ color:0x4d6b21, roughness:.35, clearcoat:.9 });
+}
+
+/* ───────────────────────── geometry builders ───────────────────────── */
+function displaceAlongNormal(geo, amp, freq, off){
+  geo.computeVertexNormals();
+  const p=geo.attributes.position, n=geo.attributes.normal;
+  for(let i=0;i<p.count;i++){
+    const x=p.getX(i),y=p.getY(i),z=p.getZ(i);
+    const d=(fbm(x*freq+off, z*freq+y*freq*.7, 3)-.5)*amp;
+    p.setXYZ(i, x+n.getX(i)*d, y+n.getY(i)*d, z+n.getZ(i)*d);
+  }
+  p.needsUpdate=true; geo.computeVertexNormals();
+}
+function latheFrom(pts, seg){ return new THREE.LatheGeometry(pts.map(a=>new THREE.Vector2(a[0],a[1])), seg||72); }
+
+const R=1.0;
+const BUILD = {
+  bunTop(){
+    const H=.62, pts=[[0,0],[.55,0],[.9,0],[.99,.06]];
+    for(let i=1;i<=18;i++){ const t=i/18*Math.PI/2; pts.push([ R*Math.cos(t)*1.0, .08+ (H-.08)*Math.pow(Math.sin(t),.85) ]); }
+    const g=latheFrom(pts,80); displaceAlongNormal(g,.03,3.2,4);
+    const m=new THREE.Mesh(g,MAT.bunTop); m.castShadow=m.receiveShadow=true;
+    return {mesh:m,h:H};
+  },
+  bunBottom(){
+    const H=.36, pts=[[0,0],[.6,0],[.9,.0],[.97,.03],[1,.1],[1,.24],[.97,.32],[.9,.36],[.5,.36],[0,.36]];
+    const g=latheFrom(pts,80); displaceAlongNormal(g,.025,3,11);
+    const m=new THREE.Mesh(g,MAT.bunBottom); m.castShadow=m.receiveShadow=true;
+    return {mesh:m,h:H};
+  },
+  patty(){
+    const H=.3, pts=[[0,0],[.5,0],[.88,0],[.97,.05],[1.02,.15],[.97,.25],[.88,.3],[.5,.3],[0,.3]];
+    const g=latheFrom(pts,90); displaceAlongNormal(g,.07,5,23);
+    const m=new THREE.Mesh(g,MAT.patty); m.castShadow=m.receiveShadow=true;
+    return {mesh:m,h:H};
+  },
+  cheese(){
+    const g=new THREE.PlaneGeometry(1.95,1.95,30,30); g.rotateX(-Math.PI/2);
+    const p=g.attributes.position;
+    for(let i=0;i<p.count;i++){ const x=p.getX(i),z=p.getZ(i), r=Math.hypot(x,z), over=Math.max(0,r-.93);
+      p.setY(i, .03 - over*over*1.0 - Math.max(0,r-.7)*fbm(x*3,z*3,2)*.06); }
+    g.computeVertexNormals();
+    const m=new THREE.Mesh(g,MAT.cheese); m.castShadow=true; m.receiveShadow=true;
+    return {mesh:m,h:.06};
+  },
+  tomato(){
+    const H=.12, g=new THREE.CylinderGeometry(.9,.9,H,64,1); g.translate(0,H/2,0);
+    const m=new THREE.Mesh(g,[MAT.tomatoSide,MAT.tomatoTop,MAT.tomatoTop]); m.castShadow=m.receiveShadow=true;
+    return {mesh:m,h:H};
+  },
+  lettuce(){
+    const grp=new THREE.Group();
+    for(let k=0;k<2;k++){
+      const g=new THREE.CircleGeometry(1.18-k*.12,110); g.rotateX(-Math.PI/2);
+      const p=g.attributes.position, ph=k*1.9;
+      for(let i=0;i<p.count;i++){ const x=p.getX(i),z=p.getZ(i), r=Math.hypot(x,z), a=Math.atan2(z,x), f=Math.pow(r/1.18,2.2);
+        p.setY(i, .02+k*.05 + f*(Math.sin(a*8+ph)*.075+Math.sin(a*13+ph*2)*.03) + fbm(x*4+k,z*4,2)*.04); }
+      g.computeVertexNormals();
+      const m=new THREE.Mesh(g,k?MAT.lettuce2:MAT.lettuce); m.castShadow=m.receiveShadow=true; m.rotation.y=k*1.3; grp.add(m);
+    }
+    return {mesh:grp,h:.12};
+  },
+  onion(){
+    const grp=new THREE.Group();
+    const rings=[[.62,.05,.02],[.45,-.22,.1],[.3,.15,-.28]];
+    rings.forEach((r,i)=>{ const g=new THREE.TorusGeometry(r[0],.032,10,64); g.rotateX(Math.PI/2);
+      const m=new THREE.Mesh(g,i==1?MAT.onionRim:MAT.onion); m.position.set(r[1],.035,r[2]); m.castShadow=true; grp.add(m); });
+    return {mesh:grp,h:.07};
+  },
+  pickle(){
+    const grp=new THREE.Group(), H=.06;
+    const pos=[[.42,.15],[-.38,.28],[.05,-.45],[-.35,-.3]];
+    pos.forEach(pp=>{ const g=new THREE.CylinderGeometry(.27,.27,H,32,1); g.translate(0,H/2,0);
+      const m=new THREE.Mesh(g,[MAT.pickleSide,MAT.pickleTop,MAT.pickleTop]); m.position.set(pp[0],0,pp[1]); m.castShadow=m.receiveShadow=true; grp.add(m); });
+    return {mesh:grp,h:H};
+  },
+  bacon(){
+    const grp=new THREE.Group();
+    for(let k=0;k<2;k++){
+      const g=new THREE.BoxGeometry(2.0,.045,.42,48,1,1); const p=g.attributes.position;
+      for(let i=0;i<p.count;i++){ const x=p.getX(i); p.setY(i, p.getY(i)+.05+Math.sin(x*6.5+k)*.05); }
+      g.computeVertexNormals();
+      const m=new THREE.Mesh(g,MAT.bacon); m.rotation.y=k?-.6:.7; m.position.y=k*.05; m.castShadow=m.receiveShadow=true; grp.add(m);
+    }
+    return {mesh:grp,h:.11};
+  }
+};
+
+const TYPES = {
+  bunTop:    {name:'نان بالا',     icon:'🍞', price:8000},
+  patty:     {name:'گوشت گریل',    icon:'🥩', price:45000},
+  cheese:    {name:'پنیر آب‌شده',   icon:'🧀', price:12000},
+  tomato:    {name:'گوجه',         icon:'🍅', price:5000},
+  lettuce:   {name:'کاهو',         icon:'🥬', price:4000},
+  onion:     {name:'پیاز',         icon:'🧅', price:3000},
+  pickle:    {name:'خیارشور',      icon:'🥒', price:4000},
+  bacon:     {name:'بیکن',         icon:'🥓', price:25000},
+  bunBottom: {name:'نان پایین',    icon:'🥯', price:8000},
+};
+const PRESETS = {
+  classic:['bunBottom','patty','cheese','tomato','lettuce','bunTop'],
+  double:['bunBottom','patty','cheese','patty','cheese','onion','pickle','bunTop'],
+  veggie:['bunBottom','lettuce','tomato','onion','pickle','cheese','lettuce','bunTop'],
+  tower:['bunBottom','patty','bacon','cheese','patty','bacon','cheese','tomato','lettuce','bunTop'],
+};
+
+/* ───────────────────────── scene ───────────────────────── */
+let renderer, scene, camera, burger, ground, layers=[];
+let asm=0, asmTarget=0;               // 0 = floating / exploded, 1 = fully assembled
+const GAP=.55;                        // vertical spacing in exploded mode
+const orbit={theta:.55, phi:1.1, dist:6.4, tTheta:.55, tPhi:1.1, auto:true, lookY:1, tLookY:1};
+const clock=new THREE.Clock();
+
+function initScene(){
+  const canvas=$('#c');
+  renderer=new THREE.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+  renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  renderer.outputEncoding=THREE.sRGBEncoding; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.05;
+  scene=new THREE.Scene();
+  camera=new THREE.PerspectiveCamera(38,1,.1,100);
+
+  const hemi=new THREE.HemisphereLight(0xfff1dc,0x3a1c0c,.75); scene.add(hemi);
+  const key=new THREE.DirectionalLight(0xfff2e0,1.6); key.position.set(3.5,6,3); key.castShadow=true;
+  key.shadow.mapSize.set(2048,2048); key.shadow.camera.near=1; key.shadow.camera.far=20;
+  key.shadow.camera.left=key.shadow.camera.bottom=-4; key.shadow.camera.right=key.shadow.camera.top=6; key.shadow.bias=-.0006; key.shadow.radius=4;
+  scene.add(key);
+  const rim=new THREE.PointLight(0xffa04a,1.2,20); rim.position.set(-4,3,-3); scene.add(rim);
+  const fill=new THREE.PointLight(0x8ab4ff,.45,20); fill.position.set(-3,2,4); scene.add(fill);
+
+  ground=new THREE.Mesh(new THREE.CircleGeometry(4,48), new THREE.ShadowMaterial({opacity:.32})); ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
+  const plate=new THREE.Mesh(new THREE.CylinderGeometry(1.9,2.0,.06,72), new THREE.MeshPhysicalMaterial({color:0x2b1a12,roughness:.35,clearcoat:.5,metalness:.1}));
+  plate.position.y=-.03; plate.receiveShadow=true; scene.add(plate);
+
+  burger=new THREE.Group(); scene.add(burger);
+  resize(); window.addEventListener('resize',resize);
+}
+function resize(){
+  const w=window.innerWidth, h=window.innerHeight;
+  renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
+}
+
+/* ───────────────────────── layer management ───────────────────────── */
+let uid=0;
+function addLayer(type, index){
+  const b=BUILD[type](); const holder=new THREE.Group(); holder.add(b.mesh);
+  holder.rotation.y=(rnd()-.5)*.6;
+  const L={id:++uid,type,h:b.h,obj:holder,y:null,vy:0};
+  if(index==null||index>layers.length) layers.push(L); else layers.splice(index,0,L);
+  burger.add(holder); relayout(true); renderList(); return L;
+}
+function removeLayer(id){
+  const i=layers.findIndex(l=>l.id===id); if(i<0) return;
+  const L=layers.splice(i,1)[0]; burger.remove(L.obj);
+  L.obj.traverse(o=>{ if(o.geometry) o.geometry.dispose(); });
+  relayout(); renderList();
+}
+function moveLayer(id,dir){
+  const i=layers.findIndex(l=>l.id===id), j=i+dir; if(i<0||j<0||j>=layers.length) return;
+  [layers[i],layers[j]]=[layers[j],layers[i]]; layers[i].vy+=1.5*dir; layers[j].vy-=1.5*dir; relayout(); renderList();
+}
+function clearAll(){ layers.slice().forEach(l=>removeLayer(l.id)); }
+function loadPreset(list){ clearAll(); list.forEach(t=>addLayer(t)); asmTarget=1; }
+function relayout(spawn){
+  let y=0;
+  layers.forEach((L,i)=>{ L.stackY=y; y+=L.h; L.index=i;
+    if(L.y==null){ L.y = spawn ? y+3.5 : L.stackY; L.vy=0; } });
+  burger.userData.height=y;
+}
+function stackTop(){ return burger.userData.height||0; }
+
+/* ───────────────────────── UI ───────────────────────── */
+function renderList(){
+  const box=$('#layers'); box.innerHTML='';
+  if(!layers.length){ box.innerHTML='<div class="empty">هنوز لایه‌ای اضافه نشده — از بالا شروع کنید 👆</div>'; }
+  [...layers].reverse().forEach(L=>{
+    const t=TYPES[L.type], el=document.createElement('div'); el.className='layer';
+    el.innerHTML=`<div class="nm"><i>${t.icon}</i>${t.name}</div>
+      <button data-a="up" title="بالاتر" ${L.index===layers.length-1?'disabled':''}>▲</button>
+      <button data-a="down" title="پایین‌تر" ${L.index===0?'disabled':''}>▼</button>
+      <button data-a="del" class="del" title="حذف">✕</button>`;
+    el.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+      const a=b.dataset.a; if(a==='del') removeLayer(L.id); else moveLayer(L.id, a==='up'?1:-1); }));
+    box.appendChild(el);
+  });
+  $('#layerCount').textContent=layers.length?fa(layers.length)+' لایه':'';
+  const price=layers.reduce((s,l)=>s+TYPES[l.type].price,0);
+  $('#price').textContent=fa(price.toLocaleString('en-US'))+' تومان';
+}
+function buildAddGrid(){
+  const grid=$('#addGrid');
+  Object.keys(TYPES).forEach(k=>{ const t=TYPES[k], b=document.createElement('button'); b.innerHTML=`<b>${t.icon}</b>${t.name}`; b.title='افزودن '+t.name;
+    b.addEventListener('click',()=>{
+      // buns snap to the ends; everything else goes just under the top bun if present
+      let idx=null; if(k==='bunBottom') idx=0; else if(k!=='bunTop' && layers.length && layers[layers.length-1].type==='bunTop') idx=layers.length-1;
+      addLayer(k,idx); pulseHint();
+    }); grid.appendChild(b); });
+}
+function syncAsmUI(){ $('#asm').value=Math.round(asmTarget*1000); $('#asmPct').textContent=fa(Math.round(asm*100))+'٪'; }
+function pulseHint(){ const h=$('#hint'); h.classList.remove('hide'); clearTimeout(pulseHint.t); pulseHint.t=setTimeout(()=>h.classList.add('hide'),4000); }
+function bindUI(){
+  buildAddGrid();
+  $('#asm').addEventListener('input',e=>{ asmTarget=e.target.value/1000; });
+  $('#btnAssemble').addEventListener('click',()=>{ asmTarget=1; });
+  $('#btnExplode').addEventListener('click',()=>{ asmTarget=0; });
+  $('#btnClear').addEventListener('click',clearAll);
+  document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>loadPreset(PRESETS[b.dataset.preset])));
+  $('#toggleUi').addEventListener('click',()=>$('#ui').classList.toggle('collapsed'));
+  if(window.innerWidth<760) $('#ui').classList.add('collapsed');
+  setTimeout(()=>$('#hint').classList.add('hide'),6000);
+
+  /* wheel = assembly */
+  const canvas=$('#c');
+  canvas.addEventListener('wheel',e=>{ e.preventDefault(); asmTarget=clamp(asmTarget+e.deltaY*.0011,0,1); orbit.auto=false; setTimeout(()=>orbit.auto=true,2500); },{passive:false});
+  /* pointer drag = orbit (horizontal) or assembly (vertical, touch) */
+  let drag=null;
+  canvas.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY,lx:e.clientX,ly:e.clientY,mode:null,asm0:asmTarget}; canvas.setPointerCapture(e.pointerId); canvas.classList.add('grabbing'); orbit.auto=false; });
+  canvas.addEventListener('pointermove',e=>{
+    if(!drag) return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+    if(!drag.mode && Math.hypot(dx,dy)>6) drag.mode = (e.pointerType==='touch' && Math.abs(dy)>Math.abs(dx)*1.4) ? 'asm' : 'orbit';
+    if(drag.mode==='orbit'){ orbit.tTheta -= (e.clientX-drag.lx)*.008; orbit.tPhi = clamp(orbit.tPhi - (e.clientY-drag.ly)*.006, .35, 1.45); }
+    else if(drag.mode==='asm'){ asmTarget=clamp(drag.asm0 + dy/240, 0, 1); }
+    drag.lx=e.clientX; drag.ly=e.clientY;
+  });
+  const end=()=>{ drag=null; canvas.classList.remove('grabbing'); setTimeout(()=>orbit.auto=true,2500); };
+  canvas.addEventListener('pointerup',end); canvas.addEventListener('pointercancel',end);
+  window.addEventListener('keydown',e=>{ if(e.key==='ArrowDown') asmTarget=clamp(asmTarget+.15,0,1); if(e.key==='ArrowUp') asmTarget=clamp(asmTarget-.15,0,1); });
+}
+
+/* ───────────────────────── physics & render loop ───────────────────────── */
+const K=120, C=8.5;             // spring stiffness / damping → bouncy but settles
+function step(dt){
+  asm += (asmTarget-asm)*Math.min(1,dt*6);
+  const t=clock.elapsedTime, n=layers.length;
+  for(let i=0;i<n;i++){
+    const L=layers[i];
+    const float=(1-asm);
+    const target = L.stackY + i*GAP*float + Math.sin(t*1.4+i*.9)*.045*float;
+    const a = K*(target-L.y) - C*L.vy;
+    L.vy += a*dt; L.y += L.vy*dt;
+    // hard floor against the layer below so nothing tunnels
+    if(i>0){ const below=layers[i-1]; const floor=below.y+below.h-.02; if(L.y<floor){ L.y=floor; if(L.vy<0){ below.vy+=L.vy*.35; L.vy*=-.25; } } }
+    else if(L.y<0){ L.y=0; if(L.vy<0) L.vy*=-.3; }
+    L.obj.position.y=L.y;
+    // squash & stretch near landing
+    const near=Math.exp(-Math.abs(target-L.y)*6), sq=near*clamp(Math.abs(L.vy)*.06,0,.22);
+    L.obj.scale.set(1+sq*.5, 1-sq, 1+sq*.5);
+    // gentle drift rotation while floating
+    L.obj.rotation.y += dt*.15*float*(i%2?1:-1);
+    L.obj.rotation.x = Math.sin(t*.9+i)*.05*float;
+    L.obj.rotation.z = Math.cos(t*.7+i*1.3)*.05*float;
+  }
+  /* camera */
+  if(orbit.auto) orbit.tTheta += dt*.18;
+  orbit.theta += (orbit.tTheta-orbit.theta)*Math.min(1,dt*6);
+  orbit.phi   += (orbit.tPhi-orbit.phi)*Math.min(1,dt*6);
+  const totalH = stackTop() + (n?(n-1)*GAP*(1-asm):0);
+  orbit.tLookY = Math.max(.7, totalH*.5);
+  orbit.lookY += (orbit.tLookY-orbit.lookY)*Math.min(1,dt*4);
+  const aspect=camera.aspect, narrow=aspect<1;
+  const tDist = (5.2 + Math.max(0,totalH-2.2)*.95) * (narrow ? Math.min(3.2, 1.2/aspect) : 1);
+  orbit.dist += (tDist-orbit.dist)*Math.min(1,dt*4);
+  // on portrait phones the panel covers the lower half, so aim below the burger to push it up on screen
+  const aimY = orbit.lookY - (narrow ? .45 : 0);
+  camera.position.set( Math.sin(orbit.theta)*Math.sin(orbit.phi)*orbit.dist, Math.cos(orbit.phi)*orbit.dist+orbit.lookY*.6, Math.cos(orbit.theta)*Math.sin(orbit.phi)*orbit.dist );
+  camera.lookAt(0,aimY,0);
+  syncAsmUI();
+}
+function loop(){
+  const dt=Math.min(clock.getDelta(), .05);
+  // sub-step the spring for stability on slow frames
+  const sub=2; for(let s=0;s<sub;s++) step(dt/sub);
+  renderer.render(scene,camera);
+  requestAnimationFrame(loop);
+}
+
+/* ───────────────────────── boot ───────────────────────── */
+try{
+  if(!window.THREE) throw new Error('three missing');
+  const test=document.createElement('canvas'); if(!(test.getContext('webgl2')||test.getContext('webgl'))) throw new Error('no webgl');
+  buildTextures(); buildMaterials(); initScene(); bindUI();
+  loadPreset(PRESETS.classic); asmTarget=0; asm=0;   // start floating so the first scroll assembles it
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) clock.getDelta(); });
+  loop();
+}catch(err){
+  console.error(err);
+  $('#err').style.display='flex'; $('#ui').style.display='none'; $('#hint').style.display='none';
+}
+})();
+</script>
+</body>
+</html>

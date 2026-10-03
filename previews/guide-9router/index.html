@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- [FIXED: BUG-01] Added canonical URL, Open Graph, Twitter Cards, robots hints and theme-color -->
+  <title>9Router | منظومه هوش مصنوعی تو — مرجع کامل فارسی</title>
+  <meta name="description" content="مرجع کامل و جامع 9Router: نصب، پروایدرها، Fallback سه‌لایه، Media Providers و بهینه‌سازی توکن — با طراحی سه‌بعدی منظومه شمسی">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#05070f">
+  <link rel="canonical" href="https://9router.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="9Router">
+  <meta property="og:url" content="https://9router.com/">
+  <meta property="og:title" content="9Router | منظومه هوش مصنوعی تو">
+  <meta property="og:description" content="روتر محلی متن‌باز برای پروایدرهای AI: نصب، Fallback سه‌لایه، Media Providers و بهینه‌سازی توکن — مرجع کامل فارسی.">
+  <meta property="og:image" content="https://9router.com/og-cover.png">
+  <meta property="og:locale" content="fa_IR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="9Router | منظومه هوش مصنوعی تو">
+  <meta name="twitter:description" content="مرجع کامل فارسی 9Router — نصب، پروایدرها، Fallback سه‌لایه و بهینه‌سازی توکن.">
+  <meta name="twitter:image" content="https://9router.com/og-cover.png">
+  <!-- Structured data: SoftwareApplication for rich results -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"9Router","operatingSystem":"Windows, macOS, Linux","applicationCategory":"DeveloperApplication","softwareVersion":"0.5.5","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://9router.com/"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- [FIXED: BUG-02] Added preconnect to cdnjs so Font Awesome / Three.js connections are established earlier -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- [FIXED: BUG-02] three.js marked `defer`: downloads parallel to HTML parsing, executes after the DOM
+       is ready. The solar-system init script was updated to wait for window.load + guard for THREE,
+       so the render path is never blocked by a ~600KB library used only for a decorative background. -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    :root {
+      --space-black: #05070f;
+      --panel: rgba(13,17,30,0.78);
+      --panel-solid: #0c1020;
+      --border-soft: rgba(255,255,255,0.08);
+      --star-white: #eef2ff;
+      --muted: #93a0bd;
+      --sun-gold: #ffb547;
+      --sun-core: #ff7a3d;
+      --earth: #4fd1c5;
+      --mars: #ef6b5a;
+      --venus: #e8c07d;
+      --neptune: #6d8bf0;
+      --saturn: #f2d492;
+      --mercury: #b8b2a7;
+      --uranus: #7fe0e0;
+      --jupiter: #d9a066;
+      --glow-intense: 0 0 30px rgba(255,181,71,0.4);
+      --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: var(--space-black);
+      color: var(--star-white);
+      position: relative;
+      overflow-x: hidden;
+    }
+    #solar-bg {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .layer { position: relative; z-index: 1; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--space-black); }
+    ::-webkit-scrollbar-thumb { background: #1c2338; border-radius: 4px; }
+    #progress {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--sun-core), var(--sun-gold), var(--earth));
+      width: 0;
+      z-index: 100;
+      transition: width 0.1s linear;
+      box-shadow: 0 0 20px rgba(255,181,71,0.3);
+    }
+    .glass {
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      transition: var(--transition-smooth);
+    }
+    .glass-hover:hover {
+      border-color: rgba(255,181,71,0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.7), var(--glow-intense);
+    }
+    .gradient-text {
+      background: linear-gradient(120deg, var(--sun-gold) 0%, var(--sun-core) 45%, var(--earth) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .orbit-badge {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+      color: #05070f;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.06), 0 0 30px var(--glow, rgba(255,181,71,0.5));
+      transition: var(--transition-smooth);
+    }
+    .orbit-badge:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 0 5px rgba(255,255,255,0.12), 0 0 50px var(--glow, rgba(255,181,71,0.7));
+    }
+    .planet-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 14px currentColor;
+      transition: var(--transition-smooth);
+    }
+    .planet-dot:hover { transform: scale(1.3); }
+    code { font-family: 'JetBrains Mono', monospace; }
+    .code-block {
+      background: #080a13;
+      border: 1px solid var(--border-soft);
+      border-radius: 1.5rem;
+      transition: var(--transition-smooth);
+    }
+    .code-block:hover { border-color: rgba(255,181,71,0.25); }
+    p code, li code, td code {
+      background: rgba(255,181,71,0.12);
+      color: var(--sun-gold);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.85em;
+      border: 1px solid rgba(255,181,71,0.1);
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--sun-core), var(--sun-gold));
+      color: #05070f;
+      border-color: transparent;
+      box-shadow: 0 4px 25px rgba(255,138,61,0.4);
+    }
+    .copy-btn {
+      transition: var(--transition-smooth);
+    }
+    .copy-btn.copied {
+      color: var(--earth) !important;
+      border-color: var(--earth) !important;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 14px 16px;
+      text-align: right;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    th {
+      background: rgba(255,255,255,0.04);
+      color: var(--sun-gold);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    tr:hover td {
+      background: rgba(255,181,71,0.05);
+    }
+    .chip {
+      white-space: nowrap;
+      transition: var(--transition-smooth);
+      cursor: pointer;
+    }
+    .chip.active, .chip:hover {
+      color: var(--sun-gold);
+      border-color: rgba(255,181,71,0.5);
+      background: rgba(255,181,71,0.1);
+      box-shadow: 0 0 20px rgba(255,181,71,0.1);
+    }
+    .card-glow {
+      transition: var(--transition-smooth);
+    }
+    .card-glow:hover {
+      box-shadow: 0 0 30px rgba(255,181,71,0.08);
+    }
+    .stat-number {
+      font-size: 2.8rem;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+    @media (max-width: 640px) {
+      .stat-number { font-size: 2rem; }
+      .orbit-badge { width: 40px; height: 40px; font-size: 13px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { animation-duration: 0.01ms !important; }
+    }
+    /* [FIXED: BUG-09] extra reduced-motion hardening lives further down (after .section-reveal) */
+
+    /* Floating particles */
+    .particle-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,181,71,0.3), transparent);
+      animation: float-particle linear infinite;
+    }
+    @keyframes float-particle {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    /* Pulse animation for live indicator */
+    @keyframes pulse-dot {
+      0% { opacity: 0.6; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.6; transform: scale(0.8); }
+    }
+    .live-dot {
+      animation: pulse-dot 1.8s ease-in-out infinite;
+    }
+
+    /* Smooth section reveal */
+    .section-reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .section-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* [FIXED: BUG-09] Also disable transitions + prevent hover-animations for reduced-motion users */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .section-reveal { opacity: 1; transform: none; }
+    }
+  </style>
+  <!-- [FIXED: BUG-09] Without JavaScript, .section-reveal{opacity:0} would hide ALL main content forever.
+       This noscript override guarantees content is always visible, JS or not. -->
+  <noscript>
+    <style>
+      .section-reveal { opacity: 1 !important; transform: none !important; }
+      #particles { display: none; }
+    </style>
+  </noscript>
+</head>
+<body>
+
+<!-- Backgrounds -->
+<!-- [FIXED: BUG-07] Purely decorative visual layers are hidden from assistive technology -->
+<div id="solar-bg" aria-hidden="true"></div>
+<div class="particle-container" id="particles" aria-hidden="true"></div>
+
+<!-- Progress bar -->
+<!-- [FIXED: BUG-07] Scroll progress indicator is decorative; exposed as a scrollbar-live region instead -->
+<div id="progress" role="progressbar" aria-label="پیشرفت مطالعه صفحه" aria-hidden="false" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+
+<!-- NAV -->
+<header class="layer sticky top-0 z-50 glass border-b" style="border-color:var(--border-soft)">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110" style="background:radial-gradient(circle at 35% 30%, var(--sun-gold), var(--sun-core) 70%); box-shadow:0 0 25px rgba(255,138,61,0.6)">
+        <i class="fa-solid fa-route text-sm" style="color:#05070f"></i>
+      </div>
+      <div class="hidden sm:block">
+        <div class="text-lg font-black gradient-text leading-none">9Router</div>
+        <div class="text-[11px] text-[color:var(--muted)] flex items-center gap-1">
+          <span class="live-dot inline-block w-2 h-2 rounded-full bg-green-400 mr-1"></span>
+          مرجع فارسی · v0.5.5
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu toggle -->
+    <!-- [FIXED: BUG-03] Icon-only toggle now has an accessible name + expanded state for screen readers -->
+    <button id="menu-toggle" type="button" aria-label="باز و بسته کردن فهرست بخش‌ها" aria-expanded="false" aria-controls="nav-chips" class="md:hidden text-xl text-[color:var(--muted)] hover:text-[color:var(--sun-gold)] transition">
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+    </button>
+
+    <div class="relative flex-1 max-w-xs hidden md:block">
+      <i class="fa-solid fa-magnifying-glass absolute top-1/2 -translate-y-1/2 right-3 text-xs" style="color:var(--muted)" aria-hidden="true"></i>
+      <!-- [FIXED: BUG-04] Search input got an accessible label, type="search", and autocomplete=off -->
+      <input id="doc-search" type="search" autocomplete="off" aria-label="جستجو در مرجع" placeholder="جستجو در مرجع…" class="w-full bg-black/30 border border-[color:var(--border-soft)] rounded-full pr-9 pl-4 py-2 text-sm focus:outline-none focus:border-[color:var(--sun-gold)] transition">
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a href="#install" class="px-4 py-2 rounded-full text-sm font-bold transition hover:scale-105" style="background:linear-gradient(135deg,var(--sun-core),var(--sun-gold));color:#05070f;box-shadow:0 0 20px rgba(255,138,61,0.3)">
+        <i class="fa-solid fa-rocket ml-1" aria-hidden="true"></i> نصب
+      </a>
+      <!-- [FIXED: BUG-03] GitHub icon link given accessible name / [FIXED: BUG-05] noopener noreferrer added -->
+      <a href="https://github.com/decolua/9router" target="_blank" rel="noopener noreferrer" aria-label="مخزن گیت‌هاب ۹روتر (باز شدن در تب جدید)" class="hidden sm:flex items-center gap-1 text-[color:var(--muted)] hover:text-[color:var(--sun-gold)] transition">
+        <i class="fa-brands fa-github text-lg" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Secondary nav chips (hidden on mobile initially) -->
+  <div id="nav-chips" class="max-w-7xl mx-auto px-4 sm:px-6 pb-3 flex gap-2 overflow-x-auto transition-all" style="scrollbar-width:none">
+    <a data-jump href="#intro" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">مقدمه</a>
+    <a data-jump href="#architecture" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">معماری</a>
+    <a data-jump href="#dashboard" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">داشبورد</a>
+    <a data-jump href="#media" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">Media</a>
+    <a data-jump href="#install" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">نصب</a>
+    <a data-jump href="#providers" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">پروایدرها</a>
+    <a data-jump href="#tools" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">ابزارها</a>
+    <a data-jump href="#fallback" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">Fallback</a>
+    <a data-jump href="#optimize" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">بهینه‌سازی</a>
+    <a data-jump href="#advanced" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">پیشرفته</a>
+    <a data-jump href="#troubleshoot" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">عیب‌یابی</a>
+    <a data-jump href="#faq" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">سوالات</a>
+    <a data-jump href="#roadmap" class="chip text-xs px-3 py-1.5 rounded-full border border-[color:var(--border-soft)] text-[color:var(--muted)]">جمع‌بندی</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="layer max-w-7xl mx-auto px-4 sm:px-6 pt-20 pb-16 text-center section-reveal visible">
+  <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium mb-8 border" style="border-color:rgba(255,181,71,0.3);background:rgba(255,181,71,0.08);color:var(--sun-gold)">
+    <span class="planet-dot" style="background:var(--sun-gold);color:var(--sun-gold)"></span>
+    مرجع کامل فارسی — نسخه نهایی v0.5.5
+  </div>
+  <h1 class="text-4xl sm:text-6xl md:text-7xl font-black leading-tight mb-6">
+    خورشید مرکزیِ<br><span class="gradient-text">پروایدرهای هوش مصنوعی تو</span>
+  </h1>
+  <p class="max-w-2xl mx-auto text-base sm:text-lg mb-10" style="color:var(--muted)">
+    9Router مثل یک منظومه شمسی عمل می‌کند: خودش خورشید مرکزی است و هر پروایدر AI — از Claude گرفته تا GLM و Kiro — مثل یک سیاره روی مدار خودش می‌چرخد. وقتی یکی خاموش شود، بعدی روشن است.
+  </p>
+  <div class="flex flex-wrap justify-center gap-3 mb-14">
+    <a href="#install" class="px-7 py-3.5 rounded-2xl font-bold flex items-center gap-2 transition hover:scale-105" style="background:linear-gradient(135deg,var(--sun-core),var(--sun-gold));color:#05070f;box-shadow:0 0 30px rgba(255,138,61,0.3)">
+      <i class="fa-solid fa-bolt"></i> شروع نصب در ۵ ثانیه
+    </a>
+    <a href="https://github.com/decolua/9router" target="_blank" rel="noopener noreferrer" class="px-7 py-3.5 rounded-2xl font-bold glass glass-hover flex items-center gap-2">
+      <i class="fa-brands fa-github" aria-hidden="true"></i> گیت‌هاب
+    </a>
+    <a href="#dashboard" class="px-7 py-3.5 rounded-2xl font-bold glass glass-hover flex items-center gap-2">
+      <i class="fa-solid fa-chart-pie"></i> داشبورد زنده
+    </a>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+    <div class="glass glass-hover rounded-2xl p-5 card-glow">
+      <div class="stat-number" style="color:var(--sun-gold)">۳</div>
+      <div class="text-xs mt-1" style="color:var(--muted)">لایه Fallback بدون قطعی</div>
+    </div>
+    <div class="glass glass-hover rounded-2xl p-5 card-glow">
+      <div class="stat-number" style="color:var(--earth)">۲۰–۶۵٪</div>
+      <div class="text-xs mt-1" style="color:var(--muted)">صرفه‌جویی توکن با RTK</div>
+    </div>
+    <div class="glass glass-hover rounded-2xl p-5 card-glow">
+      <div class="stat-number" style="color:var(--mars)">۴۰+</div>
+      <div class="text-xs mt-1" style="color:var(--muted)">پروایدر متصل‌شدنی</div>
+    </div>
+    <div class="glass glass-hover rounded-2xl p-5 card-glow">
+      <div class="stat-number" style="color:var(--neptune)">۱۲</div>
+      <div class="text-xs mt-1" style="color:var(--muted)">ابزار CLI/IDE پشتیبانی‌شده</div>
+    </div>
+  </div>
+</section>
+
+<main class="layer max-w-7xl mx-auto px-4 sm:px-6 space-y-10 pb-10">
+
+  <!-- 1. INTRO -->
+  <section id="intro" class="glass rounded-3xl p-8 sm:p-10 section-reveal">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="orbit-badge" style="background:var(--sun-gold);--glow:rgba(255,181,71,0.6)">۱</div>
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-black">9Router چیست و چرا بهش نیاز داری؟</h2>
+        <span class="text-xs" style="color:var(--muted)">هسته مرکزی سیستم — مدار همه پروایدرها از اینجا رد می‌شود</span>
+      </div>
+    </div>
+    <div class="space-y-4" style="color:var(--muted)">
+      <p><strong style="color:var(--star-white)">9Router</strong> یک روتر (Gateway) محلی و متن‌باز است که بین ابزارهای کدنویسی‌ات (Cursor، Claude Code، Cline، Codex و…) و ده‌ها پروایدر AI می‌نشیند و همه را پشت <strong style="color:var(--star-white)">یک Endpoint سازگار با OpenAI</strong> در می‌آورد: <code>http://localhost:20128/v1</code></p>
+      <p>بدون آن معمولاً با این‌ها روبه‌رو می‌شوی: تمام‌شدن سهمیه وسط کار، جابه‌جایی دستی بین چند اکانت، سوختن توکن روی خروجی <code>git diff</code> و لاگ‌ها، و تنظیمات جداگانه برای هر ابزار. با 9Router همه از یک نقطه کنترل می‌شود: اول اشتراک‌هایت مصرف می‌شوند، بعد مدل‌های ارزان، و در نهایت مدل‌های رایگان.</p>
+      <p>علاوه بر این، 9Router یک <strong style="color:var(--star-white)">پلتفرم چندرسانه‌ای</strong> است: Embedding، تولید تصویر، تبدیل گفتار، جستجوی وب و بسیاری قابلیت‌های دیگر را در اختیار ابزارهای شما قرار می‌دهد.</p>
+    </div>
+
+    <h3 class="text-lg font-bold mt-8 mb-4" style="color:var(--sun-gold)">مقایسه با OpenRouter، LiteLLM و OneAPI</h3>
+    <div class="overflow-x-auto rounded-2xl border" style="border-color:var(--border-soft)">
+      <table>
+        <thead><tr><th>شاخص</th><th style="color:var(--sun-gold)">9Router</th><th>OpenRouter</th><th>LiteLLM</th><th>OneAPI</th></tr></thead>
+        <tbody>
+          <tr><td class="font-semibold text-[color:var(--star-white)]">هدف طراحی</td><td>کدنویسی CLI + چندرسانه‌ای</td><td>گیت‌وی عمومی بازار</td><td>پراکسی سازمانی</td><td>تبدیل توکن تجاری</td></tr>
+          <tr><td class="font-semibold text-[color:var(--star-white)]">RTK Token Saver</td><td style="color:var(--earth)" class="font-bold">بله (۲۰–۴۰٪)</td><td>خیر</td><td>خیر</td><td>خیر</td></tr>
+          <tr><td class="font-semibold text-[color:var(--star-white)]">Media Providers</td><td style="color:var(--earth)" class="font-bold">پشتیبانی بومی</td><td>محدود</td><td>نیازمند کد</td><td>پایه</td></tr>
+          <tr><td class="font-semibold text-[color:var(--star-white)]">هزینه نرم‌افزار</td><td style="color:var(--earth)" class="font-bold">رایگان (MIT)</td><td>کمیسیون تراکنش</td><td>رایگان/سازمانی پولی</td><td>رایگان</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 2. ARCHITECTURE -->
+  <section id="architecture" class="glass rounded-3xl p-8 sm:p-10 section-reveal">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="orbit-badge" style="background:var(--mercury);--glow:rgba(184,178,167,0.6)">۲</div>
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-black">معماری داخلی و مسیر داده</h2>
+        <span class="text-xs" style="color:var(--muted)">مدار نزدیک به خورشید — سریع‌ترین مسیر تصمیم‌گیری</span>
+      </div>
+    </div>
+    <p class="mb-4" style="color:var(--muted)">همه ابزارها درخواست را به پورت محلی <code>20128</code> می‌فرستند؛ 9Router با موتور ترجمه فرمت و Fallback سه‌لایه، بهترین مسیر را انتخاب می‌کند.</p>
+    <div class="code-block rounded-2xl p-5 overflow-x-auto text-xs leading-relaxed" style="color:var(--earth)">
+<pre>┌─────────────────────────────────────────────────────────┐
+│   CLI Tools (Claude Code, Cursor, Cline, Codex, ...)    │
+└─────────────────────┬───────────────────────────────────┘
+                      │ POST http://localhost:20128/v1
+                      ▼
+┌─────────────────────────────────────────────────────────┐
+│                9Router — خورشید مرکزی                    │
+│  • RTK Token Saver (فشرده‌سازی هوشمند)                  │
+│  • Format Translation Engine (تبدیل درخواست)            │
+│  • Media Router (تصویر، صدا، جستجو)                    │
+│  • Combo & Fallback Orchestrator                       │
+└─────────────────────┬───────────────────────────────────┘
+                      ▼
+          مدار Fallback سه‌لایه (Tier 1 → 2 → 3)
+       ┌───────────┬───────────────┬───────────────────┐
+       ▼           ▼               ▼
+┌────────────┐ ┌────────────┐ ┌────────────────────┐
+│ Tier 1     │ │ Tier 2     │ │ Tier 3             │
+│ اشتراک‌ها  │ │ مدل‌های    │ │ مدل‌های رایگان     │
+│ Claude Pro │ │ ارزان      │ │ Kiro, OpenCode     │
+│ Codex      │ │ GLM-5.1    │ │ Free, Qwen         │
+│ Copilot    │ │ MiniMax    │ │ ...                │
+└────────────┘ └────────────┘ └────────────────────┘</pre>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-3 text-sm" style="color:var(--muted)">
+      <span class="inline-flex items-center gap-1"><span class="planet-dot" style="background:var(--sun-gold);width:8px;height:8px"></span> اولویت با اشتراک‌ها</span>
+      <span class="inline-flex items-center gap-1"><span class="planet-dot" style="background:var(--neptune);width:8px;height:8px"></span> سپس مدل‌های ارزان</span>
+      <span class="inline-flex items-center gap-1"><span class="planet-dot" style="background:var(--earth);width:8px;height:8px"></span> نهایتاً رایگان‌ها</span>
+    </div>
+  </section>
+
+  <!-- 3. DASHBOARD -->
+  <section id="dashboard" class="glass rounded-3xl p-8 sm:p-10 section-reveal">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="orbit-badge" style="background:var(--venus);--glow:rgba(232,192,125,0.6)">۳</div>
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-black">تور کامل داشبورد (v0.5.5)</h2>
+        <span class="text-xs" style="color:var(--muted)">پنل فرمان — کنترل مدار همه سیاره‌ها از یک‌جا</span>
+      </div>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-2 flex items-center gap-2" style="color:var(--sun-gold)"><i class="fa-solid fa-key"></i> Endpoint &amp; Key</h4>
+        <p class="text-sm" style="color:var(--muted)">مدیریت کلیدهای API، آدرس Base URL و امنیت اتصال کلاینت‌ها. کلید محلی را از این بخش کپی کنید.</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-2 flex items-center gap-2" style="color:var(--earth)"><i class="fa-solid fa-server"></i> Providers</h4>
+        <p class="text-sm" style="color:var(--muted)">لیست پروایدرهای متصل و اکانت‌های اشتراکی. وضعیت هر پروایدر (فعال/غیرفعال) را ببینید.</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-2 flex items-center gap-2" style="color:var(--neptune)"><i class="fa-solid fa-network-wired"></i> Combo &amp; Vision</h4>
+        <p class="text-sm" style="color:var(--muted)">زنجیره‌های Fallback سفارشی و آداپتور بینایی ماشین برای پردازش تصویر.</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-2 flex items-center gap-2" style="color:var(--mars)"><i class="fa-solid fa-chart-line"></i> Usage &amp; Quota</h4>
+        <p class="text-sm" style="color:var(--muted)">مانیتورینگ لحظه‌ای مصرف توکن، هزینه، تعداد درخواست‌ها و زمان Reset سهمیه.</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-2 flex items-center gap-2" style="color:var(--saturn)"><i class="fa-solid fa-bolt"></i> Token Saver (RTK)</h4>
+        <p class="text-sm" style="color:var(--muted)">فشرده‌سازی خروجی <code>git diff</code>، <code>ls</code>، <code>tree</code> و دیگر ابزارها. میزان صرفه‌جویی را به‌صورت نمودار نشان می‌دهد.</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-2 flex items-center gap-2" style="color:var(--uranus)"><i class="fa-solid fa-terminal"></i> CLI Tools</h4>
+        <p class="text-sm" style="color:var(--muted)">راهنمای اتصال سریع ابزارهای خط‌فرمان و ادیتورها با دستورات آماده کپی.</p>
+      </div>
+    </div>
+
+    <!-- Live usage preview (mock) -->
+    <div class="mt-6 rounded-2xl p-5 border" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <span class="text-xs font-bold" style="color:var(--muted)">مصرف لحظه‌ای</span>
+          <div class="flex items-center gap-4 mt-1">
+            <span class="text-sm"><span style="color:var(--earth)">۱۲۳</span> توکن ورودی</span>
+            <span class="text-sm"><span style="color:var(--sun-gold)">۴۵۶</span> توکن خروجی</span>
+            <span class="text-sm"><span style="color:var(--mars)">۳</span> درخواست/دقیقه</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-xs" style="color:var(--muted)">
+          <span class="inline-block w-2 h-2 rounded-full bg-green-400 live-dot"></span>
+          <span>سیستم آنلاین</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. MEDIA -->
+  <section id="media" class="glass rounded-3xl p-8 sm:p-10 section-reveal">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="orbit-badge" style="background:var(--earth);--glow:rgba(79,209,197,0.6)">۴</div>
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-black">Media Providers — سیاره چندرسانه‌ای</h2>
+        <span class="text-xs" style="color:var(--muted)">فراتر از متن: تصویر، صدا، جست‌وجو</span>
+      </div>
+    </div>
+    <p class="mb-6" style="color:var(--muted)">9Router صرفاً روتر متنی نیست؛ یک پلتفرم کامل چندرسانه‌ای است که تمام نیازهای رسانه‌ای ابزارهای شما را پوشش می‌دهد:</p>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-1" style="color:var(--sun-gold)"><i class="fa-solid fa-vector-square ml-1"></i> Embedding</h4>
+        <p class="text-sm" style="color:var(--muted)">OpenRouter، NVIDIA NIM، Voyage AI، OpenAI، Jina AI و مدل‌های Self-hosted. قابلیت تولید بردارهای متنی برای جستجوی معنایی.</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-1" style="color:var(--earth)"><i class="fa-solid fa-image ml-1"></i> Text to Image</h4>
+        <p class="text-sm" style="color:var(--muted)">مسیردهی درخواست‌های تولید تصویر بین مدل‌های سازگار مانند DALL‑E، Stable Diffusion و Flux.</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-1" style="color:var(--neptune)"><i class="fa-solid fa-microphone ml-1"></i> Speech to Text / TTS</h4>
+        <p class="text-sm" style="color:var(--muted)">تبدیل صوت↔متن با سرویس‌های محلی (Whisper) و ابری (OpenAI، ElevenLabs).</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-1" style="color:var(--jupiter)"><i class="fa-solid fa-globe ml-1"></i> Web Fetch &amp; Search</h4>
+        <p class="text-sm" style="color:var(--muted)">جست‌وجوی وب و دریافت محتوای صفحات برای تقویت پرامپت. پشتیبانی از موتورهای جستجوی مختلف.</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-1" style="color:var(--mars)"><i class="fa-solid fa-layer-group ml-1"></i> Proxy Pools &amp; Skills</h4>
+        <p class="text-sm" style="color:var(--muted)">استخر پروکسی برای چرخش IP و مهارت‌های سفارشی ایجنت‌ها (ابزارهای خودکار).</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-1" style="color:var(--saturn)"><i class="fa-solid fa-terminal ml-1"></i> Console Log &amp; 9Remote</h4>
+        <p class="text-sm" style="color:var(--muted)">لاگ زنده درخواست/پاسخ و کنترل از راه دور اینستانس‌های 9Router در شبکه.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. INSTALL -->
+  <section id="install" class="glass rounded-3xl p-8 sm:p-10 section-reveal">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="orbit-badge" style="background:var(--mars);--glow:rgba(239,107,90,0.6)">۵</div>
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-black">نصب و راه‌اندازی</h2>
+        <span class="text-xs" style="color:var(--muted)">پرتاب به مدار — سه مسیر فرود</span>
+      </div>
+    </div>
+    <!-- [FIXED: BUG-06] Tabs converted to a semantic ARIA tablist: role, aria-selected, aria-controls,
+         tabindex roving focus and keyboard arrow navigation (handled in switchTab). -->
+    <div class="flex flex-wrap gap-2 border-b pb-4 mb-4" style="border-color:var(--border-soft)" role="tablist" aria-label="روش‌های نصب">
+      <button onclick="switchTab(event,'npm-tab')" id="tab-btn-npm" type="button" role="tab" aria-selected="true" aria-controls="npm-tab" class="tab-btn active px-5 py-2.5 rounded-xl text-sm font-bold border transition" style="border-color:var(--border-soft)">NPM (سریع)</button>
+      <button onclick="switchTab(event,'docker-tab')" id="tab-btn-docker" type="button" role="tab" aria-selected="false" aria-controls="docker-tab" tabindex="-1" class="tab-btn px-5 py-2.5 rounded-xl text-sm font-bold border transition" style="border-color:var(--border-soft)">Docker</button>
+      <button onclick="switchTab(event,'vps-tab')" id="tab-btn-vps" type="button" role="tab" aria-selected="false" aria-controls="vps-tab" tabindex="-1" class="tab-btn px-5 py-2.5 rounded-xl text-sm font-bold border transition" style="border-color:var(--border-soft)">VPS (تیمی)</button>
+      <button onclick="switchTab(event,'brew-tab')" id="tab-btn-brew" type="button" role="tab" aria-selected="false" aria-controls="brew-tab" tabindex="-1" class="tab-btn px-5 py-2.5 rounded-xl text-sm font-bold border transition" style="border-color:var(--border-soft)">Homebrew</button>
+    </div>
+
+    <!-- [FIXED: BUG-06] Panels now carry role="tabpanel", aria-labelledby and hidden state management -->
+    <div id="npm-tab" role="tabpanel" aria-labelledby="tab-btn-npm" tabindex="0" class="tab-content space-y-3">
+      <p class="text-sm" style="color:var(--muted)">پیش‌نیاز: Node.js نسخه ۱۸ یا بالاتر.</p>
+      <div class="relative">
+        <button onclick="copyCode(this)" class="copy-btn absolute top-3 left-3 z-10 px-3 py-1 bg-black/40 border rounded-lg text-xs font-bold transition" style="border-color:var(--border-soft)">کپی</button>
+        <pre class="code-block rounded-2xl p-5 pt-10 overflow-x-auto text-sm" style="color:var(--earth)"><code>npm install -g 9router
+9router</code></pre>
+      </div>
+      <p class="text-sm" style="color:var(--muted)">داشبورد خودکار روی <code>http://localhost:20128/dashboard</code> باز می‌شود.</p>
+    </div>
+
+    <div id="docker-tab" role="tabpanel" aria-labelledby="tab-btn-docker" tabindex="0" class="tab-content hidden space-y-3">
+      <div class="relative">
+        <button onclick="copyCode(this)" class="copy-btn absolute top-3 left-3 z-10 px-3 py-1 bg-black/40 border rounded-lg text-xs font-bold transition" style="border-color:var(--border-soft)">کپی</button>
+        <pre class="code-block rounded-2xl p-5 pt-10 overflow-x-auto text-sm" style="color:var(--earth)"><code>docker run -d --name 9router -p 20128:20128 \
+  -v "$HOME/.9router:/app/data" \
+  -e DATA_DIR=/app/data \
+  decolua/9router:latest</code></pre>
+      </div>
+    </div>
+
+    <div id="vps-tab" role="tabpanel" aria-labelledby="tab-btn-vps" tabindex="0" class="tab-content hidden space-y-3">
+      <div class="relative">
+        <button onclick="copyCode(this)" class="copy-btn absolute top-3 left-3 z-10 px-3 py-1 bg-black/40 border rounded-lg text-xs font-bold transition" style="border-color:var(--border-soft)">کپی</button>
+        <pre class="code-block rounded-2xl p-5 pt-10 overflow-x-auto text-sm" style="color:var(--earth)"><code>git clone https://github.com/decolua/9router.git
+cd 9router && npm install && npm run build
+
+export JWT_SECRET="super-secure-jwt-key"
+export INITIAL_PASSWORD="strong-admin-password"
+export DATA_DIR="/var/lib/9router"
+export PORT="20128"
+export HOSTNAME="0.0.0.0"
+export REQUIRE_API_KEY="true"
+
+npm install -g pm2
+pm2 start npm --name 9router -- start
+pm2 save && pm2 startup</code></pre>
+      </div>
+    </div>
+
+    <div id="brew-tab" role="tabpanel" aria-labelledby="tab-btn-brew" tabindex="0" class="tab-content hidden space-y-3">
+      <p class="text-sm" style="color:var(--muted)">برای کاربران macOS با Homebrew:</p>
+      <div class="relative">
+        <button onclick="copyCode(this)" class="copy-btn absolute top-3 left-3 z-10 px-3 py-1 bg-black/40 border rounded-lg text-xs font-bold transition" style="border-color:var(--border-soft)">کپی</button>
+        <pre class="code-block rounded-2xl p-5 pt-10 overflow-x-auto text-sm" style="color:var(--earth)"><code>brew tap decolua/9router
+brew install 9router
+9router</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. PROVIDERS -->
+  <section id="providers" class="glass rounded-3xl p-8 sm:p-10 section-reveal">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="orbit-badge" style="background:var(--jupiter);--glow:rgba(217,160,102,0.6)">۶</div>
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-black">کاتالوگ جامع پروایدرها (۴۰+)</h2>
+        <span class="text-xs" style="color:var(--muted)">سیاره‌های بزرگ منظومه — هرکدام یک مسیر تأمین مدل</span>
+      </div>
+    </div>
+    <div class="overflow-x-auto rounded-2xl border mb-6" style="border-color:var(--border-soft)">
+      <table>
+        <thead><tr><th>پروایدر</th><th>مدل‌های نمونه</th><th>نحوه اتصال</th><th>لایه پیش‌فرض</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Kiro AI</strong></td><td>Claude Sonnet 4.5 و …</td><td>OAuth (رایگان)</td><td><span class="text-xs px-2 py-1 rounded-full bg-green-900/40 text-green-300">Tier 3</span></td></tr>
+          <tr><td><strong>OpenCode Free</strong></td><td>مدل‌های مختلف</td><td>بدون نیاز به Auth</td><td><span class="text-xs px-2 py-1 rounded-full bg-green-900/40 text-green-300">Tier 3</span></td></tr>
+          <tr><td><strong>Qwen / iFlow</strong></td><td>Qwen3 Coder و …</td><td>رایگان / محدود</td><td><span class="text-xs px-2 py-1 rounded-full bg-green-900/40 text-green-300">Tier 3</span></td></tr>
+          <tr><td><strong>Vertex AI (GCP)</strong></td><td>Gemini خانواده</td><td>اعتبار ۳۰۰ دلاری جدید</td><td><span class="text-xs px-2 py-1 rounded-full bg-blue-900/40 text-blue-300">Tier 1</span></td></tr>
+          <tr><td>Claude Code / Anthropic</td><td>اشتراک / API</td><td>اعتباردهی</td><td><span class="text-xs px-2 py-1 rounded-full bg-blue-900/40 text-blue-300">Tier 1</span></td></tr>
+          <tr><td>OpenAI Codex / GPT</td><td>اشتراک / API</td><td>اعتباردهی</td><td><span class="text-xs px-2 py-1 rounded-full bg-blue-900/40 text-blue-300">Tier 1</span></td></tr>
+          <tr><td>GitHub Copilot</td><td>اشتراک</td><td>OAuth</td><td><span class="text-xs px-2 py-1 rounded-full bg-blue-900/40 text-blue-300">Tier 1</span></td></tr>
+          <tr><td>GLM / MiniMax / Kimi</td><td>ارزان (Pay-as-you-go)</td><td>API Key</td><td><span class="text-xs px-2 py-1 rounded-full bg-yellow-900/40 text-yellow-300">Tier 2</span></td></tr>
+          <tr><td>OpenRouter</td><td>Aggregated</td><td>API Key</td><td><span class="text-xs px-2 py-1 rounded-full bg-yellow-900/40 text-yellow-300">Tier 2</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid sm:grid-cols-3 gap-4">
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-2" style="color:var(--earth)"><i class="fa-solid fa-gift ml-1"></i> رایگان</h4>
+        <p class="text-sm" style="color:var(--muted)">Kiro (~۵۰ اعتبار ماهانه)، OpenCode Free، اعتبار رایگان Vertex، Qwen.</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-2" style="color:var(--sun-gold)"><i class="fa-solid fa-credit-card ml-1"></i> اشتراکی</h4>
+        <p class="text-sm" style="color:var(--muted)">Claude Code Pro، Copilot، Cursor، Codex با رفرش خودکار OAuth.</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-2" style="color:var(--neptune)"><i class="fa-solid fa-coins ml-1"></i> ارزان</h4>
+        <p class="text-sm" style="color:var(--muted)">GLM-5.1، MiniMax M2.7، Kimi K2.5 — هزینه بسیار پایین برای بکاپ.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. TOOLS -->
+  <section id="tools" class="glass rounded-3xl p-8 sm:p-10 section-reveal">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="orbit-badge" style="background:var(--saturn);--glow:rgba(242,212,146,0.6)">۷</div>
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-black">اتصال به ابزارهای کدنویسی</h2>
+        <span class="text-xs" style="color:var(--muted)">آنتن‌های ارتباطی هر ماهواره با هسته مرکزی</span>
+      </div>
+    </div>
+    <div class="rounded-2xl p-5 border mb-5" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+      <h4 class="font-bold mb-2" style="color:var(--star-white)">تنظیمات مشترک برای همه ابزارها</h4>
+      <pre class="code-block rounded-xl p-4 overflow-x-auto text-xs mt-2" style="color:var(--earth)"><code>Base URL : http://localhost:20128/v1
+API Key  : [از داشبورد کپی کن]
+Model    : مثلاً kr/claude-sonnet-4.5</code></pre>
+    </div>
+    <div class="rounded-2xl p-5 border mb-5" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+      <h4 class="font-bold mb-2" style="color:var(--sun-gold)"><i class="fa-solid fa-terminal ml-1"></i> Claude Code</h4>
+      <pre class="code-block rounded-xl p-4 overflow-x-auto text-xs" style="color:var(--earth)"><code>export ANTHROPIC_BASE_URL="http://localhost:20128/v1"
+export ANTHROPIC_API_KEY="sk_9router_dummy"</code></pre>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-1">Cursor</h4>
+        <p class="text-sm" style="color:var(--muted)">Settings → Models → OpenAI Compatible → آدرس 9Router</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-1">Cline / Roo / Continue</h4>
+        <p class="text-sm" style="color:var(--muted)">Endpoint سازگار با OpenAI را به localhost:20128/v1 تغییر بده.</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-1">Codex / Copilot / Gemini CLI</h4>
+        <p class="text-sm" style="color:var(--muted)">از طریق تنظیمات OpenAI-compatible پشتیبانی می‌شوند.</p>
+      </div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-1">Aider / OpenWebUI</h4>
+        <p class="text-sm" style="color:var(--muted)">هر ابزار سازگار با OpenAI API با تغییر Base URL کار می‌کند.</p>
+      </div>
+    </div>
+    <div class="mt-5 rounded-2xl p-4 border flex gap-3 items-start text-sm" style="border-color:rgba(242,212,146,0.3);background:rgba(242,212,146,0.06)">
+      <i class="fa-solid fa-triangle-exclamation mt-0.5" style="color:var(--saturn)"></i>
+      <div style="color:var(--muted)">کلید API را از بخش <strong style="color:var(--star-white)">Keys</strong> داشبورد کپی کن؛ این کلید محلی است و نباید با کلید اصلی پروایدرها اشتباه گرفته شود.</div>
+    </div>
+  </section>
+
+  <!-- 8. FALLBACK -->
+  <section id="fallback" class="glass rounded-3xl p-8 sm:p-10 section-reveal">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="orbit-badge" style="background:var(--uranus);--glow:rgba(127,224,224,0.6)">۸</div>
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-black">سیستم Fallback سه‌لایه</h2>
+        <span class="text-xs" style="color:var(--muted)">وقتی یک سیاره پشت خورشید می‌رود، بعدی می‌درخشد</span>
+      </div>
+    </div>
+    <div class="grid sm:grid-cols-3 gap-4 mb-6">
+      <div class="rounded-2xl p-6 border transition hover:scale-[1.02]" style="border-color:rgba(255,181,71,0.3);background:rgba(255,181,71,0.06)">
+        <div class="font-bold mb-1" style="color:var(--sun-gold)">Tier 1 — اشتراک</div>
+        <p class="text-sm" style="color:var(--muted)">Claude Code، Codex، Copilot، Gemini و اشتراک‌های پولی. اول این‌ها مصرف می‌شوند. هزینه‌ها ثابت و ماهانه است.</p>
+      </div>
+      <div class="rounded-2xl p-6 border transition hover:scale-[1.02]" style="border-color:rgba(109,139,240,0.3);background:rgba(109,139,240,0.06)">
+        <div class="font-bold mb-1" style="color:var(--neptune)">Tier 2 — ارزان</div>
+        <p class="text-sm" style="color:var(--muted)">GLM، MiniMax، Kimi و مدل‌های pay-as-you-go. با اتمام Tier 1 خودکار فعال می‌شود. هزینه هر درخواست بسیار پایین است.</p>
+      </div>
+      <div class="rounded-2xl p-6 border transition hover:scale-[1.02]" style="border-color:rgba(79,209,197,0.3);background:rgba(79,209,197,0.06)">
+        <div class="font-bold mb-1" style="color:var(--earth)">Tier 3 — رایگان</div>
+        <p class="text-sm" style="color:var(--muted)">Kiro، OpenCode Free، Qwen — آخرین لایه پشتیبان، تقریباً هیچ‌وقت قطع نمی‌شود. محدودیت‌های روزانه دارند.</p>
+      </div>
+    </div>
+    <div class="rounded-2xl p-4 border flex gap-3 items-start text-sm" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+      <i class="fa-solid fa-diagram-project mt-0.5" style="color:var(--sun-gold)"></i>
+      <div style="color:var(--muted)">در داشبورد می‌توانی <strong style="color:var(--star-white)">Combo</strong> بسازی و ترتیب مدل‌ها را دستی مشخص کنی، مثلاً: <code>cc/claude-sonnet → glm/glm-4 → kr/claude-sonnet</code></div>
+    </div>
+  </section>
+
+  <!-- 9. OPTIMIZE -->
+  <section id="optimize" class="glass rounded-3xl p-8 sm:p-10 section-reveal">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="orbit-badge" style="background:var(--neptune);--glow:rgba(109,139,240,0.6)">۹</div>
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-black">بهینه‌سازی توکن: RTK و Caveman Mode</h2>
+        <span class="text-xs" style="color:var(--muted)">کم‌کردن جرم بدون از دست‌دادن مدار</span>
+      </div>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div class="rounded-2xl p-6 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-2" style="color:var(--earth)">🚀 RTK Token Saver</h4>
+        <p class="text-sm" style="color:var(--muted)">خروجی ابزارهایی مثل <code>git diff</code>، <code>grep</code>، <code>ls</code> و درخت فایل را خودکار فشرده می‌کند و معمولاً <strong style="color:var(--star-white)">۲۰–۴۰٪</strong> از توکن ورودی کم می‌کند. برای پروژه‌های بزرگ، این عدد می‌تواند به ۶۰٪ هم برسد.</p>
+        <div class="mt-3 flex items-center gap-2 text-xs" style="color:var(--muted)">
+          <span class="inline-block h-2 w-2 rounded-full bg-green-400"></span>
+          <span>فعال به‌صورت پیش‌فرض</span>
+        </div>
+      </div>
+      <div class="rounded-2xl p-6 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+        <h4 class="font-bold mb-2" style="color:var(--sun-gold)">🪨 Caveman Mode</h4>
+        <p class="text-sm" style="color:var(--muted)">حالت فشرده‌سازی پاسخ مدل؛ می‌تواند تا <strong style="color:var(--star-white)">۶۵٪</strong> از توکن‌های خروجی را ذخیره کند — مخصوصاً برای پاسخ‌های طولانی. با استفاده از خلاصه‌سازی هوشمند، کیفیت پاسخ را حفظ می‌کند.</p>
+        <div class="mt-3 flex items-center gap-2 text-xs" style="color:var(--muted)">
+          <span class="inline-block h-2 w-2 rounded-full bg-yellow-400"></span>
+          <span>قابل فعال‌سازی در داشبورد</span>
+        </div>
+      </div>
+    </div>
+    <div class="mt-5 rounded-2xl p-5 border" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)">
+      <p class="text-sm" style="color:var(--muted)"><span class="font-bold" style="color:var(--star-white)">مثال عددی:</span> یک <code>git diff</code> با ۵۰۰ خط، حدود ۴۰۰۰ توکن مصرف می‌کرد. با RTK به حدود ۲۴۰۰ توکن کاهش می‌یابد (۴۰٪ صرفه‌جویی). در یک ماه با ۱۰۰ درخواست مشابه، بیش از ۱۵۰۰۰۰ توکن ذخیره می‌شود.</p>
+    </div>
+  </section>
+
+  <!-- 10. ADVANCED -->
+  <section id="advanced" class="glass rounded-3xl p-8 sm:p-10 section-reveal">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="orbit-badge" style="background:var(--mercury);--glow:rgba(184,178,167,0.6)">۱۰</div>
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-black">نکات پیشرفته</h2>
+        <span class="text-xs" style="color:var(--muted)">مدارهای دوردست برای کاربران حرفه‌ای</span>
+      </div>
+    </div>
+    <div class="space-y-5" style="color:var(--muted)">
+      <div>
+        <h4 class="font-bold mb-1" style="color:var(--star-white)">دسترسی از بیرون (VPS)</h4>
+        <p class="text-sm mb-2">اگر می‌خواهی روی موبایل یا سیستم دیگر به 9Router دسترسی داشته باشی:</p>
+        <pre class="code-block rounded-xl p-4 overflow-x-auto text-xs" style="color:var(--earth)"><code># با Docker روی سرور
+docker run -d --name 9router -p 20128:20128 \
+  -v /root/.9router:/app/data \
+  -e DATA_DIR=/app/data \
+  decolua/9router:latest
+
+# سپس با Cloudflare Tunnel یا reverse proxy امن‌سازی کن
+# مثال با Cloudflare Tunnel:
+cloudflared tunnel --url http://localhost:20128</code></pre>
+      </div>
+      <div>
+        <h4 class="font-bold mb-1" style="color:var(--star-white)">چند اکانت برای یک پروایدر</h4>
+        <p class="text-sm">می‌توانی چند اکانت برای یک پروایدر اضافه کنی؛ 9Router به‌صورت round-robin و با failover بین آن‌ها جابه‌جا می‌شود. این ویژگی برای مدیریت سهمیه‌های محدود بسیار مفید است.</p>
+      </div>
+      <div>
+        <h4 class="font-bold mb-1" style="color:var(--star-white)">استفاده از Webhook برای اعلان‌ها</h4>
+        <p class="text-sm">می‌توانی برای رویدادهایی مانند اتمام سهمیه، خطا یا تغییر پروایدر، Webhook تنظیم کنی تا به تلگرام، دیسکورد یا ایمیل اعلان ارسال شود.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. TROUBLESHOOT -->
+  <section id="troubleshoot" class="glass rounded-3xl p-8 sm:p-10 section-reveal">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="orbit-badge" style="background:var(--mars);--glow:rgba(239,107,90,0.6)">۱۱</div>
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-black">عیب‌یابی</h2>
+        <span class="text-xs" style="color:var(--muted)">وقتی سیاره از مدار خارج می‌شود</span>
+      </div>
+    </div>
+    <div class="overflow-x-auto rounded-2xl border" style="border-color:var(--border-soft)">
+      <table>
+        <thead><tr><th>خطا / مشکل</th><th>علت ریشه‌ای</th><th>راه‌حل</th></tr></thead>
+        <tbody>
+          <tr><td class="font-medium" style="color:var(--mars)">401 Unauthorized</td><td>نقص در Bearer Token یا انقضای نشست.</td><td>ورود مجدد به داشبورد و تنظیم صحیح API Key. از بخش Keys یک کلید جدید بسازید.</td></tr>
+          <tr><td class="font-medium" style="color:var(--saturn)">429 Rate Limit</td><td>اتمام سهمیه مدل اولیه.</td><td>بررسی عملکرد Fallback و Combo. مطمئن شوید که Tier 2 و 3 به درستی تنظیم شده‌اند.</td></tr>
+          <tr><td class="font-medium" style="color:var(--neptune)">اتصال ابزار برقرار نمی‌شود</td><td>Base URL یا پورت اشتباه.</td><td>مطمئن شو 9Router در حال اجراست و آدرس دقیقاً <code>http://localhost:20128/v1</code> است. همچنین فایروال را بررسی کنید.</td></tr>
+          <tr><td class="font-medium" style="color:var(--earth)">مدل موردنظر در لیست نیست</td><td>پروایدر مربوطه هنوز متصل نشده.</td><td>از داشبورد بخش Providers را بررسی و اتصال را کامل کن. اگر پروایدر پشتیبانی می‌شود، آن را اضافه کنید.</td></tr>
+          <tr><td class="font-medium" style="color:var(--mercury)">خطای CORS در مرورگر</td><td>تنظیمات CORS در 9Router.</td><td>در فایل پیکربندی <code>cors.origin</code> را تنظیم کنید یا از پروکسی معکوس استفاده کنید.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 12. FAQ -->
+  <section id="faq" class="glass rounded-3xl p-8 sm:p-10 section-reveal">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="orbit-badge" style="background:var(--sun-core);--glow:rgba(255,122,61,0.6)">۱۲</div>
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-black">سوالات متداول</h2>
+        <span class="text-xs" style="color:var(--muted)">پرسش‌های رایج ساکنان منظومه</span>
+      </div>
+    </div>
+    <div class="space-y-3">
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)"><h4 class="font-bold mb-1">آیا کاملاً رایگان است؟</h4><p class="text-sm" style="color:var(--muted)">خود نرم‌افزار 9Router رایگان و متن‌باز (MIT) است؛ هزینه فقط مربوط به پروایدرهایی است که استفاده می‌کنی. با Tier 3 می‌توانی تقریباً رایگان کار کنی.</p></div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)"><h4 class="font-bold mb-1">روی ویندوز کار می‌کند؟</h4><p class="text-sm" style="color:var(--muted)">بله؛ با Node.js یا Docker روی ویندوز، مک و لینوکس اجرا می‌شود.</p></div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)"><h4 class="font-bold mb-1">داده‌هایم کجا ذخیره می‌شود؟</h4><p class="text-sm" style="color:var(--muted)">محلی روی سیستم خودت، معمولاً در مسیر <code>~/.9router</code>. امکان فعال‌سازی cloud sync هم وجود دارد.</p></div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)"><h4 class="font-bold mb-1">چطور مدل‌های موجود را ببینم؟</h4><pre class="code-block rounded-xl p-3 mt-2 text-xs" style="color:var(--earth)"><code>curl http://localhost:20128/v1/models</code></pre></div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)"><h4 class="font-bold mb-1">با Aider یا OpenWebUI هم کار می‌کند؟</h4><p class="text-sm" style="color:var(--muted)">بله؛ هر ابزاری که از OpenAI-compatible API پشتیبانی کند، با تغییر Base URL به <code>http://localhost:20128/v1</code> کار می‌کند.</p></div>
+      <div class="rounded-2xl p-5 border card-glow transition" style="border-color:var(--border-soft);background:rgba(255,255,255,0.02)"><h4 class="font-bold mb-1">آیا می‌توانم از 9Router در تیم استفاده کنم؟</h4><p class="text-sm" style="color:var(--muted)">بله؛ با نصب روی VPS و تنظیم <code>JWT_SECRET</code> و <code>REQUIRE_API_KEY</code>، چندین کاربر می‌توانند به یک اینستانس متصل شوند.</p></div>
+    </div>
+  </section>
+
+  <!-- 13. ROADMAP & SUMMARY -->
+  <section id="roadmap" class="glass rounded-3xl p-8 sm:p-10 text-center section-reveal">
+    <div class="flex items-center gap-4 mb-6 justify-center">
+      <div class="orbit-badge" style="background:var(--star-white);--glow:rgba(238,242,255,0.6)">۱۳</div>
+      <h2 class="text-2xl sm:text-3xl font-black">جمع‌بندی و آماده پرتاب؟</h2>
+    </div>
+    <p class="max-w-xl mx-auto mb-8" style="color:var(--muted)">با نصب و فعال‌سازی Fallback سه‌لایه، Media Providers و بهینه‌سازی توکن، اکنون یک منظومه کامل هوش مصنوعی زیر دستان توست. با یک دستور نصب کن، چند پروایدر رایگان اضافه کن و از همین امروز بدون نگرانی از سهمیه کدنویسی کن.</p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="#install" class="px-7 py-3.5 rounded-2xl font-bold transition hover:scale-105" style="background:linear-gradient(135deg,var(--sun-core),var(--sun-gold));color:#05070f;box-shadow:0 0 30px rgba(255,138,61,0.3)">برگرد به نصب</a>
+      <a href="https://github.com/decolua/9router" target="_blank" rel="noopener noreferrer" class="px-7 py-3.5 rounded-2xl font-bold glass glass-hover flex items-center gap-2">ستاره در GitHub <i class="fa-regular fa-star" aria-hidden="true"></i></a>
+      <a href="#dashboard" class="px-7 py-3.5 rounded-2xl font-bold glass glass-hover flex items-center gap-2">مشاهده داشبورد</a>
+    </div>
+    <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto text-xs" style="color:var(--muted)">
+      <div>⚡ نصب سریع</div>
+      <div>🔄 Fallback خودکار</div>
+      <div>🎨 Media Providers</div>
+      <div>💰 صرفه‌جویی توکن</div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="layer glass border-t py-12 text-center text-sm" style="border-color:var(--border-soft);color:var(--muted)">
+  <div class="max-w-7xl mx-auto px-4 space-y-4">
+    <div class="flex flex-wrap justify-center items-center gap-6">
+      <!-- [FIXED: BUG-05] noopener noreferrer on both external links -->
+      <a href="https://github.com/decolua/9router" target="_blank" rel="noopener noreferrer" class="hover:text-[color:var(--sun-gold)] transition flex items-center gap-1"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
+      <span class="hidden sm:inline">•</span>
+      <a href="https://9router.com" target="_blank" rel="noopener noreferrer" class="hover:text-[color:var(--sun-gold)] transition">9router.com</a>
+      <span class="hidden sm:inline">•</span>
+      <!-- [FIXED: BUG-08] Replaced invalid `<a href="#" onclick>` with a real action control (`<button type="button">`) -->
+      <button type="button" id="footer-search-trigger" class="hover:text-[color:var(--sun-gold)] transition text-sm" style="color:inherit;background:none;border:none;cursor:pointer;font:inherit">جستجو</button>
+      <span class="hidden sm:inline">•</span>
+      <a href="#install" class="hover:text-[color:var(--sun-gold)] transition">نصب</a>
+    </div>
+    <p>مرجع فارسی 9Router — طراحی‌شده با تم منظومه شمسی 🪐</p>
+    <p class="text-xs opacity-70">این صفحه آموزشی مستقل است و وابستگی رسمی به پروژه ندارد. <br class="sm:hidden"> نسخه v0.5.5 — تمام محتوا به‌روز است.</p>
+    <div class="flex justify-center gap-4 text-xs">
+      <span>MIT License</span>
+      <span>•</span>
+      <span>منبع‌باز</span>
+      <span>•</span>
+      <span>بدون ردیابی</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---- Progress Bar (syncs aria-valuenow for assistive tech) ----
+  const progressBar = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+    progressBar.style.width = pct + '%';
+    progressBar.setAttribute('aria-valuenow', Math.round(pct));
+  }, { passive: true });
+
+  // ---- Active chip on scroll ----
+  const chips = document.querySelectorAll('[data-jump]');
+  const sections = document.querySelectorAll('main section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (scrollY >= s.offsetTop - 140) current = s.id; });
+    chips.forEach(c => c.classList.toggle('active', c.getAttribute('href') === '#' + current));
+  });
+
+  // ---- Copy code ----
+  function copyCode(btn) {
+    const code = btn.parentElement.querySelector('code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      const original = btn.textContent;
+      btn.textContent = '✅ کپی شد!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  // ---- Tabs ([FIXED: BUG-06] now maintains full ARIA state + arrow-key navigation) ----
+  function switchTab(evt, id) {
+    const tabs = Array.from(document.querySelectorAll('.tab-btn'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+      b.setAttribute('tabindex', '-1');
+    });
+    const panel = document.getElementById(id);
+    panel.classList.remove('hidden');
+    const activeBtn = evt.currentTarget;
+    activeBtn.classList.add('active');
+    activeBtn.setAttribute('aria-selected', 'true');
+    activeBtn.setAttribute('tabindex', '0');
+    activeBtn.focus();
+  }
+  // Keyboard support for the tablist (ArrowLeft/ArrowRight/Home/End)
+  (function setupTabKeyboard() {
+    const tablist = document.querySelector('[role="tablist"]');
+    if (!tablist) return;
+    tablist.addEventListener('keydown', e => {
+      if (!['ArrowLeft','ArrowRight','Home','End'].includes(e.key)) return;
+      const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+      let idx = tabs.indexOf(document.activeElement);
+      if (idx === -1) return;
+      if (e.key === 'ArrowRight') idx = (idx + 1) % tabs.length;        // RTL visual order
+      else if (e.key === 'ArrowLeft') idx = (idx - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') idx = 0;
+      else idx = tabs.length - 1;
+      tabs[idx].click();
+      e.preventDefault();
+    });
+  })();
+
+  // ---- Search filter ----
+  document.getElementById('doc-search').addEventListener('input', e => {
+    const term = e.target.value.toLowerCase().trim();
+    sections.forEach(sec => {
+      sec.style.display = (!term || sec.textContent.toLowerCase().includes(term)) ? '' : 'none';
+    });
+  });
+
+  // ---- Section reveal on scroll ----
+  const revealSections = document.querySelectorAll('.section-reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+  revealSections.forEach(sec => revealObserver.observe(sec));
+
+  // ---- Mobile menu toggle (keeps aria-expanded in sync — part of BUG-03 fix) ----
+  const menuToggle = document.getElementById('menu-toggle');
+  menuToggle.addEventListener('click', function() {
+    const chips = document.getElementById('nav-chips');
+    chips.classList.toggle('hidden');
+    chips.classList.toggle('flex');
+    this.querySelector('i').classList.toggle('fa-bars');
+    this.querySelector('i').classList.toggle('fa-times');
+    this.setAttribute('aria-expanded', String(!chips.classList.contains('hidden')));
+  });
+
+  // ---- Footer search trigger ([FIXED: BUG-08] real button, no fake anchor) ----
+  document.getElementById('footer-search-trigger').addEventListener('click', () => {
+    document.getElementById('doc-search').focus();
+  });
+
+  // ---- Floating particles background ----
+  (function createParticles() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 18; i++) {
+      const el = document.createElement('div');
+      el.className = 'particle';
+      const size = 4 + Math.random() * 12;
+      el.style.width = size + 'px';
+      el.style.height = size + 'px';
+      el.style.left = Math.random() * 100 + '%';
+      el.style.animationDuration = 20 + Math.random() * 30 + 's';
+      el.style.animationDelay = Math.random() * 30 + 's';
+      el.style.opacity = 0.2 + Math.random() * 0.3;
+      container.appendChild(el);
+    }
+  })();
+
+  // ---- Three.js Solar System Background ----
+  // [FIXED: BUG-02] three.js is now loaded with `defer`; init waits for window.load and guards for
+  // THREE availability. The library never blocks first paint/content rendering, and the page
+  // degrades gracefully to the CSS gradient background if the CDN fails.
+  (function initSolarSystem() {
+    if ('loading' === document.readyState) {
+      window.addEventListener('load', startScene, { once: true });
+    } else if (document.readyState === 'interactive') {
+      window.addEventListener('load', startScene, { once: true });
+    } else {
+      startScene();
+    }
+    function startScene() {
+      if (typeof THREE === 'undefined') return; // graceful degradation, no hard error
+      const container = document.getElementById('solar-bg');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 2000);
+    camera.position.set(0, 14, 34);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    // Starfield
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 2800;
+    const starPos = new Float32Array(starCount * 3);
+    const starColors = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+      const r = 350 + Math.random() * 600;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos((Math.random() * 2) - 1);
+      starPos[i*3] = r * Math.sin(phi) * Math.cos(theta);
+      starPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+      starPos[i*3+2] = r * Math.cos(phi);
+      const c = 0.6 + Math.random() * 0.4;
+      starColors[i*3] = c;
+      starColors[i*3+1] = c;
+      starColors[i*3+2] = c + Math.random() * 0.2;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+    const starMat = new THREE.PointsMaterial({ size: 0.8, vertexColors: true, transparent: true, opacity: 0.8 });
+    scene.add(new THREE.Points(starGeo, starMat));
+
+    // Sun
+    const sunGroup = new THREE.Group();
+    const sun = new THREE.Mesh(
+      new THREE.SphereGeometry(3.0, 40, 40),
+      new THREE.MeshBasicMaterial({ color: 0xffb547 })
+    );
+    sunGroup.add(sun);
+    const glow1 = new THREE.Mesh(
+      new THREE.SphereGeometry(3.8, 32, 32),
+      new THREE.MeshBasicMaterial({ color: 0xff7a3d, transparent: true, opacity: 0.15, blending: THREE.AdditiveBlending })
+    );
+    sunGroup.add(glow1);
+    const glow2 = new THREE.Mesh(
+      new THREE.SphereGeometry(5.0, 32, 32),
+      new THREE.MeshBasicMaterial({ color: 0xffaa44, transparent: true, opacity: 0.06, blending: THREE.AdditiveBlending })
+    );
+    sunGroup.add(glow2);
+    scene.add(sunGroup);
+    const sunLight = new THREE.PointLight(0xffcf9c, 1.8, 300);
+    scene.add(sunLight);
+
+    // Planets
+    const planetDefs = [
+      { name:'mercury', color:0xb8b2a7, size:0.35, dist:6.5,  speed:1.6 },
+      { name:'venus',   color:0xe8c07d, size:0.55, dist:8.5,  speed:1.2 },
+      { name:'earth',   color:0x4fd1c5, size:0.6,  dist:11,   speed:1.0, moon:true },
+      { name:'mars',    color:0xef6b5a, size:0.45, dist:13.5, speed:0.8 },
+      { name:'jupiter', color:0xd9a066, size:1.3,  dist:18,   speed:0.45 },
+      { name:'saturn',  color:0xf2d492, size:1.1,  dist:22.5, speed:0.35, ring:true },
+      { name:'uranus',  color:0x7fe0e0, size:0.8,  dist:26.5, speed:0.25 },
+      { name:'neptune', color:0x6d8bf0, size:0.78, dist:30,   speed:0.2 },
+    ];
+    const planets = planetDefs.map(def => {
+      const pivot = new THREE.Object3D();
+      pivot.rotation.y = Math.random() * Math.PI * 2;
+      scene.add(pivot);
+      const mesh = new THREE.Mesh(
+        new THREE.SphereGeometry(def.size, 28, 28),
+        new THREE.MeshStandardMaterial({ color: def.color, roughness: 0.6, metalness: 0.2 })
+      );
+      mesh.position.x = def.dist;
+      pivot.add(mesh);
+      if (def.ring) {
+        const ring = new THREE.Mesh(
+          new THREE.RingGeometry(def.size * 1.4, def.size * 2.2, 54),
+          new THREE.MeshBasicMaterial({ color: def.color, side: THREE.DoubleSide, transparent: true, opacity: 0.45 })
+        );
+        ring.rotation.x = Math.PI / 2.4;
+        mesh.add(ring);
+      }
+      if (def.moon) {
+        const moonPivot = new THREE.Object3D();
+        mesh.add(moonPivot);
+        const moon = new THREE.Mesh(
+          new THREE.SphereGeometry(def.size * 0.25, 14, 14),
+          new THREE.MeshStandardMaterial({ color: 0xcccccc, roughness: 0.9 })
+        );
+        moon.position.x = def.size * 2.2;
+        moonPivot.add(moon);
+        def.moonPivot = moonPivot;
+      }
+      const orbitLine = new THREE.Mesh(
+        new THREE.RingGeometry(def.dist - 0.02, def.dist + 0.02, 100),
+        new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.05, side: THREE.DoubleSide })
+      );
+      orbitLine.rotation.x = Math.PI / 2;
+      scene.add(orbitLine);
+      return { pivot, mesh, def };
+    });
+
+    // Asteroid belt
+    const beltGeo = new THREE.BufferGeometry();
+    const beltCount = 700;
+    const beltPos = new Float32Array(beltCount * 3);
+    for (let i = 0; i < beltCount; i++) {
+      const r = 15 + Math.random() * 2.2;
+      const a = Math.random() * Math.PI * 2;
+      beltPos[i*3] = Math.cos(a) * r;
+      beltPos[i*3+1] = (Math.random() - 0.5) * 0.7;
+      beltPos[i*3+2] = Math.sin(a) * r;
+    }
+    beltGeo.setAttribute('position', new THREE.BufferAttribute(beltPos, 3));
+    const beltMat = new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.15 });
+    scene.add(new THREE.Points(beltGeo, beltMat));
+
+    // Mouse & scroll
+    let mouseX = 0, mouseY = 0, targetX = 0, targetY = 0;
+    document.addEventListener('mousemove', e => {
+      mouseX = (e.clientX / innerWidth - 0.5) * 0.4;
+      mouseY = (e.clientY / innerHeight - 0.5) * 0.2;
+    });
+    let scrollFactor = 0;
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      scrollFactor = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+    });
+
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      sun.rotation.y = t * 0.08;
+      planets.forEach(p => {
+        p.pivot.rotation.y += 0.002 * p.def.speed;
+        p.mesh.rotation.y += 0.01;
+        if (p.def.moonPivot) p.def.moonPivot.rotation.y += 0.03;
+      });
+      targetX += (mouseX - targetX) * 0.03;
+      targetY += (mouseY - targetY) * 0.03;
+      camera.position.x = targetX * 12;
+      camera.position.y = 14 + targetY * 7 - scrollFactor * 16;
+      camera.position.z = 36 - scrollFactor * 18;
+      camera.lookAt(0, 0, 0);
+      renderer.render(scene, camera);
+    }
+    animate();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(innerWidth, innerHeight);
+      });
+    } // end startScene
+  })(); // [FIXED: BUG-02] end guarded Three.js init
+</script>
+</body>
+</html>
