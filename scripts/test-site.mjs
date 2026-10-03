@@ -50,6 +50,13 @@ console.log('INDEX PAGE');
   check('docs grid has 3 cards', d.querySelectorAll('#docs-grid .card').length === 3, 'got ' + d.querySelectorAll('#docs-grid .card').length);
   check('roadmap has 10 cards', d.querySelectorAll('#roadmap .rm-card').length === 10, 'got ' + d.querySelectorAll('#roadmap .rm-card').length);
   check('pipeline cell shown', /\$191,000/.test(d.querySelector('.spec')?.textContent || ''), (d.querySelector('.spec')?.textContent || '').slice(0, 120));
+  check('flagship stories = 3', d.querySelectorAll('#flagships .story').length === 3, 'got ' + d.querySelectorAll('#flagships .story').length);
+  const allPrev = (dom.window.__PROJECTS__ || []).every(p => p.previewReady);
+  check('all 59 previews ready', allPrev === true, 'previewReady all=' + allPrev);
+  const covers = d.querySelectorAll('#grid .card .cover img').length;
+  check('grid cards have images', covers >= 45, 'covers=' + covers);
+  const noThumbs = (dom.window.__PROJECTS__ || []).filter(p => !p.thumb).length;
+  check('every project has thumb', noThumbs === 0, 'missing=' + noThumbs);
   check('est. value present', /\$4[0-9]{2},[0-9]{3}/.test(d.querySelector('.spec .v.gold')?.textContent || ''));
 
   const input = d.querySelector('#search');

@@ -112,6 +112,13 @@ function preparePreview(p) {
     }
     return { ready: false, entry: null };
   }
+  if (p.preview === 'none') {
+    /* server-side project -> generate a live static showcase so all 59 have previews */
+    const s = scanById[p.folder] || { loc: 0, fileCount: 0 };
+    mkdirp(dest);
+    fs.writeFileSync(path.join(dest, 'index.html'), showcaseHtml(p, s));
+    return { ready: true, entry: 'index.html' };
+  }
   return { ready: false, entry: null };
 }
 
@@ -162,6 +169,128 @@ function tickerHtml() {
   return `<div class="ticker" aria-hidden="true"><div class="ticker-track">${items}${items}</div></div>`;
 }
 
+const CAT_COLORS = {
+  'AI & Agents': '#a78bfa',
+  'Trading & Fintech': '#fbbf24',
+  'E-Commerce & Marketplaces': '#f472b6',
+  'Games & 3D': '#22d3ee',
+  'Business & Accounting': '#a9c4de',
+  'Developer Tools': '#ef4435',
+  'Web & Brand Experiences': '#fb923c',
+  'Learning & Content': '#34d399',
+  'Docs & Strategy': '#c5c1b6',
+};
+
+/* generated SVG cover for projects without gallery shots */
+function ensureCover(p, s) {
+  const dest = path.join(DIST, 'projects', p.id);
+  mkdirp(dest);
+  const color = CAT_COLORS[p.category] || '#a78bfa';
+  const name = p.name;
+  const fontSize = name.length > 26 ? 56 : name.length > 16 ? 68 : 84;
+  const escXml = t => String(t).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[m]));
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="${escXml(name)}">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="${color}" stop-opacity=".40"/>
+      <stop offset="1" stop-color="#06060e" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="grid" width="46" height="46" patternUnits="userSpaceOnUse">
+      <path d="M46 0H0V46" fill="none" stroke="#94a3b8" stroke-opacity=".07"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#06060e"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="980" cy="90" r="300" fill="url(#g)"/>
+  <circle cx="120" cy="600" r="240" fill="url(#g)" opacity=".55"/>
+  <rect x="0" y="0" width="1200" height="6" fill="${color}"/>
+  <text x="72" y="110" fill="${color}" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="22" letter-spacing="6">${escXml(p.category.toUpperCase())}</text>
+  <text x="72" y="310" fill="#f0ebdf" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="${fontSize}" letter-spacing="-2">${escXml(name)}</text>
+  <text x="72" y="380" fill="#9d9aa8" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="24">${escXml(String(s.loc).replace(/\B(?=(\d{3})+(?!\d))/g, ','))} LOC · ${s.fileCount} FILES · ${escXml(p.language.toUpperCase())}</text>
+  <rect x="72" y="440" width="240" height="58" rx="8" fill="#12122a" stroke="#fbbf24" stroke-opacity=".5"/>
+  <text x="96" y="478" fill="#fbbf24" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="26" font-weight="700">$${escXml(String(p.value).replace(/\B(?=(\d{3})+(?!\d))/g, ','))} EST.</text>
+  <text x="72" y="580" fill="#62647a" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18" letter-spacing="4">KIA — SOFTWARE PORTFOLIO</text>
+</svg>`;
+  fs.writeFileSync(path.join(dest, 'cover.svg'), svg);
+  return 'cover.svg';
+}
+
+/* self-contained static showcase for server-side projects (so all 59 have live previews) */
+function showcaseHtml(p, s) {
+  const color = CAT_COLORS[p.category] || '#a78bfa';
+  const e = t => String(t).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+  const facts = [
+    ['Category', p.category],
+    ['Primary language', p.language],
+    ['Lines of code', s.loc.toLocaleString('en-US')],
+    ['Files', String(s.fileCount)],
+    ['Status', p.status],
+    ['Est. market value', '$' + p.value.toLocaleString('en-US')],
+  ].map(([k, v]) => `<div class="kv"><span class="k">${e(k)}</span><span class="v">${e(v)}</span></div>`).join('');
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${e(p.name)} — Showcase</title>
+<style>
+:root{--bg:#06060e;--panel:#0c0c18;--panel2:#12122a;--border:#1c2033;--text:#f0ebdf;--muted:#9d9aa8;--faint:#62647a;--accent:#ef4435;--gold:#fbbf24;--c:${color}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+.mono{font-family:ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace}
+.wrap{max-width:960px;margin:0 auto;padding:48px 24px}
+.eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--c);margin-bottom:16px;display:flex;gap:12px;align-items:center}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--c)}
+h1{font-size:clamp(32px,5vw,52px);margin:0 0 10px;letter-spacing:-1.2px}
+.tag{color:var(--muted);font-size:17px;margin:0 0 22px}
+.badge{display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(251,191,36,.45);background:rgba(251,191,36,.07);padding:6px 12px;border-radius:4px;margin-bottom:26px}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:22px;margin-bottom:26px}
+.card{background:linear-gradient(180deg,var(--panel),#0a0a16);border:1px solid var(--border);border-radius:6px;padding:22px}
+.card h4{margin:0 0 14px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);font-family:ui-monospace,Menlo,monospace}
+.card p{margin:0 0 12px;font-size:15px}
+.kv{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--border);font-size:14px}
+.kv:last-child{border-bottom:none}
+.kv .k{color:var(--faint);font-family:ui-monospace,Menlo,monospace;font-size:12.5px}
+.kv .v{font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-family:ui-monospace,Menlo,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:var(--panel2);border:1px solid var(--border);color:var(--muted);padding:5px 10px;border-radius:4px}
+.run{border:1px dashed var(--border);border-radius:6px;padding:18px 20px;font-family:ui-monospace,Menlo,monospace;font-size:13px;color:var(--muted);background:var(--panel)}
+.run b{color:var(--text)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.btn{font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:600;padding:11px 20px;border-radius:4px;border:1px solid var(--border);background:var(--panel2);color:var(--text);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:transparent;color:#fff}
+a.btn{text-decoration:none}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">${e(p.category)}</div>
+  <h1>${e(p.name)}</h1>
+  <p class="tag">${e(p.tagline)}</p>
+  <div class="badge mono">Server-side project · static showcase</div>
+  <div class="grid">
+    <div class="card">
+      <h4>About this project</h4>
+      <p>${e(p.description)}</p>
+      <h4 style="margin-top:18px">Stack</h4>
+      <div class="chips">${p.stack.map(x => `<span class="chip">${e(x)}</span>`).join('')}</div>
+    </div>
+    <div class="card">
+      <h4>Project facts</h4>
+      ${facts}
+    </div>
+  </div>
+  <div class="run mono"><b>RUN LOCALLY</b><br>git clone &lt;repo&gt; &amp;&amp; cd ${e(p.repo)}<br>see README for install (Docker / package manager)<br>this showcase is a static front — the service itself runs on a server.</div>
+  <div class="cta">
+    <a class="btn primary" href="https://github.com/KiaAgentX/portfolio/tree/main/projects/${e(p.folder)}" target="_blank" rel="noopener">View source</a>
+    <a class="btn" href="../../projects/${e(p.id)}/">Back to project page</a>
+  </div>
+</div>
+</body>
+</html>`;
+}
+
 function buildIndex(stats, cards) {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -174,6 +303,7 @@ function buildIndex(stats, cards) {
 <meta property="og:description" content="${esc(config.site.description)}">
 <meta property="og:type" content="website">
 ${FONTS}
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -218,12 +348,16 @@ ${navHtml('.', true)}
     </div>
     <div class="chips" id="chips"></div>
     <div class="grid" id="grid"></div>
+    <section class="flagships" id="flagships" style="display:none">
+      <div class="docs-head"><span class="sec-num">02</span><h2>Flagship Stories</h2><span>deeper dives into the biggest builds</span></div>
+      <div class="stories" id="stories"></div>
+    </section>
     <section class="docs-section" id="docs-section" style="display:none">
-      <div class="docs-head"><span class="sec-num">02</span><h2>Docs &amp; Strategy</h2><span>architecture · roadmap · company</span></div>
+      <div class="docs-head"><span class="sec-num">03</span><h2>Docs &amp; Strategy</h2><span>architecture · roadmap · company</span></div>
       <div class="grid" id="docs-grid" style="padding-bottom:0"></div>
     </section>
     <section class="roadmap-section" id="roadmap-section">
-      <div class="docs-head"><span class="sec-num">03</span><h2>Roadmap — Next 10</h2><span>observed patterns → planned builds · est. ${money(pipelineValue)} pipeline</span></div>
+      <div class="docs-head"><span class="sec-num">04</span><h2>Roadmap — Next 10</h2><span>observed patterns → planned builds · est. ${money(pipelineValue)} pipeline</span></div>
       <div class="roadmap" id="roadmap"></div>
     </section>
   </div></section>
@@ -294,6 +428,7 @@ function buildProjectPage(p, ctx) {
 <title>${esc(p.name)} — ${esc(config.site.title)}</title>
 <meta name="description" content="${esc(p.tagline)}">
 ${FONTS}
+<link rel="icon" type="image/svg+xml" href="${base}/assets/favicon.svg">
 <link rel="stylesheet" href="${base}/assets/style.css">
 <link rel="stylesheet" href="${base}/assets/highlight.min.css">
 </head>
@@ -302,7 +437,7 @@ ${navHtml(base)}
 <main class="container">
   <div class="phead">
     <a class="back" href="${base}/#projects">← All projects</a>
-    ${ctx.gallery.length ? `<div class="p-banner"><img src="${ctx.gallery[0]}" alt="${esc(p.name)} banner" loading="eager"><span class="b-label">${esc(p.category)} · ${esc(p.language)} · ${fmt(ctx.stats.loc)} LOC</span></div>` : ''}
+    ${(() => { const b = ctx.gallery.length ? ctx.gallery[0] : 'cover.svg'; return `<div class="p-banner"><img src="${b}" alt="${esc(p.name)} banner" loading="eager"><span class="b-label">${esc(p.category)} · ${esc(p.language)} · ${fmt(ctx.stats.loc)} LOC</span></div>`; })()}
     <h1>${esc(p.name)}</h1>
     <p class="tag">${esc(p.tagline)}</p>
     <div class="pmeta">
@@ -388,6 +523,8 @@ mkdirp(path.join(DIST, 'projects'));
 for (const f of ['style.css', 'index.js', 'project.js', 'highlight.min.js', 'highlight.min.css']) {
   fs.copyFileSync(path.join(SRC, 'assets', f), path.join(DIST, 'assets', f));
 }
+fs.writeFileSync(path.join(DIST, 'assets', 'favicon.svg'),
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#06060e"/><rect x="4" y="4" width="56" height="56" rx="9" fill="none" stroke="#ef4435" stroke-width="2"/><text x="32" y="42" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="800" font-size="30" fill="#f0ebdf">K</text></svg>`);
 
 const cards = [];
 let totalLoc = 0, totalValue = 0, previewCount = 0;
@@ -401,8 +538,11 @@ for (const p of projects) {
 
   const preview = preparePreview(p);
   const gallery = copyGallery(p);
+  let thumb;
+  if (gallery.length) thumb = `projects/${p.id}/${gallery[0]}`;
+  else { ensureCover(p, s); thumb = `projects/${p.id}/cover.svg`; }
 
-  const ctx = { preview, gallery, stats: s, source };
+  const ctx = { preview, gallery, stats: s, source, thumb };
   mkdirp(path.join(DIST, 'projects', p.id));
   fs.writeFileSync(path.join(DIST, 'projects', p.id, 'index.html'), buildProjectPage(p, ctx));
 
@@ -415,7 +555,7 @@ for (const p of projects) {
     category: p.category, language: p.language, stack: p.stack,
     value: p.value, status: p.status, preview: p.preview,
     previewReady: preview.ready, loc: s.loc, fileCount: s.fileCount,
-    thumb: gallery.length ? `projects/${p.id}/${gallery[0]}` : null,
+    thumb,
   });
 
   const srcSize = Math.round(JSON.stringify(source).length / 1024);
