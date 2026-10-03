@@ -1,0 +1,30 @@
+{
+  "comment": "Professional DOGE Vault settings – load via Settings → Import Config",
+  "balance": 10000,
+  "leverage": 10,
+  "risk_per_trade": 2.0,
+  "timeframe": "1s",
+  "speed": 1000,
+  "trailing_stop": true,
+  "trailing_distance": 0.0005,
+  "breakeven_mode": true,
+  "oco_mode": false,
+  "indicators": {
+    "ma": true,
+    "bb": true,
+    "macd": true
+  },
+  "colors": {
+    "up": "#00ff88",
+    "down": "#eb5757",
+    "bg": "#1a1a2e"
+  },
+  "sound_settings": {
+    "trade": true,
+    "alert": true,
+    "win": true
+  },
+  "historical_speed_multiplier": 60,
+  "elon_signal_frequency": 60,
+  "version": "3.0"
+}

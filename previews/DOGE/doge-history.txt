@@ -1,0 +1,60 @@
+================================================================
+DOGE HISTORY TIMELINE 2013–2026
+Educational reference for DOGE Vault Simulator
+================================================================
+
+2013-12-15  | DOGE launched. Price: $0.0002
+2014-01-20  | First community pump. Price: $0.0008
+2015-03-10  | Crypto winter. Price: $0.0001
+2017-12-12  | Bull run peak. Price: $0.0180
+2018-12-01  | Crypto crash. Price: $0.0020
+2020-03-12  | COVID crash. Price: $0.0012
+2021-01-28  | Reddit pump. Price: $0.0750
+2021-04-15  | Pre‑SNL hype. Price: $0.3500
+2021-05-08  | SNL Dogefather ATH. Price: $0.7400
+2021-06-10  | Post‑SNL correction. Price: $0.1500
+2022-11-09  | FTX collapse. Price: $0.0550
+2023-12-15  | Recovery. Price: $0.0900
+2024-03-20  | ETF hype. Price: $0.1800
+2025-02-14  | Institutional inflow. Price: $0.3500
+2026-05-21  | Current era. Price: $0.2300
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Key events that shape market psychology:
+
+1. ATH (May 2021) – after Elon Musk's SNL appearance ("The Dogefather")
+   - Hype climax, then brutal correction.
+   - Lesson: Buy the rumor, sell the news.
+
+2. Crash after FTX collapse (Nov 2022)
+   - Contagion fear, panic selling.
+   - Lesson: Black swan events can wipe out even strong coins.
+
+3. Reddit pump (Jan 2021)
+   - Retail coordination via social media.
+   - Lesson: Community-driven price spikes are real.
+
+4. COVID crash (Mar 2020)
+   - Global panic, liquidity crunch.
+   - Lesson: Crypto follows macro risk sentiment.
+
+5. Recovery after ETF hype (Mar 2024)
+   - Institutional adoption narrative.
+   - Lesson: Regulatory clarity fuels long-term growth.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+How the simulator uses this data:
+
+The DOGE Vault engine replays these historical events step by step.
+You will see price move from $0.0002 → $0.74 → $0.055 → current.
+After the timeline ends, the market enters "live mode" with
+realistic volatility and regime changes (trending, ranging, volatile).
+
+The speed of the replay is controlled by the "Historical Speed Multiplier"
+in Settings (default 60x). Increase it to move faster through history.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Note: This is historical data only. Past performance does not
+guarantee future results. Use for educational purposes only.
+
+================================================================

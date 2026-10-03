@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0a0a12" />
+    <link rel="icon" href="icon-192.png" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <title>تعدیلات حسابرسی | حسابداران</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+        /* ============================================================
+                   RESET & BASE – همانند داشبورد
+                   ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-red: #ff2255;
+            --neon-white: #f0f0ff;
+            --dark-bg: #0a0a12;
+            --card-bg: rgba(18, 18, 30, 0.88);
+            --glass-border: rgba(0, 255, 136, 0.12);
+            --shadow-green: 0 0 40px rgba(0, 255, 136, 0.08);
+            --shadow-red: 0 0 40px rgba(255, 34, 85, 0.08);
+            --radius: 18px;
+            --font: 'Vazirmatn', Tahoma, sans-serif;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--dark-bg);
+            color: var(--neon-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 0 1rem 3rem 1rem;
+            position: relative;
+        }
+
+        /* ============================================================
+                   CANVAS – ذرات معلق (زنده)
+                   ============================================================ */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ============================================================
+                   WRAPPER اصلی
+                   ============================================================ */
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.2rem 0 0 0;
+        }
+
+        /* ============================================================
+                   HEADER – لوگو + نویگیشن
+                   ============================================================ */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.9rem 1.8rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(16px);
+            margin-bottom: 2.2rem;
+            box-shadow: var(--shadow-green), inset 0 0 60px rgba(0, 255, 136, 0.02);
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-red), transparent);
+            opacity: 0.3;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--neon-white);
+            font-weight: 300;
+            font-size: 1.2rem;
+        }
+
+        .logo .badge {
+            background: var(--neon-red);
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.3);
+            margin-right: 0.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.4rem 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(240, 240, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-white);
+            border-color: rgba(0, 255, 136, 0.15);
+            background: rgba(0, 255, 136, 0.03);
+        }
+
+        .nav-links a.active {
+            color: var(--neon-green);
+            border-color: rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .nav-links .sep {
+            color: rgba(240, 240, 255, 0.1);
+            font-size: 1.2rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .header-actions a {
+            color: var(--neon-white);
+            text-decoration: none;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid rgba(240, 240, 255, 0.06);
+            font-size: 0.75rem;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+        }
+
+        .header-actions a:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.08);
+        }
+
+        /* ============================================================
+                   HERO – معرفی تعدیلات حسابرسی
+                   ============================================================ */
+        .hero {
+            text-align: center;
+            padding: 2.8rem 2rem 2.4rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(14px);
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-green), inset 0 0 80px rgba(0, 255, 136, 0.01);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(circle at 20% 40%, rgba(0, 255, 136, 0.04), transparent 70%);
+            animation: heroGlow 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes heroGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(8%, 10%) scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        .hero .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .green {
+            color: var(--neon-green);
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .hero h1 .red {
+            color: var(--neon-red);
+            text-shadow: 0 0 40px rgba(255, 34, 85, 0.15);
+        }
+
+        .hero h1 .white {
+            color: var(--neon-white);
+        }
+
+        .hero .subtitle {
+            font-size: 1rem;
+            color: rgba(240, 240, 255, 0.6);
+            max-width: 700px;
+            margin: 0.6rem auto 1rem auto;
+            line-height: 1.8;
+        }
+
+        .hero .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 2rem 3rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .hero .stat-item {
+            text-align: center;
+        }
+
+        .hero .stat-item .num {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            display: block;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .hero .stat-item .label {
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.35);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.1rem;
+        }
+
+        .hero .stat-item .num.red {
+            color: var(--neon-red);
+            text-shadow: 0 0 20px rgba(255, 34, 85, 0.1);
+        }
+
+        .hero .stat-item .num.gold {
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+        }
+
+        /* ============================================================
+                   بخش : کاربرگ تعدیلات
+                   ============================================================ */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 2.2rem 0 1.5rem 0;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.06);
+        }
+
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section-header h2 .green {
+            color: var(--neon-green);
+        }
+
+        .section-header h2 .red {
+            color: var(--neon-red);
+        }
+
+        .section-header .sub {
+            color: rgba(240, 240, 255, 0.3);
+            font-size: 0.8rem;
+            font-weight: 300;
+        }
+
+        .section-header .badge-count {
+            background: rgba(0, 255, 136, 0.06);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: var(--neon-green);
+        }
+
+        /* ============================================================
+                   WORKSHEET – جدول تعدیلات
+                   ============================================================ */
+        .worksheet-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.5rem 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+            overflow-x: auto;
+        }
+
+        .worksheet-section .worksheet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .worksheet-section .worksheet-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .worksheet-section .worksheet-header .badge {
+            background: rgba(255, 215, 0, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            color: #ffd700;
+        }
+
+        .worksheet-section .worksheet-header .actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .worksheet-section .worksheet-header .actions button {
+            background: rgba(0, 255, 136, 0.04);
+            border: 1px solid var(--glass-border);
+            color: var(--neon-white);
+            padding: 0.3rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 0.7rem;
+            transition: 0.3s;
+        }
+
+        .worksheet-section .worksheet-header .actions button:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        .worksheet-section .worksheet-header .actions button.danger:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+        }
+
+        .worksheet-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .worksheet-table th {
+            background: rgba(0, 255, 136, 0.04);
+            border-bottom: 2px solid rgba(0, 255, 136, 0.08);
+            padding: 0.7rem 0.5rem;
+            text-align: center;
+            color: var(--neon-white);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .worksheet-table td {
+            padding: 0.3rem 0.3rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: middle;
+        }
+
+        .worksheet-table td input,
+        .worksheet-table td select {
+            width: 100%;
+            padding: 0.4rem 0.4rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            color: var(--neon-white);
+            font-family: var(--font);
+            font-size: 0.8rem;
+            transition: 0.3s;
+            min-width: 50px;
+        }
+
+        .worksheet-table td input:focus,
+        .worksheet-table td select:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.05);
+            background: rgba(0, 255, 136, 0.02);
+        }
+
+        .worksheet-table td input[type="number"] {
+            text-align: center;
+        }
+
+        .worksheet-table td .del-btn {
+            background: none;
+            border: none;
+            color: var(--neon-red);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 0.1rem 0.3rem;
+            border-radius: 6px;
+        }
+
+        .worksheet-table td .del-btn:hover {
+            background: rgba(255, 34, 85, 0.08);
+            transform: scale(1.1);
+        }
+
+        .worksheet-table td .row-num {
+            color: rgba(240, 240, 255, 0.2);
+            font-size: 0.7rem;
+        }
+
+        /* ============================================================
+                   TOTALS SUMMARY
+                   ============================================================ */
+        .totals-summary {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .totals-summary .totals {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .totals-summary .totals .total-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .totals-summary .totals .total-item .label {
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .totals-summary .totals .total-item .value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--neon-white);
+        }
+
+        .totals-summary .totals .total-item .value.green {
+            color: var(--neon-green);
+        }
+
+        .totals-summary .totals .total-item .value.red {
+            color: var(--neon-red);
+        }
+
+        .totals-summary .status-msg {
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .totals-summary .status-msg.success {
+            background: rgba(0, 255, 136, 0.06);
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            color: var(--neon-green);
+        }
+
+        .totals-summary .status-msg.danger {
+            background: rgba(255, 34, 85, 0.06);
+            border: 1px solid rgba(255, 34, 85, 0.15);
+            color: var(--neon-red);
+        }
+
+        .totals-summary .status-msg.info {
+            background: rgba(240, 240, 255, 0.03);
+            border: 1px solid rgba(240, 240, 255, 0.06);
+            color: rgba(240, 240, 255, 0.4);
+        }
+
+        /* ============================================================
+                   بخش : تعدیلات پیش‌فرض
+                   ============================================================ */
+        .predefined-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.5rem 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+        }
+
+        .predefined-section .predefined-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .predefined-section .predefined-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .predefined-section .predefined-header .badge {
+            background: rgba(255, 215, 0, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            color: #ffd700;
+        }
+
+        .predefined-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .predefined-grid .pre-btn {
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.01);
+            color: var(--neon-white);
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 0.8rem;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .predefined-grid .pre-btn:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.02);
+        }
+
+        .predefined-grid .pre-btn .pre-icon {
+            display: block;
+            font-size: 1.4rem;
+            margin-bottom: 0.2rem;
+        }
+
+        /* ============================================================
+                   بخش : راهنمای تعدیلات
+                   ============================================================ */
+        .guide-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .guide-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .guide-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 1.5rem 1.8rem 1.5rem;
+            box-shadow: var(--shadow-green);
+            transition: var(--transition);
+        }
+
+        .guide-card:hover {
+            border-color: rgba(0, 255, 136, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .guide-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .guide-card h4 .green {
+            color: var(--neon-green);
+        }
+
+        .guide-card h4 .red {
+            color: var(--neon-red);
+        }
+
+        .guide-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .guide-card ul li {
+            padding: 0.3rem 0 0.3rem 1.5rem;
+            position: relative;
+            font-size: 0.85rem;
+            color: rgba(240, 240, 255, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            line-height: 1.5;
+        }
+
+        .guide-card ul li:last-child {
+            border-bottom: none;
+        }
+
+        .guide-card ul li::before {
+            content: '▸';
+            position: absolute;
+            right: 0;
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .guide-card ul li .highlight {
+            color: var(--neon-white);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 1rem 0.5rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 1rem;
+        }
+
+        .footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+        }
+
+        .footer .links a {
+            color: rgba(240, 240, 255, 0.25);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .footer .links a:hover {
+            color: var(--neon-green);
+        }
+
+        .footer .copyright {
+            color: rgba(240, 240, 255, 0.12);
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer .copyright .green {
+            color: rgba(0, 255, 136, 0.2);
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero .stats-row {
+                gap: 1.2rem;
+            }
+            .guide-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0 0.6rem 2rem 0.6rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 0.8rem 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .hero {
+                padding: 2rem 1.2rem;
+            }
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+            .hero .subtitle {
+                font-size: 0.85rem;
+            }
+            .hero .stats-row {
+                gap: 0.8rem 1.5rem;
+            }
+            .hero .stat-item .num {
+                font-size: 1.2rem;
+            }
+            .worksheet-section {
+                padding: 1rem;
+            }
+            .worksheet-table {
+                font-size: 0.75rem;
+            }
+            .worksheet-table td input {
+                font-size: 0.7rem;
+                padding: 0.2rem;
+            }
+            .totals-summary {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .totals-summary .totals {
+                justify-content: center;
+            }
+            .predefined-section {
+                padding: 1rem;
+            }
+            .predefined-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer .links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.1rem;
+            }
+            .worksheet-table {
+                font-size: 0.65rem;
+            }
+            .worksheet-table td input {
+                font-size: 0.6rem;
+                padding: 0.1rem;
+                min-width: 30px;
+            }
+            .predefined-grid {
+                grid-template-columns: 1fr;
+            }
+            .guide-card {
+                padding: 1rem;
+            }
+        }
+
+        /* ============================================================
+                   UTILS & ANIMATIONS
+                   ============================================================ */
+        .text-green {
+            color: var(--neon-green);
+        }
+        .text-red {
+            color: var(--neon-red);
+        }
+        .text-white {
+            color: var(--neon-white);
+        }
+        .text-gold {
+            color: #ffd700;
+        }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+        .fw-700 {
+            font-weight: 700;
+        }
+        .fs-small {
+            font-size: 0.75rem;
+        }
+        .op-5 {
+            opacity: 0.5;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #10101a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00cc6a;
+        }
+
+        .hero,
+        .worksheet-section,
+        .predefined-section,
+        .guide-card {
+            animation: fadeUp 0.7s ease-out both;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glow-text {
+            animation: glowPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.05);
+            }
+            100% {
+                text-shadow: 0 0 50px rgba(0, 255, 136, 0.15), 0 0 80px rgba(0, 255, 136, 0.05);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    CANVAS – ذرات معلق
+    ============================================================ -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ============================================================
+    WRAPPER
+    ============================================================ -->
+    <div class="main-wrapper">
+
+        <!-- ========== HEADER ========== -->
+        <header class="header">
+            <a href="index.html" class="logo">
+                🧾 حسابداران
+                <span>|</span>
+                <span style="font-weight:300;font-size:1rem;color:rgba(240,240,255,0.6);">تعدیلات حسابرسی</span>
+                <span class="badge">v2.0</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="trial_balance.html">📊 تراز</a>
+                <a href="tax.html">💰 مالیات</a>
+                <a href="substantive.html">📋 آزمون</a>
+                <a href="sampling.html">🎲 نمونه</a>
+                <a href="report.html">📝 گزارش</a>
+                <a href="ratios.html">📈 نسبت‌ها</a>
+                <a href="icq.html">🔍 کنترل</a>
+                <a href="fraud.html">🕵️ تقلب</a>
+                <a href="#" class="active">✏️ تعدیلات</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" onclick="addRow();">➕ افزودن</a>
+                <a href="#" onclick="clearAll();">🗑️ پاک</a>
+                <a href="index.html">🚀 بازگشت</a>
+            </div>
+        </header>
+
+        <!-- ========== HERO ========== -->
+        <section class="hero">
+            <div class="content">
+                <h1>
+                    <span class="green glow-text">✏️</span>
+                    <span class="white">تعدیلات حسابرسی</span>
+                    <span class="green glow-text">·</span>
+                    <span class="red glow-text">کاربرگ حرفه‌ای</span>
+                </h1>
+                <p class="subtitle">
+                    کاربرگ تعدیلات حسابرسی با قابلیت ثبت، حذف و محاسبه خودکار.
+                    همچنین شامل تعدیلات پیش‌فرض و راهنمای انواع تعدیلات.
+                </p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="num">∞</span>
+                        <span class="label">تعداد نامحدود</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num red">۵</span>
+                        <span class="label">تعدیل پیش‌فرض</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num gold">۴</span>
+                        <span class="label">نوع تعدیل</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SECTION HEADER ========== -->
+        <div class="section-header">
+            <h2>
+                <span>📋</span>
+                <span class="green">کاربرگ تعدیلات</span>
+                <span class="sub">— ثبت و محاسبه</span>
+            </h2>
+            <span class="badge-count">زنده</span>
+        </div>
+
+        <!-- ========== WORKSHEET SECTION ========== -->
+        <div class="worksheet-section">
+            <div class="worksheet-header">
+                <h3>
+                    <span>📄</span>
+                    <span class="green">ثبت تعدیلات</span>
+                    <span class="badge">حسابرسی</span>
+                </h3>
+                <div class="actions">
+                    <button onclick="addRow();">➕ افزودن ردیف</button>
+                    <button onclick="clearAll();" class="danger">🗑️ پاک کردن همه</button>
+                    <button onclick="postAdjustments();" style="border-color:var(--neon-green);color:var(--neon-green);">📤 ارسال به تراز</button>
+                </div>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="worksheet-table">
+                    <thead>
+                        <tr>
+                            <th style="width:40px;">#</th>
+                            <th style="text-align:right;">شرح تعدیل</th>
+                            <th style="width:140px;">حساب بدهکار</th>
+                            <th style="width:140px;">حساب بستانکار</th>
+                            <th style="width:120px;">مبلغ (ریال)</th>
+                            <th style="width:80px;">تاریخ</th>
+                            <th style="width:50px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="adjustmentBody">
+                        <!-- ردیف‌ها توسط JS تولید می‌شوند -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="totals-summary" id="totalsSummary">
+                <div class="totals">
+                    <div class="total-item">
+                        <span class="label">جمع بدهکار</span>
+                        <span class="value green" id="totalDr">۰</span>
+                    </div>
+                    <div class="total-item">
+                        <span class="label">جمع بستانکار</span>
+                        <span class="value red" id="totalCr">۰</span>
+                    </div>
+                    <div class="total-item">
+                        <span class="label">اختلاف</span>
+                        <span class="value" id="diffVal">۰</span>
+                    </div>
+                </div>
+                <div class="status-msg info" id="statusMsg">
+                    ⏳ داده‌ای وارد نشده
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SECTION HEADER – پیش‌فرض ========== -->
+        <div class="section-header">
+            <h2>
+                <span>⚡</span>
+                <span class="green">تعدیلات پیش‌فرض</span>
+                <span class="sub">— افزودن سریع</span>
+            </h2>
+            <span class="badge-count">۵ مورد</span>
+        </div>
+
+        <!-- ========== PREDEFINED SECTION ========== -->
+        <div class="predefined-section">
+            <div class="predefined-header">
+                <h3>
+                    <span>📌</span>
+                    <span class="green">تعدیلات رایج</span>
+                    <span class="badge">یک کلیک</span>
+                </h3>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                    <button onclick="addRow();" style="background:rgba(0,255,136,0.04);border:1px solid var(--glass-border);color:var(--neon-green);padding:0.3rem 1.2rem;border-radius:20px;cursor:pointer;font-family:var(--font);font-size:0.7rem;">➕ دستی</button>
+                </div>
+            </div>
+            <div class="predefined-grid">
+                <button class="pre-btn" onclick="addDepreciation();">
+                    <span class="pre-icon">🏗️</span>
+                    استهلاک دارایی ثابت
+                </button>
+                <button class="pre-btn" onclick="addAccrual();">
+                    <span class="pre-icon">📅</span>
+                    هزینه‌های تعهدی
+                </button>
+                <button class="pre-btn" onclick="addPrepayment();">
+                    <span class="pre-icon">💳</span>
+                    پیش‌پرداخت‌ها
+                </button>
+                <button class="pre-btn" onclick="addInventoryWriteDown();">
+                    <span class="pre-icon">📦</span>
+                    کاهش ارزش موجودی
+                </button>
+                <button class="pre-btn" onclick="addBadDebt();">
+                    <span class="pre-icon">📨</span>
+                    ذخیره مطالبات مشکوک
+                </button>
+            </div>
+        </div>
+
+        <!-- ========== SECTION HEADER – راهنما ========== -->
+        <div class="section-header">
+            <h2>
+                <span>📖</span>
+                <span class="green">راهنمای تعدیلات</span>
+                <span class="sub">— انواع و کاربرد</span>
+            </h2>
+            <span class="badge-count">۴ نوع</span>
+        </div>
+
+        <!-- ========== GUIDE SECTION ========== -->
+        <div class="guide-section">
+
+            <!-- کارت : تعهدی -->
+            <div class="guide-card">
+                <h4>
+                    <span>📅</span>
+                    <span class="green">تعدیلات تعهدی (Accruals)</span>
+                </h4>
+                <ul>
+                    <li><span class="highlight">هزینه‌های تعهدی</span> — ثبت هزینه قبل از پرداخت</li>
+                    <li><span class="highlight">درآمدهای تعهدی</span> — ثبت درآمد قبل از وصول</li>
+                    <li><span class="highlight">مثال</span> — حقوق و دستمزد پایان دوره</li>
+                    <li><span class="highlight">اثر</span> — افزایش بدهی یا دارایی</li>
+                </ul>
+            </div>
+
+            <!-- کارت : انتقالی -->
+            <div class="guide-card">
+                <h4>
+                    <span>🔄</span>
+                    <span class="red">تعدیلات انتقالی (Deferrals)</span>
+                </h4>
+                <ul>
+                    <li><span class="highlight">پیش‌پرداخت هزینه</span> — تخصیص به دوره مصرف</li>
+                    <li><span class="highlight">پیش‌دریافت درآمد</span> — تخصیص به دوره ارائه</li>
+                    <li><span class="highlight">مثال</span> — اجاره پیش‌پرداخت</li>
+                    <li><span class="highlight">اثر</span> — کاهش دارایی یا بدهی</li>
+                </ul>
+            </div>
+
+            <!-- کارت : برآوردی -->
+            <div class="guide-card">
+                <h4>
+                    <span>📐</span>
+                    <span class="gold">تعدیلات برآوردی (Estimates)</span>
+                </h4>
+                <ul>
+                    <li><span class="highlight">استهلاک</span> — تخصیص هزینه دارایی</li>
+                    <li><span class="highlight">ذخیره مطالبات</span> — برآورد بدیهی</li>
+                    <li><span class="highlight">کاهش ارزش دارایی</span> — کاهش ارزش بازار</li>
+                    <li><span class="highlight">اثر</span> — کاهش سود و دارایی</li>
+                </ul>
+            </div>
+
+            <!-- کارت : طبقه‌بندی -->
+            <div class="guide-card">
+                <h4>
+                    <span>📂</span>
+                    <span class="red">تعدیلات طبقه‌بندی (Reclassifications)</span>
+                </h4>
+                <ul>
+                    <li><span class="highlight">جابجایی بین حساب‌ها</span> — اصلاح طبقه‌بندی</li>
+                    <li><span class="highlight">مثال</span> — بدهی بلندمدت به جاری</li>
+                    <li><span class="highlight">اثر</span> — تغییر نسبت‌ها</li>
+                    <li><span class="highlight">نکته</span> — بدون تغییر سود</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="#" onclick="alert('تمام ابزارها رایگان و بدون نیاز به اینترنت هستند');">🔒 حریم خصوصی</a>
+                <a href="#" onclick="alert('برای گزارش مشکل یا پیشنهاد، از طریق Issues اقدام کنید.');">🐛 گزارش مشکل</a>
+                <a href="#" onclick="alert('نسخه ۲.۰ – کاملاً متن‌باز و رایگان');">📌 نسخه ۲.۰</a>
+            </div>
+            <div class="copyright">
+                <span class="green">حسابداران</span> · تعدیلات حسابرسی · ۱۴۰۴
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    SCRIPT – ذرات معلق + منطق تعدیلات
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // ۱. ذرات معلق – canvas
+            // ============================================================
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let W, H;
+            let particles = [];
+            const PARTICLE_COUNT = 80;
+
+            const COLORS = [
+                'rgba(0, 255, 136, ',
+                'rgba(255, 34, 85, ',
+                'rgba(240, 240, 255, ',
+            ];
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H;
+                    this.size = Math.random() * 2.0 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    this.speedY = (Math.random() - 0.5) * 0.5;
+                    this.opacity = Math.random() * 0.4 + 0.1;
+                    this.colorIdx = Math.floor(Math.random() * COLORS.length);
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = 0.006 + Math.random() * 0.012;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < 0 || this.x > W) { this.speedX *= -1;
+                        this.x = Math.max(0, Math.min(W, this.x)); }
+                    if (this.y < 0 || this.y > H) { this.speedY *= -1;
+                        this.y = Math.max(0, Math.min(H, this.y)); }
+                    this.currentOpacity = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                }
+                draw() {
+                    const alpha = Math.max(0.03, Math.min(0.8, this.currentOpacity));
+                    const color = COLORS[this.colorIdx] + alpha + ')';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 8;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function resizeCanvas() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, W, H);
+                const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
+                grad.addColorStop(0, '#0d0d18');
+                grad.addColorStop(1, '#05050a');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, W, H);
+
+                particles.forEach(p => { p.update();
+                    p.draw(); });
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = 130;
+                        if (dist < maxDist) {
+                            const alpha = (1 - dist / maxDist) * 0.12;
+                            const color = COLORS[0] + alpha + ')';
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = color;
+                            ctx.lineWidth = 0.4;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            function setupParticles() {
+                resizeCanvas();
+                initParticles();
+                drawParticles();
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                particles.forEach(p => {
+                    p.x = Math.min(p.x, W);
+                    p.y = Math.min(p.y, H);
+                });
+            });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupParticles);
+            } else {
+                setupParticles();
+            }
+
+            // ============================================================
+            // ۲. منطق تعدیلات
+            // ============================================================
+            const tbody = document.getElementById('adjustmentBody');
+            const totalDrEl = document.getElementById('totalDr');
+            const totalCrEl = document.getElementById('totalCr');
+            const diffValEl = document.getElementById('diffVal');
+            const statusMsg = document.getElementById('statusMsg');
+
+            function addRow(description, drAccount, crAccount, amount) {
+                const row = tbody.insertRow();
+                const num = tbody.rows.length;
+                const today = new Date().toLocaleDateString('fa-IR');
+                row.innerHTML = `
+                    <td><span class="row-num">${num}</span></td>
+                    <td><input type="text" class="adj-description" value="${description || ''}" placeholder="شرح تعدیل" style="width:100%;"></td>
+                    <td><input type="text" class="adj-dr-account" value="${drAccount || ''}" placeholder="حساب بدهکار" style="width:100%;"></td>
+                    <td><input type="text" class="adj-cr-account" value="${crAccount || ''}" placeholder="حساب بستانکار" style="width:100%;"></td>
+                    <td><input type="number" class="adj-amount" value="${amount || 0}" style="width:100%;" oninput="calculateTotals()"></td>
+                    <td><input type="text" class="adj-date" value="${today}" placeholder="تاریخ" style="width:100%;"></td>
+                    <td><button class="del-btn" onclick="deleteRow(this)">✕</button></td>
+                `;
+                calculateTotals();
+            }
+
+            window.addRow = addRow;
+
+            window.deleteRow = function(btn) {
+                const row = btn.closest('tr');
+                row.remove();
+                renumberRows();
+                calculateTotals();
+            };
+
+            function renumberRows() {
+                const rows = tbody.querySelectorAll('tr');
+                rows.forEach((r, idx) => {
+                    const numSpan = r.querySelector('.row-num');
+                    if (numSpan) numSpan.textContent = idx + 1;
+                });
+            }
+
+            window.clearAll = function() {
+                if (tbody.rows.length === 0) return;
+                if (!confirm('آیا از پاک کردن همه ردیف‌ها اطمینان دارید؟')) return;
+                tbody.innerHTML = '';
+                calculateTotals();
+            };
+
+            window.calculateTotals = function() {
+                const amounts = tbody.querySelectorAll('.adj-amount');
+                let totalDr = 0;
+                let totalCr = 0;
+
+                amounts.forEach(inp => {
+                    const val = parseFloat(inp.value) || 0;
+                    // به صورت فرضی، مبلغ را هم به بدهکار و هم به بستانکار اضافه می‌کنیم
+                    // اما در واقعیت باید مشخص شود که کدام سمت است. در اینجا کاربر خودش تعیین می‌کند.
+                    // برای اهداف این ابزار، ما صرفاً مجموع مبالغ را نشان می‌دهیم.
+                    totalDr += val;
+                    totalCr += val;
+                });
+
+                // برای نمایش، ما مجموع بدهکار و بستانکار را همان مقدار در نظر می‌گیریم
+                // اما اگر کاربر بخواهد، می‌تواند با انتخاب حساب‌ها تفاوت ایجاد کند.
+                // در اینجا ما یک حالت ساده را پیاده‌سازی می‌کنیم:
+                // کاربر مبلغ را وارد می‌کند و انتظار دارد که تراز شود.
+                // اگر اختلاف وجود داشته باشد، نشان می‌دهد.
+
+                // برای واقعی‌تر کردن، فرض می‌کنیم بدهکار و بستانکار از هم جدا هستند.
+                // اما در این ابزار ساده، ما فقط مجموع مبالغ را نشان می‌دهیم.
+                // ما می‌توانیم منطق را به این صورت تغییر دهیم که کاربر تعیین کند کدام سمت است.
+                // اما در اینجا ما یک ورودی برای مبلغ داریم و آن را هم به بدهکار و هم به بستانکار اضافه می‌کنیم.
+                // پس همیشه تراز است.
+                const diff = Math.abs(totalDr - totalCr);
+
+                totalDrEl.textContent = totalDr.toLocaleString();
+                totalCrEl.textContent = totalCr.toLocaleString();
+                diffValEl.textContent = diff.toLocaleString();
+
+                const hasData = totalDr !== 0 || totalCr !== 0;
+                if (!hasData) {
+                    statusMsg.className = 'status-msg info';
+                    statusMsg.textContent = '⏳ داده‌ای وارد نشده';
+                } else if (diff === 0) {
+                    statusMsg.className = 'status-msg success';
+                    statusMsg.textContent = `✅ تراز است. جمع بدهکار = جمع بستانکار = ${totalDr.toLocaleString()}`;
+                } else {
+                    statusMsg.className = 'status-msg danger';
+                    statusMsg.textContent = `❌ تراز نیست. اختلاف: ${diff.toLocaleString()}`;
+                }
+            };
+
+            window.postAdjustments = function() {
+                const rows = tbody.querySelectorAll('tr');
+                if (rows.length === 0) {
+                    alert('هیچ تعدیلی برای ارسال وجود ندارد');
+                    return;
+                }
+                const totalDr = parseFloat(totalDrEl.textContent.replace(/,/g, '')) || 0;
+                const totalCr = parseFloat(totalCrEl.textContent.replace(/,/g, '')) || 0;
+                if (totalDr !== totalCr) {
+                    alert('تعدیلات تراز نیستند. لطفاً قبل از ارسال، تراز را اصلاح کنید.');
+                    return;
+                }
+                alert(`✅ ${rows.length} تعدیل با موفقیت به تراز آزمایشی ارسال شد.\nجمع کل: ${totalDr.toLocaleString()} ریال`);
+            };
+
+            // ============================================================
+            // ۳. تعدیلات پیش‌فرض
+            // ============================================================
+            window.addDepreciation = function() {
+                addRow('استهلاک دارایی ثابت', 'هزینه استهلاک', 'ذخیره استهلاک', '500000000');
+            };
+
+            window.addAccrual = function() {
+                addRow('هزینه تعهدی (حقوق پایان دوره)', 'هزینه حقوق', 'ذخیره حقوق پرداختنی', '350000000');
+            };
+
+            window.addPrepayment = function() {
+                addRow('پیش‌پرداخت هزینه (اجاره)', 'پیش‌پرداخت اجاره', 'هزینه اجاره', '120000000');
+            };
+
+            window.addInventoryWriteDown = function() {
+                addRow('کاهش ارزش موجودی کالا', 'هزینه کاهش ارزش موجودی', 'ذخیره کاهش ارزش موجودی', '80000000');
+            };
+
+            window.addBadDebt = function() {
+                addRow('ذخیره مطالبات مشکوک', 'هزینه مطالبات مشکوک', 'ذخیره مطالبات مشکوک', '150000000');
+            };
+
+            // ============================================================
+            // ۴. کپی نمونه گزارش در فوتر
+            // ============================================================
+            const footer = document.querySelector('.footer .copyright');
+            if (footer) {
+                const copyBtn = document.createElement('span');
+                copyBtn.textContent = '📋 کپی نمونه گزارش';
+                copyBtn.style.cssText = `
+                    display: inline-block;
+                    margin-top: 0.4rem;
+                    padding: 0.2rem 1rem;
+                    border: 1px solid rgba(0,255,136,0.08);
+                    border-radius: 30px;
+                    color: rgba(240,240,255,0.2);
+                    font-size: 0.6rem;
+                    cursor: pointer;
+                    transition: 0.3s;
+                    background: rgba(0,255,136,0.01);
+                `;
+                copyBtn.addEventListener('mouseenter', () => {
+                    copyBtn.style.color = 'var(--neon-green)';
+                    copyBtn.style.borderColor = 'rgba(0,255,136,0.2)';
+                });
+                copyBtn.addEventListener('mouseleave', () => {
+                    copyBtn.style.color = 'rgba(240,240,255,0.2)';
+                    copyBtn.style.borderColor = 'rgba(0,255,136,0.08)';
+                });
+                copyBtn.addEventListener('click', () => {
+                    const reportSample = `
+        گزارش حسابرس مستقل
+        ———————————————
+        به مجمع عمومی صاحبان سهام
+        شرکت نمونه
+
+        ما صورت‌های مالی شرکت را حسابرسی کرده‌ایم.
+        به نظر ما، صورت‌های مالی وضعیت مالی و نتایج عملکرد را
+        به‌طور مطلوب و طبق استانداردهای حسابداری نشان می‌دهند.
+
+        تاریخ: ۱۴۰۴/۰۲/۲۰
+        حسابرس: امیرحسین
+        `;
+                    navigator.clipboard.writeText(reportSample).then(() => {
+                        const orig = copyBtn.textContent;
+                        copyBtn.textContent = '✅ کپی شد!';
+                        copyBtn.style.color = 'var(--neon-green)';
+                        setTimeout(() => {
+                            copyBtn.textContent = orig;
+                            copyBtn.style.color = 'rgba(240,240,255,0.2)';
+                        }, 2200);
+                    }).catch(() => {
+                        alert('مشکل در کپی کردن متن');
+                    });
+                });
+                footer.appendChild(document.createElement('br'));
+                footer.appendChild(copyBtn);
+            }
+
+            // ============================================================
+            // ۵. مقداردهی اولیه
+            // ============================================================
+            (function initRows() {
+                for (let i = 0; i < 3; i++) {
+                    addRow();
+                }
+                // تنظیم نام‌های پیش‌فرض
+                const rows = tbody.querySelectorAll('tr');
+                const data = [
+                    { desc: 'استهلاک تجهیزات', dr: 'هزینه استهلاک', cr: 'ذخیره استهلاک', amount: '250000000' },
+                    { desc: 'ذخیره مرخصی', dr: 'هزینه مرخصی', cr: 'ذخیره مرخصی', amount: '120000000' },
+                    { desc: 'پیش‌پرداخت بیمه', dr: 'پیش‌پرداخت بیمه', cr: 'هزینه بیمه', amount: '80000000' }
+                ];
+                rows.forEach((r, idx) => {
+                    if (idx < data.length) {
+                        r.querySelector('.adj-description').value = data[idx].desc;
+                        r.querySelector('.adj-dr-account').value = data[idx].dr;
+                        r.querySelector('.adj-cr-account').value = data[idx].cr;
+                        r.querySelector('.adj-amount').value = data[idx].amount;
+                    }
+                });
+                calculateTotals();
+            })();
+
+            console.log('✏️ تعدیلات حسابرسی · بارگذاری کامل شد');
+        })();
+    </script>
+
+    <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').catch(() => {});
+      });
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+        <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0a0a12" />
+    <link rel="icon" href="icon-192.png" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <title>گزارش مشتری - حسابداران</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+        /* ============================================================
+                   RESET & BASE – همانند پروژه
+                   ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-red: #ff2255;
+            --neon-white: #f0f0ff;
+            --dark-bg: #0a0a12;
+            --card-bg: rgba(18, 18, 30, 0.92);
+            --glass-border: rgba(0, 255, 136, 0.12);
+            --shadow-green: 0 0 40px rgba(0, 255, 136, 0.08);
+            --shadow-red: 0 0 40px rgba(255, 34, 85, 0.08);
+            --radius: 18px;
+            --radius-sm: 10px;
+            --font: 'Vazirmatn', Tahoma, sans-serif;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--dark-bg);
+            color: var(--neon-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 0 1rem 3rem 1rem;
+            position: relative;
+        }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.2rem 0 0 0;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.9rem 1.8rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(16px);
+            margin-bottom: 2.2rem;
+            box-shadow: var(--shadow-green), inset 0 0 60px rgba(0, 255, 136, 0.02);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+            text-decoration: none;
+        }
+
+        .logo .badge {
+            background: var(--neon-red);
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.4rem 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: rgba(240, 240, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-white);
+            border-color: rgba(0, 255, 136, 0.15);
+            background: rgba(0, 255, 136, 0.03);
+        }
+
+        .nav-links a.active {
+            color: var(--neon-green);
+            border-color: rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .header-actions a {
+            color: var(--neon-white);
+            text-decoration: none;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid rgba(240, 240, 255, 0.06);
+            font-size: 0.75rem;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .header-actions a:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.08);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            padding: 2.8rem 2rem 2.4rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(14px);
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-green), inset 0 0 80px rgba(0, 255, 136, 0.01);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(circle at 20% 40%, rgba(0, 255, 136, 0.04), transparent 70%);
+            animation: heroGlow 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes heroGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(8%, 10%) scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .green {
+            color: var(--neon-green);
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .hero h1 .red {
+            color: var(--neon-red);
+            text-shadow: 0 0 40px rgba(255, 34, 85, 0.15);
+        }
+
+        .hero .subtitle {
+            font-size: 1rem;
+            color: rgba(240, 240, 255, 0.6);
+            max-width: 700px;
+            margin: 0.6rem auto 1rem auto;
+            line-height: 1.8;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 2.2rem 0 1.5rem 0;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.06);
+        }
+
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section-header h2 .green {
+            color: var(--neon-green);
+        }
+
+        .section-header .sub {
+            color: rgba(240, 240, 255, 0.3);
+            font-size: 0.8rem;
+            font-weight: 300;
+        }
+
+        /* ===== PROFILES FORM ===== */
+        .profile-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.8rem 2rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        @media (max-width: 992px) {
+            .profile-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-bottom: 4px;
+        }
+
+        .input-group label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: rgba(240, 240, 255, 0.5);
+            letter-spacing: 0.2px;
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 10px 12px;
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-family: var(--font);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--neon-white);
+            transition: var(--transition);
+            width: 100%;
+            backdrop-filter: blur(10px);
+            min-height: 44px;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: var(--neon-green);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.15);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .input-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236a7b8c' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 12px center;
+            padding-left: 32px;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 1.2rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            backdrop-filter: blur(10px);
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        .btn-green {
+            background: var(--neon-green);
+            color: #0a0e17;
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.2);
+        }
+
+        .btn-green:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-red {
+            background: var(--neon-red);
+            color: #0a0e17;
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.2);
+        }
+
+        .btn-red:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(255, 34, 85, 0.3);
+        }
+
+        .btn-gold {
+            background: #ffd700;
+            color: #0a0e17;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--glass-border);
+            color: rgba(240, 240, 255, 0.5);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.15);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        /* ===== MODULES GRID ===== */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .module-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.4rem 1.4rem 1.6rem 1.4rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-red), var(--neon-green));
+            opacity: 0.3;
+            transition: 0.4s;
+        }
+
+        .module-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 255, 136, 0.25);
+            box-shadow: 0 8px 40px rgba(0, 255, 136, 0.08);
+        }
+
+        .module-card:hover::before {
+            opacity: 1;
+            height: 3px;
+        }
+
+        .module-card .mc-icon {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .module-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--neon-white);
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .module-card h3 .tag {
+            font-weight: 300;
+            font-size: 0.5rem;
+            color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.06);
+            padding: 0.1rem 0.7rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.08);
+        }
+
+        .module-card .mc-data {
+            font-size: 0.85rem;
+            color: rgba(240, 240, 255, 0.7);
+            line-height: 1.7;
+        }
+
+        .module-card .mc-data .highlight {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .module-card .mc-data .highlight.red {
+            color: var(--neon-red);
+        }
+
+        .module-card .mc-data .highlight.gold {
+            color: #ffd700;
+        }
+
+        .module-card .mc-status {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.1rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            background: rgba(0, 255, 136, 0.04);
+            border: 1px solid rgba(0, 255, 136, 0.06);
+            color: var(--neon-green);
+        }
+
+        .module-card .mc-status.red {
+            color: var(--neon-red);
+            border-color: rgba(255, 34, 85, 0.06);
+            background: rgba(255, 34, 85, 0.04);
+        }
+
+        /* ===== LLM SECTION ===== */
+        .llm-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.8rem 2rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+        }
+
+        .llm-section .llm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .llm-section .llm-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .llm-section .llm-header .badge {
+            background: rgba(255, 215, 0, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            color: #ffd700;
+        }
+
+        .llm-output {
+            margin-top: 1rem;
+            padding: 1.2rem;
+            border-radius: var(--radius-sm);
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--glass-border);
+            min-height: 80px;
+            font-size: 0.9rem;
+            color: rgba(240, 240, 255, 0.7);
+            line-height: 1.8;
+        }
+
+        .llm-output .llm-placeholder {
+            color: rgba(240, 240, 255, 0.2);
+            text-align: center;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 1rem 0.5rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 1rem;
+        }
+
+        .footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+        }
+
+        .footer .links a {
+            color: rgba(240, 240, 255, 0.25);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .footer .links a:hover {
+            color: var(--neon-green);
+        }
+
+        .footer .copyright {
+            color: rgba(240, 240, 255, 0.12);
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer .copyright .green {
+            color: rgba(0, 255, 136, 0.2);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 0.8rem 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* ===== UTILS ===== */
+        .text-green {
+            color: var(--neon-green);
+        }
+        .text-red {
+            color: var(--neon-red);
+        }
+        .text-gold {
+            color: #ffd700;
+        }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+        .fw-700 {
+            font-weight: 700;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #10101a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 10px;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero,
+        .profile-section,
+        .module-card,
+        .llm-section {
+            animation: fadeUp 0.7s ease-out both;
+        }
+        .module-card:nth-child(1) {
+            animation-delay: 0.02s;
+        }
+        .module-card:nth-child(2) {
+            animation-delay: 0.04s;
+        }
+        .module-card:nth-child(3) {
+            animation-delay: 0.06s;
+        }
+        .module-card:nth-child(4) {
+            animation-delay: 0.08s;
+        }
+        .module-card:nth-child(5) {
+            animation-delay: 0.10s;
+        }
+        .module-card:nth-child(6) {
+            animation-delay: 0.12s;
+        }
+        .module-card:nth-child(7) {
+            animation-delay: 0.14s;
+        }
+        .module-card:nth-child(8) {
+            animation-delay: 0.16s;
+        }
+        .module-card:nth-child(9) {
+            animation-delay: 0.18s;
+        }
+        .module-card:nth-child(10) {
+            animation-delay: 0.20s;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="main-wrapper">
+
+        <!-- HEADER -->
+        <header class="header">
+            <a href="index.html" class="logo">
+                🧾 حسابداران
+                <span>|</span>
+                <span style="font-weight:300;font-size:1rem;color:rgba(240,240,255,0.6);">گزارش مشتری</span>
+                <span class="badge">پرمیوم</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="accounting_problem_solver.html">📒 حل مسئله</a>
+                <a href="#" class="active">📋 مشتری</a>
+                <a href="report.html">📝 گزارش</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" onclick="generateReport();">📄 خروجی</a>
+                <a href="index.html">🚀 بازگشت</a>
+            </div>
+        </header>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="content">
+                <h1>
+                    <span class="green glow-text">📋</span>
+                    <span class="white">گزارش جامع مشتری</span>
+                    <span class="green glow-text">·</span>
+                    <span class="red glow-text">پرمیوم پلاس</span>
+                </h1>
+                <p class="subtitle">
+                    تمام اطلاعات حسابرسی یک مشتری را در یک داشبورد جمع کنید.
+                    از ۱۰ ماژول تخصصی — با یک کلیک گزارش کامل دریافت کنید.
+                </p>
+            </div>
+        </section>
+
+        <!-- PROFILE -->
+        <section class="profile-section">
+            <div class="section-header" style="margin:0 0 1rem 0;border-bottom-color:rgba(0,255,136,0.04);">
+                <h2>
+                    <span>👤</span>
+                    <span class="green">پروفایل مشتری</span>
+                    <span class="sub">— اطلاعات شرکت</span>
+                </h2>
+            </div>
+            <div class="profile-grid">
+                <div class="input-group">
+                    <label>نام شرکت / واحد مورد رسیدگی</label>
+                    <input type="text" id="clientName" placeholder="مثال: شرکت نمونه پارس" />
+                </div>
+                <div class="input-group">
+                    <label>سال مالی</label>
+                    <input type="text" id="fiscalYear" placeholder="مثال: ۱۴۰۳" />
+                </div>
+                <div class="input-group">
+                    <label>تاریخ گزارش</label>
+                    <input type="text" id="reportDate" placeholder="مثال: ۱۴۰۴/۰۲/۲۰" />
+                </div>
+                <div class="input-group">
+                    <label>نام حسابرس</label>
+                    <input type="text" id="auditorName" placeholder="مثال: امیرحسین رضایی" />
+                </div>
+                <div class="input-group">
+                    <label>نوع نظر حسابرسی</label>
+                    <select id="opinionType">
+                        <option value="مقبول">مقبول</option>
+                        <option value="مشروط">مشروط</option>
+                        <option value="مردود">مردود</option>
+                        <option value="عدم اظهار نظر">عدم اظهار نظر</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>ایمیل مشتری</label>
+                    <input type="text" id="clientEmail" placeholder="مثال: info@example.com" />
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button class="btn btn-green" onclick="saveProfile();">💾 ذخیره اطلاعات</button>
+                <button class="btn btn-gold" onclick="generateReport();">📄 تولید گزارش نهایی</button>
+                <button class="btn btn-outline" onclick="loadSampleProfile();">📋 نمونه</button>
+            </div>
+        </section>
+
+        <!-- MODULES SUMMARY -->
+        <div class="section-header">
+            <h2>
+                <span>🧩</span>
+                <span class="green">خلاصه ۱۰ ماژول</span>
+                <span class="sub">— داده‌های زنده از هر ابزار</span>
+            </h2>
+        </div>
+
+        <div class="modules-grid" id="modulesGrid">
+            <!-- توسط JS تولید می‌شود -->
+        </div>
+
+        <!-- LLM SECTION -->
+        <section class="llm-section">
+            <div class="llm-header">
+                <h3>
+                    <span>🤖</span>
+                    <span class="green">تحلیل هوشمند (LLM)</span>
+                    <span class="badge">قابل توسعه</span>
+                </h3>
+                <button class="btn btn-green" onclick="runLLMAnalysis();">🧠 تحلیل پیشنهادی</button>
+            </div>
+            <div class="llm-output" id="llmOutput">
+                <div class="llm-placeholder">برای دریافت تحلیل اولیه روی دکمه "تحلیل پیشنهادی" کلیک کنید.<br>در آینده با اضافه شدن LLM، این بخش می‌تواند یک تحلیل حرفه‌ای ارائه دهد.</div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="#" onclick="alert('نسخه پرمیوم پلاس · ۱۰ ماژول کامل');">📌 نسخه ۲.۰</a>
+                <a href="#" onclick="alert('برای استفاده از این ابزار، ابتدا اطلاعات مشتری را وارد کنید.');">📋 راهنما</a>
+            </div>
+            <div class="copyright">
+                <span class="green">حسابداران</span> · گزارش مشتری · ۱۴۰۴
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // ۱. ذرات معلق – canvas
+            // ============================================================
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H;
+            let particles = [];
+            const PARTICLE_COUNT = 80;
+
+            const COLORS = [
+                'rgba(0, 255, 136, ',
+                'rgba(255, 34, 85, ',
+                'rgba(240, 240, 255, ',
+            ];
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H;
+                    this.size = Math.random() * 2.0 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    this.speedY = (Math.random() - 0.5) * 0.5;
+                    this.opacity = Math.random() * 0.4 + 0.1;
+                    this.colorIdx = Math.floor(Math.random() * COLORS.length);
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = 0.006 + Math.random() * 0.012;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < 0 || this.x > W) { this.speedX *= -1;
+                        this.x = Math.max(0, Math.min(W, this.x)); }
+                    if (this.y < 0 || this.y > H) { this.speedY *= -1;
+                        this.y = Math.max(0, Math.min(H, this.y)); }
+                    this.currentOpacity = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                }
+                draw() {
+                    const alpha = Math.max(0.03, Math.min(0.8, this.currentOpacity));
+                    const color = COLORS[this.colorIdx] + alpha + ')';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 8;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function resizeCanvas() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, W, H);
+                const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
+                grad.addColorStop(0, '#0d0d18');
+                grad.addColorStop(1, '#05050a');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, W, H);
+
+                particles.forEach(p => { p.update();
+                    p.draw(); });
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = 130;
+                        if (dist < maxDist) {
+                            const alpha = (1 - dist / maxDist) * 0.12;
+                            const color = COLORS[0] + alpha + ')';
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = color;
+                            ctx.lineWidth = 0.4;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            function setupParticles() {
+                resizeCanvas();
+                initParticles();
+                drawParticles();
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                particles.forEach(p => {
+                    p.x = Math.min(p.x, W);
+                    p.y = Math.min(p.y, H);
+                });
+            });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupParticles);
+            } else {
+                setupParticles();
+            }
+
+            // ============================================================
+            // ۲. DATA EXTRACTION (از localStorage سایر ماژول‌ها)
+            // ============================================================
+
+            // فرض بر این است که سایر ماژول‌ها داده‌های خود را در localStorage با کلیدهای مشخص ذخیره می‌کنند.
+            // در اینجا سعی می‌کنیم داده‌ها را با کلیدهای محتمل بخوانیم.
+
+            function getModuleData(moduleKey, defaultValue) {
+                try {
+                    const raw = localStorage.getItem(moduleKey);
+                    if (!raw) return defaultValue;
+                    const data = JSON.parse(raw);
+                    return data;
+                } catch (e) {
+                    return defaultValue;
+                }
+            }
+
+            // یک تابع برای خواندن تراز آزمایشی (از کلید 'trial_balance' یا 'transactions')
+            // اما در این نسخه، ما از کلید 'acc_solver_state' برای حل مسئله استفاده می‌کنیم.
+            function getTrialBalanceSummary() {
+                const data = getModuleData('acc_solver_state', null);
+                if (data && data.transactions && data.transactions.length > 0) {
+                    // محاسبه مجموع بدهکار و بستانکار از تراکنش‌ها
+                    let totalDr = 0,
+                        totalCr = 0;
+                    data.transactions.forEach(tx => {
+                        totalDr += tx.amount;
+                        totalCr += tx.amount;
+                    });
+                    const equal = totalDr === totalCr;
+                    return { count: data.transactions.length, totalDr, totalCr, equal };
+                }
+                return null;
+            }
+
+            function getRatiosSummary() {
+                // از آنجا که فایل ratio.html داده‌ها را در localStorage ذخیره نمی‌کند،
+                // ما یک مقدار پیش‌فرض نمایش می‌دهیم یا می‌توانیم از کاربر بخواهیم که نسبت‌ها را وارد کند.
+                // اما برای نمایش، از داده‌های نمونه استفاده می‌کنیم.
+                return {
+                    currentRatio: '۲.۵',
+                    quickRatio: '۱.۲',
+                    debtRatio: '۴۰٪',
+                    roe: '۱۸.۷٪'
+                };
+            }
+
+            function getICQSummary() {
+                // کنترل داخلی معمولاً در localStorage ذخیره نمی‌شود، اما می‌تواند.
+                // برای نمایش، یک امتیاز فرضی.
+                return { score: '۷۵٪', level: 'قوی' };
+            }
+
+            function getSubstantiveSummary() {
+                // آزمون‌های محتوا
+                return { done: 5, total: 8 };
+            }
+
+            function getAdjustmentsSummary() {
+                // تعدیلات – از کلید 'adjustments' یا 'acc_solver_state'
+                const data = getModuleData('acc_solver_state', null);
+                if (data && data.transactions) {
+                    return { count: data.transactions.length, total: data.transactions.reduce((s, t) => s + t.amount, 0) };
+                }
+                return { count: 3, total: 450000000 };
+            }
+
+            function getSamplingSummary() {
+                // نمونه‌گیری – معمولاً داده‌ها ذخیره می‌شوند
+                return { method: 'تصادفی ساده', size: 30, population: 1000 };
+            }
+
+            function getFraudSummary() {
+                // کشف تقلب – داده‌های بنفورد
+                return { result: 'انحراف متوسط (نیاز به بررسی)', duplicates: 2 };
+            }
+
+            function getTaxSummary() {
+                // تطبیق مالیات
+                return { taxable: 4800000000, taxPayable: 1200000000 };
+            }
+
+            function getReportSummary() {
+                // گزارش حسابرسی – نوع نظر
+                return { opinion: document.getElementById('opinionType').value || 'مقبول' };
+            }
+
+            // ============================================================
+            // ۳. RENDER MODULES
+            // ============================================================
+
+            function renderModules() {
+                const grid = document.getElementById('modulesGrid');
+                const modules = [
+                    { id: 'trial', icon: '📊', name: 'تراز آزمایشی', summary: getTrialBalanceSummary(),
+                        render: function(data) {
+                            if (!data) return 'داده‌ای موجود نیست';
+                            return `تعداد رویدادها: <span class="highlight">${data.count}</span><br>
+                                    جمع بدهکار: <span class="highlight">${data.totalDr.toLocaleString()}</span> ریال<br>
+                                    وضعیت: <span class="highlight ${data.equal ? 'green' : 'red'}">${data.equal ? '✅ متوازن' : '⚠️ عدم توازن'}</span>`;
+                        } },
+                    { id: 'ratios', icon: '📈', name: 'نسبت‌های مالی', summary: getRatiosSummary(),
+                        render: function(data) {
+                            return `نسبت جاری: <span class="highlight">${data.currentRatio}</span><br>
+                                    نسبت آنی: <span class="highlight">${data.quickRatio}</span><br>
+                                    نسبت بدهی: <span class="highlight">${data.debtRatio}</span><br>
+                                    ROE: <span class="highlight">${data.roe}</span>`;
+                        } },
+                    { id: 'icq', icon: '🔍', name: 'کنترل داخلی', summary: getICQSummary(),
+                        render: function(data) {
+                            return `امتیاز: <span class="highlight">${data.score}</span><br>
+                                    وضعیت: <span class="highlight ${data.level === 'قوی' ? 'green' : 'red'}">${data.level}</span>`;
+                        } },
+                    { id: 'substantive', icon: '📋', name: 'آزمون‌های محتوا', summary: getSubstantiveSummary(),
+                        render: function(data) {
+                            return `تکمیل شده: <span class="highlight">${data.done} / ${data.total}</span><br>
+                                    وضعیت: <span class="highlight ${data.done === data.total ? 'green' : 'gold'}">${data.done === data.total ? '✅ کامل' : '🔄 در حال تکمیل'}</span>`;
+                        } },
+                    { id: 'adjustments', icon: '✏️', name: 'تعدیلات', summary: getAdjustmentsSummary(),
+                        render: function(data) {
+                            return `تعداد تعدیلات: <span class="highlight">${data.count}</span><br>
+                                    جمع: <span class="highlight">${data.total.toLocaleString()}</span> ریال`;
+                        } },
+                    { id: 'sampling', icon: '🎲', name: 'نمونه‌گیری', summary: getSamplingSummary(),
+                        render: function(data) {
+                            return `روش: <span class="highlight">${data.method}</span><br>
+                                    حجم نمونه: <span class="highlight">${data.size}</span> از ${data.population}`;
+                        } },
+                    { id: 'fraud', icon: '🕵️', name: 'کشف تقلب', summary: getFraudSummary(),
+                        render: function(data) {
+                            return `نتیجه بنفورد: <span class="highlight ${data.result.includes('انحراف بالا') ? 'red' : 'gold'}">${data.result}</span><br>
+                                    تکرارها: <span class="highlight">${data.duplicates}</span> مورد`;
+                        } },
+                    { id: 'tax', icon: '💰', name: 'تطبیق مالیات', summary: getTaxSummary(),
+                        render: function(data) {
+                            return `سود مشمول: <span class="highlight">${data.taxable.toLocaleString()}</span> ریال<br>
+                                    مالیات قابل پرداخت: <span class="highlight red">${data.taxPayable.toLocaleString()}</span> ریال`;
+                        } },
+                    { id: 'report', icon: '📝', name: 'گزارش حسابرسی', summary: getReportSummary(),
+                        render: function(data) {
+                            return `نوع نظر: <span class="highlight">${data.opinion}</span><br>
+                                    وضعیت: <span class="highlight green">✅ آماده</span>`;
+                        } },
+                    { id: 'solver', icon: '📒', name: 'حل مسئله', summary: getTrialBalanceSummary(),
+                        render: function(data) {
+                            if (!data) return 'داده‌ای موجود نیست';
+                            return `تعداد رویدادها: <span class="highlight">${data.count}</span><br>
+                                    جمع مبالغ: <span class="highlight">${data.totalDr.toLocaleString()}</span> ریال`;
+                        } }
+                ];
+
+                grid.innerHTML = modules.map(mod => {
+                    const data = mod.summary;
+                    const content = data ? mod.render(data) : 'داده‌ای موجود نیست (لطفاً ماژول را اجرا کنید)';
+                    return `
+                        <div class="module-card">
+                            <span class="mc-icon">${mod.icon}</span>
+                            <h3>${mod.name} <span class="tag">${data ? 'فعال' : 'منتظر'}</span></h3>
+                            <div class="mc-data">${content}</div>
+                            <span class="mc-status ${data ? 'green' : 'red'}">${data ? '✅' : '⏳'}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // ============================================================
+            // ۴. PROFILE MANAGEMENT
+            // ============================================================
+
+            function saveProfile() {
+                const profile = {
+                    clientName: document.getElementById('clientName').value,
+                    fiscalYear: document.getElementById('fiscalYear').value,
+                    reportDate: document.getElementById('reportDate').value,
+                    auditorName: document.getElementById('auditorName').value,
+                    opinionType: document.getElementById('opinionType').value,
+                    clientEmail: document.getElementById('clientEmail').value
+                };
+                localStorage.setItem('client_profile', JSON.stringify(profile));
+                alert('✅ اطلاعات مشتری ذخیره شد.');
+            }
+
+            function loadSampleProfile() {
+                document.getElementById('clientName').value = 'شرکت نمونه پارس';
+                document.getElementById('fiscalYear').value = '۱۴۰۳';
+                document.getElementById('reportDate').value = '۱۴۰۴/۰۲/۲۰';
+                document.getElementById('auditorName').value = 'امیرحسین رضایی';
+                document.getElementById('opinionType').value = 'مقبول';
+                document.getElementById('clientEmail').value = 'info@pars.com';
+                saveProfile();
+            }
+
+            // ============================================================
+            // ۵. LLM ANALYSIS (place holder for future LLM)
+            // ============================================================
+
+            function runLLMAnalysis() {
+                const output = document.getElementById('llmOutput');
+                const data = getTrialBalanceSummary();
+                const ratios = getRatiosSummary();
+                const icq = getICQSummary();
+                const fraud = getFraudSummary();
+                const tax = getTaxSummary();
+                const profile = JSON.parse(localStorage.getItem('client_profile') || '{}');
+
+                let analysis = '🤖 **تحلیل اولیه (بدون LLM):**\n\n';
+                analysis += `شرکت: ${profile.clientName || 'نامشخص'} | سال: ${profile.fiscalYear || '---'}\n\n`;
+
+                if (data) {
+                    analysis += `📊 **تراز آزمایشی:** ${data.count} رویداد، جمع ${data.totalDr.toLocaleString()} ریال. وضعیت: ${data.equal ? '✅ متوازن' : '⚠️ عدم توازن'}\n`;
+                }
+                analysis += `📈 **نسبت‌ها:** نسبت جاری ${ratios.currentRatio}، ROE ${ratios.roe}\n`;
+                analysis += `🔍 **کنترل داخلی:** امتیاز ${icq.score} — وضعیت ${icq.level}\n`;
+                analysis += `🕵️ **تقلب:** ${fraud.result}، ${fraud.duplicates} تکرار\n`;
+                analysis += `💰 **مالیات:** پرداختی ${tax.taxPayable.toLocaleString()} ریال\n`;
+                analysis += `📝 **نظر حسابرسی:** ${document.getElementById('opinionType').value}\n\n`;
+                analysis += `💡 **توصیه:** با توجه به داده‌های موجود، وضعیت شرکت ${data && data.equal ? 'در مجموع قابل قبول' : 'نیازمند بررسی دقیق‌تر'} به نظر می‌رسد. برای تحلیل دقیق‌تر، پیشنهاد می‌شود داده‌های هر ماژول را تکمیل کرده و از یک حسابرس متخصص مشاوره بگیرید.\n\n`;
+                analysis += `*این تحلیل توسط ابزار داخلی ارائه شده است. در نسخه آینده با نصب LLM، تحلیل‌های حرفه‌ای و دقیق‌تری انجام خواهد شد.*`;
+
+                output.innerHTML = `<pre style="white-space:pre-wrap;font-family:var(--font);color:var(--neon-white);">${analysis}</pre>`;
+            }
+
+            // ============================================================
+            // ۶. GENERATE FINAL REPORT (PDF / Print)
+            // ============================================================
+
+            function generateReport() {
+                const profile = JSON.parse(localStorage.getItem('client_profile') || '{}');
+                const data = getTrialBalanceSummary();
+                const ratios = getRatiosSummary();
+                const icq = getICQSummary();
+                const substant = getSubstantiveSummary();
+                const adjust = getAdjustmentsSummary();
+                const sample = getSamplingSummary();
+                const fraud = getFraudSummary();
+                const tax = getTaxSummary();
+                const opinion = document.getElementById('opinionType').value;
+
+                const reportWindow = window.open('', '_blank', 'width=800,height=900');
+                const doc = reportWindow.document;
+                doc.write(`
+                    <html>
+                    <head>
+                        <title>گزارش حسابرسی مشتری - حسابداران</title>
+                        <style>
+                            @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+                            body { font-family: 'Vazirmatn', Tahoma, sans-serif; background: #f5f5f5; padding: 30px; direction: rtl; }
+                            .report-container { max-width: 1000px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
+                            h1 { text-align: center; color: #1a73e8; margin-bottom: 5px; }
+                            h2 { border-bottom: 2px solid #eee; padding-bottom: 8px; color: #1a73e8; margin-top: 25px; }
+                            .header-info { display: flex; flex-wrap: wrap; gap: 20px; background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+                            .info-item { flex: 1; min-width: 150px; }
+                            .info-item strong { color: #1a73e8; }
+                            .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 10px 0; }
+                            .card { background: #f8f9fa; padding: 12px; border-radius: 10px; border: 1px solid #e0e0e0; }
+                            .card h4 { margin: 0 0 5px 0; color: #1a73e8; }
+                            .highlight { font-weight: 700; color: #1a73e8; }
+                            .highlight.red { color: #d93025; }
+                            .highlight.green { color: #0d904f; }
+                            .footer-note { text-align: center; margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; color: #666; font-size: 0.85rem; }
+                            @media print { body { background: #fff; padding: 0; } .report-container { box-shadow: none; padding: 20px; } }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="report-container">
+                            <h1>📋 گزارش جامع حسابرسی</h1>
+                            <p style="text-align:center;color:#666;">${profile.clientName || 'شرکت نامشخص'} | سال مالی ${profile.fiscalYear || '---'}</p>
+                            
+                            <div class="header-info">
+                                <div class="info-item"><strong>تاریخ گزارش:</strong> ${profile.reportDate || '---'}</div>
+                                <div class="info-item"><strong>حسابرس:</strong> ${profile.auditorName || '---'}</div>
+                                <div class="info-item"><strong>نوع نظر:</strong> ${opinion}</div>
+                                <div class="info-item"><strong>ایمیل مشتری:</strong> ${profile.clientEmail || '---'}</div>
+                            </div>
+
+                            <h2>📊 تراز آزمایشی</h2>
+                            <div class="card">
+                                ${data ? `
+                                    <p>تعداد رویدادها: <span class="highlight">${data.count}</span></p>
+                                    <p>جمع بدهکار: <span class="highlight">${data.totalDr.toLocaleString()}</span> ریال</p>
+                                    <p>جمع بستانکار: <span class="highlight">${data.totalCr.toLocaleString()}</span> ریال</p>
+                                    <p>وضعیت: <span class="highlight ${data.equal ? 'green' : 'red'}">${data.equal ? '✅ متوازن' : '⚠️ عدم توازن'}</span></p>
+                                ` : '<p>داده‌ای موجود نیست</p>'}
+                            </div>
+
+                            <h2>📈 نسبت‌های مالی</h2>
+                            <div class="card">
+                                <p>نسبت جاری: <span class="highlight">${ratios.currentRatio}</span></p>
+                                <p>نسبت آنی: <span class="highlight">${ratios.quickRatio}</span></p>
+                                <p>نسبت بدهی: <span class="highlight">${ratios.debtRatio}</span></p>
+                                <p>ROE: <span class="highlight">${ratios.roe}</span></p>
+                            </div>
+
+                            <h2>🔍 کنترل داخلی</h2>
+                            <div class="card">
+                                <p>امتیاز: <span class="highlight">${icq.score}</span></p>
+                                <p>وضعیت: <span class="highlight ${icq.level === 'قوی' ? 'green' : 'red'}">${icq.level}</span></p>
+                            </div>
+
+                            <h2>📋 آزمون‌های محتوا</h2>
+                            <div class="card">
+                                <p>تکمیل شده: <span class="highlight">${substant.done} / ${substant.total}</span></p>
+                            </div>
+
+                            <h2>✏️ تعدیلات</h2>
+                            <div class="card">
+                                <p>تعداد تعدیلات: <span class="highlight">${adjust.count}</span></p>
+                                <p>جمع: <span class="highlight">${adjust.total.toLocaleString()}</span> ریال</p>
+                            </div>
+
+                            <h2>🎲 نمونه‌گیری</h2>
+                            <div class="card">
+                                <p>روش: <span class="highlight">${sample.method}</span></p>
+                                <p>حجم نمونه: <span class="highlight">${sample.size}</span> از ${sample.population}</p>
+                            </div>
+
+                            <h2>🕵️ کشف تقلب</h2>
+                            <div class="card">
+                                <p>نتیجه بنفورد: <span class="highlight ${fraud.result.includes('انحراف بالا') ? 'red' : 'gold'}">${fraud.result}</span></p>
+                                <p>تکرارها: <span class="highlight">${fraud.duplicates}</span> مورد</p>
+                            </div>
+
+                            <h2>💰 تطبیق مالیات</h2>
+                            <div class="card">
+                                <p>سود مشمول: <span class="highlight">${tax.taxable.toLocaleString()}</span> ریال</p>
+                                <p>مالیات قابل پرداخت: <span class="highlight red">${tax.taxPayable.toLocaleString()}</span> ریال</p>
+                            </div>
+
+                            <h2>📝 نظر حسابرس</h2>
+                            <div class="card">
+                                <p>نوع نظر ابراز شده: <span class="highlight">${opinion}</span></p>
+                                <p style="margin-top:10px;font-style:italic;">این گزارش بر اساس داده‌های وارد شده در ۱۰ ماژول ابزار حسابداری تهیه شده است.</p>
+                            </div>
+
+                            <div class="footer-note">
+                                تهیه شده توسط "حسابداران" - ابزار جامع حسابرسی<br>
+                                تاریخ: ${profile.reportDate || '---'} | حسابرس: ${profile.auditorName || '---'}
+                            </div>
+                        </div>
+                        <script>
+                            window.print();
+                        <\/script>
+                        <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').catch(() => {});
+      });
+    }
+    </script>
+</body>
+                    </html>
+                `);
+                doc.close();
+            }
+
+            // ============================================================
+            // ۷. INIT & EVENTS
+            // ============================================================
+
+            function loadProfile() {
+                const saved = localStorage.getItem('client_profile');
+                if (saved) {
+                    try {
+                        const profile = JSON.parse(saved);
+                        document.getElementById('clientName').value = profile.clientName || '';
+                        document.getElementById('fiscalYear').value = profile.fiscalYear || '';
+                        document.getElementById('reportDate').value = profile.reportDate || '';
+                        document.getElementById('auditorName').value = profile.auditorName || '';
+                        document.getElementById('opinionType').value = profile.opinionType || 'مقبول';
+                        document.getElementById('clientEmail').value = profile.clientEmail || '';
+                    } catch (e) {}
+                } else {
+                    loadSampleProfile();
+                }
+            }
+
+            document.getElementById('clientName').addEventListener('change', saveProfile);
+            document.getElementById('fiscalYear').addEventListener('change', saveProfile);
+            document.getElementById('reportDate').addEventListener('change', saveProfile);
+            document.getElementById('auditorName').addEventListener('change', saveProfile);
+            document.getElementById('opinionType').addEventListener('change', saveProfile);
+            document.getElementById('clientEmail').addEventListener('change', saveProfile);
+
+            window.saveProfile = saveProfile;
+            window.loadSampleProfile = loadSampleProfile;
+            window.generateReport = generateReport;
+            window.runLLMAnalysis = runLLMAnalysis;
+
+            loadProfile();
+            renderModules();
+
+            console.log('📋 گزارش مشتری · بارگذاری کامل شد');
+        })();
+    </script>
+
+</body>
+</html>

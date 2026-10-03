@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0e17'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='%23f5c451' font-family='monospace'%3EN%3C/text%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#05060c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="author" content="DropAgentX" />
+  <title>NEXUS — by DropAgentX</title>
+  <style>
+    :root {
+      --bg: #05060c;
+      --cyan: #6ee7ff;
+      --cyan-dim: rgba(110, 231, 255, 0.14);
+      --gold: #e7c56a;
+      --violet: #9b8cff;
+      --text: #eef3fb;
+      --muted: #8d96ab;
+      --line: rgba(255, 255, 255, 0.09);
+      --glass: rgba(8, 10, 18, 0.78);
+      --ok: #5ee4a4;
+      --danger: #ff7b8a;
+      --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Segoe UI", Inter, system-ui, -apple-system, sans-serif;
+      --safe-t: env(safe-area-inset-top, 0px);
+      --safe-b: env(safe-area-inset-bottom, 0px);
+      --safe-l: env(safe-area-inset-left, 0px);
+      --safe-r: env(safe-area-inset-right, 0px);
+      --app-h: 100dvh;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      height: var(--app-h);
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      touch-action: manipulation;
+    }
+    body { overscroll-behavior: none; }
+
+    #c { position: fixed; inset: 0; z-index: 0; display: block; pointer-events: none; }
+    .noise, .scan, .vignette { position: fixed; inset: 0; pointer-events: none; z-index: 2; }
+    .noise {
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+    .scan { background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0,0,0,0.16) 3px); opacity: 0.14; }
+    .vignette { background: radial-gradient(ellipse at 50% 40%, transparent 10%, rgba(5,6,12,0.55) 100%); }
+
+    .hud {
+      position: relative; z-index: 5; height: 100%;
+      display: flex; flex-direction: column;
+      padding-top: var(--safe-t);
+      padding-bottom: var(--safe-b);
+      padding-left: var(--safe-l);
+      padding-right: var(--safe-r);
+    }
+
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px 8px; flex-shrink: 0; gap: 10px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .mark { width: 34px; height: 34px; flex-shrink: 0; }
+    .mark svg { width: 100%; height: 100%; }
+    .brand-text { display: flex; flex-direction: column; min-width: 0; }
+    .brand-text strong { font-size: 12px; letter-spacing: 0.32em; }
+    .brand-text span { font-size: 10px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; }
+    .status-pill {
+      display: flex; align-items: center; gap: 7px; flex-shrink: 0;
+      min-height: 36px; padding: 6px 10px; border: 1px solid var(--line);
+      background: rgba(94,228,164,0.06); font-size: 10px; letter-spacing: 0.16em; color: var(--ok);
+    }
+    .status-pill.down { color: var(--danger); background: rgba(255,123,138,0.08); }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; animation: pulse 1.8s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: 0.45; } }
+
+    main {
+      flex: 1; min-height: 0; display: grid;
+      grid-template-columns: 1fr min(560px, 44vw);
+      gap: 16px; padding: 8px 16px 10px;
+    }
+    .stage-label { align-self: end; padding: 0 0 20px 8px; max-width: 420px; }
+    .stage-label h1 { font-size: clamp(28px, 4vw, 52px); font-weight: 600; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: 12px; }
+    .stage-label h1 em { font-style: normal; color: var(--cyan); text-shadow: 0 0 24px rgba(110,231,255,0.35); }
+    .stage-label p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .meta-row { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+    .meta-row b { display: block; font-size: 9px; letter-spacing: 0.22em; color: var(--gold); }
+    .meta-row span { font-size: 12px; font-family: var(--mono); }
+
+    .panel {
+      display: flex; flex-direction: column; min-height: 0; height: 100%;
+      background: var(--glass); border: 1px solid var(--line);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+      position: relative; overflow: hidden;
+    }
+    .panel::before {
+      content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), var(--gold), transparent);
+    }
+    .panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px; border-bottom: 1px solid var(--line); flex-shrink: 0; gap: 8px;
+    }
+    .panel-head h2 { font-size: 11px; letter-spacing: 0.24em; }
+    .chips { display: flex; gap: 6px; }
+    .chip { font-size: 9px; letter-spacing: 0.14em; padding: 4px 7px; border: 1px solid var(--line); color: var(--muted); }
+    .chip.on { color: var(--cyan); border-color: rgba(110,231,255,0.28); background: var(--cyan-dim); }
+
+    .fleet { display: flex; flex-direction: column; gap: 8px; }
+    .model-card {
+      border: 1px solid var(--line); background: rgba(255,255,255,0.02);
+      padding: 12px; min-height: 44px;
+    }
+    .model-card.on { border-color: rgba(110,231,255,0.55); box-shadow: inset 3px 0 0 var(--cyan); background: rgba(110,231,255,0.06); }
+    .model-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .model-id-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .idx { font-family: var(--mono); font-size: 11px; color: var(--gold); width: 22px; flex-shrink: 0; }
+    .model-name { font-size: 14px; font-weight: 650; }
+    .model-id { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 3px; word-break: break-all; }
+    .model-blurb { font-size: 12px; color: #b7c0d2; line-height: 1.5; margin-top: 6px; }
+    .model-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .tag { font-size: 9px; letter-spacing: 0.12em; padding: 4px 7px; border: 1px solid var(--line); color: var(--muted); }
+    .tag.v { color: var(--cyan); }
+    .tag.r { color: var(--gold); }
+
+    .play-bar { display: flex; gap: 8px; margin-bottom: 8px; align-items: stretch; flex-shrink: 0; }
+    .play-bar select {
+      flex: 1; min-width: 0; min-height: 44px; background: #07080f; border: 1px solid var(--line);
+      color: var(--text); padding: 8px 10px; font: inherit; font-size: 16px; outline: none;
+      border-radius: 0; appearance: none;
+    }
+    .toggle {
+      display: flex; align-items: center; justify-content: center; gap: 7px; flex-shrink: 0;
+      min-height: 44px; min-width: 44px; border: 1px solid var(--line); padding: 0 10px;
+      font-size: 10px; letter-spacing: 0.14em; color: var(--muted); background: transparent;
+    }
+    .toggle.on { color: var(--cyan); border-color: rgba(110,231,255,0.4); background: var(--cyan-dim); }
+    .toggle.mic.live { color: var(--danger); border-color: rgba(255,123,138,0.5); }
+
+    .tabs {
+      display: flex; border-bottom: 1px solid var(--line); flex-shrink: 0;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+    }
+    .tab {
+      appearance: none; background: none; border: 0; color: var(--muted);
+      font: inherit; font-size: 11px; letter-spacing: 0.14em;
+      min-height: 44px; padding: 0 12px; flex: 1; white-space: nowrap; position: relative;
+    }
+    .tab.active { color: var(--text); }
+    .tab.active::after {
+      content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px;
+      background: var(--cyan);
+    }
+
+    .panel-body {
+      flex: 1; overflow: auto; padding: 12px 14px 14px; min-height: 0;
+      display: flex; flex-direction: column; -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+    .panel-body.is-play { overflow: hidden; padding-bottom: 10px; }
+    #tab-play { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    #tab-play.hidden, .hidden { display: none !important; }
+
+    .field { margin-bottom: 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.02); padding: 10px 12px; }
+    .field-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; gap: 8px; }
+    .field label { font-size: 10px; letter-spacing: 0.18em; color: var(--gold); }
+    .field .value { font-family: var(--mono); font-size: 13px; word-break: break-all; line-height: 1.5; }
+    .field .key-input { width: 100%; margin-top: 8px; box-sizing: border-box; background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-radius: 8px; color: inherit; font-family: var(--mono); font-size: 12px; padding: 8px 10px; direction: ltr; }
+    .icon-btn {
+      appearance: none; border: 1px solid var(--line); background: transparent; color: var(--muted);
+      width: 44px; height: 44px; display: grid; place-items: center;
+    }
+    .icon-btn:active, .btn:active, .tab:active, .model-card:active { opacity: 0.7; }
+    .icon-btn.copied { color: var(--ok); }
+    .actions { display: flex; gap: 6px; }
+
+    .btn-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .btn {
+      appearance: none; border: 1px solid var(--line); background: transparent;
+      color: var(--text); font: inherit; font-size: 11px; letter-spacing: 0.14em;
+      min-height: 44px; padding: 0 14px;
+    }
+    .btn:disabled { opacity: 0.45; }
+    .btn.primary { background: linear-gradient(90deg, rgba(110,231,255,0.16), rgba(231,197,106,0.12)); border-color: rgba(110,231,255,0.35); color: var(--cyan); }
+
+    .note { margin-top: 12px; font-size: 12px; color: var(--muted); line-height: 1.6; border-left: 2px solid var(--gold); padding-left: 10px; }
+    pre.code {
+      background: #07080f; border: 1px solid var(--line); padding: 12px;
+      font-family: var(--mono); font-size: 12px; line-height: 1.6;
+      overflow: auto; color: #c9d4e8; white-space: pre-wrap; word-break: break-word;
+    }
+    .code-head { display: flex; justify-content: space-between; align-items: center; margin: 10px 0 6px; }
+    .code-head span { font-size: 10px; letter-spacing: 0.16em; color: var(--muted); }
+    .lang-switch { display: flex; gap: 4px; margin-bottom: 8px; }
+    .lang-switch button {
+      appearance: none; border: 1px solid var(--line); background: transparent; color: var(--muted);
+      font: inherit; font-size: 11px; min-height: 40px; padding: 0 10px;
+    }
+    .lang-switch button.on { color: var(--cyan); border-color: rgba(110,231,255,0.35); }
+
+    .chat { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+    .msgs {
+      flex: 1; overflow: auto; display: flex; flex-direction: column; gap: 10px;
+      padding-bottom: 8px; min-height: 0; -webkit-overflow-scrolling: touch;
+    }
+    .bubble {
+      max-width: 92%; padding: 10px 12px; font-size: 15px; line-height: 1.5;
+      border: 1px solid var(--line); white-space: pre-wrap; word-break: break-word;
+    }
+    .bubble.user { align-self: flex-end; background: var(--cyan-dim); }
+    .bubble.bot { align-self: flex-start; background: rgba(255,255,255,0.03); }
+    .bubble.err { border-color: rgba(255,123,138,0.4); color: var(--danger); }
+    .bubble .meta { display: block; font-size: 10px; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 6px; font-family: var(--mono); }
+    .think { margin-bottom: 8px; border: 1px solid var(--line); padding: 6px 8px; background: rgba(155,140,255,0.06); }
+    .think summary { font-size: 11px; letter-spacing: 0.12em; color: var(--violet); min-height: 28px; }
+    .think pre { margin-top: 6px; font-size: 12px; color: #c9d0e0; white-space: pre-wrap; font-family: var(--mono); }
+
+    .composer { display: flex; gap: 6px; flex-shrink: 0; align-items: stretch; }
+    .composer input {
+      flex: 1; min-width: 0; background: #07080f; border: 1px solid var(--line); color: var(--text);
+      padding: 10px 12px; font: inherit; font-size: 16px; outline: none; min-height: 44px; border-radius: 0;
+    }
+    .composer input:focus { border-color: rgba(110,231,255,0.4); }
+
+    footer {
+      display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+      padding: 4px 16px 8px; font-size: 10px; letter-spacing: 0.12em; color: var(--muted); flex-shrink: 0;
+    }
+
+    .boot {
+      position: fixed; inset: 0; z-index: 20; background: #05060c;
+      display: grid; place-items: center; padding: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);
+    }
+    .boot.hide { display: none !important; pointer-events: none !important; }
+    .boot-inner { text-align: center; }
+    .boot-inner .mark { width: 54px; height: 54px; margin: 0 auto 16px; }
+    .boot h3 { letter-spacing: 0.4em; font-size: 14px; margin-bottom: 8px; }
+    .boot p { color: var(--muted); font-size: 11px; letter-spacing: 0.18em; }
+    .bar { width: 200px; height: 2px; background: rgba(255,255,255,0.08); margin: 16px auto 0; overflow: hidden; }
+    .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--gold)); animation: load 1.2s ease forwards; }
+    @keyframes load { to { width: 100%; } }
+
+    .toast {
+      position: fixed; left: 50%; bottom: calc(16px + var(--safe-b));
+      transform: translateX(-50%) translateY(16px);
+      z-index: 30; background: #0e121c; border: 1px solid rgba(94,228,164,0.35);
+      color: var(--ok); padding: 10px 14px; font-size: 12px; letter-spacing: 0.12em;
+      opacity: 0; pointer-events: none; max-width: calc(100vw - 32px);
+      transition: 0.25s ease;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.bad { border-color: rgba(255,123,138,0.4); color: var(--danger); }
+
+    @media (max-width: 900px) {
+      .vignette { background: radial-gradient(ellipse at 50% 0%, transparent 0%, rgba(5,6,12,0.45) 70%); }
+      main { grid-template-columns: 1fr; padding: 4px 10px 8px; }
+      .stage-label { display: none; }
+      footer { display: none; }
+      .panel { height: 100%; }
+      header { padding: 8px 10px 4px; }
+      .status-pill span:last-child { max-width: 72px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <div class="noise"></div>
+  <div class="scan"></div>
+  <div class="vignette"></div>
+
+  <div class="boot" id="boot">
+    <div class="boot-inner">
+      <div class="mark">
+        <svg viewBox="0 0 48 48" fill="none">
+          <polygon points="24,3 44,14 44,34 24,45 4,34 4,14" stroke="#6ee7ff" stroke-width="1.4"/>
+          <polygon points="24,12 36,19 36,29 24,36 12,29 12,19" stroke="#e7c56a" stroke-width="1.2"/>
+          <circle cx="24" cy="24" r="3" fill="#6ee7ff"/>
+        </svg>
+      </div>
+      <h3>NEXUS</h3>
+      <p>DROPAGENTX · SECURE CHANNEL</p>
+      <div class="bar"><i></i></div>
+    </div>
+  </div>
+
+  <div class="hud">
+    <header>
+      <div class="brand">
+        <div class="mark">
+          <svg viewBox="0 0 48 48" fill="none">
+            <polygon points="24,3 44,14 44,34 24,45 4,34 4,14" stroke="#6ee7ff" stroke-width="1.4"/>
+            <polygon points="24,12 36,19 36,29 24,36 12,29 12,19" stroke="#e7c56a" stroke-width="1.2"/>
+            <circle cx="24" cy="24" r="3" fill="#6ee7ff"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <strong>NEXUS</strong>
+          <span>by DropAgentX</span>
+        </div>
+      </div>
+      <div class="status-pill" id="healthPill"><span class="dot"></span> <span id="healthText">PROBING</span></div>
+    </header>
+
+    <main>
+      <div class="stage-label">
+        <h1>Your private<br><em>gateway</em> is live.</h1>
+        <p>OpenAI-compatible gateway. Talk to any of the 11 models from the playground — history, streaming, voice, and thinking traces included.</p>
+        <div class="meta-row">
+          <div><b>ISSUED</b><span>29 AUG 2026</span></div>
+          <div><b>FLEET</b><span>11 MODELS</span></div>
+          <div><b>CLASS</b><span>CONFIDENTIAL</span></div>
+          <div><b>MAKER</b><span>DropAgentX</span></div>
+        </div>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>CREDENTIAL VAULT</h2>
+          <div class="chips">
+            <span class="chip on">ACTIVE</span>
+            <span class="chip on">11 MODELS</span>
+          </div>
+        </div>
+        <div class="tabs">
+          <button type="button" class="tab active" data-tab="keys">KEYS</button>
+          <button type="button" class="tab" data-tab="fleet">MODELS</button>
+          <button type="button" class="tab" data-tab="code">CODE</button>
+          <button type="button" class="tab" data-tab="play">CHAT</button>
+        </div>
+        <div class="panel-body" id="panelBody">
+          <div id="tab-keys">
+            <div class="field">
+              <div class="field-top">
+                <label>ENDPOINT</label>
+                <div class="actions">
+                  <button type="button" class="icon-btn" data-copy="https://9router-production-6ade.up.railway.app/v1" aria-label="Copy endpoint">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="value">https://9router-production-6ade.up.railway.app/v1</div>
+            </div>
+            <div class="field">
+              <div class="field-top">
+                <label>API KEY</label>
+                <div class="actions">
+                  <button type="button" class="icon-btn" id="toggleKey" aria-label="Show key">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                  <button type="button" class="icon-btn" id="copyKey" aria-label="Copy key">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="value" id="keyValue">••••••••••••••••••••••••••••••••••••</div>
+              <input id="keyInput" class="key-input" type="password" placeholder="Paste your API key — stored only in this browser" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="field">
+              <div class="field-top">
+                <label>ACTIVE MODEL</label>
+                <div class="actions">
+                  <button type="button" class="icon-btn" id="copyActiveModel" aria-label="Copy model">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="value" id="activeModelLabel">oc/big-pickle</div>
+            </div>
+            <div class="btn-row">
+              <button type="button" class="btn primary" id="copyEnv">COPY .ENV</button>
+              <button type="button" class="btn" id="copyJson">COPY JSON</button>
+              <button type="button" class="btn" id="shareBtn">SHARE</button>
+            </div>
+            <p class="note">Mobile-ready vault. Tap CHAT to talk to any model. Mic uses on-device speech when the browser allows it. Rotate the key after handoff.</p>
+          </div>
+
+          <div id="tab-fleet" class="hidden">
+            <div class="btn-row" style="margin-top:0;margin-bottom:10px;">
+              <button type="button" class="btn primary" id="copyAllIds">COPY ALL IDs</button>
+              <button type="button" class="btn" id="copyFleetJson">FLEET JSON</button>
+            </div>
+            <div class="fleet" id="fleet"></div>
+          </div>
+
+          <div id="tab-code" class="hidden">
+            <div class="lang-switch">
+              <button type="button" class="on" data-lang="js">JS</button>
+              <button type="button" data-lang="py">PYTHON</button>
+              <button type="button" data-lang="curl">CURL</button>
+            </div>
+            <div class="code-head"><span>CHAT COMPLETIONS</span>
+              <button type="button" class="icon-btn" id="copyCode" aria-label="Copy code">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+            <pre class="code" id="codeBlock"></pre>
+          </div>
+
+          <div id="tab-play" class="hidden">
+            <div class="chat">
+              <div class="play-bar">
+                <select id="playModel" aria-label="Model"></select>
+                <button type="button" class="toggle on" id="streamToggle">STREAM</button>
+              </div>
+              <div class="msgs" id="msgs">
+                <div class="bubble bot">Channel ready. Pick a model. Type or tap MIC to talk.</div>
+              </div>
+              <form class="composer" id="chatForm">
+                <button type="button" class="toggle mic" id="micBtn" aria-label="Voice input">MIC</button>
+                <input id="chatInput" autocomplete="off" enterkeyhint="send" inputmode="text" placeholder="Message…" />
+                <button class="btn primary" id="sendBtn" type="submit">SEND</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>NEXUS · BUILT BY DROPAGENTX</span>
+      <span>CONFIDENTIAL</span>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast">COPIED</div>
+
+  <script src="js/three.min.js"></script>
+  <script>
+    const CFG = {
+      endpoint: "https://9router-production-6ade.up.railway.app/v1",
+      key: "", // NOTE: never commit a live key — paste yours in the UI (stored in localStorage only)
+      model: "oc/big-pickle",
+      maxTokens: 2048,
+      timeoutMs: 90000
+    };
+    try { CFG.key = localStorage.getItem("nexus.apiKey") || ""; } catch (_) {}
+    function apiRoot() {
+      if (location.protocol === "http:" || location.protocol === "https:") {
+        return location.origin + "/v1";
+      }
+      return CFG.endpoint;
+    }
+    function netHint(err) {
+      const raw = (err && err.message) || String(err);
+      if (location.protocol === "file:") {
+        return "Firefox blocks fetch from file://. Extract the folder and run: python3 serve.py";
+      }
+      if (/NetworkError|Failed to fetch|Load failed|CORS/i.test(raw)) {
+        return "CORS preflight blocked (API OPTIONS returns 401 without CORS headers). Run: python3 serve.py — chat goes through a same-origin proxy.";
+      }
+      return raw;
+    }
+    const IS_MOBILE = matchMedia("(max-width: 900px)").matches || matchMedia("(pointer: coarse)").matches;
+
+    const MODELS = [
+      { id: "mmf/mimo-auto", name: "MiMo Auto", vendor: "Xiaomi · MMF", role: "AUTO", blurb: "Auto-router alias. Upstream may 400 — use oc/mimo-v2.5-free." },
+      { id: "oc/big-pickle", name: "Big Pickle", vendor: "Open Channel", role: "FLAGSHIP", blurb: "Heavy generalist for coding and long answers." },
+      { id: "oc/laguna-s-2.1-free", name: "Laguna S 2.1", vendor: "Open Channel", role: "FREE", blurb: "Everyday chat. Fast free-tier workhorse." },
+      { id: "oc/nemotron-3.5-lightning-free", name: "Nemotron 3.5 Lightning", vendor: "NVIDIA", role: "SPEED", blurb: "Low-latency Nemotron. Thinking may arrive first." },
+      { id: "oc/nemotron-3-ultra-free", name: "Nemotron 3 Ultra", vendor: "NVIDIA", role: "REASON", blurb: "Free Ultra — agentic reasoning and long context." },
+      { id: "oc/mimo-v2.5-free", name: "MiMo V2.5", vendor: "Xiaomi", role: "CODE", blurb: "Strong coding and tool-use." },
+      { id: "oc/hy3-free", name: "Hy3", vendor: "Hunyuan", role: "BALANCE", blurb: "May put early tokens in reasoning_content." },
+      { id: "oc/ling-3.0-flash-fin-free", name: "Ling 3.0 Flash", vendor: "InclusionAI", role: "FLASH", blurb: "Snappy instruction following." },
+      { id: "nvidia/minimaxai/minimax-m3", name: "MiniMax M3", vendor: "MiniMax · NVIDIA", role: "FRONTIER", blurb: "Frontier reasoning and long context." },
+      { id: "nvidia/nvidia/nemotron-3-ultra-550b-a55b", name: "Nemotron 3 Ultra 550B", vendor: "NVIDIA", role: "ULTRA", blurb: "550B / 55B active MoE." },
+      { id: "groq/openai/gpt-oss-120b", name: "GPT-OSS 120B", vendor: "OpenAI · Groq", role: "GROQ", blurb: "Fast 120B on Groq." }
+    ];
+
+    const state = { stream: true, history: [], inflight: false, abort: null, lang: "js", rec: null, listening: false };
+
+    function fitViewport() {
+      const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+      document.documentElement.style.setProperty("--app-h", h + "px");
+    }
+    fitViewport();
+    if (window.visualViewport) {
+      visualViewport.addEventListener("resize", fitViewport);
+      visualViewport.addEventListener("scroll", fitViewport);
+    }
+    window.addEventListener("resize", fitViewport);
+
+    const toast = document.getElementById("toast");
+    let toastTimer = 0;
+    function ping(msg, bad) {
+      toast.textContent = msg;
+      toast.classList.toggle("bad", !!bad);
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 1600);
+    }
+
+    async function copyText(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          ping("COPIED");
+          return;
+        }
+      } catch (_) {}
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:0;left:0;opacity:0.01;width:1px;height:1px";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      try { document.execCommand("copy"); ping("COPIED"); }
+      catch { ping("COPY FAILED", true); }
+      ta.remove();
+    }
+
+    function snippetsFor(model) {
+      return {
+        js: `const res = await fetch("${CFG.endpoint}/chat/completions", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer ${CFG.key}",
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    model: "${model}",
+    max_tokens: 2048,
+    messages: [{ role: "user", content: "Hello from NEXUS" }]
+  })
+});
+const data = await res.json();
+console.log(data.choices?.[0]?.message?.content);`,
+        py: `from openai import OpenAI
+client = OpenAI(base_url="${CFG.endpoint}", api_key="${CFG.key}")
+r = client.chat.completions.create(
+    model="${model}", max_tokens=2048,
+    messages=[{"role": "user", "content": "Hello from NEXUS"}],
+)
+print(r.choices[0].message.content)`,
+        curl: `curl ${CFG.endpoint}/chat/completions \\
+  -H "Authorization: Bearer ${CFG.key}" \\
+  -H "Content-Type: application/json" \\
+  -d '{"model":"${model}","max_tokens":2048,"messages":[{"role":"user","content":"Hello from NEXUS"}]}'`
+      };
+    }
+
+    document.querySelectorAll("[data-copy]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        copyText(btn.getAttribute("data-copy"));
+        btn.classList.add("copied");
+        setTimeout(() => btn.classList.remove("copied"), 800);
+      });
+    });
+
+    const keyValue = document.getElementById("keyValue");
+    const keyInput = document.getElementById("keyInput");
+    let keyOpen = false;
+    function paintKey() {
+      keyValue.textContent = keyOpen ? (CFG.key || "—") : (CFG.key ? "••••••••••••••••••••••••••••••••••••" : "NOT SET — paste your key below");
+    }
+    if (CFG.key) keyInput.value = CFG.key;
+    paintKey();
+    document.getElementById("toggleKey").addEventListener("click", () => {
+      keyOpen = !keyOpen;
+      paintKey();
+    });
+    keyInput.addEventListener("input", () => {
+      CFG.key = keyInput.value.trim();
+      try {
+        if (CFG.key) localStorage.setItem("nexus.apiKey", CFG.key);
+        else localStorage.removeItem("nexus.apiKey");
+      } catch (_) {}
+      paintKey();
+    });
+    document.getElementById("copyKey").addEventListener("click", () => {
+      if (CFG.key) copyText(CFG.key);
+      else ping("NO KEY SET", true);
+    });
+
+    document.getElementById("copyEnv").addEventListener("click", () => {
+      copyText(`OPENAI_BASE_URL=${CFG.endpoint}\nOPENAI_API_KEY=${CFG.key}\nOPENAI_MODEL=${CFG.model}\n`);
+    });
+    document.getElementById("copyJson").addEventListener("click", () => {
+      copyText(JSON.stringify({ endpoint: CFG.endpoint, api_key: CFG.key, model: CFG.model, models: MODELS.map((m) => m.id) }, null, 2));
+    });
+    document.getElementById("copyActiveModel").addEventListener("click", () => copyText(CFG.model));
+    document.getElementById("copyAllIds").addEventListener("click", () => copyText(MODELS.map((m) => m.id).join("\n")));
+    document.getElementById("copyFleetJson").addEventListener("click", () => copyText(JSON.stringify(MODELS, null, 2)));
+    document.getElementById("shareBtn").addEventListener("click", async () => {
+      const payload = { title: "NEXUS by DropAgentX", text: `endpoint: ${CFG.endpoint}\nmodel: ${CFG.model}` };
+      try {
+        if (navigator.share) await navigator.share(payload);
+        else copyText(`${CFG.endpoint}\n${CFG.key}\n${CFG.model}`);
+      } catch (_) {}
+    });
+
+    const panelBody = document.getElementById("panelBody");
+    const tabs = document.querySelectorAll(".tab");
+    const panes = {
+      keys: document.getElementById("tab-keys"),
+      fleet: document.getElementById("tab-fleet"),
+      code: document.getElementById("tab-code"),
+      play: document.getElementById("tab-play")
+    };
+    tabs.forEach((t) => t.addEventListener("click", () => {
+      tabs.forEach((x) => x.classList.remove("active"));
+      t.classList.add("active");
+      Object.entries(panes).forEach(([k, el]) => el.classList.toggle("hidden", k !== t.dataset.tab));
+      panelBody.classList.toggle("is-play", t.dataset.tab === "play");
+    }));
+
+    const codeBlock = document.getElementById("codeBlock");
+    function renderCode() { codeBlock.textContent = snippetsFor(CFG.model)[state.lang]; }
+    renderCode();
+    document.querySelectorAll("[data-lang]").forEach((b) => {
+      b.addEventListener("click", () => {
+        state.lang = b.dataset.lang;
+        document.querySelectorAll("[data-lang]").forEach((x) => x.classList.toggle("on", x === b));
+        renderCode();
+      });
+    });
+    document.getElementById("copyCode").addEventListener("click", () => copyText(snippetsFor(CFG.model)[state.lang]));
+
+    const fleetEl = document.getElementById("fleet");
+    const playModel = document.getElementById("playModel");
+    const activeModelLabel = document.getElementById("activeModelLabel");
+    const msgs = document.getElementById("msgs");
+    const sendBtn = document.getElementById("sendBtn");
+    const chatInput = document.getElementById("chatInput");
+    const micBtn = document.getElementById("micBtn");
+
+    function resetThread(note) {
+      state.history = [];
+      msgs.innerHTML = "";
+      const d = document.createElement("div");
+      d.className = "bubble bot";
+      d.textContent = note;
+      msgs.appendChild(d);
+    }
+    function setModel(id, silent) {
+      CFG.model = id;
+      activeModelLabel.textContent = id;
+      playModel.value = id;
+      fleetEl.querySelectorAll(".model-card").forEach((c) => c.classList.toggle("on", c.dataset.id === id));
+      renderCode();
+      resetThread("Armed " + id + ". Stream " + (state.stream ? "ON" : "OFF") + ".");
+      if (!silent) ping("ARMED");
+    }
+
+    MODELS.forEach((m, i) => {
+      const card = document.createElement("article");
+      card.className = "model-card" + (m.id === CFG.model ? " on" : "");
+      card.dataset.id = m.id;
+      const idx = String(i + 1).padStart(2, "0");
+      card.innerHTML = "";
+      const top = document.createElement("div"); top.className = "model-top";
+      const left = document.createElement("div"); left.className = "model-id-row";
+      const n = document.createElement("span"); n.className = "idx"; n.textContent = idx;
+      const wrap = document.createElement("div");
+      const name = document.createElement("div"); name.className = "model-name"; name.textContent = m.name;
+      const mid = document.createElement("div"); mid.className = "model-id"; mid.textContent = m.id;
+      wrap.append(name, mid); left.append(n, wrap);
+      const copyBtn = document.createElement("button");
+      copyBtn.type = "button"; copyBtn.className = "icon-btn"; copyBtn.setAttribute("aria-label", "Copy id");
+      copyBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      copyBtn.addEventListener("click", (e) => { e.stopPropagation(); copyText(m.id); });
+      top.append(left, copyBtn);
+      const blurb = document.createElement("p"); blurb.className = "model-blurb"; blurb.textContent = m.blurb;
+      const tags = document.createElement("div"); tags.className = "model-tags";
+      const t1 = document.createElement("span"); t1.className = "tag r"; t1.textContent = m.role;
+      const t2 = document.createElement("span"); t2.className = "tag v"; t2.textContent = m.vendor;
+      tags.append(t1, t2);
+      card.append(top, blurb, tags);
+      card.addEventListener("click", () => setModel(m.id));
+      fleetEl.appendChild(card);
+      const opt = document.createElement("option");
+      opt.value = m.id;
+      opt.textContent = idx + " " + m.name;
+      playModel.appendChild(opt);
+    });
+    playModel.value = CFG.model;
+    playModel.addEventListener("change", () => setModel(playModel.value));
+
+    document.getElementById("streamToggle").addEventListener("click", () => {
+      state.stream = !state.stream;
+      document.getElementById("streamToggle").classList.toggle("on", state.stream);
+      ping(state.stream ? "STREAM ON" : "STREAM OFF");
+    });
+
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) micBtn.style.display = "none";
+    else {
+      const rec = new SR();
+      rec.lang = navigator.language || "en-US";
+      rec.interimResults = true;
+      rec.continuous = false;
+      rec.onresult = (e) => {
+        let said = "";
+        for (let i = e.resultIndex; i < e.results.length; i++) said += e.results[i][0].transcript;
+        chatInput.value = said.trim();
+      };
+      rec.onend = () => { state.listening = false; micBtn.classList.remove("live"); };
+      rec.onerror = () => { state.listening = false; micBtn.classList.remove("live"); ping("MIC ERROR", true); };
+      state.rec = rec;
+      micBtn.addEventListener("click", () => {
+        if (state.listening) { rec.stop(); return; }
+        try {
+          rec.start();
+          state.listening = true;
+          micBtn.classList.add("live");
+          ping("LISTENING");
+        } catch (err) { ping("MIC BLOCKED", true); }
+      });
+    }
+
+    function flattenContent(content) {
+      if (content == null) return "";
+      if (typeof content === "string") return content;
+      if (Array.isArray(content)) return content.map((p) => typeof p === "string" ? p : (p?.text || p?.content || "")).join("");
+      if (typeof content === "object") return content.text || content.content || "";
+      return String(content);
+    }
+    function extractReply(data) {
+      const err = data?.error?.message || (typeof data?.error === "string" ? data.error : "");
+      if (err) return { text: err, reasoning: "", isError: true };
+      const choice = data?.choices?.[0] || {};
+      const msg = choice.message || {};
+      const delta = choice.delta || {};
+      const text = flattenContent(msg.content) + flattenContent(delta.content);
+      const reasoning = flattenContent(msg.reasoning_content || msg.reasoning) + flattenContent(delta.reasoning_content || delta.reasoning);
+      return { text, reasoning, isError: false };
+    }
+    function paintBot(el, text, reasoning, modelId, isError) {
+      el.classList.toggle("err", !!isError);
+      el.textContent = "";
+      const meta = document.createElement("span"); meta.className = "meta"; meta.textContent = modelId || CFG.model;
+      el.appendChild(meta);
+      if (reasoning) {
+        const d = document.createElement("details"); d.className = "think"; d.open = !text;
+        const s = document.createElement("summary"); s.textContent = "thinking";
+        const p = document.createElement("pre"); p.textContent = reasoning;
+        d.append(s, p); el.appendChild(d);
+      }
+      const body = document.createElement("div");
+      body.textContent = text || (reasoning ? "" : "…");
+      el.appendChild(body);
+    }
+    function addBubble(role) {
+      const d = document.createElement("div");
+      d.className = "bubble " + role;
+      msgs.appendChild(d);
+      msgs.scrollTop = msgs.scrollHeight;
+      return d;
+    }
+    async function readJsonSafe(res) {
+      const raw = await res.text();
+      if (!raw) throw new Error("Empty response (" + res.status + ")");
+      try { return JSON.parse(raw); } catch (_) {}
+      const cut = raw.indexOf("}{");
+      if (cut > 0) {
+        try { return JSON.parse(raw.slice(0, cut + 1)); } catch (_) {}
+      }
+      throw new Error((raw.slice(0, 240) || res.statusText) + " [" + res.status + "]");
+    }
+    async function consumeStream(res, onChunk) {
+      if (!res.body || !res.body.getReader) {
+        onChunk(extractReply(await readJsonSafe(res)));
+        return;
+      }
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      let buf = "", text = "", reasoning = "", isError = false;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        const lines = buf.split(/\r?\n/);
+        buf = lines.pop() || "";
+        for (const line of lines) {
+          const s = line.trim();
+          if (!s.startsWith("data:")) continue;
+          const payload = s.slice(5).trim();
+          if (!payload || payload === "[DONE]") continue;
+          let json; try { json = JSON.parse(payload); } catch { continue; }
+          const bit = extractReply(json);
+          if (bit.isError) { isError = true; text += bit.text; }
+          else { text += bit.text; reasoning += bit.reasoning; }
+          onChunk({ text, reasoning, isError });
+        }
+      }
+    }
+
+    document.getElementById("chatForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const text = chatInput.value.trim();
+      if (!text || state.inflight) return;
+      if (state.abort) state.abort.abort();
+      const ac = new AbortController();
+      state.abort = ac;
+      const killer = setTimeout(() => ac.abort(), CFG.timeoutMs);
+      state.inflight = true;
+      sendBtn.disabled = true;
+      chatInput.value = "";
+      const userEl = addBubble("user"); userEl.textContent = text;
+      state.history.push({ role: "user", content: text });
+      const botEl = addBubble("bot");
+      paintBot(botEl, "thinking…", "", CFG.model, false);
+      const payload = state.history.map((m) => ({ role: m.role, content: m.content }));
+      try {
+        const res = await fetch(apiRoot() + "/chat/completions", {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + CFG.key,
+            "Content-Type": "application/json",
+            Accept: state.stream ? "text/event-stream" : "application/json"
+          },
+          body: JSON.stringify({ model: CFG.model, messages: payload, stream: !!state.stream, max_tokens: CFG.maxTokens }),
+          signal: ac.signal
+        });
+        const ctype = (res.headers.get("content-type") || "").toLowerCase();
+        let out = { text: "", reasoning: "", isError: !res.ok };
+        if (state.stream && res.ok && (ctype.includes("event-stream") || ctype.includes("text/plain") || !ctype.includes("json"))) {
+          await consumeStream(res, (chunk) => {
+            out = chunk;
+            paintBot(botEl, chunk.text, chunk.reasoning, CFG.model, chunk.isError);
+            msgs.scrollTop = msgs.scrollHeight;
+          });
+        } else {
+          const data = await readJsonSafe(res);
+          out = extractReply(data);
+          out.isError = out.isError || !res.ok;
+          paintBot(botEl, out.text, out.reasoning, CFG.model, out.isError);
+        }
+        const visible = (out.text || "").trim();
+        const think = (out.reasoning || "").trim();
+        if (!visible && !think) paintBot(botEl, "Empty completion from " + CFG.model, "", CFG.model, true);
+        else if (!out.isError) state.history.push({ role: "assistant", content: visible || think });
+        else state.history.pop();
+      } catch (err) {
+        state.history.pop();
+        const aborted = err && err.name === "AbortError";
+        paintBot(botEl, aborted ? "Timed out." : netHint(err), "", CFG.model, true);
+      } finally {
+        clearTimeout(killer);
+        state.inflight = false;
+        sendBtn.disabled = false;
+        state.abort = null;
+        if (!IS_MOBILE) chatInput.focus();
+      }
+    });
+
+    async function healthCheck() {
+      const pill = document.getElementById("healthPill");
+      const label = document.getElementById("healthText");
+      try {
+        const res = await fetch(apiRoot() + "/models", { headers: { Authorization: "Bearer " + CFG.key } });
+        if (!res.ok) throw new Error(String(res.status));
+        pill.classList.remove("down");
+        label.textContent = "LIVE";
+      } catch {
+        pill.classList.add("down");
+        label.textContent = "DOWN";
+      }
+    }
+    healthCheck();
+
+    function dismissBoot() {
+      const boot = document.getElementById("boot");
+      if (!boot) return;
+      boot.classList.add("hide");
+      boot.style.display = "none";
+    }
+    setTimeout(dismissBoot, 800);
+    document.getElementById("boot").addEventListener("click", dismissBoot);
+    document.getElementById("boot").addEventListener("touchend", dismissBoot);
+
+    (function initScene() {
+      if (typeof THREE === "undefined") return;
+      try {
+        const canvas = document.getElementById("c");
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x05060c, 0.05);
+        const camera = new THREE.PerspectiveCamera(46, innerWidth / innerHeight, 0.1, 80);
+        camera.position.set(0, 0, IS_MOBILE ? 8.2 : 9);
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: !IS_MOBILE, alpha: true, powerPreference: "low-power" });
+        renderer.setPixelRatio(Math.min(devicePixelRatio, IS_MOBILE ? 1.25 : 2));
+        renderer.setSize(innerWidth, innerHeight);
+        renderer.setClearColor(0x05060c, 1);
+        let ctxLost = false;
+        canvas.addEventListener("webglcontextlost", (e) => { e.preventDefault(); ctxLost = true; });
+        canvas.addEventListener("webglcontextrestored", () => { ctxLost = false; renderer.setSize(innerWidth, innerHeight); });
+
+        const group = new THREE.Group();
+        group.position.set(IS_MOBILE ? 0 : -2.15, IS_MOBILE ? 0.35 : 0.15, 0);
+        scene.add(group);
+
+        const starCount = IS_MOBILE ? 220 : 1400;
+        const starGeo = new THREE.BufferGeometry();
+        const pos = new Float32Array(starCount * 3);
+        const col = new Float32Array(starCount * 3);
+        for (let i = 0; i < starCount; i++) {
+          pos[i * 3] = (Math.random() - 0.5) * 40;
+          pos[i * 3 + 1] = (Math.random() - 0.5) * 28;
+          pos[i * 3 + 2] = (Math.random() - 0.5) * 28;
+          const r = Math.random();
+          if (r > 0.8) { col[i*3] = 0.91; col[i*3+1] = 0.77; col[i*3+2] = 0.42; }
+          else { col[i*3] = 0.43; col[i*3+1] = 0.88; col[i*3+2] = 1; }
+        }
+        starGeo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+        starGeo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+        const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ size: 0.04, vertexColors: true, transparent: true, opacity: 0.8, depthWrite: false }));
+        scene.add(stars);
+
+        const ico = new THREE.Mesh(new THREE.IcosahedronGeometry(IS_MOBILE ? 1.2 : 1.55, 1), new THREE.MeshBasicMaterial({ color: 0x6ee7ff, wireframe: true, transparent: true, opacity: 0.38 }));
+        group.add(ico);
+        const inner = new THREE.Mesh(new THREE.IcosahedronGeometry(0.8, 0), new THREE.MeshBasicMaterial({ color: 0xe7c56a, wireframe: true, transparent: true, opacity: 0.6 }));
+        group.add(inner);
+
+        if (!IS_MOBILE) {
+          const ring = new THREE.Mesh(new THREE.TorusGeometry(2.35, 0.012, 8, 120), new THREE.MeshBasicMaterial({ color: 0x6ee7ff, transparent: true, opacity: 0.4 }));
+          ring.rotation.x = Math.PI / 2.35; group.add(ring);
+        }
+
+        let mx = 0, my = 0, visible = true;
+        window.addEventListener("mousemove", (e) => {
+          mx = (e.clientX / innerWidth) * 2 - 1;
+          my = (e.clientY / innerHeight) * 2 - 1;
+        });
+        window.addEventListener("deviceorientation", (e) => {
+          if (!IS_MOBILE || e.gamma == null) return;
+          mx = (e.gamma || 0) / 45;
+          my = (e.beta || 0) / 90 - 0.5;
+        });
+        window.addEventListener("resize", () => {
+          camera.aspect = innerWidth / innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(innerWidth, innerHeight);
+        });
+        document.addEventListener("visibilitychange", () => { visible = !document.hidden; });
+        const clock = new THREE.Clock();
+        function tick() {
+          requestAnimationFrame(tick);
+          if (!visible || ctxLost) return;
+          const t = clock.getElapsedTime();
+          ico.rotation.y = t * 0.12;
+          inner.rotation.y = -t * 0.18;
+          stars.rotation.y = t * 0.01;
+          camera.position.x += (mx * (IS_MOBILE ? 0.4 : 1.1) - camera.position.x) * 0.04;
+          camera.position.y += (-my * 0.5 - camera.position.y) * 0.04;
+          camera.lookAt(IS_MOBILE ? 0 : -1.4, 0, 0);
+          renderer.render(scene, camera);
+        }
+        tick();
+      } catch (err) { console.warn("3D skipped", err); }
+    })();
+  </script>
+</body>
+</html>
