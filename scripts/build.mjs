@@ -139,20 +139,28 @@ function copyGallery(p) {
 }
 
 /* ---------------- HTML templates ---------------- */
-function navHtml(base) {
+function navHtml(base, withSearch) {
   return `<header class="nav"><div class="container nav-inner">
     <a class="brand" href="${base}/"><span class="dot"></span>${esc(config.owner.name)}</a>
     <nav class="nav-links">
-      <a href="${base}/#projects">Projects</a>
+      <a href="${base}/#projects">Work</a>
+      <a href="${base}/#roadmap-section">Roadmap</a>
       <a href="${esc(config.owner.github)}" target="_blank" rel="noopener">GitHub</a>
+      ${withSearch ? '<span class="nav-kbd" id="nav-search" role="button" tabindex="0">⌕ Ctrl K</span>' : ''}
       <a class="nav-cta" href="${base}/#projects">Explore Work</a>
     </nav>
-  </div></header>`;
+  </div><div class="nav-progress" id="nav-progress"></div></header>`;
 }
 
 const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">`;
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">`;
+
+const TICKER_WORDS = ['Python', 'React', 'Three.js', 'PyTorch', 'Next.js', 'FastAPI', 'PostgreSQL', 'Docker', 'TypeScript', 'Vite', 'WebGPU', 'Telegram Bots', 'RL Agents', 'Qdrant', 'Solana', 'MetaTrader 5', 'Redis', 'Tailwind', 'aiogram', 'LLM Routing'];
+function tickerHtml() {
+  const items = TICKER_WORDS.map(w => `<span><i>◆</i> <b>${esc(w)}</b></span>`).join('');
+  return `<div class="ticker" aria-hidden="true"><div class="ticker-track">${items}${items}</div></div>`;
+}
 
 function buildIndex(stats, cards) {
   return `<!DOCTYPE html>
@@ -169,12 +177,26 @@ ${FONTS}
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-${navHtml('.')}
+${navHtml('.', true)}
 <main>
-  <section class="hero"><canvas id="particles"></canvas><div class="container hero-inner">
+  <section class="hero"><div class="hero-bg"></div><div class="hero-grid"></div><canvas id="particles"></canvas><div class="container hero-inner">
     <div class="eyebrow">KIA · SOFTWARE PORTFOLIO · ${stats.projects} PROJECTS</div>
-    <h1>Engineering <span class="grad">production software</span><br>across AI, fintech &amp; 3D.</h1>
+    <h1 aria-label="Engineering production software across AI, fintech and 3D.">
+      <span class="w"><span style="--wi:0">Engineering</span></span>
+      <span class="w"><span class="grad" style="--wi:1">production</span></span>
+      <span class="w"><span class="grad" style="--wi:2">software</span></span><br>
+      <span class="w"><span style="--wi:3">across</span></span>
+      <span class="w"><span style="--wi:4">AI,</span></span>
+      <span class="w"><span style="--wi:5">fintech</span></span>
+      <span class="w"><span style="--wi:6">&amp;</span></span>
+      <span class="w"><span style="--wi:7">3D.</span></span>
+    </h1>
     <p class="lead">${esc(config.site.description)}</p>
+    <div class="hero-cta">
+      <a class="btn primary btn-lg" href="#projects">▸ Explore ${stats.projects} projects</a>
+      <a class="btn btn-lg" href="${esc(config.owner.github)}" target="_blank" rel="noopener">GitHub ↗</a>
+      <button class="btn btn-lg" id="open-palette" type="button">⌕ Search <span style="opacity:.55">Ctrl K</span></button>
+    </div>
     <div class="spec">
       <div class="cell"><span class="v green">${stats.projects}</span><span class="k">Projects shipped</span></div>
       <div class="cell"><span class="v cyan">${fmt(stats.loc)}</span><span class="k">Lines of code</span></div>
@@ -182,7 +204,11 @@ ${navHtml('.')}
       <div class="cell"><span class="v">${stats.previews}</span><span class="k">Live previews</span></div>
       <div class="cell"><span class="v" style="color:var(--purple)">${money(pipelineValue)}</span><span class="k">Roadmap pipeline</span></div>
     </div>
-    <div class="toolbar" id="projects">
+  </div></section>
+  ${tickerHtml()}
+  <section class="work"><div class="container">
+    <div class="sec-head" id="projects"><span class="sec-num">01</span><h2>Selected Work</h2><span class="sec-line"></span></div>
+    <div class="toolbar">
       <div class="search"><input id="search" type="search" placeholder="Search projects, stacks, categories…" autocomplete="off"></div>
       <div class="sort"><select id="sort">
         <option value="value">sort: value</option>
@@ -193,19 +219,37 @@ ${navHtml('.')}
     <div class="chips" id="chips"></div>
     <div class="grid" id="grid"></div>
     <section class="docs-section" id="docs-section" style="display:none">
-      <div class="docs-head"><h2>Docs &amp; Strategy</h2><span>architecture · roadmap · company</span></div>
+      <div class="docs-head"><span class="sec-num">02</span><h2>Docs &amp; Strategy</h2><span>architecture · roadmap · company</span></div>
       <div class="grid" id="docs-grid" style="padding-bottom:0"></div>
     </section>
     <section class="roadmap-section" id="roadmap-section">
-      <div class="docs-head"><h2>Roadmap — Next 10</h2><span>observed patterns → planned builds · est. ${money(pipelineValue)} pipeline</span></div>
+      <div class="docs-head"><span class="sec-num">03</span><h2>Roadmap — Next 10</h2><span>observed patterns → planned builds · est. ${money(pipelineValue)} pipeline</span></div>
       <div class="roadmap" id="roadmap"></div>
     </section>
   </div></section>
 </main>
-<footer class="footer"><div class="container row">
-  <div>© ${new Date().getFullYear()} ${esc(config.owner.name)} · ${esc(config.owner.location)}</div>
-  <div><a href="${esc(config.owner.github)}" target="_blank" rel="noopener">GitHub</a>${config.site.repoUrl ? ` · <a href="${esc(config.site.repoUrl)}" target="_blank" rel="noopener">Site source</a>` : ''}</div>
-</div></footer>
+<footer class="footer">
+  <div class="container">
+    <div class="foot-cta">
+      <div>
+        <h2>Have a project <span>in mind?</span></h2>
+        <p class="sub">Available for remote work worldwide · ${stats.projects} projects · ${money(stats.value)} shipped value</p>
+      </div>
+      <a class="btn primary btn-lg" href="${esc(config.owner.github)}" target="_blank" rel="noopener">Start a conversation →</a>
+    </div>
+    <div class="row">
+      <div>© ${new Date().getFullYear()} ${esc(config.owner.name)} · ${esc(config.owner.location)}</div>
+      <div><a href="${esc(config.owner.github)}" target="_blank" rel="noopener">GitHub</a>${config.site.repoUrl ? ` · <a href="${esc(config.site.repoUrl)}" target="_blank" rel="noopener">Site source</a>` : ''}</div>
+    </div>
+  </div>
+</footer>
+<div class="palette" id="palette" hidden>
+  <div class="palette-box">
+    <input id="palette-input" placeholder="Type to search ${stats.projects} projects…" autocomplete="off" spellcheck="false">
+    <div class="palette-results" id="palette-results"></div>
+    <div class="palette-hint mono">↑ ↓ navigate · Enter open · Esc close</div>
+  </div>
+</div>
 <script>window.__PROJECTS__ = ${safeJson(cards)};</script>
 <script>window.__ROADMAP__ = ${safeJson(roadmap)};</script>
 <script src="assets/index.js"></script>
@@ -258,6 +302,7 @@ ${navHtml(base)}
 <main class="container">
   <div class="phead">
     <a class="back" href="${base}/#projects">← All projects</a>
+    ${ctx.gallery.length ? `<div class="p-banner"><img src="${ctx.gallery[0]}" alt="${esc(p.name)} banner" loading="eager"><span class="b-label">${esc(p.category)} · ${esc(p.language)} · ${fmt(ctx.stats.loc)} LOC</span></div>` : ''}
     <h1>${esc(p.name)}</h1>
     <p class="tag">${esc(p.tagline)}</p>
     <div class="pmeta">
@@ -309,9 +354,10 @@ ${navHtml(base)}
       <div class="src-main">
         <div class="src-head">
           <span id="src-path">Select a file</span>
-          <span>
+          <span class="grp">
             <button class="btn ghost" id="src-prev">‹</button>
             <button class="btn ghost" id="src-next">›</button>
+            <button class="btn ghost" id="src-copy" type="button">copy</button>
             <a class="btn ghost" href="${esc(repo)}" target="_blank" rel="noopener">GitHub</a>
           </span>
         </div>

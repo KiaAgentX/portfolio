@@ -93,4 +93,13 @@
 
   $("#src-prev").addEventListener("click", () => openFile(activeIdx - 1));
   $("#src-next").addEventListener("click", () => openFile(activeIdx + 1));
+  const copyBtn = $("#src-copy");
+  if (copyBtn) copyBtn.addEventListener("click", () => {
+    const f = files[activeIdx];
+    if (!f) return;
+    const done = () => { copyBtn.textContent = "copied ✓"; setTimeout(() => { copyBtn.textContent = "copy"; }, 1500); };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(f.content || "").then(done, () => { });
+    } catch (e) { }
+  });
 })();

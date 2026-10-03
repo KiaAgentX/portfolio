@@ -91,7 +91,9 @@
     const color = CAT_COLORS[p.category] || "#62647a";
     const isFeature = isDefaultView() && featuredIds.has(p.id);
     if (isFeature) return featureCard(p);
+    const thumb = p.thumb ? `<div class="thumb-reveal"><img src="${p.thumb}" alt="" loading="lazy"></div>` : "";
     return `<article class="card" style="--cc:${color};--i:${Math.min(i, 14)}">
+      ${thumb}
       <div class="card-top">
         <span class="cat">${esc(p.category)}</span>
         <span class="loc">${fmt(p.loc)} LOC</span>
@@ -165,6 +167,118 @@
   renderChips();
   render();
   renderRoadmap();
+
+  /* ---- animated counters (skipped where IntersectionObserver missing) ---- */
+  try {
+    if ("IntersectionObserver" in window && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+      document.querySelectorAll(".spec .v").forEach(el => {
+        const txt = el.textContent;
+        const num = parseFloat(txt.replace(/[^0-9.]/g, ""));
+        if (!num) return;
+        const prefix = txt.trim().startsWith("$") ? "$" : "";
+        const dur = 900, t0 = performance.now();
+        function step(t) {
+          const k = Math.min(1, (t - t0) / dur);
+          const e = 1 - Math.pow(1 - k, 3);
+          el.textContent = prefix + Math.round(num * e).toLocaleString("en-US");
+          if (k < 1) requestAnimationFrame(step);
+          else el.textContent = txt;
+        }
+        requestAnimationFrame(step);
+      });
+    }
+  } catch (e) { }
+
+  /* ---- spotlight follows cursor on cards ---- */
+  document.addEventListener("mousemove", e => {
+    const c = e.target && e.target.closest ? e.target.closest(".card") : null;
+    if (!c) return;
+    const r = c.getBoundingClientRect();
+    c.style.setProperty("--mx", (((e.clientX - r.left) / r.width) * 100).toFixed(1) + "%");
+    c.style.setProperty("--my", (((e.clientY - r.top) / r.height) * 100).toFixed(1) + "%");
+  });
+
+  /* ---- reveal on scroll ---- */
+  try {
+    if ("IntersectionObserver" in window && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+      const els = Array.from(document.querySelectorAll(".sec-head, .docs-section, .roadmap-section, .spec, .foot-cta"));
+      els.forEach(el => el.classList.add("reveal"));
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(x => { if (x.isIntersecting) { x.target.classList.add("in"); io.unobserve(x.target); } });
+      }, { threshold: 0.12 });
+      els.forEach(el => io.observe(el));
+    }
+  } catch (e) { }
+
+  /* ---- nav scroll progress ---- */
+  (function () {
+    const prog = document.getElementById("nav-progress");
+    if (!prog) return;
+    function upd() {
+      const h = document.documentElement;
+      const k = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+      prog.style.transform = "scaleX(" + Math.min(1, Math.max(0, k)) + ")";
+    }
+    window.addEventListener("scroll", upd, { passive: true });
+    upd();
+  })();
+
+  /* ---- command palette (Ctrl+K) ---- */
+  (function () {
+    const palette = document.getElementById("palette");
+    const input = document.getElementById("palette-input");
+    const results = document.getElementById("palette-results");
+    if (!palette || !input || !results) return;
+    let list = [], sel = 0;
+
+    function draw(q) {
+      q = q.trim().toLowerCase();
+      list = P.filter(p => !q || (p.name + " " + p.tagline + " " + p.category + " " + p.language + " " + p.stack.join(" ")).toLowerCase().includes(q)).slice(0, 8);
+      sel = 0;
+      results.innerHTML = list.length
+        ? list.map((p, i) => `<div class="p-item${i === 0 ? " sel" : ""}" data-i="${i}"><span>${esc(p.name)}</span><span class="p-cat">${esc(p.category)}</span></div>`).join("")
+        : `<div class="palette-empty">No matches — try “trading”, “three”, “python”…</div>`;
+    }
+    function open() {
+      palette.hidden = false; input.value = ""; draw(""); input.focus();
+    }
+    function close() { palette.hidden = true; }
+    function go(i) {
+      const p = list[i]; if (!p) return;
+      close();
+      window.location.href = "projects/" + encodeURIComponent(p.id) + "/";
+    }
+    function move(d) {
+      if (!list.length) return;
+      sel = (sel + d + list.length) % list.length;
+      Array.from(results.querySelectorAll(".p-item")).forEach((el, i) => el.classList.toggle("sel", i === sel));
+      const cur = results.querySelector(".p-item.sel");
+      if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: "nearest" });
+    }
+
+    input.addEventListener("input", () => draw(input.value));
+    input.addEventListener("keydown", e => {
+      if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+      else if (e.key === "Enter") { e.preventDefault(); go(sel); }
+      else if (e.key === "Escape") { close(); }
+    });
+    results.addEventListener("click", e => {
+      const it = e.target.closest(".p-item"); if (it) go(+it.dataset.i);
+    });
+    palette.addEventListener("click", e => { if (e.target === palette) close(); });
+
+    document.addEventListener("keydown", e => {
+      const typing = /INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || "");
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); palette.hidden ? open() : close(); }
+      else if (e.key === "/" && !typing && palette.hidden) { e.preventDefault(); open(); }
+      else if (e.key === "Escape" && !palette.hidden) { close(); }
+    });
+    const navBtn = document.getElementById("nav-search");
+    if (navBtn) { navBtn.addEventListener("click", open); navBtn.addEventListener("keydown", e => { if (e.key === "Enter") open(); }); }
+    const openBtn = document.getElementById("open-palette");
+    if (openBtn) openBtn.addEventListener("click", open);
+  })();
 
   /* ---- hero particles (KIA identity) ---- */
   try {

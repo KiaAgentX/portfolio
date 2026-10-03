@@ -68,6 +68,17 @@ console.log('INDEX PAGE');
   chip.dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true }));
   const m = d.querySelectorAll('#grid .card').length;
   check('category filter works', m === 10, `got ${m}`);
+
+  d.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
+  const pal = d.querySelector('#palette');
+  check('command palette opens', pal && !pal.hidden);
+  const pin = d.querySelector('#palette-input');
+  pin.value = 'tidewater';
+  pin.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+  const items = d.querySelectorAll('#palette-results .p-item');
+  check('palette searches', items.length === 1 && /Tidewater/.test(items[0].textContent), 'got ' + items.length);
+  d.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  check('palette closes on Escape', pal.hidden === true);
   dom.window.close();
 }
 
