@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>حسابداران | داشبورد اصلی</title>
+        <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0a0a12" />
+    <link rel="icon" href="icon-192.png" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <!-- ============================================================
+    CSS – استایل کامل و پیشرفته
+    ============================================================ -->
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-red: #ff2255;
+            --neon-white: #f0f0ff;
+            --dark-bg: #0a0a12;
+            --card-bg: rgba(18, 18, 30, 0.88);
+            --glass-border: rgba(0, 255, 136, 0.12);
+            --shadow-green: 0 0 40px rgba(0, 255, 136, 0.08);
+            --shadow-red: 0 0 40px rgba(255, 34, 85, 0.08);
+            --radius: 18px;
+            --radius-sm: 10px;
+            --font: 'Vazirmatn', Tahoma, sans-serif;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --touch-min: 44px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--dark-bg);
+            color: var(--neon-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 0 1rem 3rem 1rem;
+            position: relative;
+        }
+
+        /* ===== CANVAS – ذرات معلق ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== WRAPPER ===== */
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.2rem 0 0 0;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.9rem 1.8rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(16px);
+            margin-bottom: 2.2rem;
+            box-shadow: var(--shadow-green), inset 0 0 60px rgba(0, 255, 136, 0.02);
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-red), transparent);
+            opacity: 0.3;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--neon-white);
+            font-weight: 300;
+            font-size: 1.2rem;
+        }
+
+        .logo .badge {
+            background: var(--neon-red);
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.3);
+            margin-right: 0.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.4rem 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(240, 240, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-white);
+            border-color: rgba(0, 255, 136, 0.15);
+            background: rgba(0, 255, 136, 0.03);
+        }
+
+        .nav-links a.active {
+            color: var(--neon-green);
+            border-color: rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .header-actions a {
+            color: var(--neon-white);
+            text-decoration: none;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid rgba(240, 240, 255, 0.06);
+            font-size: 0.75rem;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+        }
+
+        .header-actions a:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.08);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            padding: 3.2rem 2rem 2.8rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(14px);
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-green), inset 0 0 80px rgba(0, 255, 136, 0.01);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(circle at 20% 40%, rgba(0, 255, 136, 0.04), transparent 70%);
+            animation: heroGlow 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes heroGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(8%, 10%) scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .green {
+            color: var(--neon-green);
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .hero h1 .red {
+            color: var(--neon-red);
+            text-shadow: 0 0 40px rgba(255, 34, 85, 0.15);
+        }
+
+        .hero h1 .white {
+            color: var(--neon-white);
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: rgba(240, 240, 255, 0.6);
+            max-width: 700px;
+            margin: 0.6rem auto 1rem auto;
+            line-height: 1.8;
+        }
+
+        .hero .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 2rem 3rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .hero .stat-item {
+            text-align: center;
+        }
+
+        .hero .stat-item .num {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            display: block;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .hero .stat-item .label {
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.35);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.1rem;
+        }
+
+        .hero .stat-item .num.red {
+            color: var(--neon-red);
+            text-shadow: 0 0 20px rgba(255, 34, 85, 0.1);
+        }
+
+        .hero .stat-item .num.gold {
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+        }
+
+        /* ===== FEATURED SECTION – Client Output ===== */
+        .featured-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .featured-card {
+            background: var(--card-bg);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: var(--radius);
+            backdrop-filter: blur(14px);
+            padding: 2.5rem 2.5rem 2.8rem 2.5rem;
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.05);
+            transition: var(--transition);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #ffd700, var(--neon-green), #ffd700);
+            opacity: 0.6;
+            transition: 0.4s;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(255, 215, 0, 0.4);
+            box-shadow: 0 12px 50px rgba(255, 215, 0, 0.08), 0 0 80px rgba(255, 34, 85, 0.03);
+        }
+
+        .featured-card:hover::before {
+            opacity: 1;
+            height: 4px;
+        }
+
+        .featured-card .fc-badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.12);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            padding: 0.15rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 0.8rem;
+        }
+
+        .featured-card .fc-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .featured-card .fc-left {
+            flex: 2;
+            min-width: 220px;
+        }
+
+        .featured-card .fc-left .fc-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .featured-card .fc-left h2 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--neon-white);
+            margin-bottom: 0.3rem;
+        }
+
+        .featured-card .fc-left h2 .gold {
+            color: #ffd700;
+        }
+
+        .featured-card .fc-left p {
+            color: rgba(240, 240, 255, 0.6);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .featured-card .fc-right {
+            flex: 1;
+            min-width: 160px;
+            text-align: center;
+            background: rgba(255, 215, 0, 0.03);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem 1.2rem 1.5rem 1.2rem;
+        }
+
+        .featured-card .fc-right .big-number {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #ffd700;
+            display: block;
+        }
+
+        .featured-card .fc-right .big-label {
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .featured-card .fc-action {
+            display: inline-block;
+            margin-top: 1.2rem;
+            padding: 0.7rem 2.2rem;
+            border-radius: 30px;
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .featured-card .fc-action:hover {
+            background: rgba(255, 215, 0, 0.15);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.08);
+        }
+
+        /* ===== Tools Grid ===== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 2.2rem 0 1.5rem 0;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.06);
+        }
+
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section-header h2 .green {
+            color: var(--neon-green);
+        }
+
+        .section-header .sub {
+            color: rgba(240, 240, 255, 0.3);
+            font-size: 0.8rem;
+            font-weight: 300;
+        }
+
+        .section-header .badge-count {
+            background: rgba(0, 255, 136, 0.06);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: var(--neon-green);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.4rem 1.4rem 1.6rem 1.4rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-red), var(--neon-green));
+            opacity: 0.3;
+            transition: 0.4s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(0, 255, 136, 0.25);
+            box-shadow: 0 12px 50px rgba(0, 255, 136, 0.08), 0 0 80px rgba(255, 34, 85, 0.03);
+        }
+
+        .tool-card:hover::before {
+            opacity: 1;
+            height: 3px;
+        }
+
+        .tool-card .icon-wrap {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .tool-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--neon-white);
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tool-card h3 .tag {
+            font-weight: 300;
+            font-size: 0.55rem;
+            color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.06);
+            padding: 0.05rem 0.6rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.08);
+        }
+
+        .tool-card .desc {
+            color: rgba(240, 240, 255, 0.5);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0.3rem 0 0.4rem 0;
+        }
+
+        .tool-card .meta {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.65rem;
+            color: rgba(240, 240, 255, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        .tool-card .meta .status {
+            display: inline-block;
+            padding: 0.05rem 0.6rem;
+            border-radius: 20px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.06);
+            color: var(--neon-green);
+            font-size: 0.55rem;
+        }
+
+        .tool-card .meta .status.red {
+            color: var(--neon-red);
+            border-color: rgba(255, 34, 85, 0.08);
+            background: rgba(255, 34, 85, 0.04);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 1rem 0.5rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 1rem;
+        }
+
+        .footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+        }
+
+        .footer .links a {
+            color: rgba(240, 240, 255, 0.25);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .footer .links a:hover {
+            color: var(--neon-green);
+        }
+
+        .footer .copyright {
+            color: rgba(240, 240, 255, 0.12);
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer .copyright .green {
+            color: rgba(0, 255, 136, 0.2);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .hero h1 { font-size: 2.2rem; }
+            .hero .stats-row { gap: 1.2rem; }
+            .tools-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+            .featured-card .fc-content { flex-direction: column; text-align: center; }
+            .featured-card .fc-left h2 { font-size: 1.4rem; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 0 0.6rem 2rem 0.6rem; }
+            .header { flex-direction: column; align-items: stretch; text-align: center; padding: 0.8rem 1rem; }
+            .nav-links { justify-content: center; }
+            .header-actions { justify-content: center; }
+            .hero { padding: 2rem 1.2rem; }
+            .hero h1 { font-size: 1.6rem; }
+            .hero .subtitle { font-size: 0.9rem; }
+            .hero .stats-row { gap: 0.8rem 1.5rem; }
+            .section-header h2 { font-size: 1.2rem; }
+            .tools-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+            .featured-card { padding: 1.8rem 1.5rem 2rem 1.5rem; }
+            .featured-card .fc-left h2 { font-size: 1.2rem; }
+            .footer { flex-direction: column; text-align: center; }
+            .footer .links { justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            .tools-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.3rem; }
+            .featured-card { padding: 1.2rem 1rem 1.5rem 1rem; }
+            .featured-card .fc-left h2 { font-size: 1rem; }
+            .featured-card .fc-right .big-number { font-size: 1.6rem; }
+            .tool-card { padding: 1rem; }
+        }
+
+        /* ===== UTILS ===== */
+        .text-green { color: var(--neon-green); }
+        .text-red { color: var(--neon-red); }
+        .text-white { color: var(--neon-white); }
+        .text-gold { color: #ffd700; }
+        .fw-700 { font-weight: 700; }
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #10101a; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-green); border-radius: 10px; }
+
+        .hero, .featured-card, .tool-card {
+            animation: fadeUp 0.7s ease-out both;
+        }
+        .tool-card:nth-child(1) { animation-delay: 0.02s; }
+        .tool-card:nth-child(2) { animation-delay: 0.04s; }
+        .tool-card:nth-child(3) { animation-delay: 0.06s; }
+        .tool-card:nth-child(4) { animation-delay: 0.08s; }
+        .tool-card:nth-child(5) { animation-delay: 0.10s; }
+        .tool-card:nth-child(6) { animation-delay: 0.12s; }
+        .tool-card:nth-child(7) { animation-delay: 0.14s; }
+        .tool-card:nth-child(8) { animation-delay: 0.16s; }
+        .tool-card:nth-child(9) { animation-delay: 0.18s; }
+        .tool-card:nth-child(10) { animation-delay: 0.20s; }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .glow-text {
+            animation: glowPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 20px rgba(0, 255, 136, 0.05); }
+            100% { text-shadow: 0 0 50px rgba(0, 255, 136, 0.15), 0 0 80px rgba(0, 255, 136, 0.05); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== CANVAS – ذرات معلق ===== -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ===== WRAPPER ===== -->
+    <div class="main-wrapper">
+
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+            <a href="index.html" class="logo">
+                🧾 حسابداران
+                <span>|</span>
+                <span style="font-weight:300;font-size:1rem;color:rgba(240,240,255,0.6);">داشبورد</span>
+                <span class="badge">v2.0</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#" class="active">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="client_output.html">📋 مشتری</a>
+                <a href="accounting_problem_solver.html">📒 حل مسئله</a>
+                <a href="report.html" style="color:var(--neon-red);border-color:rgba(255,34,85,0.1);">📝 گزارش</a>
+            </nav>
+            <div class="header-actions">
+                <a href="index.html">🔄 بروزرسانی</a>
+                <a href="client_output.html" style="border-color:rgba(255,215,0,0.15);color:#ffd700;">⭐ مشتری</a>
+            </div>
+        </header>
+
+        <!-- ===== HERO ===== -->
+        <section class="hero">
+            <div class="content">
+                <h1>
+                    <span class="green glow-text">⚡</span>
+                    <span class="white">حسابداران</span>
+                    <span class="green glow-text">·</span>
+                    <span class="red glow-text">نسخه جامع</span>
+                </h1>
+                <p class="subtitle">
+                    یک مجموعه کامل و رایگان شامل <strong style="color:var(--neon-white);">۱۰ ابزار تخصصی</strong> برای
+                    حسابرسان، حسابداران و تحلیلگران مالی. همه ماژول‌ها در یک ساختار منظم و حرفه‌ای کنار هم قرار گرفته‌اند.
+                </p>
+                <div class="stats-row">
+                    <div class="stat-item"><span class="num">۱۰</span><span class="label">ابزار تخصصی</span></div>
+                    <div class="stat-item"><span class="num red">۱۰۰٪</span><span class="label">آفلاین · رایگان</span></div>
+                    <div class="stat-item"><span class="num white">۵</span><span class="label">پلتفرم پشتیبانی</span></div>
+                    <div class="stat-item"><span class="num gold">⭐</span><span class="label">پرمیوم پلاس</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FEATURED – مشتری ===== -->
+        <section class="featured-section">
+            <a href="client_output.html" class="featured-card">
+                <span class="fc-badge">⭐ پرمیوم پلاس</span>
+                <div class="fc-content">
+                    <div class="fc-left">
+                        <span class="fc-icon">📋</span>
+                        <h2><span class="gold">گزارش جامع مشتری</span></h2>
+                        <p>تمام اطلاعات حسابرسی یک شرکت را از ۱۰ ماژول جمع‌آوری کنید و با یک کلیک گزارش کامل و حرفه‌ای دریافت کنید. ابزار نهایی برای ارائه به مشتری.</p>
+                        <span class="fc-action">🚀 ورود به گزارش مشتری →</span>
+                    </div>
+                    <div class="fc-right">
+                        <span class="big-number">۱۰</span>
+                        <span class="big-label">ماژول یکپارچه</span>
+                        <span style="display:block;margin-top:0.5rem;font-size:0.6rem;color:rgba(240,240,255,0.2);">داده‌های زنده · گزارش نهایی</span>
+                    </div>
+                </div>
+            </a>
+        </section>
+
+        <!-- ===== TOOLS GRID ===== -->
+        <div class="section-header">
+            <h2>
+                <span>🧰</span>
+                <span class="green">ابزارهای تخصصی</span>
+                <span class="sub">— ۱۰ ماژول کامل</span>
+            </h2>
+            <span class="badge-count">۱۰ ماژول</span>
+        </div>
+
+        <div class="tools-grid">
+
+            <!-- 1. Trial Balance -->
+            <a href="trial_balance.html" class="tool-card">
+                <span class="icon-wrap">📊</span>
+                <h3>تراز آزمایشی <span class="tag">مغایرت‌گیری</span></h3>
+                <div class="desc">ورود حساب‌ها، بررسی موازنه و مغایرت‌گیری خودکار. ابزاری دقیق برای کنترل تراز.</div>
+                <div class="meta"><span class="status">✅ آماده</span><span>·</span><span>ورودی دستی</span></div>
+            </a>
+
+            <!-- 2. Ratios -->
+            <a href="ratios.html" class="tool-card">
+                <span class="icon-wrap">📈</span>
+                <h3>نسبت‌های مالی <span class="tag">تحلیل</span></h3>
+                <div class="desc">محاسبه نسبت‌های جاری، آنی، بدهی، گردش موجودی و حاشیه سود با داده‌های واقعی.</div>
+                <div class="meta"><span class="status">✅ آماده</span><span>·</span><span>تحلیل لحظه‌ای</span></div>
+            </a>
+
+            <!-- 3. Internal Control -->
+            <a href="icq.html" class="tool-card">
+                <span class="icon-wrap">🔍</span>
+                <h3>کنترل داخلی <span class="tag">پرسشنامه</span></h3>
+                <div class="desc">ارزیابی سطح کنترل با پرسشنامه امتیازدهی. قوی، متوسط یا ضعیف – دقیق و سریع.</div>
+                <div class="meta"><span class="status">✅ آماده</span><span>·</span><span>امتیاز خودکار</span></div>
+            </a>
+
+            <!-- 4. Substantive Tests -->
+            <a href="substantive.html" class="tool-card">
+                <span class="icon-wrap">📋</span>
+                <h3>آزمون‌های محتوا <span class="tag">چک‌لیست</span></h3>
+                <div class="desc">چک‌لیست کامل برای صندوق، بانک، دریافتنی، کالا، دارایی ثابت و فروش.</div>
+                <div class="meta"><span class="status">✅ آماده</span><span>·</span><span>۸ مرحله</span></div>
+            </a>
+
+            <!-- 5. Adjustments -->
+            <a href="adjustments.html" class="tool-card">
+                <span class="icon-wrap">✏️</span>
+                <h3>ثبت تعدیلات <span class="tag">کاربرگ</span></h3>
+                <div class="desc">کاربرگ تعدیلات حسابرسی با امکان افزودن، حذف و محاسبه جمع اصلاحات.</div>
+                <div class="meta"><span class="status">✅ آماده</span><span>·</span><span>جمع خودکار</span></div>
+            </a>
+
+            <!-- 6. Sampling -->
+            <a href="sampling.html" class="tool-card">
+                <span class="icon-wrap">🎲</span>
+                <h3>نمونه‌گیری <span class="tag">تصادفی</span></h3>
+                <div class="desc">تولید نمونه تصادفی ساده از جامعه با اندازه دلخواه. مناسب برای آزمون‌های حسابرسی.</div>
+                <div class="meta"><span class="status">✅ آماده</span><span>·</span><span>تصادفی</span></div>
+            </a>
+
+            <!-- 7. Fraud Detection -->
+            <a href="fraud.html" class="tool-card">
+                <span class="icon-wrap">🕵️</span>
+                <h3>کشف تقلب <span class="tag">بنفورد</span></h3>
+                <div class="desc">تحلیل توزیع رقم اول اعداد با قانون بنفورد. شناسایی انحرافات احتمالی.</div>
+                <div class="meta"><span class="status">✅ آماده</span><span>·</span><span>آزمون آماری</span></div>
+            </a>
+
+            <!-- 8. Tax -->
+            <a href="tax.html" class="tool-card">
+                <span class="icon-wrap">💰</span>
+                <h3>تطبیق مالیات <span class="tag">عملکرد</span></h3>
+                <div class="desc">محاسبه مالیات عملکرد بر اساس سود حسابرسی شده و چک‌لیست ارزش افزوده.</div>
+                <div class="meta"><span class="status">✅ آماده</span><span>·</span><span>نرخ قابل تنظیم</span></div>
+            </a>
+
+            <!-- 9. Audit Report -->
+            <a href="report.html" class="tool-card">
+                <span class="icon-wrap">📝</span>
+                <h3>گزارش حسابرس <span class="tag">نهایی</span></h3>
+                <div class="desc">پیش‌نویس گزارش استاندارد با انتخاب نوع نظر (مقبول، مشروط، مردود، عدم اظهار).</div>
+                <div class="meta"><span class="status red">⭐ اصلی</span><span>·</span><span>قابل کپی</span></div>
+            </a>
+
+            <!-- 10. Problem Solver -->
+            <a href="accounting_problem_solver.html" class="tool-card" style="border-color:rgba(255,215,0,0.12);">
+                <span class="icon-wrap">📒</span>
+                <h3>حل مسئله حسابداری <span class="tag">همه‌کاره</span></h3>
+                <div class="desc">پایگاه داده‌های مالی، دفتر روزنامه، دفتر کل، تراز آزمایشی، سود و زیان و ترازنامه. (نسخه پیشرفته)</div>
+                <div class="meta"><span class="status" style="border-color:rgba(255,215,0,0.2);color:#ffd700;background:rgba(255,215,0,0.06);">⭐ جدید</span><span>·</span><span>تحلیل کامل</span></div>
+            </a>
+
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="footer">
+            <div class="links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="#" onclick="alert('تمام ابزارها رایگان و بدون نیاز به اینترنت هستند');">🔒 حریم خصوصی</a>
+                <a href="#" onclick="alert('برای گزارش مشکل یا پیشنهاد، از طریق Issues اقدام کنید.');">🐛 گزارش مشکل</a>
+                <a href="#" onclick="alert('نسخه ۲.۰ – کاملاً متن‌باز و رایگان');">📌 نسخه ۲.۰</a>
+            </div>
+            <div class="copyright">
+                <span class="green">حسابداران</span> · ابزار جامع حسابرسی · ۱۴۰۴
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ===== SCRIPT – ذرات معلق + PWA Installation ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ====================================================================
+            // 1. Particles Canvas (Live Background)
+            // ====================================================================
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let W, H;
+            let particles = [];
+            const PARTICLE_COUNT = 100;
+
+            const COLORS = [
+                'rgba(0, 255, 136, ',
+                'rgba(255, 34, 85, ',
+                'rgba(240, 240, 255, ',
+            ];
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H;
+                    this.size = Math.random() * 2.0 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    this.speedY = (Math.random() - 0.5) * 0.5;
+                    this.opacity = Math.random() * 0.4 + 0.1;
+                    this.colorIdx = Math.floor(Math.random() * COLORS.length);
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = 0.006 + Math.random() * 0.012;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < 0 || this.x > W) { this.speedX *= -1; this.x = Math.max(0, Math.min(W, this.x)); }
+                    if (this.y < 0 || this.y > H) { this.speedY *= -1; this.y = Math.max(0, Math.min(H, this.y)); }
+                    this.currentOpacity = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                }
+                draw() {
+                    const alpha = Math.max(0.03, Math.min(0.8, this.currentOpacity));
+                    const color = COLORS[this.colorIdx] + alpha + ')';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 8;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function resizeCanvas() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, W, H);
+                const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
+                grad.addColorStop(0, '#0d0d18');
+                grad.addColorStop(1, '#05050a');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, W, H);
+
+                particles.forEach(p => { p.update(); p.draw(); });
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = 130;
+                        if (dist < maxDist) {
+                            const alpha = (1 - dist / maxDist) * 0.12;
+                            const color = COLORS[0] + alpha + ')';
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = color;
+                            ctx.lineWidth = 0.4;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            function setupParticles() {
+                resizeCanvas();
+                initParticles();
+                drawParticles();
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                particles.forEach(p => {
+                    p.x = Math.min(p.x, W);
+                    p.y = Math.min(p.y, H);
+                });
+            });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupParticles);
+            } else {
+                setupParticles();
+            }
+
+            // ====================================================================
+            // 2. PWA Installation Banner (Troubleshoot Install App)
+            // ====================================================================
+            let deferredPrompt;
+            const banner = document.createElement('div');
+            banner.id = 'pwa-install-banner';
+            banner.style.cssText = `
+                display: none;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background-color: #0a0a12;
+                color: white;
+                padding: 16px 20px;
+                border-top: 2px solid var(--neon-green);
+                border-radius: 16px 16px 0 0;
+                z-index: 9999;
+                direction: rtl;
+                text-align: center;
+                box-shadow: 0 -4px 30px rgba(0,255,136,0.2);
+            `;
+            banner.innerHTML = `
+                <p style="margin:0 0 8px 0; font-weight:700; color:#f0f0ff;">📲 نصب اپلیکیشن حسابداران</p>
+                <div style="display:flex; gap:10px; justify-content:center;">
+                    <button id="install-btn" style="background:var(--neon-green); color:#0a0a12; border:none; padding:8px 24px; border-radius:30px; font-weight:700; font-size:0.9rem; cursor:pointer;">نصب</button>
+                    <button id="close-btn" style="background:transparent; color:rgba(240,240,255,0.4); border:1px solid rgba(240,240,255,0.1); padding:8px 24px; border-radius:30px; font-size:0.9rem; cursor:pointer;">بستن</button>
+                </div>
+            `;
+            document.body.appendChild(banner);
+
+            // Listen for the beforeinstallprompt event
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                banner.style.display = 'block';
+            });
+
+            // Install button click handler
+            document.getElementById('install-btn').addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const result = await deferredPrompt.userChoice;
+                    if (result.outcome === 'accepted') {
+                        banner.style.display = 'none';
+                        console.log('✅ اپلیکیشن نصب شد');
+                    } else {
+                        console.log('❌ نصب لغو شد');
+                    }
+                    deferredPrompt = null;
+                }
+            });
+
+            // Close button click handler
+            document.getElementById('close-btn').addEventListener('click', () => {
+                banner.style.display = 'none';
+            });
+
+            // ====================================================================
+            // 3. Service Worker Registration
+            // ====================================================================
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            }
+
+            console.log('🚀 حسابداران · داشبورد اصلی v2.0 (PWA Enhanced) · بارگذاری کامل شد');
+        })();
+    </script>
+
+</body>
+</html>

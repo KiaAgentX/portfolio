@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0a0a12" />
+    <link rel="icon" href="icon-192.png" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <title>کنترل داخلی | حسابداران</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+        /* ============================================================
+                   RESET & BASE – همانند داشبورد
+                   ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-red: #ff2255;
+            --neon-white: #f0f0ff;
+            --dark-bg: #0a0a12;
+            --card-bg: rgba(18, 18, 30, 0.88);
+            --glass-border: rgba(0, 255, 136, 0.12);
+            --shadow-green: 0 0 40px rgba(0, 255, 136, 0.08);
+            --shadow-red: 0 0 40px rgba(255, 34, 85, 0.08);
+            --radius: 18px;
+            --font: 'Vazirmatn', Tahoma, sans-serif;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--dark-bg);
+            color: var(--neon-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 0 1rem 3rem 1rem;
+            position: relative;
+        }
+
+        /* ============================================================
+                   CANVAS – ذرات معلق (زنده)
+                   ============================================================ */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ============================================================
+                   WRAPPER اصلی
+                   ============================================================ */
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.2rem 0 0 0;
+        }
+
+        /* ============================================================
+                   HEADER – لوگو + نویگیشن
+                   ============================================================ */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.9rem 1.8rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(16px);
+            margin-bottom: 2.2rem;
+            box-shadow: var(--shadow-green), inset 0 0 60px rgba(0, 255, 136, 0.02);
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-red), transparent);
+            opacity: 0.3;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--neon-white);
+            font-weight: 300;
+            font-size: 1.2rem;
+        }
+
+        .logo .badge {
+            background: var(--neon-red);
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.3);
+            margin-right: 0.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.4rem 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(240, 240, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-white);
+            border-color: rgba(0, 255, 136, 0.15);
+            background: rgba(0, 255, 136, 0.03);
+        }
+
+        .nav-links a.active {
+            color: var(--neon-green);
+            border-color: rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .nav-links .sep {
+            color: rgba(240, 240, 255, 0.1);
+            font-size: 1.2rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .header-actions a {
+            color: var(--neon-white);
+            text-decoration: none;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid rgba(240, 240, 255, 0.06);
+            font-size: 0.75rem;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+        }
+
+        .header-actions a:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+            box-shadow: 0 0 25px rgba(255, 34, 85, 0.08);
+        }
+
+        /* ============================================================
+                   HERO – معرفی کنترل داخلی
+                   ============================================================ */
+        .hero {
+            text-align: center;
+            padding: 2.8rem 2rem 2.4rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(14px);
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-green), inset 0 0 80px rgba(0, 255, 136, 0.01);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(circle at 20% 40%, rgba(0, 255, 136, 0.04), transparent 70%);
+            animation: heroGlow 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes heroGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(8%, 10%) scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        .hero .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .green {
+            color: var(--neon-green);
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .hero h1 .red {
+            color: var(--neon-red);
+            text-shadow: 0 0 40px rgba(255, 34, 85, 0.15);
+        }
+
+        .hero h1 .white {
+            color: var(--neon-white);
+        }
+
+        .hero .subtitle {
+            font-size: 1rem;
+            color: rgba(240, 240, 255, 0.6);
+            max-width: 700px;
+            margin: 0.6rem auto 1rem auto;
+            line-height: 1.8;
+        }
+
+        .hero .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 2rem 3rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .hero .stat-item {
+            text-align: center;
+        }
+
+        .hero .stat-item .num {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            display: block;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .hero .stat-item .label {
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.35);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.1rem;
+        }
+
+        .hero .stat-item .num.red {
+            color: var(--neon-red);
+            text-shadow: 0 0 20px rgba(255, 34, 85, 0.1);
+        }
+
+        .hero .stat-item .num.gold {
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+        }
+
+        /* ============================================================
+                   بخش : دسته‌بندی کنترل‌ها
+                   ============================================================ */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 2.2rem 0 1.5rem 0;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.06);
+        }
+
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section-header h2 .green {
+            color: var(--neon-green);
+        }
+
+        .section-header h2 .red {
+            color: var(--neon-red);
+        }
+
+        .section-header .sub {
+            color: rgba(240, 240, 255, 0.3);
+            font-size: 0.8rem;
+            font-weight: 300;
+        }
+
+        .section-header .badge-count {
+            background: rgba(0, 255, 136, 0.06);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: var(--neon-green);
+        }
+
+        /* ============================================================
+                   GRID – کارت‌های کنترل داخلی
+                   ============================================================ */
+        .icq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 992px) {
+            .icq-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .icq-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .control-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 1.5rem 1.8rem 1.5rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-red), var(--neon-green));
+            opacity: 0.3;
+            transition: 0.4s;
+        }
+
+        .control-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(0, 255, 136, 0.25);
+            box-shadow: 0 12px 50px rgba(0, 255, 136, 0.08), 0 0 80px rgba(255, 34, 85, 0.03);
+        }
+
+        .control-card:hover::before {
+            opacity: 1;
+            height: 3px;
+        }
+
+        .control-card .icon-wrap {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .control-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--neon-white);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .control-card h3 .tag {
+            font-weight: 300;
+            font-size: 0.6rem;
+            color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.06);
+            padding: 0.1rem 0.7rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.08);
+        }
+
+        .control-card .desc {
+            color: rgba(240, 240, 255, 0.55);
+            font-size: 0.85rem;
+            line-height: 1.7;
+            margin-bottom: 0.8rem;
+        }
+
+        .control-card .control-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .control-card .control-items li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            font-size: 0.85rem;
+            color: rgba(240, 240, 255, 0.7);
+        }
+
+        .control-card .control-items li:last-child {
+            border-bottom: none;
+        }
+
+        .control-card .control-items li .q-text {
+            flex: 1;
+            padding-left: 0.5rem;
+        }
+
+        .control-card .control-items li select {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            color: var(--neon-white);
+            padding: 0.2rem 0.5rem;
+            font-family: var(--font);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.3s;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .control-card .control-items li select:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.05);
+        }
+
+        .control-card .control-items li select option {
+            background: #1a1a2e;
+            color: var(--neon-white);
+        }
+
+        .control-card .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.8rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.75rem;
+            color: rgba(240, 240, 255, 0.2);
+        }
+
+        .control-card .card-footer .score {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .control-card .card-footer .score.red {
+            color: var(--neon-red);
+        }
+
+        .control-card .card-footer .score.gold {
+            color: #ffd700;
+        }
+
+        /* ============================================================
+                   بخش : ارزیابی جامع
+                   ============================================================ */
+        .evaluation-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.5rem 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+        }
+
+        .evaluation-section .eval-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .evaluation-section .eval-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .evaluation-section .eval-header .badge {
+            background: rgba(255, 215, 0, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            color: #ffd700;
+        }
+
+        .eval-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .eval-item {
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            text-align: center;
+        }
+
+        .eval-item .ei-label {
+            font-size: 0.7rem;
+            color: rgba(240, 240, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .eval-item .ei-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--neon-white);
+            margin-top: 0.2rem;
+        }
+
+        .eval-item .ei-value.green {
+            color: var(--neon-green);
+        }
+
+        .eval-item .ei-value.red {
+            color: var(--neon-red);
+        }
+
+        .eval-item .ei-value.gold {
+            color: #ffd700;
+        }
+
+        .eval-status {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .eval-status .status-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .eval-status .status-text.green {
+            color: var(--neon-green);
+        }
+
+        .eval-status .status-text.red {
+            color: var(--neon-red);
+        }
+
+        .eval-status .status-text.gold {
+            color: #ffd700;
+        }
+
+        .eval-status .status-detail {
+            font-size: 0.85rem;
+            color: rgba(240, 240, 255, 0.4);
+        }
+
+        .eval-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 0.8rem;
+        }
+
+        .eval-actions button {
+            background: rgba(0, 255, 136, 0.04);
+            border: 1px solid var(--glass-border);
+            color: var(--neon-white);
+            padding: 0.4rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .eval-actions button:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        .eval-actions button.danger:hover {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+        }
+
+        /* ============================================================
+                   بخش : معیارهای ارزیابی
+                   ============================================================ */
+        .criteria-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.8rem 1.5rem 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-green);
+            overflow-x: auto;
+        }
+
+        .criteria-section h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .criteria-section h3 .green {
+            color: var(--neon-green);
+        }
+
+        .criteria-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .criteria-table th {
+            background: rgba(0, 255, 136, 0.04);
+            border-bottom: 2px solid rgba(0, 255, 136, 0.08);
+            padding: 0.7rem 0.5rem;
+            text-align: center;
+            color: var(--neon-white);
+            font-weight: 700;
+        }
+
+        .criteria-table td {
+            padding: 0.6rem 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            text-align: center;
+        }
+
+        .criteria-table tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .criteria-table .highlight-row td {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+                   بخش : چارچوب COSO
+                   ============================================================ */
+        .coso-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .coso-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .coso-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 1.5rem 1.8rem 1.5rem;
+            box-shadow: var(--shadow-green);
+            transition: var(--transition);
+        }
+
+        .coso-card:hover {
+            border-color: rgba(0, 255, 136, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .coso-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .coso-card h4 .green {
+            color: var(--neon-green);
+        }
+
+        .coso-card h4 .red {
+            color: var(--neon-red);
+        }
+
+        .coso-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .coso-card ul li {
+            padding: 0.3rem 0 0.3rem 1.5rem;
+            position: relative;
+            font-size: 0.85rem;
+            color: rgba(240, 240, 255, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            line-height: 1.5;
+        }
+
+        .coso-card ul li:last-child {
+            border-bottom: none;
+        }
+
+        .coso-card ul li::before {
+            content: '▸';
+            position: absolute;
+            right: 0;
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .coso-card ul li .highlight {
+            color: var(--neon-white);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 1rem 0.5rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 1rem;
+        }
+
+        .footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+        }
+
+        .footer .links a {
+            color: rgba(240, 240, 255, 0.25);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .footer .links a:hover {
+            color: var(--neon-green);
+        }
+
+        .footer .copyright {
+            color: rgba(240, 240, 255, 0.12);
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer .copyright .green {
+            color: rgba(0, 255, 136, 0.2);
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero .stats-row {
+                gap: 1.2rem;
+            }
+            .coso-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0 0.6rem 2rem 0.6rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 0.8rem 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .hero {
+                padding: 2rem 1.2rem;
+            }
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+            .hero .subtitle {
+                font-size: 0.85rem;
+            }
+            .hero .stats-row {
+                gap: 0.8rem 1.5rem;
+            }
+            .hero .stat-item .num {
+                font-size: 1.2rem;
+            }
+            .icq-grid {
+                grid-template-columns: 1fr;
+            }
+            .eval-summary {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer .links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.1rem;
+            }
+            .control-card {
+                padding: 1rem;
+            }
+            .eval-summary {
+                grid-template-columns: 1fr;
+            }
+            .evaluation-section {
+                padding: 1rem;
+            }
+            .criteria-section {
+                padding: 1rem;
+            }
+            .coso-card {
+                padding: 1rem;
+            }
+        }
+
+        /* ============================================================
+                   UTILS & ANIMATIONS
+                   ============================================================ */
+        .text-green {
+            color: var(--neon-green);
+        }
+        .text-red {
+            color: var(--neon-red);
+        }
+        .text-white {
+            color: var(--neon-white);
+        }
+        .text-gold {
+            color: #ffd700;
+        }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+        .fw-700 {
+            font-weight: 700;
+        }
+        .fs-small {
+            font-size: 0.75rem;
+        }
+        .op-5 {
+            opacity: 0.5;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #10101a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00cc6a;
+        }
+
+        .hero,
+        .control-card,
+        .evaluation-section,
+        .criteria-section,
+        .coso-card {
+            animation: fadeUp 0.7s ease-out both;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glow-text {
+            animation: glowPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.05);
+            }
+            100% {
+                text-shadow: 0 0 50px rgba(0, 255, 136, 0.15), 0 0 80px rgba(0, 255, 136, 0.05);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    CANVAS – ذرات معلق
+    ============================================================ -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ============================================================
+    WRAPPER
+    ============================================================ -->
+    <div class="main-wrapper">
+
+        <!-- ========== HEADER ========== -->
+        <header class="header">
+            <a href="index.html" class="logo">
+                🧾 حسابداران
+                <span>|</span>
+                <span style="font-weight:300;font-size:1rem;color:rgba(240,240,255,0.6);">کنترل داخلی</span>
+                <span class="badge">v2.0</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="trial_balance.html">📊 تراز</a>
+                <a href="tax.html">💰 مالیات</a>
+                <a href="substantive.html">📋 آزمون</a>
+                <a href="sampling.html">🎲 نمونه</a>
+                <a href="report.html">📝 گزارش</a>
+                <a href="ratios.html">📈 نسبت‌ها</a>
+                <a href="#" class="active">🔍 کنترل</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" onclick="evaluateICQ();">📋 ارزیابی</a>
+                <a href="#" onclick="resetAll();">🔄 بازنشانی</a>
+                <a href="index.html">🚀 بازگشت</a>
+            </div>
+        </header>
+
+        <!-- ========== HERO ========== -->
+        <section class="hero">
+            <div class="content">
+                <h1>
+                    <span class="green glow-text">🔍</span>
+                    <span class="white">کنترل داخلی</span>
+                    <span class="green glow-text">·</span>
+                    <span class="red glow-text">پرسشنامه ارزیابی</span>
+                </h1>
+                <p class="subtitle">
+                    ابزار جامع ارزیابی کنترل داخلی بر اساس چارچوب COSO.
+                    شامل ۵ دسته اصلی کنترل با امتیازدهی خودکار و تحلیل وضعیت.
+                </p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="num">۵</span>
+                        <span class="label">دسته کنترل</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num red">۲۴</span>
+                        <span class="label">سوال تخصصی</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num gold">COSO</span>
+                        <span class="label">چارچوب مرجع</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SECTION HEADER ========== -->
+        <div class="section-header">
+            <h2>
+                <span>🧩</span>
+                <span class="green">دسته‌های کنترل داخلی</span>
+                <span class="sub">— ۵ دسته اصلی</span>
+            </h2>
+            <span class="badge-count">۵ دسته</span>
+        </div>
+
+        <!-- ========== ICQ GRID ========== -->
+        <div class="icq-grid">
+
+            <!-- 1. محیط کنترلی -->
+            <div class="control-card">
+                <span class="icon-wrap">🏛️</span>
+                <h3>محیط کنترلی <span class="tag">COSO</span></h3>
+                <div class="desc">فرهنگ سازمانی، ساختار، خط مشی‌ها و ارزش‌های اخلاقی</div>
+                <ul class="control-items" id="controlEnvironment">
+                    <!-- توسط JS تولید می‌شود -->
+                </ul>
+                <div class="card-footer">
+                    <span>امتیاز: <span class="score" id="envScore">۰</span></span>
+                    <span>وضعیت: <span id="envStatus">—</span></span>
+                </div>
+            </div>
+
+            <!-- 2. ارزیابی ریسک -->
+            <div class="control-card">
+                <span class="icon-wrap">📊</span>
+                <h3>ارزیابی ریسک <span class="tag">COSO</span></h3>
+                <div class="desc">شناسایی و تحلیل ریسک‌های موثر بر اهداف سازمان</div>
+                <ul class="control-items" id="riskAssessment">
+                    <!-- توسط JS تولید می‌شود -->
+                </ul>
+                <div class="card-footer">
+                    <span>امتیاز: <span class="score" id="riskScore">۰</span></span>
+                    <span>وضعیت: <span id="riskStatus">—</span></span>
+                </div>
+            </div>
+
+            <!-- 3. فعالیت‌های کنترلی -->
+            <div class="control-card">
+                <span class="icon-wrap">⚙️</span>
+                <h3>فعالیت‌های کنترلی <span class="tag">COSO</span></h3>
+                <div class="desc">سیاست‌ها و رویه‌های عملیاتی برای کاهش ریسک</div>
+                <ul class="control-items" id="controlActivities">
+                    <!-- توسط JS تولید می‌شود -->
+                </ul>
+                <div class="card-footer">
+                    <span>امتیاز: <span class="score" id="activityScore">۰</span></span>
+                    <span>وضعیت: <span id="activityStatus">—</span></span>
+                </div>
+            </div>
+
+            <!-- 4. اطلاعات و ارتباطات -->
+            <div class="control-card">
+                <span class="icon-wrap">📡</span>
+                <h3>اطلاعات و ارتباطات <span class="tag">COSO</span></h3>
+                <div class="desc">جریان اطلاعات و ارتباطات درون و برون سازمان</div>
+                <ul class="control-items" id="informationCommunication">
+                    <!-- توسط JS تولید می‌شود -->
+                </ul>
+                <div class="card-footer">
+                    <span>امتیاز: <span class="score" id="infoScore">۰</span></span>
+                    <span>وضعیت: <span id="infoStatus">—</span></span>
+                </div>
+            </div>
+
+            <!-- 5. نظارت -->
+            <div class="control-card">
+                <span class="icon-wrap">👁️</span>
+                <h3>نظارت <span class="tag">COSO</span></h3>
+                <div class="desc">ارزیابی مستمر عملکرد کنترل‌های داخلی</div>
+                <ul class="control-items" id="monitoring">
+                    <!-- توسط JS تولید می‌شود -->
+                </ul>
+                <div class="card-footer">
+                    <span>امتیاز: <span class="score" id="monitorScore">۰</span></span>
+                    <span>وضعیت: <span id="monitorStatus">—</span></span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========== SECTION HEADER – ارزیابی ========== -->
+        <div class="section-header">
+            <h2>
+                <span>📋</span>
+                <span class="green">ارزیابی جامع</span>
+                <span class="sub">— تحلیل کلی کنترل داخلی</span>
+            </h2>
+            <span class="badge-count">نتیجه</span>
+        </div>
+
+        <!-- ========== EVALUATION SECTION ========== -->
+        <div class="evaluation-section">
+            <div class="eval-header">
+                <h3>
+                    <span>📊</span>
+                    <span class="green">نتایج ارزیابی</span>
+                    <span class="badge">COSO Framework</span>
+                </h3>
+                <div style="display:flex;gap:0.5rem;">
+                    <button onclick="evaluateICQ();" style="background:rgba(0,255,136,0.04);border:1px solid var(--glass-border);color:var(--neon-green);padding:0.3rem 1.2rem;border-radius:20px;cursor:pointer;font-family:var(--font);font-size:0.7rem;">📊 ارزیابی</button>
+                </div>
+            </div>
+            <div class="eval-summary" id="evalSummary">
+                <!-- توسط JS تولید می‌شود -->
+            </div>
+            <div class="eval-status" id="evalStatus">
+                <span class="status-text" id="overallStatusText">⏳ ارزیابی نشده</span>
+                <span class="status-detail" id="overallDetail">برای ارزیابی کلیک کنید</span>
+            </div>
+            <div class="eval-actions">
+                <button onclick="evaluateICQ();">📊 ارزیابی</button>
+                <button onclick="resetAll();" class="danger">🔄 بازنشانی همه</button>
+                <button onclick="setAllYes();">✅ همه بله</button>
+                <button onclick="setAllNo();">❌ همه خیر</button>
+                <button onclick="setAllPartial();">🟡 همه تا حدی</button>
+            </div>
+        </div>
+
+        <!-- ========== SECTION HEADER – معیارها ========== -->
+        <div class="section-header">
+            <h2>
+                <span>📏</span>
+                <span class="green">معیارهای ارزیابی</span>
+                <span class="sub">— راهنمای امتیازدهی</span>
+            </h2>
+            <span class="badge-count">راهنما</span>
+        </div>
+
+        <!-- ========== CRITERIA SECTION ========== -->
+        <div class="criteria-section">
+            <h3>
+                <span>📋</span>
+                <span class="green">جدول امتیازدهی کنترل داخلی</span>
+                <span style="font-size:0.8rem;font-weight:300;color:rgba(240,240,255,0.3);">— بر اساس COSO</span>
+            </h3>
+            <table class="criteria-table">
+                <thead>
+                    <tr>
+                        <th>گزینه</th>
+                        <th>امتیاز</th>
+                        <th>توصیف</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="color:var(--neon-green);font-weight:700;">بله (Yes)</td>
+                        <td style="color:var(--neon-green);font-weight:700;">۳</td>
+                        <td>کنترل کامل و موثر</td>
+                    </tr>
+                    <tr>
+                        <td style="color:#ffd700;font-weight:700;">تا حدی (Partial)</td>
+                        <td style="color:#ffd700;font-weight:700;">۱.۵</td>
+                        <td>کنترل ناقص یا نیازمند بهبود</td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--neon-red);font-weight:700;">خیر (No)</td>
+                        <td style="color:var(--neon-red);font-weight:700;">۰</td>
+                        <td>کنترل وجود ندارد یا ضعیف</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>امتیاز کل</td>
+                        <td>—</td>
+                        <td>جمع امتیازات / حداکثر × ۱۰۰</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top:1rem;font-size:0.7rem;color:rgba(240,240,255,0.15);text-align:center;">
+                هر سوال دارای وزن یکسان است. امتیاز نهایی به درصد محاسبه می‌شود.
+            </div>
+        </div>
+
+        <!-- ========== SECTION HEADER – COSO ========== -->
+        <div class="section-header">
+            <h2>
+                <span>📚</span>
+                <span class="green">چارچوب COSO</span>
+                <span class="sub">— استاندارد بین‌المللی</span>
+            </h2>
+            <span class="badge-count">مرجع</span>
+        </div>
+
+        <!-- ========== COSO SECTION ========== -->
+        <div class="coso-section">
+
+            <!-- کارت : ابعاد COSO -->
+            <div class="coso-card">
+                <h4>
+                    <span>📌</span>
+                    <span class="green">ابعاد پنجگانه COSO</span>
+                </h4>
+                <ul>
+                    <li><span class="highlight">محیط کنترلی</span> — فرهنگ و ارزش‌ها</li>
+                    <li><span class="highlight">ارزیابی ریسک</span> — شناسایی و تحلیل ریسک</li>
+                    <li><span class="highlight">فعالیت‌های کنترلی</span> — روش‌های عملیاتی</li>
+                    <li><span class="highlight">اطلاعات و ارتباطات</span> — جریان اطلاعات</li>
+                    <li><span class="highlight">نظارت</span> — ارزیابی مستمر</li>
+                </ul>
+            </div>
+
+            <!-- کارت : سطوح بلوغ -->
+            <div class="coso-card">
+                <h4>
+                    <span>📊</span>
+                    <span class="red">سطوح بلوغ کنترل</span>
+                </h4>
+                <ul>
+                    <li><span class="highlight">قوی (۷۵-۱۰۰٪)</span> — کنترل کامل و مستند</li>
+                    <li><span class="highlight">متوسط (۵۰-۷۵٪)</span> — کنترل ناقص</li>
+                    <li><span class="highlight">ضعیف (۲۵-۵۰٪)</span> — کنترل ضعیف</li>
+                    <li><span class="highlight">بحرانی (۰-۲۵٪)</span> — نیاز به اقدام فوری</li>
+                    <li><span class="highlight">الزامی</span> — مستندسازی همه کنترل‌ها</li>
+                    <li><span class="highlight">بهبود مستمر</span> — بازبینی دوره‌ای</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="links">
+                <a href="index.html">🏠 خانه</a>
+                <a href="setup.html">📚 راه‌اندازی</a>
+                <a href="#" onclick="alert('تمام ابزارها رایگان و بدون نیاز به اینترنت هستند');">🔒 حریم خصوصی</a>
+                <a href="#" onclick="alert('برای گزارش مشکل یا پیشنهاد، از طریق Issues اقدام کنید.');">🐛 گزارش مشکل</a>
+                <a href="#" onclick="alert('نسخه ۲.۰ – کاملاً متن‌باز و رایگان');">📌 نسخه ۲.۰</a>
+            </div>
+            <div class="copyright">
+                <span class="green">حسابداران</span> · کنترل داخلی · ۱۴۰۴
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    SCRIPT – ذرات معلق + منطق ICQ
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // ۱. ذرات معلق – canvas
+            // ============================================================
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let W, H;
+            let particles = [];
+            const PARTICLE_COUNT = 80;
+
+            const COLORS = [
+                'rgba(0, 255, 136, ',
+                'rgba(255, 34, 85, ',
+                'rgba(240, 240, 255, ',
+            ];
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H;
+                    this.size = Math.random() * 2.0 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    this.speedY = (Math.random() - 0.5) * 0.5;
+                    this.opacity = Math.random() * 0.4 + 0.1;
+                    this.colorIdx = Math.floor(Math.random() * COLORS.length);
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = 0.006 + Math.random() * 0.012;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.pulse += this.pulseSpeed;
+                    if (this.x < 0 || this.x > W) { this.speedX *= -1;
+                        this.x = Math.max(0, Math.min(W, this.x)); }
+                    if (this.y < 0 || this.y > H) { this.speedY *= -1;
+                        this.y = Math.max(0, Math.min(H, this.y)); }
+                    this.currentOpacity = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
+                }
+                draw() {
+                    const alpha = Math.max(0.03, Math.min(0.8, this.currentOpacity));
+                    const color = COLORS[this.colorIdx] + alpha + ')';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 8;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function resizeCanvas() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, W, H);
+                const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
+                grad.addColorStop(0, '#0d0d18');
+                grad.addColorStop(1, '#05050a');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, W, H);
+
+                particles.forEach(p => { p.update();
+                    p.draw(); });
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = 130;
+                        if (dist < maxDist) {
+                            const alpha = (1 - dist / maxDist) * 0.12;
+                            const color = COLORS[0] + alpha + ')';
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = color;
+                            ctx.lineWidth = 0.4;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            function setupParticles() {
+                resizeCanvas();
+                initParticles();
+                drawParticles();
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                particles.forEach(p => {
+                    p.x = Math.min(p.x, W);
+                    p.y = Math.min(p.y, H);
+                });
+            });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupParticles);
+            } else {
+                setupParticles();
+            }
+
+            // ============================================================
+            // ۲. داده‌های ICQ
+            // ============================================================
+            const icqData = {
+                controlEnvironment: {
+                    title: 'محیط کنترلی',
+                    items: [
+                        'فرهنگ سازمانی بر ارزش‌های اخلاقی و صداقت استوار است',
+                        'ساختار سازمانی روشن و مسئولیت‌ها مشخص است',
+                        'خط مشی‌ها و رویه‌ها به طور رسمی مستند شده‌اند',
+                        'مدیریت ارشد به اهمیت کنترل داخلی تاکید دارد',
+                        'فرآیند جذب و گزینش کارکنان با معیارهای شفاف انجام می‌شود'
+                    ]
+                },
+                riskAssessment: {
+                    title: 'ارزیابی ریسک',
+                    items: [
+                        'ریسک‌های موثر بر اهداف به طور منظم شناسایی می‌شوند',
+                        'ریسک‌های مرتبط با گزارش‌گری مالی تحلیل شده است',
+                        'تغییرات عمده در محیط داخلی و خارجی ارزیابی می‌شود',
+                        'ارزیابی ریسک در فرآیند برنامه‌ریزی راهبردی گنجانده شده است',
+                        'احتمال و تاثیر ریسک‌ها به صورت کمی و کیفی اندازه‌گیری می‌شود'
+                    ]
+                },
+                controlActivities: {
+                    title: 'فعالیت‌های کنترلی',
+                    items: [
+                        'جدایی وظایف (تفکیک مسئولیت‌ها) به درستی رعایت می‌شود',
+                        'مستندسازی و تایید تراکنش‌ها به طور استاندارد انجام می‌شود',
+                        'کنترل دسترسی به سیستم‌ها و اطلاعات محدود و نظارت‌شده است',
+                        'ممیزی داخلی و بازرسی‌های دوره‌ای انجام می‌شود',
+                        'کنترل‌های امنیتی برای دارایی‌های فیزیکی و دیجیتال وجود دارد'
+                    ]
+                },
+                informationCommunication: {
+                    title: 'اطلاعات و ارتباطات',
+                    items: [
+                        'جریان اطلاعات درون سازمان شفاف و به موقع است',
+                        'کارکنان در مورد مسئولیت‌های کنترلی خود آگاهی دارند',
+                        'ارتباطات با ذینفعان خارجی (مشتریان، تامین‌کنندگان) مدیریت شده است',
+                        'سیستم‌های اطلاعاتی پشتیبانی مناسبی از گزارش‌گری دارند',
+                        'کانال‌های ارتباطی برای گزارش تخلفات وجود دارد'
+                    ]
+                },
+                monitoring: {
+                    title: 'نظارت',
+                    items: [
+                        'فعالیت‌های نظارت مستمر بر کنترل‌ها انجام می‌شود',
+                        'ارزیابی‌های دوره‌ای از اثربخشی کنترل‌ها صورت می‌گیرد',
+                        'نقص‌های کنترلی به موقع شناسایی و اصلاح می‌شوند',
+                        'نتایج ارزیابی‌ها به مدیریت ارشد گزارش می‌شود',
+                        'طرح بهبود کنترل‌ها بر اساس نتایج نظارت تدوین می‌شود'
+                    ]
+                }
+            };
+
+            // ============================================================
+            // ۳. ساخت پرسشنامه
+            // ============================================================
+            function buildQuestions() {
+                for (const [key, data] of Object.entries(icqData)) {
+                    const container = document.getElementById(key);
+                    if (!container) continue;
+                    container.innerHTML = data.items.map((item, idx) => `
+                        <li>
+                            <span class="q-text">${idx + 1}. ${item}</span>
+                            <select data-category="${key}" data-index="${idx}" onchange="updateScore(this)">
+                                <option value="yes">بله</option>
+                                <option value="partial" selected>تا حدی</option>
+                                <option value="no">خیر</option>
+                            </select>
+                        </li>
+                    `).join('');
+                }
+            }
+
+            // ============================================================
+            // ۴. محاسبه امتیاز
+            // ============================================================
+            window.updateScore = function(select) {
+                evaluateICQ();
+            };
+
+            function calculateCategoryScore(categoryId) {
+                const selects = document.querySelectorAll(`#${categoryId} select`);
+                let total = 0;
+                let count = 0;
+                selects.forEach(sel => {
+                    count++;
+                    const val = sel.value;
+                    if (val === 'yes') total += 3;
+                    else if (val === 'partial') total += 1.5;
+                    else total += 0;
+                });
+                const max = count * 3;
+                const pct = max > 0 ? Math.round((total / max) * 100) : 0;
+                return { total, max, pct };
+            }
+
+            window.evaluateICQ = function() {
+                const categories = ['controlEnvironment', 'riskAssessment', 'controlActivities', 'informationCommunication', 'monitoring'];
+                const results = {};
+                let overallTotal = 0;
+                let overallMax = 0;
+
+                categories.forEach(cat => {
+                    const res = calculateCategoryScore(cat);
+                    results[cat] = res;
+                    overallTotal += res.total;
+                    overallMax += res.max;
+
+                    // به‌روزرسانی کارت
+                    const scoreEl = document.getElementById(cat === 'controlEnvironment' ? 'envScore' :
+                        cat === 'riskAssessment' ? 'riskScore' :
+                        cat === 'controlActivities' ? 'activityScore' :
+                        cat === 'informationCommunication' ? 'infoScore' : 'monitorScore');
+                    const statusEl = document.getElementById(cat === 'controlEnvironment' ? 'envStatus' :
+                        cat === 'riskAssessment' ? 'riskStatus' :
+                        cat === 'controlActivities' ? 'activityStatus' :
+                        cat === 'informationCommunication' ? 'infoStatus' : 'monitorStatus');
+
+                    if (scoreEl) scoreEl.textContent = res.pct + '%';
+                    if (statusEl) {
+                        if (res.pct >= 75) {
+                            statusEl.textContent = '✅ قوی';
+                            statusEl.style.color = 'var(--neon-green)';
+                        } else if (res.pct >= 50) {
+                            statusEl.textContent = '🟡 متوسط';
+                            statusEl.style.color = '#ffd700';
+                        } else if (res.pct >= 25) {
+                            statusEl.textContent = '⚠️ ضعیف';
+                            statusEl.style.color = 'var(--neon-red)';
+                        } else {
+                            statusEl.textContent = '❌ بحرانی';
+                            statusEl.style.color = 'var(--neon-red)';
+                        }
+                    }
+                });
+
+                // خلاصه ارزیابی
+                const overallPct = overallMax > 0 ? Math.round((overallTotal / overallMax) * 100) : 0;
+                const summaryDiv = document.getElementById('evalSummary');
+                summaryDiv.innerHTML = categories.map(cat => {
+                    const res = results[cat];
+                    const label = cat === 'controlEnvironment' ? 'محیط کنترلی' :
+                        cat === 'riskAssessment' ? 'ارزیابی ریسک' :
+                        cat === 'controlActivities' ? 'فعالیت‌های کنترلی' :
+                        cat === 'informationCommunication' ? 'اطلاعات و ارتباطات' : 'نظارت';
+                    const color = res.pct >= 75 ? 'green' : res.pct >= 50 ? 'gold' : 'red';
+                    return `
+                        <div class="eval-item">
+                            <div class="ei-label">${label}</div>
+                            <div class="ei-value ${color}">${res.pct}%</div>
+                        </div>
+                    `;
+                }).join('');
+
+                // وضعیت کلی
+                const statusText = document.getElementById('overallStatusText');
+                const detailText = document.getElementById('overallDetail');
+                if (overallPct >= 75) {
+                    statusText.textContent = '✅ قوی';
+                    statusText.className = 'status-text green';
+                    detailText.textContent = 'کنترل داخلی مطلوب و موثر';
+                } else if (overallPct >= 50) {
+                    statusText.textContent = '🟡 متوسط';
+                    statusText.className = 'status-text gold';
+                    detailText.textContent = 'کنترل داخلی نیازمند بهبود';
+                } else if (overallPct >= 25) {
+                    statusText.textContent = '⚠️ ضعیف';
+                    statusText.className = 'status-text red';
+                    detailText.textContent = 'کنترل داخلی ضعیف، نیاز به اقدام فوری';
+                } else {
+                    statusText.textContent = '❌ بحرانی';
+                    statusText.className = 'status-text red';
+                    detailText.textContent = 'کنترل داخلی بحرانی، مداخله مدیریت ضروری است';
+                }
+            };
+
+            // ============================================================
+            // ۵. عملکردهای دکمه‌ها
+            // ============================================================
+            window.resetAll = function() {
+                const selects = document.querySelectorAll('select');
+                selects.forEach(sel => sel.value = 'partial');
+                evaluateICQ();
+            };
+
+            window.setAllYes = function() {
+                const selects = document.querySelectorAll('select');
+                selects.forEach(sel => sel.value = 'yes');
+                evaluateICQ();
+            };
+
+            window.setAllNo = function() {
+                const selects = document.querySelectorAll('select');
+                selects.forEach(sel => sel.value = 'no');
+                evaluateICQ();
+            };
+
+            window.setAllPartial = function() {
+                const selects = document.querySelectorAll('select');
+                selects.forEach(sel => sel.value = 'partial');
+                evaluateICQ();
+            };
+
+            // ============================================================
+            // ۶. کپی نمونه گزارش در فوتر
+            // ============================================================
+            const footer = document.querySelector('.footer .copyright');
+            if (footer) {
+                const copyBtn = document.createElement('span');
+                copyBtn.textContent = '📋 کپی نمونه گزارش';
+                copyBtn.style.cssText = `
+                    display: inline-block;
+                    margin-top: 0.4rem;
+                    padding: 0.2rem 1rem;
+                    border: 1px solid rgba(0,255,136,0.08);
+                    border-radius: 30px;
+                    color: rgba(240,240,255,0.2);
+                    font-size: 0.6rem;
+                    cursor: pointer;
+                    transition: 0.3s;
+                    background: rgba(0,255,136,0.01);
+                `;
+                copyBtn.addEventListener('mouseenter', () => {
+                    copyBtn.style.color = 'var(--neon-green)';
+                    copyBtn.style.borderColor = 'rgba(0,255,136,0.2)';
+                });
+                copyBtn.addEventListener('mouseleave', () => {
+                    copyBtn.style.color = 'rgba(240,240,255,0.2)';
+                    copyBtn.style.borderColor = 'rgba(0,255,136,0.08)';
+                });
+                copyBtn.addEventListener('click', () => {
+                    const reportSample = `
+        گزارش حسابرس مستقل
+        ———————————————
+        به مجمع عمومی صاحبان سهام
+        شرکت نمونه
+
+        ما صورت‌های مالی شرکت را حسابرسی کرده‌ایم.
+        به نظر ما، صورت‌های مالی وضعیت مالی و نتایج عملکرد را
+        به‌طور مطلوب و طبق استانداردهای حسابداری نشان می‌دهند.
+
+        تاریخ: ۱۴۰۴/۰۲/۲۰
+        حسابرس: امیرحسین
+        `;
+                    navigator.clipboard.writeText(reportSample).then(() => {
+                        const orig = copyBtn.textContent;
+                        copyBtn.textContent = '✅ کپی شد!';
+                        copyBtn.style.color = 'var(--neon-green)';
+                        setTimeout(() => {
+                            copyBtn.textContent = orig;
+                            copyBtn.style.color = 'rgba(240,240,255,0.2)';
+                        }, 2200);
+                    }).catch(() => {
+                        alert('مشکل در کپی کردن متن');
+                    });
+                });
+                footer.appendChild(document.createElement('br'));
+                footer.appendChild(copyBtn);
+            }
+
+            // ============================================================
+            // ۷. راه‌اندازی اولیه
+            // ============================================================
+            buildQuestions();
+            setTimeout(evaluateICQ, 300);
+
+            console.log('🔍 کنترل داخلی · بارگذاری کامل شد');
+        })();
+    </script>
+
+    <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').catch(() => {});
+      });
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "3D Space Mind Cloud and RSS Explorer",
+  "description": "An immersive 3D stellar mind map explorer connected to RSS feeds and DeepSeek streaming chat, tracking token counts and event streams in a real-time reactive canvas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
