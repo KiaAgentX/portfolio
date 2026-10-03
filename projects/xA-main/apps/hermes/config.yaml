@@ -1,0 +1,7 @@
+# Generated at runtime from environment. Hermes gateway messaging is disabled.
+approvals:
+  mode: manual
+gateway:
+  enabled: false
+llm:
+  provider: openai_compat

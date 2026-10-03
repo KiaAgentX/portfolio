@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-solana-bg: #020205;
+  --color-solana-card: #070712;
+  --color-solana-purple: #9945FF;
+  --color-solana-green: #14F195;
+  --color-solana-blue: #00C2FF;
+  --color-solana-faint-purple: rgba(153, 69, 255, 0.15);
+  --color-solana-faint-green: rgba(20, 241, 149, 0.1);
+}
+
+/* Base resets & Custom Web3 scrollbars */
+html, body {
+  background-color: var(--color-solana-bg);
+  color: #f3f4f6;
+  font-family: var(--font-sans);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(2, 2, 5, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(153, 69, 255, 0.3);
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 241, 149, 0.5);
+}
+
+/* Hologram glows and retro grid scans */
+.cyber-bg-grid {
+  background-size: 30px 30px;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+.holo-glow-indigo {
+  box-shadow: 0 0 35px -5px rgba(153, 69, 255, 0.35);
+}
+
+.holo-glow-emerald {
+  box-shadow: 0 0 35px -5px rgba(20, 241, 149, 0.25);
+}
+
+.holo-glow-cyan {
+  box-shadow: 0 0 35px -5px rgba(0, 194, 255, 0.25);
+}
+
+/* Glassmorphic elements */
+.glass-panel {
+  background: rgba(7, 7, 18, 0.45);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.glass-panel:hover {
+  border-color: rgba(153, 69, 255, 0.25);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Interactive card effects */
+.matrix-card {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.matrix-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(153, 69, 255, 0.2), transparent, rgba(20, 241, 149, 0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.matrix-card:hover::before {
+  opacity: 1;
+}
+
+/* Animations declarations */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.12; transform: scale(1); }
+  50% { opacity: 0.22; transform: scale(1.05); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 8s infinite ease-in-out;
+}
+
+/* Smooth zoom transition */
+@keyframes modalZoom {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-modal-zoom {
+  animation: modalZoom 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

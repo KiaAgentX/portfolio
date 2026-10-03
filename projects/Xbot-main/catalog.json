@@ -1,0 +1,41 @@
+{
+  "currency": { "fa": "تومان", "en": "USD" },
+  "services": [
+    {
+      "code": "SVC1", "icon": "🤖",
+      "fa": { "name": "هوش مصنوعی", "desc": "مدل اختصاصی، بینایی ماشین و هوش گفتگو روی داده خودت." },
+      "en": { "name": "Artificial Intelligence", "desc": "Custom models, computer vision, conversational AI on your data." },
+      "price": null
+    },
+    {
+      "code": "SVC2", "icon": "☁️",
+      "fa": { "name": "کلاد و ICT", "desc": "زیرساخت امن، شبکه و یکپارچه‌سازی سیستم‌ها." },
+      "en": { "name": "Cloud & ICT", "desc": "Secure infrastructure, networks, systems integration." },
+      "price": null
+    },
+    {
+      "code": "SVC3", "icon": "🌐",
+      "fa": { "name": "وب و موبایل", "desc": "سایت و اپ سریع — آماده دوزبانه." },
+      "en": { "name": "Web & Mobile", "desc": "Fast websites and apps — bilingual ready." },
+      "price": null
+    },
+    {
+      "code": "SVC4", "icon": "⚙️",
+      "fa": { "name": "اتوماسیون هوشمند", "desc": "ایجنت روی واتس‌اپ و تلگرام و ایمیل با تأیید انسانی." },
+      "en": { "name": "Intelligent Automation", "desc": "AI agents on WhatsApp/Telegram/email with human approvals." },
+      "price": null
+    },
+    {
+      "code": "SVC5", "icon": "📊",
+      "fa": { "name": "داده و تحلیل", "desc": "داشبورد و پایپ‌لاین؛ عددها تبدیل به تصمیم." },
+      "en": { "name": "Data & Analytics", "desc": "Dashboards and pipelines; numbers into decisions." },
+      "price": null
+    },
+    {
+      "code": "SVC6", "icon": "🎬",
+      "fa": { "name": "انیمیشن و سه‌بعدی", "desc": "فیلم برند، ویدیوی AI و سه‌بعدی تعاملی." },
+      "en": { "name": "Animation & 3D", "desc": "Brand films, AI video, interactive 3D." },
+      "price": null
+    }
+  ]
+}

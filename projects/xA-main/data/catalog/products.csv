@@ -1,0 +1,8 @@
+sku,name_ar,name_en,category,viscosity,spec_api,spec_sae,pack_sizes
+TURB-32,زيت توربين ISO VG 32,Turbine Oil ISO VG 32,lubricant,ISO VG 32,,,20L|208L
+TURB-46,زيت توربين ISO VG 46,Turbine Oil ISO VG 46,lubricant,ISO VG 46,,,20L|208L
+DIESEL-15W40,زيت محرك ديزل ثقيل 15W-40,Heavy Duty Diesel Engine Oil 15W-40,lubricant,15W-40,CI-4,15W-40,5L|20L|208L
+HYD-68,زيت هيدروليك HVI 68,HVI Hydraulic Oil 68,lubricant,ISO VG 68,,,20L|208L
+GEAR-220,زيت تروس صناعي ISO VG 220,Industrial Gear Oil ISO VG 220,lubricant,ISO VG 220,,,20L|208L
+COMP-100,زيت ضاغط هوائي ISO VG 100,Air Compressor Oil ISO VG 100,lubricant,ISO VG 100,,,20L
+FUEL-ULSD,ديزل منخفض الكبريت,Ultra Low Sulfur Diesel,fuel,,,,mt

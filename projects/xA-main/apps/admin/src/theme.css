@@ -1,0 +1,58 @@
+:root {
+  --bg: #0f1419;
+  --card: #1a222c;
+  --line: #2b3642;
+  --text: #e8eef4;
+  --muted: #93a4b5;
+  --accent: #d4a017;
+  --ok: #3dbe7a;
+  --warn: #e0b44b;
+  --bad: #e15b5b;
+  --crit: #ff3b3b;
+}
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; min-height: 100%; }
+body {
+  font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  direction: rtl;
+}
+a { color: var(--accent); }
+button, input, textarea {
+  font-family: inherit;
+  font-size: 1rem;
+}
+.wrap { max-width: 980px; margin: 0 auto; padding: 24px; }
+.top {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 20px;
+}
+.brand { font-weight: 700; color: var(--accent); }
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; padding: 16px; margin-bottom: 12px;
+}
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.chip {
+  font-size: 12px; padding: 3px 8px; border-radius: 999px;
+  background: #243040; color: var(--muted);
+}
+.chip.low { color: var(--ok); }
+.chip.medium { color: var(--warn); }
+.chip.high, .chip.critical { color: var(--bad); background: #3a1c1c; }
+button.primary, button.danger, button.ghost {
+  border: 0; border-radius: 10px; padding: 10px 16px; cursor: pointer;
+}
+button.primary { background: var(--ok); color: #062; font-weight: 700; }
+button.danger { background: var(--bad); color: white; }
+button.ghost { background: transparent; color: var(--muted); }
+input, textarea {
+  width: 100%; background: #10161d; color: var(--text);
+  border: 1px solid var(--line); border-radius: 10px; padding: 10px;
+}
+textarea { min-height: 140px; }
+.muted { color: var(--muted); }
+.login { max-width: 360px; margin: 12vh auto; }
+h1, h2 { margin: 0 0 8px; }
+pre { white-space: pre-wrap; font-family: inherit; }

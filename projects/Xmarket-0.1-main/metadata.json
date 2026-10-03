@@ -1,0 +1,6 @@
+{
+  "name": "LaunchSphere",
+  "description": "A Web3 launchpad and digital product marketplace on Solana Devnet featuring a community feed, wallet simulation, and automated transactions.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

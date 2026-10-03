@@ -1,0 +1,19 @@
+# Production overlay: no published DB ports, no MinIO console.
+# Use managed Postgres/Redis/R2. This file documents service images only.
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+  worker:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+    restart: unless-stopped
+  hermes:
+    build:
+      context: .
+      dockerfile: apps/hermes/Dockerfile
+    restart: unless-stopped
