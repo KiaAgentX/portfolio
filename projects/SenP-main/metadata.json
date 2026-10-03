@@ -1,0 +1,6 @@
+{
+  "name": "3D MIND LLM · SenPai Neural OS",
+  "description": "A futuristic 3D neural network LLM interface with real-time concept mapping, multi-provider AI support (Gemini, OpenRouter, Ollama), Chain-of-Thought agent vibe, and interactive 3D brain visualization.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

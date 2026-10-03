@@ -1,0 +1,6 @@
+{
+  "name": "Multi-Provider AI SaaS Platform",
+  "description": "NOVA: A production-grade multi-provider AI platform connecting Gemini, OpenAI, Anthropic, and Groq with secure workspaces, RAG document analysis, dynamic thinking modes, and creative studios.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
