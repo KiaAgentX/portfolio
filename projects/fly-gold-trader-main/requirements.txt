@@ -1,0 +1,13 @@
+# Core web stack
+flask>=3.0
+flask-socketio>=5.3
+simple-websocket>=1.0
+python-dotenv>=1.0
+numpy>=2.0
+
+# MetaTrader5 exists for Windows only. On other platforms the built-in
+# PAPER simulator is used automatically.
+MetaTrader5>=5.0.45; sys_platform == 'win32'
+
+# Optional AI analysis engine (ensemble strategies work without it)
+typesafe-sdk>=0.7

@@ -1,0 +1,261 @@
+// FISHKAL Phase 1 schema (spec §61). Server-authoritative economy (spec §60).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Rarity {
+  COMMON
+  UNCOMMON
+  RARE
+  EPIC
+  LEGENDARY
+}
+
+model User {
+  id        String           @id @default(uuid())
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  telegram  TelegramAccount?
+  player    Player?
+  adminRole String?
+  auditLogs AuditLog[]
+}
+
+model TelegramAccount {
+  id           String   @id @default(uuid())
+  telegramId   String   @unique
+  username     String?
+  displayName  String?
+  languageCode String?
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String   @unique
+  createdAt    DateTime @default(now())
+}
+
+model Player {
+  id           String             @id @default(uuid())
+  userId       String             @unique
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  displayName  String?
+  credits      Int                @default(0)
+  level        Int                @default(1)
+  totalScore   Int                @default(0)
+  deepestDepth Float              @default(0)
+  largestFish  String?
+  loadoutJson  Json?
+  stats        PlayerStats?
+  runs         GameRun[]
+  collection   PlayerCollection[]
+  leaderboard  LeaderboardEntry[]
+  ledger       CreditLedger[]
+  upgrades     PlayerUpgrade[]
+  missions     MissionProgress[]
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+}
+
+model PlayerStats {
+  id           String   @id @default(uuid())
+  playerId     String   @unique
+  player       Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  runsCount    Int      @default(0)
+  totalScore   Int      @default(0)
+  totalFish    Int      @default(0)
+  deepestDepth Float    @default(0)
+  largestFish  String?
+  updatedAt    DateTime @updatedAt
+
+  @@index([totalScore])
+}
+
+model PlayerCollection {
+  id        String   @id @default(uuid())
+  playerId  String
+  player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  fishId    String
+  bestScore Int      @default(0)
+  bestDepth Float    @default(0)
+  caughtAt  DateTime @default(now())
+
+  @@unique([playerId, fishId])
+}
+
+model FishSpecies {
+  id           String  @id
+  name         String
+  rarity       Rarity
+  behavior     String
+  depthMin     Float
+  depthMax     Float
+  score        Int
+  creditReward Int
+  speed        Float
+  turnRate     Float
+  weight       Float
+  size         Float
+  danger       Boolean @default(false)
+
+  @@index([rarity])
+}
+
+model GameConfigEntry {
+  key       String   @id
+  valueJson Json
+  updatedAt DateTime @updatedAt
+}
+
+model GameRun {
+  id         String      @id @default(uuid())
+  playerId   String
+  player     Player      @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  score      Int
+  credits    Int
+  maxDepth   Float
+  maxCombo   Int
+  durationMs Int
+  flags      String[]    @default([])
+  catches    GameCatch[]
+  createdAt  DateTime    @default(now())
+
+  @@index([score(sort: Desc)])
+  @@index([playerId])
+}
+
+model GameCatch {
+  id     String  @id @default(uuid())
+  runId  String
+  run    GameRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  fishId String
+  depth  Float
+  atMs   Int
+  valid  Boolean @default(true)
+
+  @@index([runId])
+}
+
+model LeaderboardEntry {
+  id        String   @id @default(uuid())
+  playerId  String
+  player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  board     String
+  score     Int
+  rank      Int
+  period    String
+  updatedAt DateTime @updatedAt
+
+  @@unique([board, period, playerId])
+  @@index([board, period, rank])
+}
+
+// Commerce (spec §33) — intentionally empty until the business provides real
+// products/prices (spec §103 forbids fake data). Insert rows to activate.
+model Product {
+  id          String   @id
+  name        String
+  description String?
+  priceAed    Int
+  stock       Int?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  Order       Order[]
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  playerId  String
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  priceAed  Int
+  status    String   @default("CREATED")
+  createdAt DateTime @default(now())
+
+  @@index([playerId])
+}
+
+model AnalyticsEvent {
+  id        String   @id @default(uuid())
+  name      String
+  playerId  String?
+  propsJson Json?
+  createdAt DateTime @default(now())
+
+  @@index([name])
+  @@index([createdAt])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  actorId    String?
+  actor      User?    @relation(fields: [actorId], references: [id])
+  action     String
+  target     String?
+  beforeJson Json?
+  afterJson  Json?
+  reason     String?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+// ---- Phase 3 economy (roadmap 3.1) — server-authoritative wallet (§60) -----
+
+model CreditLedger {
+  id        String   @id @default(uuid())
+  playerId  String
+  player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  delta     Int
+  reason    String
+  refId     String?
+  createdAt DateTime @default(now())
+
+  @@index([playerId, createdAt])
+}
+
+model PlayerUpgrade {
+  id        String @id @default(uuid())
+  playerId  String
+  player    Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  upgradeId String
+  level     Int    @default(0)
+
+  @@unique([playerId, upgradeId])
+}
+
+model MissionDef {
+  id             String  @id
+  titleKey       String
+  descriptionKey String
+  kind           String
+  target         Int
+  rewardCredits  Int
+  active         Boolean @default(true)
+
+  missionProgress MissionProgress[]
+}
+
+model MissionProgress {
+  id        String     @id @default(uuid())
+  playerId  String
+  player    Player     @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  missionId String
+  mission   MissionDef @relation(fields: [missionId], references: [id])
+  progress  Int        @default(0)
+  claimedAt DateTime?
+
+  @@unique([playerId, missionId])
+}
+
+model Referral {
+  id         String   @id @default(uuid())
+  referrerId String
+  refereeId  String   @unique
+  rewarded   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}

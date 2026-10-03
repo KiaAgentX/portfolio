@@ -1,0 +1,135 @@
+/* FISHKAL design tokens (spec §51). Navy #0D3B66 / Turquoise #10B6A8. */
+:root {
+  --fk-navy: #0d3b66;
+  --fk-navy-deep: #072540;
+  --fk-turquoise: #10b6a8;
+  --fk-turquoise-light: #3ed8cb;
+  --fk-sand: #f4efe6;
+  --fk-foam: #eaf6f4;
+  --fk-ink: #0b1b26;
+  --fk-danger: #e25555;
+  --fk-gold: #e8b84b;
+
+  --fk-space-1: 4px;
+  --fk-space-2: 8px;
+  --fk-space-3: 16px;
+  --fk-space-4: 24px;
+  --fk-space-5: 40px;
+  --fk-space-6: 64px;
+
+  --fk-radius-sm: 8px;
+  --fk-radius-md: 14px;
+  --fk-radius-lg: 22px;
+
+  --fk-shadow-card: 0 10px 30px rgb(7 37 64 / 0.25);
+  --fk-motion-fast: 160ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  --fk-motion-cinematic: 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  background: var(--fk-navy-deep);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+  color: var(--fk-sand);
+  background: var(--fk-navy-deep);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Primitives ---------- */
+
+.fk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fk-space-2);
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font: 700 14px/1 var(--font-display, 'Inter', system-ui, sans-serif);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition:
+    transform var(--fk-motion-fast),
+    box-shadow var(--fk-motion-fast),
+    background var(--fk-motion-fast);
+}
+
+.fk-btn:active {
+  transform: scale(0.97);
+}
+
+.fk-btn:focus-visible {
+  outline: 2px solid var(--fk-turquoise-light);
+  outline-offset: 3px;
+}
+
+.fk-btn--primary {
+  background: linear-gradient(135deg, var(--fk-turquoise), var(--fk-turquoise-light));
+  color: var(--fk-navy-deep);
+  box-shadow: 0 8px 24px rgb(16 182 168 / 0.35);
+}
+
+.fk-btn--primary:hover {
+  box-shadow: 0 10px 32px rgb(16 182 168 / 0.55);
+}
+
+.fk-btn--ghost {
+  background: rgb(255 255 255 / 0.08);
+  color: var(--fk-sand);
+  border: 1px solid rgb(255 255 255 / 0.25);
+  backdrop-filter: blur(6px);
+}
+
+.fk-btn--ghost:hover {
+  background: rgb(255 255 255 / 0.16);
+}
+
+.fk-card {
+  background: rgb(7 37 64 / 0.55);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: var(--fk-radius-lg);
+  box-shadow: var(--fk-shadow-card);
+  padding: var(--fk-space-4);
+  backdrop-filter: blur(8px);
+}
+
+.fk-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font: 700 11px/1.2 var(--font-display, 'Inter', system-ui, sans-serif);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.fk-badge--common    { background: #6c8ba4; color: #0b1b26; }
+.fk-badge--uncommon  { background: #4fb286; color: #072540; }
+.fk-badge--rare      { background: #3e8ed0; color: #ffffff; }
+.fk-badge--epic      { background: #9b5de5; color: #ffffff; }
+.fk-badge--legendary { background: var(--fk-gold); color: #072540; }
+
+.fk-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--fk-radius-md);
+  border: 1px solid rgb(255 255 255 / 0.2);
+  background: rgb(255 255 255 / 0.06);
+  color: var(--fk-sand);
+  font: 400 15px/1.4 var(--font-body, 'Inter', system-ui, sans-serif);
+}
+
+.fk-input:focus-visible {
+  outline: 2px solid var(--fk-turquoise);
+  border-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fk-btn,
+  .fk-card {
+    transition: none;
+  }
+}

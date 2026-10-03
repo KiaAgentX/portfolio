@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fly-Gold-Trader PRO - Setup Guide</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0a0e17; color: #e0e0e0; line-height: 1.6; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+h1 { color: #ffd700; font-size: 32px; text-align: center; margin: 30px 0 10px; }
+h2 { color: #58a6ff; font-size: 20px; margin: 30px 0 12px; border-bottom: 1px solid #21262d; padding-bottom: 6px; }
+h3 { color: #3fb950; font-size: 16px; margin: 20px 0 8px; }
+.subtitle { text-align: center; color: #8b949e; margin-bottom: 30px; }
+.step { background: #161b22; border: 1px solid #2d333b; border-radius: 8px; padding: 16px; margin: 12px 0; }
+.step-num { display: inline-block; background: #ffd700; color: #000; font-weight: bold; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-size: 13px; margin-right: 8px; }
+pre { background: #0d1117; border: 1px solid #21262d; border-radius: 6px; padding: 12px; overflow-x: auto; font-size: 13px; color: #c9d1d9; margin: 8px 0; }
+code { font-family: 'Cascadia Code', 'Fira Code', monospace; }
+.comment { color: #484f58; }
+.success { color: #3fb950; }
+.warning { color: #d29922; }
+.error { color: #f85149; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: bold; margin: 2px; }
+.badge-win { background: #0d4429; color: #3fb950; }
+.badge-linux { background: #1a1f2e; color: #58a6ff; }
+.badge-mac { background: #3b2e00; color: #d29922; }
+.badge-railway { background: #490202; color: #f85149; }
+.badge-netlify { background: #0d3d3b; color: #2dd4bf; }
+.badge-github { background: #21262d; color: #e0e0e0; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+th { background: #0d1117; color: #8b949e; text-align: left; padding: 8px; font-size: 12px; text-transform: uppercase; }
+td { padding: 8px; border-bottom: 1px solid #21262d; font-size: 13px; }
+.screenshot { background: #0d1117; border: 1px solid #21262d; border-radius: 8px; padding: 20px; text-align: center; color: #484f58; margin: 12px 0; font-style: italic; }
+.arch { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 12px 0; }
+.arch-box { background: #0d1117; border: 1px solid #2d333b; border-radius: 6px; padding: 10px; text-align: center; }
+.arch-box .icon { font-size: 24px; }
+.arch-box .label { font-size: 11px; color: #8b949e; margin-top: 4px; }
+.nav { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0; }
+.nav a { display: block; padding: 8px 16px; background: #161b22; border: 1px solid #2d333b; border-radius: 6px; color: #58a6ff; text-decoration: none; font-size: 13px; }
+.nav a:hover { background: #1a1f2e; border-color: #58a6ff; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Fly-Gold-Trader PRO</h1>
+<p class="subtitle">Setup Guide - From Zero to Live Trading</p>
+
+<nav class="nav">
+  <a href="#local">Local Setup</a>
+  <a href="#windows">Windows</a>
+  <a href="#linux">Linux/Mac</a>
+  <a href="#railway">Railway</a>
+  <a href="#netlify">Netlify</a>
+  <a href="#github">GitHub Pages</a>
+  <a href="#config">Configuration</a>
+  <a href="#troubleshooting">Troubleshooting</a>
+</nav>
+
+<h2>Architecture Overview</h2>
+<div class="arch">
+  <div class="arch-box"><div class="icon">Fly Brain</div><div class="label">166,700 neurons<br>Pattern recognition</div></div>
+  <div class="arch-box"><div class="icon">Playbook</div><div class="label">20 patterns<br>Market analysis</div></div>
+  <div class="arch-box"><div class="icon">Ensemble</div><div class="label">7 strategies<br>Weighted voting</div></div>
+  <div class="arch-box"><div class="icon">Prism Gate</div><div class="label">Entry filter<br>Risk guard</div></div>
+  <div class="arch-box"><div class="icon">MT5 / Paper</div><div class="label">Live or simulated<br>Identical API</div></div>
+  <div class="arch-box"><div class="icon">Dashboard</div><div class="label">6 tabs<br>Real-time</div></div>
+</div>
+
+<h2 id="local">Prerequisites</h2>
+<div class="step">
+  <p><span class="step-num">0</span> <strong>Install Python 3.9+</strong></p>
+  <p>Download from <a href="https://python.org" style="color:#58a6ff">python.org</a>. During installation, check <strong>"Add Python to PATH"</strong>.</p>
+<pre><code>python --version   <span class="comment"># Should show 3.9 or higher</span></code></pre>
+</div>
+
+<h2 id="local">Option 1: Local Setup (Recommended)</h2>
+
+<h3 id="windows"><span class="badge badge-win">Windows</span></h3>
+<div class="step">
+  <p><span class="step-num">1</span> <strong>Clone the repository</strong></p>
+<pre><code>git clone https://github.com/ImXforever/fly-gold-trader.git
+cd fly-gold-trader</code></pre>
+</div>
+<div class="step">
+  <p><span class="step-num">2</span> <strong>Run setup</strong></p>
+<pre><code><span class="comment"># Double-click setup.bat in file explorer, OR:</span>
+setup.bat
+
+<span class="comment"># To auto-start after install:</span>
+setup.bat --run</code></pre>
+</div>
+<div class="step">
+  <p><span class="step-num">3</span> <strong>Open dashboard</strong></p>
+<pre><code>http://127.0.0.1:5000</code></pre>
+</div>
+
+<h3 id="linux"><span class="badge badge-linux">Linux</span> <span class="badge badge-mac">macOS</span></h3>
+<div class="step">
+  <p><span class="step-num">1</span> <strong>Clone the repository</strong></p>
+<pre><code>git clone https://github.com/ImXforever/fly-gold-trader.git
+cd fly-gold-trader</code></pre>
+</div>
+<div class="step">
+  <p><span class="step-num">2</span> <strong>Make setup executable and run</strong></p>
+<pre><code>chmod +x setup.sh
+./setup.sh
+
+<span class="comment"># To auto-start after install:</span>
+./setup.sh --run</code></pre>
+</div>
+<div class="step">
+  <p><span class="step-num">3</span> <strong>Open dashboard</strong></p>
+<pre><code>http://127.0.0.1:5000</code></pre>
+</div>
+
+<h3><span class="badge badge-win badge-linux badge-mac">Any OS</span> Manual Setup</h3>
+<div class="step">
+  <p><span class="step-num">1</span> <strong>Create virtual environment</strong></p>
+<pre><code>python -m venv .venv
+<span class="comment"># Windows:</span>
+.venv\Scripts\activate
+<span class="comment"># Linux/Mac:</span>
+source .venv/bin/activate</code></pre>
+</div>
+<div class="step">
+  <p><span class="step-num">2</span> <strong>Install dependencies</strong></p>
+<pre><code>pip install -r requirements.txt</code></pre>
+</div>
+<div class="step">
+  <p><span class="step-num">3</span> <strong>Configure environment</strong></p>
+<pre><code><span class="comment"># Copy example config</span>
+cp .env.example .env
+
+<span class="comment"># Edit .env with your settings</span>
+<span class="comment"># Key settings:</span>
+<span class="comment">#   TRADE_MODE=paper    (paper = simulated, live = real money)</span>
+<span class="comment">#   STRATEGY=ensemble   (uses all 7 strategies)</span></code></pre>
+</div>
+<div class="step">
+  <p><span class="step-num">4</span> <strong>Start the server</strong></p>
+<pre><code>python src/server.py
+<span class="comment"># Then open http://127.0.0.1:5000</span></code></pre>
+</div>
+
+<h2 id="railway">Option 2: Deploy to Railway</h2>
+<div class="step">
+  <p><span class="step-num">1</span> <strong>Fork the repository</strong></p>
+  <p>Go to <a href="https://github.com/ImXforever/fly-gold-trader" style="color:#58a6ff">github.com/ImXforever/fly-gold-trader</a> and click <strong>Fork</strong>.</p>
+</div>
+<div class="step">
+  <p><span class="step-num">2</span> <strong>Create Railway project</strong></p>
+  <p>Go to <a href="https://railway.app" style="color:#58a6ff">railway.app</a> and:</p>
+  <ul>
+    <li>Click <strong>"New Project"</strong></li>
+    <li>Select <strong>"Deploy from GitHub repo"</strong></li>
+    <li>Choose your forked repo</li>
+  </ul>
+</div>
+<div class="step">
+  <p><span class="step-num">3</span> <strong>Add environment variables</strong></p>
+  <p>In Railway dashboard, go to <strong>Variables</strong> tab and add:</p>
+<pre><code>TRADE_MODE=paper
+STRATEGY=ensemble
+PORT=5000
+TYPESAFE_API_KEY=your_key_here    <span class="comment"># Optional</span>
+FLY_ROOT=                         <span class="comment"># Leave empty for simulated brain</span></code></pre>
+</div>
+<div class="step">
+  <p><span class="step-num">4</span> <strong>Deploy</strong></p>
+  <p>Railway auto-deploys on every push to <code>main</code>. Your app will be at <code>https://your-project.up.railway.app</code>.</p>
+</div>
+<div class="step">
+  <p><span class="step-num">5</span> <strong>Update .env for Railway</strong></p>
+<pre><code><span class="comment"># In your repo's .env.example, Railway uses these from the Variables tab</span>
+<span class="comment"># No file changes needed - Railway overrides .env with its own variables</span></code></pre>
+</div>
+
+<h2 id="netlify">Option 3: Deploy to Netlify</h2>
+<div class="step">
+  <p><span class="step-num">1</span> <strong>Fork the repository</strong></p>
+</div>
+<div class="step">
+  <p><span class="step-num">2</span> <strong>Connect to Netlify</strong></p>
+  <ul>
+    <li>Go to <a href="https://app.netlify.com" style="color:#58a6ff">app.netlify.com</a></li>
+    <li>Click <strong>"Add new site"</strong> > <strong>"Import from GitHub"</strong></li>
+    <li>Select your fork</li>
+  </ul>
+</div>
+<div class="step">
+  <p><span class="step-num">3</span> <strong>Build settings</strong></p>
+<pre><code>Build command:    echo "deployed"
+Publish directory: .</code></pre>
+</div>
+<div class="step">
+  <p><span class="step-num">4</span> <strong>Note</strong></p>
+  <p class="warning">Netlify serves static files only. The dashboard HTML works but the backend (trading, MT5) requires a server. Use Railway for full functionality.</p>
+</div>
+
+<h2 id="github">Option 4: GitHub Pages</h2>
+<div class="step">
+  <p><span class="step-num">1</span> <strong>Push to GitHub</strong></p>
+<pre><code>git push origin main</code></pre>
+</div>
+<div class="step">
+  <p><span class="step-num">2</span> <strong>Enable Pages</strong></p>
+  <ul>
+    <li>Go to repo <strong>Settings</strong> > <strong>Pages</strong></li>
+    <li>Source: <strong>Deploy from branch</strong> > <code>main</code></li>
+    <li>Folder: <strong>/ (root)</strong></li>
+  </ul>
+</div>
+<div class="step">
+  <p><span class="step-num">3</span> <strong>Access</strong></p>
+<pre><code>https://username.github.io/fly-gold-trader/</code></pre>
+</div>
+
+<h2 id="config">Configuration Guide</h2>
+<p>All settings can be changed from the <strong>Settings tab</strong> in the dashboard without restarting.</p>
+
+<div class="table-wrap">
+<table>
+<tr><th>Setting</th><th>Default</th><th>Range</th><th>Description</th></tr>
+<tr><td><code>TRADE_MODE</code></td><td>paper</td><td>paper/live</td><td>Paper = simulated, Live = real MT5</td></tr>
+<tr><td><code>STRATEGY</code></td><td>ensemble</td><td>See below</td><td>Trading strategy to use</td></tr>
+<tr><td><code>BASE_VOLUME</code></td><td>0.01</td><td>0.01 - 10</td><td>Base trade volume (lots)</td></tr>
+<tr><td><code>MAX_POSITIONS</code></td><td>5</td><td>1 - 50</td><td>Maximum simultaneous positions</td></tr>
+<tr><td><code>TP_USD</code></td><td>8.0</td><td>0.5 - 10000</td><td>Take profit in USD per position</td></tr>
+<tr><td><code>SL_USD</code></td><td>4.0</td><td>0.5 - 10000</td><td>Stop loss in USD per position</td></tr>
+<tr><td><code>TRAIL_USD</code></td><td>3.0</td><td>0 - 10000</td><td>Trailing stop (0 = off)</td></tr>
+<tr><td><code>LOOP_DELAY</code></td><td>2</td><td>0.2 - 60</td><td>Seconds between trading cycles</td></tr>
+<tr><td><code>RISK_PCT</code></td><td>0.5</td><td>0.05 - 5</td><td>Risk percentage per trade</td></tr>
+<tr><td><code>MAX_DAILY_LOSS_USD</code></td><td>60</td><td>5 - 100000</td><td>Daily loss cap in USD</td></tr>
+<tr><td><code>MAX_DRAWDOWN_PCT</code></td><td>10</td><td>1 - 90</td><td>Max drawdown percentage</td></tr>
+<tr><td><code>COOLDOWN_AFTER_LOSSES</code></td><td>3</td><td>1 - 20</td><td>Trigger cooldown after N consecutive losses</td></tr>
+<tr><td><code>COOLDOWN_SEC</code></td><td>300</td><td>10 - 86400</td><td>Cooldown duration in seconds</td></tr>
+</table>
+</div>
+
+<h3>Available Strategies</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Strategy</th><th>Description</th></tr>
+<tr><td><code>ensemble</code></td><td>Weighted combination of all 7 strategies (recommended)</td></tr>
+<tr><td><code>fly_momentum</code></td><td>Fly brain dopamine/aversive signals</td></tr>
+<tr><td><code>ema_cross</code></td><td>EMA 9/21 crossover</td></tr>
+<tr><td><code>rsi_reversal</code></td><td>RSI overbought/oversold reversal</td></tr>
+<tr><td><code>bollinger_fade</code></td><td>Bollinger band mean reversion</td></tr>
+<tr><td><code>macd_momentum</code></td><td>MACD signal line crossover</td></tr>
+<tr><td><code>candle_pattern</code></td><td>Candlestick pattern recognition</td></tr>
+</table>
+</div>
+
+<h2>CLI Commands</h2>
+<div class="step">
+<pre><code><span class="comment"># Start the server</span>
+python src/cli.py serve
+
+<span class="comment"># Run backtest with 3000 candles</span>
+python src/cli.py backtest --seed 7 --candles 3000 --strategy ensemble
+
+<span class="comment"># TP/SL parameter sweep</span>
+python src/cli.py sweep --seed 7
+
+<span class="comment"># Show trade journal</span>
+python src/cli.py journal --limit 20
+
+<span class="comment"># Run unit tests</span>
+python src/cli.py test</code></pre>
+</div>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<div class="step">
+  <h3>Python not found</h3>
+  <pre><code><span class="comment"># Try python3 instead of python:</span>
+python3 --version
+
+<span class="comment"># Or use the full path:</span>
+/usr/bin/python3 --version</code></pre>
+</div>
+
+<div class="step">
+  <h3>MetaTrader 5 not available</h3>
+  <p class="warning">MT5 only works on Windows. On other platforms, the built-in SimBroker paper trading is used automatically. No action needed.</p>
+</div>
+
+<div class="step">
+  <h3>Fly brain falls back to simulation</h3>
+  <p>This is normal. The real 166,700-neuron connectome requires the <code>fly-wirehead</code> data files. The simulated brain works identically for signal generation.</p>
+</div>
+
+<div class="step">
+  <h3>TypeSafe SDK not found</h3>
+  <p class="warning">TypeSafe is optional. The ensemble strategies work without it. If you want TypeSafe Jev analysis, get an API key from <a href="https://typesafe.ai" style="color:#58a6ff">typesafe.ai</a>.</p>
+</div>
+
+<div class="step">
+  <h3>Port 5000 already in use</h3>
+  <pre><code><span class="comment"># Change port in .env:</span>
+PORT=8080
+
+<span class="comment"># Or use --port flag:</span>
+python install.py --port 8080 --run</code></pre>
+</div>
+
+<div class="step">
+  <h3>Railway deployment fails</h3>
+  <pre><code><span class="comment"># Ensure these environment variables are set in Railway:</span>
+TRADE_MODE=paper
+STRATEGY=ensemble
+PORT=5000
+
+<span class="comment"># Check Railway logs for errors</span></code></pre>
+</div>
+
+<div class="step">
+  <h3>Live trading warnings</h3>
+  <p class="error">LIVE mode trades real money. Always start with paper mode. Set appropriate risk caps. Never risk more than you can afford to lose.</p>
+</div>
+
+<h2>File Structure</h2>
+<div class="step">
+<pre><code>fly-gold-trader/
+|-- src/
+|   |-- server.py           <span class="comment"># Main server (Flask + SocketIO)</span>
+|   |-- config.py           <span class="comment"># Configuration with validation</span>
+|   |-- fly_brain.py        <span class="comment"># 166,700 neuron fly connectome</span>
+|   |-- indicators.py       <span class="comment"># 14 technical indicators</span>
+|   |-- strategies.py       <span class="comment"># 7 strategies + ensemble</span>
+|   |-- risk_manager.py     <span class="comment"># Account-level risk gating</span>
+|   |-- backtest.py         <span class="comment"># Candle-accurate backtester</span>
+|   |-- journal.py          <span class="comment"># SQLite trade journal</span>
+|   |-- mt5_trader.py       <span class="comment"># MT5 + SimBroker</span>
+|   |-- notifications.py    <span class="comment"># Webhook/Telegram alerts</span>
+|   |-- cli.py              <span class="comment"># Command-line interface</span>
+|   |-- playbook/           <span class="comment"># 20-pattern analysis engine</span>
+|   |   |-- __init__.py
+|   |   |-- P01_ultrafast.py ... P20_killfixship.py
+|-- templates/
+|   |-- dashboard.html      <span class="comment"># 6-tab dashboard</span>
+|-- static/
+|   |-- fly3d/              <span class="comment"># 25 Three.js modules (3D fly brain)</span>
+|   |-- vendor/             <span class="comment"># Chart.js, Socket.IO, Three.js</span>
+|-- tests/                  <span class="comment"># 17 unit tests</span>
+|-- install.py              <span class="comment"># One-click installer</span>
+|-- setup.bat / setup.sh    <span class="comment"># Platform setup scripts</span>
+|-- run.bat / run.sh        <span class="comment"># Quick launch scripts</span>
+|-- requirements.txt        <span class="comment"># Python dependencies</span>
+|-- .env.example            <span class="comment"># Environment template</span>
+|-- setup.html              <span class="comment"># This guide</span>
+|-- LICENSE                 <span class="comment"># MIT License</span>
+|-- README.md               <span class="comment"># Project documentation</span></code></pre>
+</div>
+
+<h2>Support</h2>
+<div class="step">
+  <ul>
+    <li>GitHub Issues: <a href="https://github.com/ImXforever/fly-gold-trader/issues" style="color:#58a6ff">github.com/ImXforever/fly-gold-trader/issues</a></li>
+    <li>Documentation: <a href="https://github.com/ImXforever/fly-gold-trader#readme" style="color:#58a6ff">README.md</a></li>
+  </ul>
+</div>
+
+<p style="text-align:center;color:#484f58;margin:30px 0;font-size:12px">Fly-Gold-Trader PRO | MIT License | Built with Fly Brain + TypeSafe Jev + MT5</p>
+
+</div>
+</body>
+</html>

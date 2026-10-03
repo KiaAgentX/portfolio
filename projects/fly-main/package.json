@@ -1,0 +1,29 @@
+{
+  "name": "fishkal",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "dev:website": "turbo run dev --filter=@fishkal/website",
+    "dev:api": "turbo run dev --filter=@fishkal/api",
+    "typecheck": "turbo run typecheck",
+    "test": "vitest run",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,json,css,md}\"",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:migrate": "pnpm --filter @fishkal/database migrate",
+    "db:seed": "pnpm --filter @fishkal/database seed"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "prettier": "^3.4.0",
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,3860 @@
+# ============================================================
+# FISHKAL
+# PREMIUM DIGITAL SEAFOOD EXPERIENCE
+# HERMES ARENA — AUTONOMOUS PROJECT BUILD SPECIFICATION
+# ============================================================
+
+PROJECT TYPE:
+
+    Premium Digital Brand Ecosystem
+    + Cinematic Web Experience
+    + 3D Browser Game
+    + Telegram Mini App
+    + Telegram Bot
+    + Seafood Commerce Platform
+    + Gamification
+    + Loyalty / Credits
+    + Analytics
+    + AI Automation
+    + Admin / CMS
+    + Campaign Engine
+
+PROJECT NAME:
+
+    FISHKAL
+
+INTERNAL GAME NAME:
+
+    FISHKAL: DEEP CATCH
+
+PRIMARY MARKET:
+
+    Dubai / UAE
+
+PRIMARY CHANNEL:
+
+    Telegram
+
+PRIMARY WEB EXPERIENCE:
+
+    Premium cinematic interactive website
+
+PRIMARY GAME EXPERIENCE:
+
+    3D fishing / deep-sea exploration game
+
+============================================================
+IMPORTANT
+============================================================
+
+You are Hermes Arena.
+
+You have already been built as an autonomous
+multi-agent software development platform.
+
+This document is now a PROJECT BUILD DIRECTIVE.
+
+Your job is to use your entire Arena system to build
+the FISHKAL ecosystem.
+
+Do not merely produce a plan.
+
+Do not stop at wireframes.
+
+Do not create fake functionality.
+
+Do not create disconnected demos.
+
+Build the actual production architecture.
+
+Use:
+
+    Orchestrator
+    Product Agent
+    Creative Agent
+    UI/UX Agent
+    Frontend/3D Agent
+    Game Agent
+    Technical Artist
+    Backend Agent
+    Database Agent
+    DevOps Agent
+    Telegram Agent
+    AI Agent
+    Growth/Analytics Agent
+    QA/Security Agent
+
+The Orchestrator must coordinate them.
+
+============================================================
+0. HUMAN ROLE
+============================================================
+
+The human operator is:
+
+    Founder
+    Creative Director
+    Product Owner
+    Final Decision Maker
+
+The human must NOT need to manually coordinate
+every technical task.
+
+The Arena should:
+
+    analyze
+    plan
+    decompose
+    assign
+    execute
+    review
+    test
+    fix
+    integrate
+    deploy
+    monitor
+
+Human approval is required only when appropriate.
+
+Examples:
+
+    production deployment
+    irreversible database deletion
+    production secrets
+    payment activation
+    external communication
+    destructive infrastructure action
+    major business/legal decision
+
+============================================================
+1. BUSINESS VISION
+============================================================
+
+Fishkal is not just an online seafood store.
+
+Fishkal should become a digital seafood brand where:
+
+    BRAND
+      ↓
+    WEBSITE
+      ↓
+    GAME
+      ↓
+    TELEGRAM
+      ↓
+    COMMUNITY
+      ↓
+    REWARDS
+      ↓
+    SHOP
+      ↓
+    CUSTOMER
+      ↓
+    RETENTION
+
+The user should feel that:
+
+    website
+    game
+    Telegram
+    rewards
+    seafood shop
+
+are all parts of ONE ecosystem.
+
+The experience should be premium enough that
+the website itself can function as a marketing asset.
+
+============================================================
+2. BRAND IDENTITY
+============================================================
+
+Brand:
+
+    FISHKAL
+
+Positioning:
+
+    Online Seafood Market
+
+Market:
+
+    Dubai / UAE
+
+Core values:
+
+    Freshness
+    Trust
+    Speed
+    Simplicity
+    Quality
+    Customer orientation
+
+Visual direction:
+
+    Premium
+    Minimal
+    Fresh
+    Modern
+    Cinematic
+    Marine
+    Technological but not overly cyberpunk
+
+Primary brand colors:
+
+    Navy:
+        #0D3B66
+
+    Turquoise:
+        #10B6A8
+
+Use additional neutral colors carefully.
+
+The interface must not become visually cluttered.
+
+The brand should remain recognizable throughout:
+
+    website
+    game
+    Telegram
+    dashboard
+    shop
+    rewards
+
+============================================================
+3. BRAND VISUAL LANGUAGE
+============================================================
+
+Use the Fishkal visual language consistently.
+
+Important motifs:
+
+    fish
+    waves
+    ocean
+    underwater light
+    Dubai skyline
+    fishing boat
+    hook
+    depth
+    freshness
+    marine life
+
+Avoid:
+
+    generic stock seafood websites
+    cheap casino aesthetics
+    excessive neon
+    generic Web3 UI
+    childish cartoon visuals
+    visual clutter
+
+The final experience should feel:
+
+    premium
+    modern
+    cinematic
+    trustworthy
+    commercially usable
+
+============================================================
+4. PRIMARY USER JOURNEY
+============================================================
+
+The primary cinematic journey is:
+
+    DUBAI
+       ↓
+    SEA
+       ↓
+    FISHKAL BOAT
+       ↓
+    OCEAN SURFACE
+       ↓
+    CAMERA DESCENDS
+       ↓
+    UNDERWATER
+       ↓
+    FISH
+       ↓
+    DEEP SEA
+       ↓
+    GAME
+       ↓
+    SCORE
+       ↓
+    CREDITS
+       ↓
+    LEADERBOARD
+       ↓
+    REWARDS
+       ↓
+    REAL FISH
+       ↓
+    SHOP
+
+This journey must feel continuous.
+
+The user should not feel:
+
+    "Now I left the website and entered a random game."
+
+Instead:
+
+    "The website transformed into the game."
+
+============================================================
+5. PRIMARY WEBSITE EXPERIENCE
+============================================================
+
+Build a premium cinematic homepage.
+
+Concept:
+
+    The website starts above the water.
+
+    Dubai skyline is visible.
+
+    The Fishkal boat is on the sea.
+
+    The user begins exploring.
+
+    Scrolling gradually changes the camera.
+
+    The camera approaches the boat.
+
+    The camera moves toward the water.
+
+    The camera enters the ocean.
+
+    The environment becomes underwater.
+
+    Fish appear.
+
+    The experience transitions into the game.
+
+Suggested narrative:
+
+    SECTION 01
+    --------------------------------
+
+    Dubai skyline
+    ocean
+    sunrise / sunset atmosphere
+
+    Headline:
+
+        FRESH FROM THE SEA.
+
+    Supporting:
+
+        Discover Fishkal.
+
+    CTA:
+
+        EXPLORE
+
+    --------------------------------
+
+    SECTION 02
+    --------------------------------
+
+    Boat appears.
+
+    Text:
+
+        HOW DEEP CAN YOU GO?
+
+    CTA:
+
+        START THE JOURNEY
+
+    --------------------------------
+
+    SECTION 03
+    --------------------------------
+
+    Camera approaches water.
+
+    Motion increases.
+
+    UI becomes minimal.
+
+    --------------------------------
+
+    SECTION 04
+    --------------------------------
+
+    Camera enters water.
+
+    Sound changes.
+
+    Lighting changes.
+
+    Surface disappears.
+
+    --------------------------------
+
+    SECTION 05
+    --------------------------------
+
+    Underwater environment.
+
+    Fish appear.
+
+    Depth indicator.
+
+    --------------------------------
+
+    SECTION 06
+    --------------------------------
+
+    Game invitation.
+
+        READY TO CATCH?
+
+    CTA:
+
+        PLAY NOW
+
+    --------------------------------
+
+    SECTION 07
+    --------------------------------
+
+    Real Fishkal products.
+
+        FROM THE OCEAN
+        TO YOUR TABLE.
+
+    CTA:
+
+        SHOP FRESH FISH
+
+============================================================
+6. WEBSITE TECHNICAL ARCHITECTURE
+============================================================
+
+Use:
+
+    Next.js
+    React
+    TypeScript
+
+3D:
+
+    Three.js
+    React Three Fiber
+
+Animation:
+
+    GSAP
+    ScrollTrigger
+
+Styling:
+
+    Tailwind CSS
+    centralized design system
+
+State:
+
+    Zustand where necessary
+
+Data:
+
+    API client
+
+3D rendering:
+
+    WebGL2 baseline
+
+WebGPU:
+
+    progressive enhancement
+
+Never make WebGPU the only rendering path.
+
+The experience must degrade gracefully.
+
+============================================================
+7. WEBSITE 3D ARCHITECTURE
+============================================================
+
+Create:
+
+    ExperienceRoot
+
+        SceneManager
+
+        CameraManager
+
+        EnvironmentManager
+
+        LightingManager
+
+        OceanSystem
+
+        BoatSystem
+
+        DubaiSystem
+
+        UnderwaterSystem
+
+        FishSystem
+
+        ParticleSystem
+
+        AudioSystem
+
+        PostProcessing
+
+        InteractionSystem
+
+        PerformanceManager
+
+============================================================
+8. SCENE SYSTEM
+============================================================
+
+Create scenes:
+
+    DubaiScene
+    OceanSurfaceScene
+    BoatScene
+    DiveScene
+    ShallowWaterScene
+    CoralScene
+    DeepSeaScene
+    AbyssScene
+
+Each scene should be independently loadable.
+
+Use transitions.
+
+Do not load the entire world immediately.
+
+Use:
+
+    lazy loading
+    asset streaming
+    depth-based loading
+    LOD
+    instancing
+
+============================================================
+9. CAMERA SYSTEM
+============================================================
+
+Camera states:
+
+    DUBAI_OVERVIEW
+    OCEAN_APPROACH
+    BOAT_APPROACH
+    WATER_SURFACE
+    SURFACE_ENTRY
+    SHALLOW_DESCENT
+    MID_WATER
+    DEEP_WATER
+    ABYSS
+    GAME_CAMERA
+
+Camera transitions must be smooth.
+
+Use interpolation / damping.
+
+Avoid abrupt camera jumps.
+
+Camera should become part of storytelling.
+
+============================================================
+10. OCEAN SYSTEM
+============================================================
+
+Do NOT simply download an ocean model.
+
+Build the ocean using:
+
+    geometry
+    shaders
+    normal maps
+    reflection/refraction techniques
+    procedural waves
+    foam
+    particles
+    lighting
+
+Create:
+
+    SurfaceWaterShader
+    UnderwaterFogShader
+    CausticsSystem
+    WaterParticles
+    SurfaceReflection
+
+The ocean must remain performant on mobile.
+
+============================================================
+11. UNDERWATER ATMOSPHERE
+============================================================
+
+Implement:
+
+    underwater fog
+    volumetric-like lighting
+    caustics
+    floating particles
+    bubbles
+    light shafts
+    depth color shift
+    reduced visibility
+    ambient audio
+
+As depth increases:
+
+    light decreases
+    pressure feeling increases
+    visibility decreases
+    environment changes
+    fish rarity changes
+
+============================================================
+12. 3D ASSET PIPELINE
+============================================================
+
+Preferred format:
+
+    GLB / glTF
+
+Asset pipeline:
+
+    concept
+      ↓
+    AI / custom model
+      ↓
+    Blender
+      ↓
+    cleanup
+      ↓
+    topology optimization
+      ↓
+    material setup
+      ↓
+    rig if needed
+      ↓
+    animation
+      ↓
+    LOD
+      ↓
+    compression
+      ↓
+    GLB
+      ↓
+    CDN
+      ↓
+    Three.js
+
+Use:
+
+    Draco
+    KTX2 / Basis
+    LOD
+    instancing
+
+where appropriate.
+
+Do not download huge unoptimized assets.
+
+============================================================
+13. REQUIRED CORE ASSETS
+============================================================
+
+Create or source appropriately:
+
+    Fishkal boat
+    fishing hook
+    fishing line
+    common fish
+    rare fish
+    deep sea fish
+    shark
+    legendary fish
+    coral
+    rocks
+    sand
+    underwater vegetation
+    debris
+    bubbles
+    particles
+    Dubai skyline
+    UI icons
+    rewards
+    fish cards
+    product imagery
+
+Fishkal-specific assets should have strong
+brand consistency.
+
+============================================================
+14. FISH SYSTEM
+============================================================
+
+Fish should be entities.
+
+Each fish has:
+
+    id
+    species
+    rarity
+    depth_min
+    depth_max
+    speed
+    acceleration
+    turn_rate
+    value
+    score
+    credit_reward
+    behavior
+    danger
+    size
+    weight
+
+Example rarity:
+
+    COMMON
+    UNCOMMON
+    RARE
+    EPIC
+    LEGENDARY
+
+============================================================
+15. FISH BEHAVIOR
+============================================================
+
+Implement multiple behaviors.
+
+COMMON:
+
+    slow
+    simple movement
+
+FLEE:
+
+    moves away from hook
+
+FAST:
+
+    rapid movement
+    direction changes
+
+ZIGZAG:
+
+    unpredictable movement
+
+HEAVY:
+
+    strong downward pull
+
+PREDATOR:
+
+    attacks caught fish
+
+SHARK:
+
+    may intercept player
+
+LEGENDARY:
+
+    rare
+    difficult
+    high value
+    special behavior
+
+Do not make every fish behave identically.
+
+============================================================
+16. GAME CORE
+============================================================
+
+The game is:
+
+    FISHKAL: DEEP CATCH
+
+Primary mechanic:
+
+    fishing hook descends into the ocean.
+
+Player controls horizontal movement.
+
+Mobile:
+
+    drag
+    swipe
+    touch
+
+Desktop:
+
+    mouse
+    A/D
+    arrow keys
+
+The hook continuously descends.
+
+The player must:
+
+    avoid danger
+    catch fish
+    manage line
+    maximize score
+    reach deeper zones
+
+============================================================
+17. DEPTH SYSTEM
+============================================================
+
+Example:
+
+    0–50m
+        common fish
+
+    50–150m
+        uncommon fish
+
+    150–300m
+        rare fish
+
+    300m+
+        deep sea
+
+    special zones:
+        legendary
+        predator
+        abyss
+
+Make depth configuration database-driven.
+
+Do NOT hardcode all balance values in frontend code.
+
+============================================================
+18. HOOK SYSTEM
+============================================================
+
+Hook has:
+
+    position
+    velocity
+    depth
+    line_length
+    tension
+    energy
+    state
+
+States:
+
+    READY
+    DESCENDING
+    CONTACT
+    CAUGHT
+    ESCAPING
+    RETRACTING
+    BROKEN
+
+============================================================
+19. LINE SYSTEM
+============================================================
+
+Implement:
+
+    line length
+    line tension
+    tension limit
+    elasticity
+    pull forces
+    break condition
+
+Large fish create more tension.
+
+If tension exceeds limit:
+
+    line breaks
+
+unless player has an upgrade.
+
+============================================================
+20. CATCH SYSTEM
+============================================================
+
+When hook contacts fish:
+
+    detect collision
+    evaluate fish behavior
+    determine catch probability
+    attach fish
+    calculate weight/value
+    update score
+    update combo
+    update credits
+
+Server must validate final rewards.
+
+Never trust:
+
+    client score
+    client credits
+    client fish count
+
+============================================================
+21. GAME ECONOMY
+============================================================
+
+Separate:
+
+    SCORE
+
+from:
+
+    CREDITS
+
+SCORE:
+
+    leaderboard
+    competition
+    personal record
+
+CREDITS:
+
+    upgrades
+    powerups
+    rewards
+    cosmetics
+
+Never mix them.
+
+============================================================
+22. UPGRADES
+============================================================
+
+Potential upgrades:
+
+    Hook Strength
+    Line Strength
+    Line Length
+    Reel Speed
+    Catch Chance
+    Energy Capacity
+    Magnet Radius
+    Deep Dive Capacity
+
+All balance values should be configurable.
+
+============================================================
+23. POWERUPS
+============================================================
+
+Examples:
+
+    Fish Magnet
+    Slow Time
+    Strong Line
+    Deep Dive
+    Treasure Finder
+    Shield
+    Instant Reel
+
+Powerups should have:
+
+    cost
+    duration
+    effect
+    cooldown
+    availability
+
+============================================================
+24. COMBO SYSTEM
+============================================================
+
+Successful catches can increase:
+
+    combo multiplier
+
+Example:
+
+    1x
+    1.2x
+    1.5x
+    2x
+    3x
+
+Combo should reset under defined conditions.
+
+============================================================
+25. DANGER SYSTEM
+============================================================
+
+Possible dangers:
+
+    sharks
+    jellyfish
+    mines/debris where appropriate
+    excessive depth
+    line tension
+    energy depletion
+
+Do not make danger frustrating.
+
+Difficulty must be progressive.
+
+============================================================
+26. LEGENDARY SYSTEM
+============================================================
+
+Legendary fish should feel special.
+
+Features:
+
+    rare spawn
+    special visual
+    special sound
+    unique behavior
+    high score
+    high credits
+    collectible record
+
+Create:
+
+    legendary collection
+
+============================================================
+27. GAME LOOP
+============================================================
+
+Architecture:
+
+    Input
+      ↓
+    Game State
+      ↓
+    Simulation
+      ↓
+    Entity Update
+      ↓
+    Collision
+      ↓
+    Scoring
+      ↓
+    Effects
+      ↓
+    Rendering
+      ↓
+    UI
+      ↓
+    Event Logging
+
+Do NOT make React responsible for every frame.
+
+The game loop belongs to the game engine layer.
+
+React owns:
+
+    menus
+    HUD
+    dialogs
+    profile
+    leaderboard
+    shop
+
+============================================================
+28. GAME STATE MACHINE
+============================================================
+
+States:
+
+    LOADING
+    READY
+    PLAYING
+    PAUSED
+    CATCHING
+    DANGER
+    GAME_OVER
+    RESULTS
+
+Transitions must be explicit.
+
+============================================================
+29. GAME RESULTS
+============================================================
+
+After game:
+
+    maximum depth
+    fish caught
+    largest fish
+    rarest fish
+    score
+    credits
+    combo
+    duration
+    record status
+
+Show:
+
+    PLAY AGAIN
+
+    VIEW LEADERBOARD
+
+    SHOP
+
+    CLAIM REWARD
+
+============================================================
+30. LEADERBOARD
+============================================================
+
+Leaderboard dimensions:
+
+    highest score
+    deepest dive
+    largest fish
+    weekly score
+    monthly score
+
+Support:
+
+    global
+    weekly
+    friends / Telegram community
+
+Avoid exposing unnecessary personal data.
+
+============================================================
+31. DAILY / WEEKLY MISSIONS
+============================================================
+
+Examples:
+
+    Catch 10 fish
+    Reach 100m
+    Catch a rare fish
+    Catch Hammour
+    Get 5 combo
+    Catch largest fish
+
+Rewards:
+
+    credits
+    cosmetics
+    badges
+    coupons
+
+============================================================
+32. COLLECTION SYSTEM
+============================================================
+
+Create Fish Collection.
+
+Player sees:
+
+    fish discovered
+    fish missing
+    rarity
+    depth
+    best catch
+    record
+
+This increases retention.
+
+============================================================
+33. PLAYER PROFILE
+============================================================
+
+Profile:
+
+    Telegram identity
+    avatar
+    username where permitted
+    level
+    total score
+    credits
+    deepest depth
+    largest fish
+    collection
+    achievements
+    missions
+
+============================================================
+34. TELEGRAM ARCHITECTURE
+============================================================
+
+Telegram is the primary ecosystem.
+
+Build:
+
+    Telegram Bot
+
+and:
+
+    Telegram Mini App
+
+Mini App routes:
+
+    /game
+    /profile
+    /leaderboard
+    /rewards
+    /shop
+    /missions
+    /collection
+
+============================================================
+35. TELEGRAM AUTHENTICATION
+============================================================
+
+Do NOT create unnecessary email/password authentication
+for the Telegram Mini App.
+
+Use:
+
+    Telegram WebApp initData
+
+Validate it server-side.
+
+Never trust:
+
+    client-provided Telegram identity
+
+Server verifies Telegram authentication data.
+
+============================================================
+36. TELEGRAM BOT
+============================================================
+
+Create commands such as:
+
+    /start
+    /game
+    /profile
+    /leaderboard
+    /rewards
+    /shop
+    /missions
+    /help
+
+Use deep links where useful.
+
+Examples:
+
+    start game
+    invite friend
+    campaign
+    reward
+
+============================================================
+37. TELEGRAM NOTIFICATIONS
+============================================================
+
+Possible notifications:
+
+    daily mission
+    reward available
+    weekly leaderboard
+    new event
+    campaign
+    shop launch
+
+Do not spam.
+
+Implement notification preferences.
+
+============================================================
+38. REFERRAL SYSTEM
+============================================================
+
+Users may invite others.
+
+Track:
+
+    inviter
+    invited
+    activation
+    first game
+    first purchase
+
+Rewards must be server-authoritative.
+
+Implement anti-abuse protections.
+
+============================================================
+39. COMMERCE
+============================================================
+
+Fishkal is a real seafood business.
+
+Create commerce architecture.
+
+Entities:
+
+    products
+    categories
+    variants
+    inventory
+    carts
+    orders
+    order_items
+    customers
+    coupons
+    campaigns
+
+============================================================
+40. PRODUCT SYSTEM
+============================================================
+
+Product fields:
+
+    id
+    name
+    description
+    category
+    price
+    currency
+    unit
+    weight
+    image
+    availability
+    stock
+    tags
+    featured
+
+Support:
+
+    KG
+    UNIT
+    BOX
+    etc.
+
+Do not assume all seafood uses the same unit.
+
+============================================================
+41. SHOP EXPERIENCE
+============================================================
+
+Create premium shop UI.
+
+Features:
+
+    categories
+    search
+    filters
+    product cards
+    product details
+    cart
+    checkout
+    order confirmation
+
+Design must match Fishkal brand.
+
+============================================================
+42. REAL-WORLD COMMERCE SAFETY
+============================================================
+
+Never invent:
+
+    payment provider
+    delivery policy
+    legal claims
+    prices
+    stock
+    certifications
+
+If business data is unavailable:
+
+    create configuration placeholders
+    clearly mark them
+    do not fabricate production information
+
+============================================================
+43. ADMIN / CMS
+============================================================
+
+Create:
+
+    /admin
+
+This is the Fishkal control center.
+
+Sections:
+
+    dashboard
+    players
+    game
+    fish
+    economy
+    missions
+    leaderboard
+    rewards
+    products
+    inventory
+    orders
+    campaigns
+    content
+    assets
+    analytics
+    notifications
+    support
+    settings
+    audit logs
+
+============================================================
+44. GAME ADMIN
+============================================================
+
+Admin can configure:
+
+    fish
+    rarity
+    depth
+    score
+    credits
+    spawn rate
+    speed
+    danger
+    missions
+    rewards
+    upgrades
+    powerups
+
+without changing source code.
+
+Architecture:
+
+    ADMIN
+      ↓
+    API
+      ↓
+    DATABASE
+      ↓
+    GAME CONFIG
+      ↓
+    GAME
+
+============================================================
+45. ECONOMY ADMIN
+============================================================
+
+Admin can configure:
+
+    credit rewards
+    upgrade costs
+    powerup costs
+    mission rewards
+    referral rewards
+    event multipliers
+
+All changes must be audited.
+
+============================================================
+46. CAMPAIGN ENGINE
+============================================================
+
+Create configurable campaigns.
+
+Campaign can define:
+
+    name
+    start
+    end
+    target
+    reward
+    multiplier
+    audience
+    content
+
+Examples:
+
+    Launch Week
+    Catch of the Day
+    Dubai Fishing Challenge
+    Deep Sea Weekend
+
+============================================================
+47. ANALYTICS
+============================================================
+
+Track:
+
+    landing_view
+    scene_enter
+    scene_exit
+    game_start
+    game_end
+    fish_caught
+    rare_fish_caught
+    legendary_fish_caught
+    depth_reached
+    reward_claimed
+    shop_view
+    product_view
+    add_to_cart
+    checkout_start
+    purchase
+    telegram_start
+    referral
+    mission_complete
+
+============================================================
+48. FUNNEL
+============================================================
+
+Measure:
+
+    Landing
+       ↓
+    Interaction
+       ↓
+    Game Start
+       ↓
+    Game Completion
+       ↓
+    Reward
+       ↓
+    Telegram
+       ↓
+    Shop
+       ↓
+    Purchase
+
+Admin should see conversion rates.
+
+============================================================
+49. AI LAYER
+============================================================
+
+AI is NOT allowed to randomly modify game economy.
+
+AI may assist with:
+
+    personalized recommendations
+    support
+    campaign suggestions
+    content generation
+    player insights
+    product recommendations
+
+Human approval required for sensitive business decisions.
+
+============================================================
+50. AI CUSTOMER SUPPORT
+============================================================
+
+Potential AI support capabilities:
+
+    product questions
+    order status
+    basic seafood information
+    store information
+    FAQ
+
+For uncertain cases:
+
+    escalate to human
+
+Never invent:
+
+    medical advice
+    food safety guarantees
+    unavailable products
+    delivery promises
+
+============================================================
+51. DESIGN SYSTEM
+============================================================
+
+Create centralized design system.
+
+Tokens:
+
+    colors
+    typography
+    spacing
+    radius
+    shadows
+    motion
+    transitions
+    breakpoints
+
+Components:
+
+    Button
+    Card
+    Modal
+    Navigation
+    Drawer
+    Input
+    Tabs
+    Badge
+    Toast
+    ProductCard
+    FishCard
+    RewardCard
+    Leaderboard
+    HUD
+    GameOverlay
+
+============================================================
+52. MOTION SYSTEM
+============================================================
+
+Create consistent motion language.
+
+Categories:
+
+    MICRO
+    UI
+    SECTION
+    CINEMATIC
+    GAMEPLAY
+
+Use:
+
+    GSAP
+    native browser animation
+    Three.js animation
+
+Avoid excessive animation.
+
+Animation must communicate hierarchy.
+
+============================================================
+53. AUDIO
+============================================================
+
+Create:
+
+    ocean ambience
+    boat ambience
+    underwater ambience
+    fish sounds
+    catch sounds
+    reward sound
+    UI sounds
+    danger sounds
+
+Respect:
+
+    mute
+    volume
+    accessibility
+
+Autoplay restrictions must be respected.
+
+============================================================
+54. PERFORMANCE
+============================================================
+
+The project must target mobile-first performance.
+
+Targets:
+
+    fast first render
+    progressive asset loading
+    stable frame rate
+    low memory usage
+    minimal JS blocking
+
+Implement:
+
+    code splitting
+    lazy loading
+    LOD
+    instancing
+    texture compression
+    geometry optimization
+    asset streaming
+
+Monitor:
+
+    FPS
+    memory
+    load time
+    asset size
+    JS bundle size
+
+============================================================
+55. MOBILE
+============================================================
+
+Primary game target:
+
+    Telegram mobile
+
+Test:
+
+    Android
+    iOS
+
+Game controls must be comfortable
+with one hand where possible.
+
+Touch targets:
+
+    sufficiently large
+
+Avoid:
+
+    tiny buttons
+    excessive text
+    unnecessary menus
+
+============================================================
+56. DESKTOP
+============================================================
+
+Desktop website should provide:
+
+    cinematic full-screen experience
+    mouse interactions
+    keyboard game controls
+
+Responsive behavior must not break.
+
+============================================================
+57. ACCESSIBILITY
+============================================================
+
+Implement:
+
+    keyboard navigation
+    focus states
+    semantic HTML
+    readable contrast
+    reduced motion option
+    labels
+    accessible controls
+
+The cinematic layer must not make
+the product unusable.
+
+============================================================
+58. SECURITY
+============================================================
+
+Assume client is hostile.
+
+Never trust client:
+
+    score
+    credits
+    inventory
+    ownership
+    mission completion
+    referral rewards
+    Telegram identity
+
+Validate server-side.
+
+Implement:
+
+    authentication
+    authorization
+    rate limiting
+    input validation
+    audit logging
+    replay protection
+    idempotency
+    anti-cheat
+
+============================================================
+59. ANTI-CHEAT
+============================================================
+
+Detect suspicious:
+
+    impossible depth
+    impossible score
+    impossible catch rate
+    abnormal event frequency
+    replay attacks
+    duplicated rewards
+    referral abuse
+
+Do not punish based solely on one suspicious event.
+
+Use:
+
+    risk score
+    evidence
+    review
+
+============================================================
+60. SERVER AUTHORITATIVE REWARDS
+============================================================
+
+The client may report events.
+
+Server decides:
+
+    valid score
+    valid credits
+    valid rewards
+
+Architecture:
+
+    CLIENT EVENT
+       ↓
+    VALIDATION
+       ↓
+    SERVER RULES
+       ↓
+    TRANSACTION
+       ↓
+    REWARD
+
+Use transactions for economy operations.
+
+============================================================
+61. DATABASE
+============================================================
+
+Create a production-quality PostgreSQL schema.
+
+Core:
+
+    users
+    telegram_accounts
+
+    projects
+    system_config
+
+    players
+    player_stats
+    player_inventory
+    player_collection
+
+    game_runs
+    game_events
+
+    fish
+    fish_behaviors
+
+    upgrades
+    powerups
+
+    missions
+    mission_progress
+
+    leaderboards
+    leaderboard_entries
+
+    rewards
+    reward_claims
+
+    referrals
+    referral_events
+
+    products
+    categories
+    inventory
+
+    carts
+    cart_items
+
+    orders
+    order_items
+
+    campaigns
+
+    analytics_events
+
+    notifications
+
+    support_conversations
+
+    audit_logs
+
+============================================================
+62. DATA INTEGRITY
+============================================================
+
+Use:
+
+    foreign keys
+    unique constraints
+    indexes
+    transactions
+    idempotency keys
+
+Critical economy operations must be atomic.
+
+Example:
+
+    reward claim
+
+must not allow:
+
+    double claim
+
+============================================================
+63. BACKEND API
+============================================================
+
+Create clean API modules:
+
+    auth
+    users
+    players
+    game
+    fish
+    missions
+    leaderboard
+    rewards
+    referrals
+    products
+    cart
+    orders
+    campaigns
+    analytics
+    notifications
+    support
+    admin
+
+============================================================
+64. API PRINCIPLES
+============================================================
+
+Every API should have:
+
+    validation
+    authentication where required
+    authorization
+    error handling
+    logging
+    rate limiting where necessary
+
+Use typed contracts.
+
+Do not expose internal database structures unnecessarily.
+
+============================================================
+65. REALTIME
+============================================================
+
+Realtime may be used for:
+
+    leaderboard updates
+    game status
+    admin activity
+    notifications
+    live events
+
+Do not use WebSockets where normal HTTP is sufficient.
+
+============================================================
+66. INFRASTRUCTURE
+============================================================
+
+Recommended architecture:
+
+    Next.js
+       ↓
+    CDN
+       ↓
+    API
+       ↓
+    PostgreSQL
+
+    Worker
+       ↓
+    Redis / Queue
+
+    Assets
+       ↓
+    R2 / S3-compatible storage
+       ↓
+    CDN
+
+Use Docker where appropriate.
+
+============================================================
+67. STORAGE
+============================================================
+
+Never store large game assets inside the application container
+if avoidable.
+
+Use object storage for:
+
+    GLB
+    textures
+    audio
+    images
+    videos
+    downloadable assets
+
+Use CDN.
+
+============================================================
+68. ENVIRONMENT MANAGEMENT
+============================================================
+
+Separate:
+
+    development
+    staging
+    production
+
+Never commit secrets.
+
+Create:
+
+    .env.example
+
+Document:
+
+    required variables
+    optional variables
+    service configuration
+
+============================================================
+69. CI/CD
+============================================================
+
+Pipeline:
+
+    pull request
+       ↓
+    install
+       ↓
+    lint
+       ↓
+    typecheck
+       ↓
+    unit tests
+       ↓
+    integration tests
+       ↓
+    build
+       ↓
+    E2E where appropriate
+       ↓
+    security checks
+       ↓
+    deploy
+
+============================================================
+70. ERROR HANDLING
+============================================================
+
+Create consistent error model.
+
+Categories:
+
+    AUTH_ERROR
+    VALIDATION_ERROR
+    NOT_FOUND
+    CONFLICT
+    RATE_LIMIT
+    INTERNAL_ERROR
+    EXTERNAL_SERVICE_ERROR
+    GAME_VALIDATION_ERROR
+
+Do not leak stack traces to users.
+
+============================================================
+71. OBSERVABILITY
+============================================================
+
+Track:
+
+    requests
+    errors
+    latency
+    jobs
+    game events
+    reward operations
+    purchases
+    agent actions
+
+Admin should have system health.
+
+============================================================
+72. ADMIN AUDIT LOG
+============================================================
+
+Record sensitive actions:
+
+    who
+    what
+    when
+    target
+    before
+    after
+    reason
+
+Examples:
+
+    changing reward amount
+    changing product price
+    modifying fish balance
+    changing campaign
+    granting credits
+
+============================================================
+73. CONTENT MANAGEMENT
+============================================================
+
+Admin must be able to manage:
+
+    hero content
+    campaign banners
+    product descriptions
+    game announcements
+    missions
+    rewards
+    promotional content
+
+Do not require code deployment for ordinary content changes.
+
+============================================================
+74. ASSET MANAGEMENT
+============================================================
+
+Admin should eventually see:
+
+    asset name
+    type
+    size
+    version
+    location
+    status
+
+Support:
+
+    image
+    GLB
+    texture
+    audio
+
+============================================================
+75. CODE ORGANIZATION
+============================================================
+
+Use monorepo.
+
+Recommended:
+
+fishkal/
+
+├── apps/
+│   ├── website/
+│   ├── mini-app/
+│   ├── admin/
+│   ├── api/
+│   ├── worker/
+│   └── bot/
+│
+├── packages/
+│   ├── game-core/
+│   ├── game-renderer/
+│   ├── experience/
+│   ├── design-system/
+│   ├── ui/
+│   ├── animation/
+│   ├── audio/
+│   ├── api-client/
+│   ├── database/
+│   ├── validation/
+│   ├── telegram/
+│   ├── analytics/
+│   ├── auth/
+│   ├── config/
+│   └── shared/
+│
+├── agents/
+│
+├── assets/
+│   ├── 3d/
+│   ├── textures/
+│   ├── audio/
+│   ├── animations/
+│   ├── shaders/
+│   └── vfx/
+│
+├── database/
+│
+├── infrastructure/
+│
+├── docs/
+│
+└── tests/
+
+============================================================
+76. GAME CORE SEPARATION
+============================================================
+
+IMPORTANT:
+
+Game logic must not depend heavily on React.
+
+Separate:
+
+    game-core
+
+from:
+
+    game-renderer
+
+from:
+
+    UI
+
+Example:
+
+game-core:
+
+    entities
+    physics
+    state
+    rules
+    scoring
+    economy calculations
+
+renderer:
+
+    Three.js
+    R3F
+    particles
+    shaders
+    cameras
+
+UI:
+
+    HUD
+    menus
+    results
+    profile
+
+This allows future reuse.
+
+============================================================
+77. SHARED GAME ENGINE
+============================================================
+
+Design the game core so that it can potentially support:
+
+    Telegram Mini App
+    standalone web
+    future game wrapper
+
+Do not duplicate game logic.
+
+============================================================
+78. ADMIN CONFIGURATION MODEL
+============================================================
+
+Game values should be configuration-driven.
+
+Example:
+
+{
+    "fish": {
+        "common": {
+            "score": 10,
+            "credits": 2
+        },
+        "rare": {
+            "score": 100,
+            "credits": 20
+        }
+    }
+}
+
+The actual production implementation
+should use the database/configuration system.
+
+============================================================
+79. DESIGN QUALITY BAR
+============================================================
+
+The final website must NOT look like:
+
+    generic Next.js template
+    generic SaaS dashboard
+    generic Three.js demo
+    generic fishing game
+
+It must feel like:
+
+    a real premium brand
+
+Every major screen needs:
+
+    hierarchy
+    purpose
+    motion
+    spacing
+    responsive behavior
+    visual consistency
+
+============================================================
+80. GAME QUALITY BAR
+============================================================
+
+The game must feel like a real game.
+
+Minimum quality:
+
+    responsive controls
+    smooth movement
+    readable feedback
+    progression
+    difficulty
+    rewards
+    collection
+    leaderboard
+    sound
+    visual effects
+
+Avoid:
+
+    static fish floating around
+    fake physics
+    meaningless score
+    empty underwater scene
+
+============================================================
+81. FISHKAL DIGITAL ECONOMY
+============================================================
+
+Economy loop:
+
+    PLAY
+      ↓
+    CATCH
+      ↓
+    SCORE
+      ↓
+    CREDITS
+      ↓
+    UPGRADE
+      ↓
+    GO DEEPER
+      ↓
+    BETTER CATCH
+      ↓
+    REWARD
+      ↓
+    RETURN
+
+Commercial loop:
+
+    PLAY
+      ↓
+    ENGAGE
+      ↓
+    DISCOVER FISHKAL
+      ↓
+    SHOP
+      ↓
+    PURCHASE
+      ↓
+    RETURN
+
+============================================================
+82. GAMIFICATION LOOP
+============================================================
+
+Daily:
+
+    mission
+      ↓
+    play
+      ↓
+    reward
+
+Weekly:
+
+    leaderboard
+      ↓
+    competition
+      ↓
+    reward
+
+Monthly:
+
+    event
+      ↓
+    collection
+      ↓
+    campaign
+
+============================================================
+83. LAUNCH CAMPAIGN
+============================================================
+
+Build architecture for:
+
+    pre-launch
+    launch day
+    post-launch
+
+Pre-launch:
+
+    countdown
+    game
+    missions
+    leaderboard
+    rewards
+
+Launch day:
+
+    SHOP IS OPEN
+
+Post-launch:
+
+    campaigns
+    new fish
+    challenges
+    products
+    seasonal events
+
+============================================================
+84. DUBAI EXPERIENCE
+============================================================
+
+Dubai should be represented tastefully.
+
+Possible visual elements:
+
+    skyline
+    sea
+    marina atmosphere
+    boat
+
+Do not turn the website into a tourism website.
+
+Dubai is the setting.
+
+Fishkal is the protagonist.
+
+============================================================
+85. LOCALIZATION
+============================================================
+
+Architecture must support localization.
+
+Initial languages can be configured as:
+
+    English
+    Arabic
+
+Persian may be useful for internal/admin contexts
+if required, but public market priority is UAE.
+
+Never hardcode strings throughout the application.
+
+Use translation keys.
+
+============================================================
+86. RTL
+============================================================
+
+Arabic interface must support:
+
+    RTL
+    mirrored layouts where appropriate
+    correct typography
+    proper navigation behavior
+
+Do not simply reverse everything blindly.
+
+============================================================
+87. SEO
+============================================================
+
+Public website must support:
+
+    metadata
+    Open Graph
+    structured data where appropriate
+    sitemap
+    robots
+    canonical URLs
+
+Do not sacrifice SEO entirely for the 3D experience.
+
+Important content must remain indexable.
+
+============================================================
+88. ACCESSIBILITY + FALLBACK EXPERIENCE
+============================================================
+
+If 3D cannot run:
+
+    show high-quality fallback
+
+Possible:
+
+    cinematic 2D imagery
+    video
+    static scenes
+    reduced effects
+
+The brand experience must still work.
+
+============================================================
+89. PERFORMANCE MODES
+============================================================
+
+Implement:
+
+    AUTO
+    HIGH
+    BALANCED
+    LOW
+
+Performance manager can adjust:
+
+    particles
+    shadows
+    postprocessing
+    texture resolution
+    effects
+    draw distance
+
+============================================================
+90. LOADING EXPERIENCE
+============================================================
+
+Create premium loading experience.
+
+Display:
+
+    Fishkal logo
+    loading percentage
+    scene status
+
+Do not make users wait unnecessarily.
+
+Load critical assets first.
+
+============================================================
+91. ERROR EXPERIENCE
+============================================================
+
+If game fails:
+
+    graceful recovery
+
+Provide:
+
+    retry
+    return home
+    report issue
+
+Do not show raw technical errors.
+
+============================================================
+92. TESTING STRATEGY
+============================================================
+
+Tests:
+
+    unit
+    integration
+    E2E
+    security
+    performance
+
+Game tests:
+
+    collision
+    scoring
+    depth
+    fish behavior
+    rewards
+    line tension
+    state transitions
+
+Economy tests:
+
+    duplicate reward
+    invalid score
+    negative credits
+    race condition
+    replay
+
+Telegram tests:
+
+    invalid initData
+    expired auth
+    manipulated user ID
+
+============================================================
+93. E2E USER JOURNEY
+============================================================
+
+Automate:
+
+    open website
+       ↓
+    landing
+       ↓
+    cinematic experience
+       ↓
+    enter game
+       ↓
+    start game
+       ↓
+    catch fish
+       ↓
+    end game
+       ↓
+    score
+       ↓
+    reward
+       ↓
+    leaderboard
+       ↓
+    Telegram
+       ↓
+    shop
+       ↓
+    product
+       ↓
+    cart
+
+============================================================
+94. SECURITY TEST JOURNEY
+============================================================
+
+Attempt:
+
+    fake score
+    fake credits
+    fake Telegram user
+    duplicate reward
+    replay game
+    manipulate API
+    unauthorized admin access
+    cross-project access
+    SQL injection
+    XSS
+    CSRF where relevant
+    rate-limit bypass
+    privilege escalation
+
+Fix discovered issues.
+
+============================================================
+95. ADMIN ROLES
+============================================================
+
+Support roles such as:
+
+    OWNER
+    ADMIN
+    GAME_MANAGER
+    CONTENT_MANAGER
+    COMMERCE_MANAGER
+    SUPPORT
+    ANALYST
+
+Each role has explicit permissions.
+
+============================================================
+96. SUPPORT SYSTEM
+============================================================
+
+Create support architecture.
+
+Ticket states:
+
+    OPEN
+    IN_PROGRESS
+    WAITING
+    RESOLVED
+    CLOSED
+
+AI may classify tickets.
+
+Sensitive cases escalate to humans.
+
+============================================================
+97. NOTIFICATION SYSTEM
+============================================================
+
+Centralize notifications.
+
+Channels may include:
+
+    Telegram
+    in-app
+    email if later configured
+
+Do not tightly couple notification logic
+to one provider.
+
+============================================================
+98. DOCUMENTATION
+============================================================
+
+Create:
+
+    README.md
+    ARCHITECTURE.md
+    PRODUCT.md
+    GAME_DESIGN.md
+    API.md
+    DATABASE.md
+    TELEGRAM.md
+    DEPLOYMENT.md
+    SECURITY.md
+    ANALYTICS.md
+    ASSETS.md
+    CONTRIBUTING.md
+    RUNBOOK.md
+
+============================================================
+99. PROJECT TREE
+============================================================
+
+Final target structure:
+
+fishkal/
+│
+├── apps/
+│   │
+│   ├── website/
+│   │   ├── app/
+│   │   │   ├── page.tsx
+│   │   │   ├── experience/
+│   │   │   ├── shop/
+│   │   │   ├── products/
+│   │   │   ├── campaigns/
+│   │   │   └── api/
+│   │   ├── components/
+│   │   ├── scenes/
+│   │   └── lib/
+│   │
+│   ├── mini-app/
+│   │   ├── game/
+│   │   ├── profile/
+│   │   ├── leaderboard/
+│   │   ├── rewards/
+│   │   ├── missions/
+│   │   ├── collection/
+│   │   └── shop/
+│   │
+│   ├── admin/
+│   │   ├── dashboard/
+│   │   ├── players/
+│   │   ├── game/
+│   │   ├── fish/
+│   │   ├── economy/
+│   │   ├── missions/
+│   │   ├── leaderboard/
+│   │   ├── rewards/
+│   │   ├── products/
+│   │   ├── inventory/
+│   │   ├── orders/
+│   │   ├── campaigns/
+│   │   ├── content/
+│   │   ├── assets/
+│   │   ├── analytics/
+│   │   ├── notifications/
+│   │   ├── support/
+│   │   ├── audit/
+│   │   └── settings/
+│   │
+│   ├── api/
+│   │
+│   ├── worker/
+│   │
+│   └── bot/
+│
+├── packages/
+│   │
+│   ├── game-core/
+│   │   ├── entities/
+│   │   ├── systems/
+│   │   ├── physics/
+│   │   ├── scoring/
+│   │   ├── economy/
+│   │   ├── state/
+│   │   ├── behaviors/
+│   │   └── config/
+│   │
+│   ├── game-renderer/
+│   │   ├── scenes/
+│   │   ├── camera/
+│   │   ├── ocean/
+│   │   ├── underwater/
+│   │   ├── fish/
+│   │   ├── boat/
+│   │   ├── particles/
+│   │   ├── shaders/
+│   │   └── postprocessing/
+│   │
+│   ├── experience/
+│   │   ├── scenes/
+│   │   │   ├── dubai/
+│   │   │   ├── surface/
+│   │   │   ├── boat/
+│   │   │   ├── dive/
+│   │   │   ├── underwater/
+│   │   │   └── deep-sea/
+│   │   ├── camera/
+│   │   ├── transitions/
+│   │   ├── scroll/
+│   │   ├── interaction/
+│   │   ├── audio/
+│   │   └── performance/
+│   │
+│   ├── design-system/
+│   ├── ui/
+│   ├── animation/
+│   ├── audio/
+│   ├── telegram/
+│   ├── auth/
+│   ├── database/
+│   ├── api-client/
+│   ├── validation/
+│   ├── analytics/
+│   ├── config/
+│   └── shared/
+│
+├── assets/
+│   ├── 3d/
+│   │   ├── boat/
+│   │   ├── fish/
+│   │   ├── shark/
+│   │   ├── environment/
+│   │   └── dubai/
+│   │
+│   ├── textures/
+│   ├── animations/
+│   ├── audio/
+│   ├── shaders/
+│   ├── vfx/
+│   └── ui/
+│
+├── database/
+│
+├── infrastructure/
+│
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   ├── e2e/
+│   ├── security/
+│   └── performance/
+│
+├── docs/
+│
+├── .env.example
+├── docker-compose.yml
+├── pnpm-workspace.yaml
+├── turbo.json
+├── package.json
+├── README.md
+├── ARCHITECTURE.md
+├── GAME_DESIGN.md
+├── SECURITY.md
+└── BUILD_STATE.md
+
+============================================================
+100. 20-STAGE EXECUTION PLAN
+============================================================
+
+You MUST build Fishkal through exactly these
+20 major stages.
+
+Each stage can contain hundreds of subtasks.
+
+Every stage must end with:
+
+    implementation
+    validation
+    tests
+    documentation
+    checkpoint
+
+============================================================
+STAGE 01 — DISCOVERY
+============================================================
+
+Inspect the environment.
+
+Determine:
+
+    available runtimes
+    Node
+    pnpm
+    Docker
+    Git
+    GitHub
+    database
+    Redis
+    storage
+    deployment
+    Hermes Arena capabilities
+
+Do not expose secrets.
+
+Create:
+
+    docs/discovery.md
+
+============================================================
+STAGE 02 — PRODUCT & BUSINESS ARCHITECTURE
+============================================================
+
+Create:
+
+    Product Requirements
+    user personas
+    customer journey
+    game goals
+    commercial goals
+    launch goals
+    KPIs
+    non-goals
+    assumptions
+
+Do not invent unknown business data.
+
+Create:
+
+    PRODUCT.md
+    REQUIREMENTS.md
+
+============================================================
+STAGE 03 — EXPERIENCE DESIGN
+============================================================
+
+Design the entire cinematic journey:
+
+    Dubai
+    Ocean
+    Boat
+    Dive
+    Underwater
+    Game
+    Shop
+
+Define:
+
+    camera
+    transitions
+    interaction
+    sound
+    typography
+    UI states
+
+============================================================
+STAGE 04 — TECHNICAL ARCHITECTURE
+============================================================
+
+Finalize:
+
+    monorepo
+    frontend
+    3D
+    game core
+    backend
+    database
+    queue
+    storage
+    Telegram
+    admin
+    analytics
+    deployment
+
+Create:
+
+    ARCHITECTURE.md
+
+============================================================
+STAGE 05 — MONOREPO FOUNDATION
+============================================================
+
+Create:
+
+    pnpm workspace
+    apps
+    packages
+    TypeScript
+    lint
+    formatting
+    configuration
+
+Verify build.
+
+============================================================
+STAGE 06 — DESIGN SYSTEM
+============================================================
+
+Implement Fishkal:
+
+    colors
+    typography
+    buttons
+    cards
+    navigation
+    motion
+    responsive primitives
+    game HUD
+
+============================================================
+STAGE 07 — CINEMATIC WEBSITE
+============================================================
+
+Build:
+
+    Dubai
+    ocean
+    boat
+    camera
+    transitions
+    scroll experience
+
+Use:
+
+    Three.js
+    R3F
+    GSAP
+    shaders
+    postprocessing
+
+============================================================
+STAGE 08 — GAME CORE
+============================================================
+
+Implement:
+
+    game loop
+    hook
+    line
+    depth
+    fish
+    collision
+    scoring
+    combo
+    danger
+    state machine
+
+The game must become playable.
+
+============================================================
+STAGE 09 — 3D WORLD
+============================================================
+
+Build:
+
+    underwater
+    coral
+    fish
+    shark
+    particles
+    lighting
+    caustics
+    depth atmosphere
+
+Optimize assets.
+
+============================================================
+STAGE 10 — GAME ECONOMY
+============================================================
+
+Implement:
+
+    credits
+    upgrades
+    powerups
+    missions
+    rewards
+    collection
+    progression
+
+Keep SCORE separate.
+
+============================================================
+STAGE 11 — BACKEND + DATABASE
+============================================================
+
+Implement:
+
+    PostgreSQL
+    Prisma
+    API
+    player system
+    game runs
+    game events
+    rewards
+    economy
+
+Server authoritative.
+
+============================================================
+STAGE 12 — TELEGRAM
+============================================================
+
+Implement:
+
+    Bot
+    Mini App
+    initData validation
+    profile
+    game
+    leaderboard
+    rewards
+    missions
+    shop
+
+============================================================
+STAGE 13 — ADMIN
+============================================================
+
+Build complete:
+
+    /admin
+
+Implement:
+
+    players
+    game config
+    fish
+    economy
+    missions
+    rewards
+    leaderboard
+    products
+    orders
+    campaigns
+    analytics
+    content
+    assets
+
+============================================================
+STAGE 14 — COMMERCE
+============================================================
+
+Implement:
+
+    products
+    categories
+    inventory
+    cart
+    orders
+    checkout architecture
+
+Do not activate real payment without credentials
+and explicit business approval.
+
+============================================================
+STAGE 15 — ANALYTICS + GROWTH
+============================================================
+
+Implement:
+
+    event tracking
+    funnel
+    retention
+    conversion
+    leaderboard metrics
+    game metrics
+    shop metrics
+    campaign metrics
+
+============================================================
+STAGE 16 — AI + AUTOMATION
+============================================================
+
+Implement safe AI capabilities:
+
+    support
+    recommendation
+    content assistance
+    campaign suggestions
+    player insights
+
+Use approval gates.
+
+============================================================
+STAGE 17 — SECURITY + ANTI-CHEAT
+============================================================
+
+Perform adversarial testing.
+
+Attempt to break:
+
+    authentication
+    rewards
+    score
+    credits
+    referrals
+    admin
+    APIs
+    Telegram validation
+
+Fix all critical findings.
+
+============================================================
+STAGE 18 — PERFORMANCE + MOBILE
+============================================================
+
+Optimize:
+
+    loading
+    memory
+    FPS
+    assets
+    mobile interaction
+    Telegram Mini App
+
+Test:
+
+    low-end Android
+    modern Android
+    iPhone-class device
+    desktop
+
+============================================================
+STAGE 19 — FULL SYSTEM INTEGRATION
+============================================================
+
+Test:
+
+    Website
+       ↓
+    Game
+       ↓
+    Backend
+       ↓
+    Telegram
+       ↓
+    Rewards
+       ↓
+    Leaderboard
+       ↓
+    Shop
+       ↓
+    Admin
+       ↓
+    Analytics
+
+No disconnected components.
+
+============================================================
+STAGE 20 — PRODUCTION LAUNCH
+============================================================
+
+Perform:
+
+    final QA
+    security audit
+    performance audit
+    database audit
+    deployment validation
+    backup validation
+    monitoring validation
+    documentation
+
+Prepare:
+
+    production build
+    staging build
+    launch checklist
+    rollback plan
+
+Create:
+
+    FINAL_REPORT.md
+    LAUNCH_CHECKLIST.md
+    RUNBOOK.md
+
+============================================================
+101. ACCEPTANCE CRITERIA
+============================================================
+
+Fishkal is NOT complete until:
+
+[ ] website works
+[ ] cinematic experience works
+[ ] Dubai scene works
+[ ] ocean works
+[ ] boat works
+[ ] camera transitions work
+[ ] dive transition works
+[ ] underwater works
+[ ] game starts
+[ ] hook works
+[ ] line works
+[ ] fish work
+[ ] fish behaviors differ
+[ ] collision works
+[ ] score works
+[ ] credits work
+[ ] combo works
+[ ] depth works
+[ ] danger works
+[ ] legendary fish work
+[ ] upgrades work
+[ ] powerups work
+[ ] missions work
+[ ] collection works
+[ ] leaderboard works
+[ ] profile works
+[ ] rewards work
+[ ] Telegram authentication works
+[ ] Telegram Mini App works
+[ ] Telegram Bot works
+[ ] referrals work
+[ ] products work
+[ ] cart works
+[ ] orders work
+[ ] admin works
+[ ] game configuration is database-driven
+[ ] analytics work
+[ ] AI support architecture works
+[ ] anti-cheat exists
+[ ] server validation exists
+[ ] audit logs exist
+[ ] localization architecture exists
+[ ] Arabic RTL works
+[ ] responsive website works
+[ ] mobile game works
+[ ] fallback mode exists
+[ ] CI/CD exists
+[ ] tests exist
+[ ] security tests exist
+[ ] documentation exists
+[ ] production deployment is reproducible
+
+============================================================
+102. DEFINITION OF DONE
+============================================================
+
+A feature is DONE only if:
+
+    CODE
+    +
+    TEST
+    +
+    VALIDATION
+    +
+    DOCUMENTATION
+    +
+    INTEGRATION
+
+are complete.
+
+Never declare completion based on code existence alone.
+
+============================================================
+103. NO FAKE ASSETS
+============================================================
+
+If a production-quality asset is missing:
+
+    identify it
+
+Do not silently substitute:
+
+    broken placeholder
+    random model
+    giant unoptimized model
+
+Use temporary placeholders only during development
+and track them as:
+
+    ASSET_REQUIRED
+
+Before production:
+
+    resolve every critical asset.
+
+============================================================
+104. NO FAKE BUSINESS DATA
+============================================================
+
+Do not invent:
+
+    prices
+    inventory
+    delivery times
+    payment methods
+    certifications
+    addresses
+    phone numbers
+    policies
+
+Create configuration points for unknown values.
+
+============================================================
+105. NO UNCONTROLLED AI
+============================================================
+
+AI must never have unrestricted authority.
+
+AI can propose.
+
+System validates.
+
+Human approves sensitive actions.
+
+============================================================
+106. NO INFINITE AUTONOMY
+============================================================
+
+Every autonomous loop requires:
+
+    timeout
+    retry limit
+    budget limit
+    tool limit
+    concurrency limit
+
+If the system becomes uncertain:
+
+    BLOCK
+    ESCALATE
+
+Do not hallucinate a solution.
+
+============================================================
+107. GIT WORKFLOW
+============================================================
+
+Each meaningful task:
+
+    branch
+    implementation
+    tests
+    commit
+    PR
+    review
+    merge
+
+Never destroy unrelated work.
+
+============================================================
+108. BUILD STATE
+============================================================
+
+Maintain:
+
+    BUILD_STATE.md
+
+Example:
+
+current_stage:
+completed_stages:
+active_tasks:
+blocked_tasks:
+risks:
+decisions:
+assets_required:
+tests:
+deployment:
+next_action:
+
+Update it after every checkpoint.
+
+============================================================
+109. ARCHITECTURE DECISION RECORD
+============================================================
+
+Every major decision goes into:
+
+    docs/decisions/
+
+Examples:
+
+    why Three.js
+    why R3F
+    why PostgreSQL
+    why Telegram initData
+    why game-core separation
+    why server-authoritative rewards
+
+============================================================
+110. PROJECT RISK MANAGEMENT
+============================================================
+
+Track:
+
+    technical risk
+    asset risk
+    performance risk
+    security risk
+    business risk
+    integration risk
+    schedule risk
+
+Risk levels:
+
+    LOW
+    MEDIUM
+    HIGH
+    CRITICAL
+
+Critical risks must be escalated.
+
+============================================================
+111. RESOURCE MANAGEMENT
+============================================================
+
+Do not waste AI execution budget.
+
+Before calling an agent:
+
+    provide only relevant context
+
+Do not send:
+
+    entire repository
+    irrelevant memory
+    unrelated files
+
+Use:
+
+    summaries
+    targeted file retrieval
+    dependency information
+
+============================================================
+112. PARALLEL EXECUTION
+============================================================
+
+Where dependencies allow:
+
+    run tasks in parallel.
+
+Example:
+
+    UI design
+        +
+    database design
+        +
+    asset preparation
+
+can progress concurrently.
+
+But:
+
+    dependent tasks
+
+must wait.
+
+Use DAG scheduling.
+
+============================================================
+113. AGENT ASSIGNMENT
+============================================================
+
+Suggested ownership:
+
+PRODUCT:
+
+    Product Manager
+
+CREATIVE:
+
+    Creative Director
+
+UI:
+
+    UI/UX
+
+WEBSITE:
+
+    Frontend/3D
+
+GAME:
+
+    Game Engineer
+
+ASSETS:
+
+    Technical Artist
+
+BACKEND:
+
+    Backend
+
+DATABASE:
+
+    Database
+
+INFRA:
+
+    DevOps
+
+TELEGRAM:
+
+    Telegram Engineer
+
+AI:
+
+    AI/Automation
+
+GROWTH:
+
+    Growth/Analytics
+
+FINAL GATE:
+
+    QA/Security
+
+============================================================
+114. CROSS-AGENT REVIEW
+============================================================
+
+Important work must be reviewed by another agent.
+
+Examples:
+
+Game Engineer
+    →
+QA
+
+Backend
+    →
+Security
+
+3D
+    →
+Performance
+
+UI
+    →
+UX
+
+Database
+    →
+Backend
+
+DevOps
+    →
+Security
+
+============================================================
+115. FINAL CREATIVE REVIEW
+============================================================
+
+Before launch:
+
+Creative Director must review:
+
+    visual consistency
+    brand consistency
+    motion
+    typography
+    storytelling
+    premium feeling
+
+============================================================
+116. FINAL GAME REVIEW
+============================================================
+
+Game Engineer + QA must review:
+
+    controls
+    difficulty
+    feedback
+    scoring
+    progression
+    rewards
+    performance
+
+============================================================
+117. FINAL BUSINESS REVIEW
+============================================================
+
+Product Manager + Growth must review:
+
+    conversion
+    CTA
+    game → shop
+    Telegram → shop
+    retention
+    rewards
+    campaign architecture
+
+============================================================
+118. FINAL SECURITY REVIEW
+============================================================
+
+QA/Security must approve:
+
+    auth
+    API
+    admin
+    economy
+    Telegram
+    anti-cheat
+    data isolation
+
+============================================================
+119. FINAL PRODUCTION REVIEW
+============================================================
+
+DevOps must verify:
+
+    deployment
+    environment
+    backups
+    monitoring
+    rollback
+    CDN
+    storage
+    database
+    worker
+    scheduler
+
+============================================================
+120. FINAL COMMAND
+============================================================
+
+START BUILDING FISHKAL NOW.
+
+You are not being asked to merely explain
+how Fishkal could be built.
+
+You are being asked to BUILD IT.
+
+Use the Arena.
+
+Use the agents.
+
+Use the task graph.
+
+Use parallel execution.
+
+Use reviews.
+
+Use tests.
+
+Use Git.
+
+Use documentation.
+
+Use the database.
+
+Use the asset pipeline.
+
+Use the scheduler.
+
+Use the orchestrator.
+
+The final objective is:
+
+                         FISHKAL
+                            │
+           ┌────────────────┼────────────────┐
+           │                │                │
+        WEBSITE           GAME           TELEGRAM
+           │                │                │
+           └────────────────┼────────────────┘
+                            │
+                         REWARDS
+                            │
+                         PROFILE
+                            │
+                       LEADERBOARD
+                            │
+                          SHOP
+                            │
+                         ORDERS
+                            │
+                         CUSTOMER
+                            │
+                         ANALYTICS
+                            │
+                            ▼
+                    FISHKAL ECOSYSTEM
+
+The user should experience this as ONE product.
+
+Not a collection of disconnected applications.
+
+============================================================
+121. FIRST ACTION
+============================================================
+
+Before implementing Stage 01:
+
+    inspect Hermes Arena.
+
+Verify that:
+
+    Orchestrator works
+    Agent registry works
+    Task engine works
+    Git integration works
+    memory works
+    scheduler works
+    tools work
+    project isolation works
+
+If Arena itself is incomplete:
+
+    STOP FISHKAL
+
+    create an Arena repair task
+
+    fix Arena first
+
+Only continue when the platform
+is capable of executing this project.
+
+============================================================
+122. PROJECT INITIALIZATION
+============================================================
+
+Create:
+
+    Fishkal project
+
+inside Arena.
+
+Initialize:
+
+    repository
+    project brain
+    architecture
+    roadmap
+    task graph
+    agent assignments
+
+Then start:
+
+    STAGE 01
+
+============================================================
+123. FINAL PHILOSOPHY
+============================================================
+
+Do not optimize for:
+
+    number of files
+    number of technologies
+    amount of code
+
+Optimize for:
+
+    experience
+    reliability
+    performance
+    maintainability
+    scalability
+    business value
+    visual quality
+
+The goal is not to make the most complicated system.
+
+The goal is to make the best Fishkal product
+that this architecture can support.
+
+============================================================
+
+BEGIN.
