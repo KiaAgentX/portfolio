@@ -154,6 +154,7 @@ function navHtml(base, withSearch) {
       <a href="${base}/#projects">Work</a>
       <a href="${base}/#capabilities">Capabilities</a>
       <a href="${base}/#skills">Skills</a>
+      <a href="${base}/#surprise" id="surprise" title="Open a random project">🎲 Surprise</a>
       <a class="nav-cta" href="${base}/#contact">Contact</a>
     </nav>
     <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false">
@@ -166,6 +167,7 @@ function navHtml(base, withSearch) {
     <a href="${base}/#universe">Data</a>
     <a href="${base}/#skills">Skills</a>
     <a href="${base}/#roadmap-section">Roadmap</a>
+    <a href="${base}/#surprise">🎲 Surprise</a>
     <a href="${esc(config.owner.github)}" target="_blank" rel="noopener">GitHub</a>
     <a class="nav-cta" href="${base}/#contact">Contact</a>
   </div>`;
@@ -331,6 +333,7 @@ function buildIndex(stats, cards, langs, caps, capMax) {
 <meta property="og:description" content="${esc(config.site.description)}">
 <meta property="og:type" content="website">
 ${FONTS}
+<noscript><style>.blurb-intro{filter:none!important;opacity:1!important}#tw-cur{display:none!important}#hero-pills{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="manifest" href="assets/manifest.webmanifest">
 <meta name="theme-color" content="#06060e">
@@ -355,7 +358,7 @@ ${navHtml('.', true)}
       <span class="w"><span style="--wi:7">3D.</span></span>
     </h1>
     <p class="blurb-intro" id="blurb-intro">Hey there, meet Kia,<br>Engineer of agents, markets &amp; impossible interfaces</p>
-    <p class="typewriter"><span id="typewriter" data-text="Glad you stopped in. Sixty products deep. Now, what are we building?"></span><i class="tw-cur" id="tw-cur"></i></p>
+    <p class="typewriter"><span id="typewriter" data-text="Glad you stopped in. Sixty products deep. Now, what are we building?">Glad you stopped in. Sixty products deep. Now, what are we building?</span><i class="tw-cur" id="tw-cur"></i></p>
     <div class="hero-cta pills" id="hero-pills">
       <a class="pill" href="#projects">See the work</a>
       <a class="pill" href="#capabilities">Capabilities</a>

@@ -115,10 +115,12 @@ for (let i = 0; i < chunks.length; i++) {
   if (!ok) { failed++; console.log(`CHUNK ${i + 1} FAILED — re-run this script to resume`); break; }
 }
 
-/* final verification */
-const missing = files.filter(f => !headHas(f));
-if (failed === 0 && missing.length === 0) {
-  console.log(`DONE: all ${files.length} files on gh-pages (pushed ${pushed} chunks, skipped ${skipped})`);
+/* final verification — path-based (CRLF-insensitive, unlike size compare) */
+const treeOut = sh('git', ['ls-tree', '-r', '--name-only', 'HEAD'], PORT).out;
+const treePaths = new Set(treeOut.split('\n').map(s => s.trim()).filter(Boolean));
+const missing = files.filter(f => !treePaths.has(f.rel));
+if (failed === 0 && !missing.length) {
+  console.log(`DONE: all ${files.length} files present on gh-pages (pushed ${pushed} chunks, skipped ${skipped})`);
   process.exit(0);
 } else if (missing.length) {
   console.log(`INCOMPLETE: ${missing.length} files missing (e.g. ${missing[0].rel}) — re-run to resume`);

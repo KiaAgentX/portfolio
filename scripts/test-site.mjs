@@ -76,6 +76,8 @@ console.log('INDEX PAGE');
   check('burger menu', !!d.querySelector('#burger') && !!d.querySelector('#mobile-menu'));
   check('manifesto char reveal', d.querySelectorAll('.char-reveal .ch').length > 60, 'ch=' + d.querySelectorAll('.char-reveal .ch').length);
   check('cap rows numbered', d.querySelectorAll('#caps-grid .cap-num').length >= 8, 'nums=' + d.querySelectorAll('#caps-grid .cap-num').length);
+  check('surprise random-project link', !!d.querySelector('a#surprise') && /#surprise/.test(d.querySelector('a#surprise').getAttribute('href')));
+  check('noscript fallback for JS-only visuals', !!d.querySelector('noscript'));
   check('est. value present', /\$4[0-9]{2},[0-9]{3}/.test(d.querySelector('.spec .v.gold')?.textContent || ''));
 
   const input = d.querySelector('#search');

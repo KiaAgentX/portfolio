@@ -71,7 +71,7 @@
       : `<div class="ph">${esc(p.name.slice(0, 2).toUpperCase())}</div>`;
     return `<article class="card feature" style="--cc:${color};--i:0">
       <div class="feature-body">
-        <div class="feature-kicker">★ TOP PROJECT — ${money(p.value)} EST.</div>
+        <div class="feature-kicker">â˜… TOP PROJECT â€” ${money(p.value)} EST.</div>
         <div class="card-top"><span class="cat">${esc(p.category)}</span><span class="loc">${fmt(p.loc)} LOC</span></div>
         <h3><a href="projects/${encodeURIComponent(p.id)}/">${esc(p.name)}</a></h3>
         <p class="tag">${esc(p.tagline)}</p>
@@ -79,7 +79,7 @@
           <span><b>${fmt(p.loc)}</b> lines</span>
           <span><b>${fmt(p.fileCount)}</b> files</span>
           <span><b>${esc(p.language)}</b></span>
-          <span>${p.stack.slice(0, 3).map(esc).join(" · ")}</span>
+          <span>${p.stack.slice(0, 3).map(esc).join(" Â· ")}</span>
         </div>
         <div class="feature-cta">${actions(p)}</div>
       </div>
@@ -122,10 +122,10 @@
     host.innerHTML = top.map((p, i) => `<article class="story${i % 2 ? " flip" : ""}">
       <div class="story-media"><img src="${p.thumb}" alt="${esc(p.name)}" loading="lazy"></div>
       <div class="story-body">
-        <span class="story-kicker">Flagship · ${money(p.value)} est.</span>
+        <span class="story-kicker">Flagship Â· ${money(p.value)} est.</span>
         <h3><a href="projects/${encodeURIComponent(p.id)}/">${esc(p.name)}</a></h3>
         <p>${esc(p.description)}</p>
-        <div class="story-facts"><span><b>${fmt(p.loc)}</b> LOC</span><span><b>${esc(p.language)}</b></span><span>${p.stack.slice(0, 3).map(esc).join(" · ")}</span></div>
+        <div class="story-facts"><span><b>${fmt(p.loc)}</b> LOC</span><span><b>${esc(p.language)}</b></span><span>${p.stack.slice(0, 3).map(esc).join(" Â· ")}</span></div>
         <a class="learn" href="projects/${encodeURIComponent(p.id)}/">Learn more</a>
       </div>
     </article>`).join("");
@@ -147,7 +147,7 @@
 
     grid.innerHTML = mainList.length
       ? mainList.map(card).join("")
-      : `<div class="empty">No projects match “${esc(state.q)}”.</div>`;
+      : `<div class="empty">No projects match â€œ${esc(state.q)}â€.</div>`;
 
     if (!unified && docsList.length) {
       docsGrid.innerHTML = docsList.map((p, i) => card(p, i)).join("");
@@ -180,7 +180,7 @@
         </div>
         <h3>${esc(r.name)}</h3>
         <p class="tag">${esc(r.tagline)}</p>
-        <p class="signal">⌁ ${esc(r.signal)}</p>
+        <p class="signal">âŒ ${esc(r.signal)}</p>
         <div class="meta">${r.stack.slice(0, 5).map(s => `<span class="badge">${esc(s)}</span>`).join("")}</div>
         <div class="foot">
           <div class="value">${money(r.value)}<small>EST. VALUE</small></div>
@@ -246,16 +246,17 @@
     </article>`).join("");
   }
 
-  /* typewriter (Mainframe-inspired) */
+  /* typewriter (Mainframe-inspired) â€” content exists in HTML for no-JS; we clear then type */
   function startTypewriter() {
     const el = document.getElementById("typewriter");
     const cur = document.getElementById("tw-cur");
     if (!el) return;
-    const text = el.getAttribute("data-text") || "";
+    const text = el.getAttribute("data-text") || el.textContent || "";
     const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) { el.textContent = text; if (cur) cur.style.display = "none"; return; }
+    el.textContent = "";
     let i = 0;
-    setTimeout(function tick() {
+    setTimeout(function () {
       const iv = setInterval(function () {
         i++;
         el.textContent = text.slice(0, i);
@@ -277,20 +278,49 @@
   function bindCopyTelegram() {
     const btn = document.getElementById("copy-telegram");
     if (!btn) return;
-    btn.addEventListener("click", function () {
-      const url = "https://t.me/ImXforevr";
-      const done = () => {
-        const old = btn.innerHTML;
+    const original = btn.innerHTML;
+    function feedback(ok) {
+      if (ok) {
         btn.classList.add("copied");
-        btn.innerHTML = "Copied ✓";
+        btn.innerHTML = "Copied âœ“";
         if (window.KIA_SFX) window.KIA_SFX.blip();
-        setTimeout(() => { btn.innerHTML = old; btn.classList.remove("copied"); }, 1600);
-      };
+      } else {
+        btn.classList.add("copy-fail");
+        btn.innerHTML = "Copy failed â€” t.me/ImXforevr";
+      }
+      setTimeout(() => { btn.innerHTML = original; btn.classList.remove("copied", "copy-fail"); }, 1800);
+    }
+    function legacyCopy() {
       try {
-        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, done);
-        else done();
-      } catch (e) { done(); }
+        const ta = document.createElement("textarea");
+        ta.value = "https://t.me/ImXforevr";
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        feedback(ok);
+      } catch (e) { feedback(false); }
+    }
+    btn.addEventListener("click", function () {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText("https://t.me/ImXforevr")
+          .then(() => feedback(true), legacyCopy);
+      } else legacyCopy();
     });
+  }
+
+  /* ðŸŽ² Surprise: open a random project when landing on #surprise */
+  function bindSurprise() {
+    if (location.hash !== "#surprise") return;
+    const pool = P.filter(p => p.status !== "in-dev");
+    if (!pool.length) return;
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    history.replaceState(null, "", location.pathname + location.search);
+    if (window.KIA_SFX) window.KIA_SFX.blip();
+    setTimeout(() => { window.location.href = "projects/" + encodeURIComponent(pick.id) + "/"; }, 80);
   }
 
   renderChips();
@@ -304,6 +334,7 @@
   startTypewriter();
   revealPills();
   bindCopyTelegram();
+  bindSurprise();
 
   /* ---- animated counters (skipped where IntersectionObserver missing) ---- */
   try {
@@ -374,7 +405,7 @@
       sel = 0;
       results.innerHTML = list.length
         ? list.map((p, i) => `<div class="p-item${i === 0 ? " sel" : ""}" data-i="${i}"><span>${esc(p.name)}</span><span class="p-cat">${esc(p.category)}</span></div>`).join("")
-        : `<div class="palette-empty">No matches — try “trading”, “three”, “python”…</div>`;
+        : `<div class="palette-empty">No matches â€” try â€œtradingâ€, â€œthreeâ€, â€œpythonâ€â€¦</div>`;
     }
     function open() {
       palette.hidden = false; input.value = ""; draw(""); input.focus();
@@ -406,9 +437,17 @@
     palette.addEventListener("click", e => { if (e.target === palette) close(); });
 
     document.addEventListener("keydown", e => {
+      const menuEl = document.getElementById("mobile-menu");
+      const menuOpen = menuEl && menuEl.classList.contains("open");
       const typing = /INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || "");
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); palette.hidden ? open() : close(); }
-      else if (e.key === "/" && !typing && palette.hidden) { e.preventDefault(); open(); }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        if (menuOpen) return;
+        e.preventDefault(); palette.hidden ? open() : close();
+      }
+      else if (e.key === "/" && !typing && palette.hidden) {
+        if (menuOpen) return;
+        e.preventDefault(); open();
+      }
       else if (e.key === "Escape" && !palette.hidden) { close(); }
     });
     const navBtn = document.getElementById("nav-search");
@@ -424,50 +463,4 @@
     }
   } catch (e) { }
 
-  /* ---- hero particles (KIA identity) ---- */
-  try {
-  (function particles() {
-    const canvas = document.getElementById("particles");
-    if (!canvas) return;
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const ctx = canvas.getContext && canvas.getContext("2d");
-    if (!ctx) return;
-    const COLORS = ["#22d3ee", "#a78bfa", "#fbbf24", "#34d399", "#f472b6"];
-    let w, h, dots = [];
-    function resize() {
-      const r = canvas.parentElement.getBoundingClientRect();
-      w = canvas.width = r.width; h = canvas.height = r.height;
-      const n = Math.min(70, Math.floor(w / 22));
-      dots = Array.from({ length: n }, () => ({
-        x: Math.random() * w, y: Math.random() * h,
-        vx: (Math.random() - .5) * .22, vy: (Math.random() - .5) * .22,
-        r: Math.random() * 1.6 + .6,
-        c: COLORS[Math.floor(Math.random() * COLORS.length)],
-      }));
-    }
-    function frame() {
-      ctx.clearRect(0, 0, w, h);
-      for (const d of dots) {
-        d.x += d.vx; d.y += d.vy;
-        if (d.x < 0 || d.x > w) d.vx *= -1;
-        if (d.y < 0 || d.y > h) d.vy *= -1;
-        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 6.283);
-        ctx.fillStyle = d.c; ctx.globalAlpha = .55; ctx.fill();
-      }
-      ctx.globalAlpha = .12; ctx.strokeStyle = "#4b5570";
-      for (let i = 0; i < dots.length; i++) for (let j = i + 1; j < dots.length; j++) {
-        const a = dots[i], b = dots[j];
-        const dx = a.x - b.x, dy = a.y - b.y, dist = dx * dx + dy * dy;
-        if (dist < 110 * 110) {
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-        }
-      }
-      ctx.globalAlpha = 1;
-      requestAnimationFrame(frame);
-    }
-    resize();
-    window.addEventListener("resize", resize);
-    frame();
-  })();
-  } catch (e) { /* canvas unavailable */ }
 })();
