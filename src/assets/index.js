@@ -126,7 +126,7 @@
         <h3><a href="projects/${encodeURIComponent(p.id)}/">${esc(p.name)}</a></h3>
         <p>${esc(p.description)}</p>
         <div class="story-facts"><span><b>${fmt(p.loc)}</b> LOC</span><span><b>${esc(p.language)}</b></span><span>${p.stack.slice(0, 3).map(esc).join(" Â· ")}</span></div>
-        <a class="learn" href="projects/${encodeURIComponent(p.id)}/">Learn more</a>
+        <a class="learn" href="projects/${encodeURIComponent(p.id)}/" aria-label="Learn more about ${esc(p.name)}">Learn more</a>
       </div>
     </article>`).join("");
     sec.style.display = top.length ? "" : "none";
@@ -216,8 +216,8 @@
     const thumbs = P.filter(p => p.thumb).map(p => ({ src: p.thumb, name: p.name }));
     if (thumbs.length < 4) return;
     const half = Math.ceil(thumbs.length / 2);
-    const rowA = thumbs.slice(0, half);
-    const rowB = thumbs.slice(half);
+    const rowA = thumbs.slice(0, half).slice(0, 14);
+    const rowB = thumbs.slice(half).slice(0, 14);
     const tile = t => `<div class="mq-tile" title="${esc(t.name)}"><img src="${t.src}" alt="${esc(t.name)}" loading="lazy" decoding="async"></div>`;
     r1.innerHTML = (rowA.map(tile).join("")).repeat(3);
     r2.innerHTML = (rowB.map(tile).join("")).repeat(3);
@@ -330,7 +330,9 @@
   renderCapabilities();
   renderLangs();
   renderSkills();
-  renderShowreel();
+  /* heavy DOM (showreel) off the critical path */
+  if (window.requestIdleCallback) requestIdleCallback(() => renderShowreel(), { timeout: 1500 });
+  else setTimeout(renderShowreel, 120);
   startTypewriter();
   revealPills();
   bindCopyTelegram();

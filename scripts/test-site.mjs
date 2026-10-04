@@ -80,6 +80,12 @@ console.log('INDEX PAGE');
   check('noscript fallback for JS-only visuals', !!d.querySelector('noscript'));
   const sfx = dom.window.KIA_SFX || {};
   check('5-sound engine (hover/click/whoosh/chime/fanfare)', ['hover', 'click', 'whoosh', 'chime', 'fanfare'].every(k => typeof sfx[k] === 'function'));
+  check('fonts non-blocking (preload swap)', !!d.querySelector('link[rel="preload"][as="style"]'));
+  check('video preload=metadata (payload saver)', d.querySelector('#hero-video')?.getAttribute('preload') === 'metadata');
+  const learns = Array.from(d.querySelectorAll('.learn'));
+  check('3 learn links have unique aria-labels', learns.length === 3 && learns.every(a => (a.getAttribute('aria-label') || '').includes('Learn more about')), 'n=' + learns.length);
+  check('form controls labelled', !!d.querySelector('#sort[aria-label]') && !!d.querySelector('#search[aria-label]'));
+  check('heading order h1 then h2', /<h1[\s\S]{0,20000}<h2/.test(d.body.innerHTML));
   check('est. value present', /\$4[0-9]{2},[0-9]{3}/.test(d.querySelector('.spec .v.gold')?.textContent || ''));
 
   const input = d.querySelector('#search');
