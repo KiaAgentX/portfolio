@@ -102,4 +102,11 @@
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(f.content || "").then(done, () => { });
     } catch (e) { }
   });
+
+  /* PWA: register service worker (root scope) */
+  try {
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      navigator.serviceWorker.register("../../sw.js").catch(function () { });
+    }
+  } catch (e) { }
 })();
