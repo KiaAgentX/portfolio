@@ -64,7 +64,9 @@ console.log('INDEX PAGE');
   check('contact telegram', /t\.me\/ImXforevr/.test(d.body.innerHTML));
   check('contact x.com', /x\.com\/imxforever/.test(d.body.innerHTML));
   check('hud + cosmos present', !!d.querySelector('#hud') && !!d.querySelector('#cosmos'));
-  check('contact section numbered 08', /sec-num">08</.test(d.body.innerHTML));
+  check('contact section numbered 08', /sec-num[^>]*>08</.test(d.body.innerHTML));
+  check('motion layer active (gsap+st)', d.documentElement.classList.contains('motion-on'));
+  check('gsap + lenis + motion loaded', !!dom.window.gsap && !!dom.window.ScrollTrigger && !!dom.window.Lenis && !!dom.window.KIA_MOTION);
   check('est. value present', /\$4[0-9]{2},[0-9]{3}/.test(d.querySelector('.spec .v.gold')?.textContent || ''));
 
   const input = d.querySelector('#search');

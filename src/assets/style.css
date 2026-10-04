@@ -652,3 +652,67 @@ iframe.preview {
   #toasts { bottom: 150px; left: 10px; right: 10px; align-items: stretch; }
   .toast { max-width: none; }
 }
+
+/* ---------- Custom cursor (desktop) ---------- */
+html.cursor-on, html.cursor-on a, html.cursor-on button, html.cursor-on .chip,
+html.cursor-on select, html.cursor-on .card, html.cursor-on .story { cursor: none; }
+html.cursor-on input, html.cursor-on textarea { cursor: text; }
+#cursor-dot, #cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 300; pointer-events: none;
+  opacity: 0; transition: opacity .3s;
+  will-change: transform;
+}
+#cursor-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent); margin: 0;
+}
+#cursor-ring {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1.5px solid rgba(240, 235, 223, .55);
+  transition: opacity .3s, width .25s, height .25s, border-color .25s, background-color .25s;
+}
+#cursor-ring.hot {
+  width: 54px; height: 54px;
+  border-color: var(--accent);
+  background: rgba(239, 68, 53, .10);
+}
+#cursor-ring.down { width: 26px; height: 26px; border-color: var(--gold); }
+
+/* ---------- motion layer handoff ---------- */
+html.motion-on .card, html.motion-on .rm-card { animation: none !important; }
+html.motion-on .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+.magnetic { transition: transform .3s cubic-bezier(.2, .8, .2, 1); will-change: transform; }
+#grid .card, #docs-grid .card, .skill-card, .cap-card, .c-card, .rm-card { will-change: transform; }
+.hero-bg, .hero-grid, .hero h1, .hero .lead, .hero-cta, .eyebrow { will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.cursor-on, html.cursor-on * { cursor: auto !important; }
+  #cursor-dot, #cursor-ring { display: none; }
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.lenis.lenis-autoToggle {
+  transition-property: overflow;
+  transition-duration: 1ms;
+  transition-behavior: allow-discrete;
+}
+

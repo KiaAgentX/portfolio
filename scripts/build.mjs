@@ -325,6 +325,7 @@ ${FONTS}
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+<script>window.matchMedia=window.matchMedia||function(q){return{matches:false,media:q,addListener:function(){},removeListener:function(){},addEventListener:function(){},removeEventListener:function(){},dispatchEvent:function(){return false;}};};</script>
 ${hudHtml('.')}
 ${navHtml('.', true)}
 <main>
@@ -471,6 +472,10 @@ ${navHtml('.', true)}
 <script>window.__CAPMAX__ = ${capMax};</script>
 <script src="assets/cosmos.js"></script>
 <script src="assets/index.js"></script>
+<script src="assets/gsap.min.js"></script>
+<script src="assets/ScrollTrigger.min.js"></script>
+<script src="assets/lenis.min.js"></script>
+<script src="assets/motion.js"></script>
 </body>
 </html>`;
 }
@@ -520,6 +525,7 @@ ${FONTS}
 <link rel="stylesheet" href="${base}/assets/highlight.min.css">
 </head>
 <body>
+<script>window.matchMedia=window.matchMedia||function(q){return{matches:false,media:q,addListener:function(){},removeListener:function(){},addEventListener:function(){},removeEventListener:function(){},dispatchEvent:function(){return false;}};};</script>
 ${hudHtml(base)}
 ${navHtml(base)}
 <main class="container">
@@ -599,6 +605,10 @@ ${navHtml(base)}
 <script src="${base}/assets/cosmos.js"></script>
 <script src="${base}/assets/highlight.min.js"></script>
 <script src="${base}/assets/project.js"></script>
+<script src="${base}/assets/gsap.min.js"></script>
+<script src="${base}/assets/ScrollTrigger.min.js"></script>
+<script src="${base}/assets/lenis.min.js"></script>
+<script src="${base}/assets/motion.js"></script>
 </body>
 </html>`;
 }
@@ -609,7 +619,7 @@ mkdirp(path.join(DIST, 'assets'));
 mkdirp(path.join(DIST, 'data', 'src'));
 mkdirp(path.join(DIST, 'projects'));
 
-for (const f of ['style.css', 'index.js', 'project.js', 'cosmos.js', 'highlight.min.js', 'highlight.min.css', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png']) {
+for (const f of ['style.css', 'index.js', 'project.js', 'cosmos.js', 'motion.js', 'gsap.min.js', 'ScrollTrigger.min.js', 'lenis.min.js', 'highlight.min.js', 'highlight.min.css', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png']) {
   fs.copyFileSync(path.join(SRC, 'assets', f), path.join(DIST, 'assets', f));
 }
 /* service worker MUST live at site root so its scope covers every page */

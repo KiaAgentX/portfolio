@@ -152,6 +152,8 @@
     if (!unified && docsList.length) {
       docsGrid.innerHTML = docsList.map((p, i) => card(p, i)).join("");
     }
+
+    if (window.KIA_MOTION) window.KIA_MOTION.refresh();
   }
 
   chips.addEventListener("click", e => {
@@ -263,9 +265,9 @@
     c.style.setProperty("--my", (((e.clientY - r.top) / r.height) * 100).toFixed(1) + "%");
   });
 
-  /* ---- reveal on scroll ---- */
+  /* ---- reveal on scroll (only when GSAP motion layer is absent) ---- */
   try {
-    if ("IntersectionObserver" in window && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+    if (!window.gsap && "IntersectionObserver" in window && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
       const els = Array.from(document.querySelectorAll(".sec-head, .capabilities, .contact, .universe-grid, .skills-cta, .docs-section, .roadmap-section, .spec, .foot-cta"));
       els.forEach(el => el.classList.add("reveal"));
       const io = new IntersectionObserver(entries => {
