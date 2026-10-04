@@ -52,6 +52,8 @@ async function buildOne(p) {
       if (!c.includes('output')) {
         log(`${p.id}: injecting output:"export" into ${name}`);
         c = c.replace(/const nextConfig[^=]*=\s*\{/, m => m + '\n  output: "export",');
+      } else {
+        c = c.replace(/output:\s*["'][^"']*["']\s*,?/, 'output: "export",');
       }
       c = c.replace(/^\s*basePath:.*$/m, '');
       if (!c.includes('assetPrefix')) {
@@ -60,6 +62,26 @@ async function buildOne(p) {
       }
       fs.writeFileSync(f, c);
     }
+  }
+
+  /* neon-apple: static-export-friendly patches (drop API routes + force-dynamic, generate prisma) */
+  const isNeonApple = p.id === 'neon-apple';
+  if (isNeonApple) {
+    fs.rmSync(path.join(tmp, 'src', 'app', 'api'), { recursive: true, force: true });
+    const page = path.join(tmp, 'src', 'app', 'page.tsx');
+    if (fs.existsSync(page)) {
+      let pc = fs.readFileSync(page, 'utf8');
+      pc = pc.replace(/export\s+const\s+dynamic\s*=\s*["']force-dynamic["'];?/, '');
+      fs.writeFileSync(page, pc);
+    }
+    /* make SQLite reachable at prerender: absolute URL + copy next to schema */
+    const dbSrc = path.join(tmp, 'db', 'custom.db');
+    if (fs.existsSync(dbSrc)) {
+      fs.mkdirSync(path.join(tmp, 'prisma', 'db'), { recursive: true });
+      fs.copyFileSync(dbSrc, path.join(tmp, 'prisma', 'db', 'custom.db'));
+      process.env.DATABASE_URL = 'file:' + path.join(tmp, 'db', 'custom.db').split(path.sep).join('/');
+    }
+    log(`${p.id}: stripped API routes + force-dynamic; DATABASE_URL=${process.env.DATABASE_URL ? 'absolute' : 'unchanged'}`);
   }
 
   log(`${p.id}: npm install…`);
@@ -72,7 +94,12 @@ async function buildOne(p) {
   }
 
   log(`${p.id}: build…`);
-  if (isVite && !isNext) {
+  if (isNeonApple) {
+    log(`${p.id}: prisma generate…`);
+    const gen = await run('npx', ['prisma', 'generate'], tmp);
+    if (gen.code !== 0) log(`${p.id}: prisma generate warn: ${gen.out.slice(-400)}`);
+    r = await run('npx', ['next', 'build'], tmp);
+  } else if (isVite && !isNext) {
     r = await run('npx vite build --base=./', [], tmp);
     if (r.code !== 0) {
       log(`${p.id}: vite build failed, trying npm run build…`);

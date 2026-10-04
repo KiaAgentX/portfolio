@@ -127,7 +127,7 @@ for (const t of targets) {
   projects.push({
     id: t.key.replace(/-main$/, ''),
     folder: t.key,
-    title: readme.title || name.replace(/-main$/, ''),
+    title: readme.title || t.key.replace(/-main$/, ''),
     description: readme.desc || '',
     fileCount: files.length,
     loc,

@@ -824,5 +824,19 @@
     "status": "stable",
     "preview": "static",
     "repo": "guide-railway"
+  },
+  {
+    "id": "neon-apple",
+    "folder": "neon-apple-clone",
+    "name": "Neon Apple",
+    "tagline": "Full dark-neon clone of apple.com — fullstack Next.js.",
+    "description": "Pixel-faithful dark-neon replica of apple.com: stacked Apple-style hero segments, product grid with detail dialogs, bag drawer, search sheet, newsletter, stats ticker, store perks and footer — Next.js 16 App Router, Prisma + SQLite, shadcn/ui, Tailwind 4, framer-motion.",
+    "category": "Web & Brand Experiences",
+    "language": "TypeScript",
+    "stack": ["Next.js", "React", "Prisma", "Tailwind CSS", "shadcn/ui"],
+    "value": 8500,
+    "status": "stable",
+    "preview": "build",
+    "repo": "neon-apple-clone"
   }
 ]
