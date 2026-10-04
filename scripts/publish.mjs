@@ -120,7 +120,7 @@ for (let i = 0; i < chunks.length; i++) {
 }
 
 /* final verification — path-based (CRLF-insensitive) against the publish clone */
-const treeR = sh('git', ['-C', path.join(PORT, '.publish'), 'ls-tree', '-r', '--name-only', 'HEAD'], PORT);
+const treeR = sh('git', ['-c', 'core.quotePath=false', '-C', path.join(PORT, '.publish'), 'ls-tree', '-r', '--name-only', 'HEAD'], PORT);
 const treePaths = new Set((treeR.stdout || '').split('\n').map(s => s.trim()).filter(Boolean));
 const missing = files.filter(f => !treePaths.has(f.rel));
 if (failed === 0 && !missing.length) {
