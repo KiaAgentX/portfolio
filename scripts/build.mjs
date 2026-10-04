@@ -154,7 +154,7 @@ function navHtml(base, withSearch) {
       <a href="${base}/#projects">Work</a>
       <a href="${base}/#capabilities">Capabilities</a>
       <a href="${base}/#skills">Skills</a>
-      <a href="${base}/#surprise" id="surprise" title="Open a random project">ðŸŽ² Surprise</a>
+      <a href="${base}/#surprise" id="surprise" title="Open a random project">🎲 Surprise</a>
       <a class="nav-cta" href="${base}/#contact">Contact</a>
     </nav>
     <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false">
@@ -167,7 +167,7 @@ function navHtml(base, withSearch) {
     <a href="${base}/#universe">Data</a>
     <a href="${base}/#skills">Skills</a>
     <a href="${base}/#roadmap-section">Roadmap</a>
-    <a href="${base}/#surprise">ðŸŽ² Surprise</a>
+    <a href="${base}/#surprise">🎲 Surprise</a>
     <a href="${esc(config.owner.github)}" target="_blank" rel="noopener">GitHub</a>
     <a class="nav-cta" href="${base}/#contact">Contact</a>
   </div>`;
@@ -184,7 +184,7 @@ function hudHtml(base) {
     <span id="hud-pct">0%</span>
   </div>
   <div class="hud-meta"><span id="hud-found">0/7</span>DISCOVERED</div>
-  <button id="sound-toggle" type="button" aria-label="Toggle sound" title="Sound on/off">ðŸ”‡</button>
+  <button id="sound-toggle" type="button" aria-label="Toggle sound" title="Sound on/off">🔇</button>
 </div>
 <div id="toasts" aria-live="polite"></div>`;
 }
@@ -241,7 +241,7 @@ const CRITICAL_CSS = `<style id="critical">
 
 const TICKER_WORDS = ['Python', 'React', 'Three.js', 'PyTorch', 'Next.js', 'FastAPI', 'PostgreSQL', 'Docker', 'TypeScript', 'Vite', 'WebGPU', 'Telegram Bots', 'RL Agents', 'Qdrant', 'Solana', 'MetaTrader 5', 'Redis', 'Tailwind', 'aiogram', 'LLM Routing'];
 function tickerHtml() {
-  const items = TICKER_WORDS.map(w => `<span><i>â—†</i> <b>${esc(w)}</b></span>`).join('');
+  const items = TICKER_WORDS.map(w => `<span><i>◆</i> <b>${esc(w)}</b></span>`).join('');
   return `<div class="ticker" aria-hidden="true"><div class="ticker-track">${items}${items}</div></div>`;
 }
 
@@ -282,10 +282,10 @@ function ensureCover(p, s) {
   <rect x="0" y="0" width="1200" height="6" fill="${color}"/>
   <text x="72" y="110" fill="${color}" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="22" letter-spacing="6">${escXml(p.category.toUpperCase())}</text>
   <text x="72" y="310" fill="#f0ebdf" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="${fontSize}" letter-spacing="-2">${escXml(name)}</text>
-  <text x="72" y="380" fill="#9d9aa8" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="24">${escXml(String(s.loc).replace(/\B(?=(\d{3})+(?!\d))/g, ','))} LOC Â· ${s.fileCount} FILES Â· ${escXml(p.language.toUpperCase())}</text>
+  <text x="72" y="380" fill="#9d9aa8" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="24">${escXml(String(s.loc).replace(/\B(?=(\d{3})+(?!\d))/g, ','))} LOC · ${s.fileCount} FILES · ${escXml(p.language.toUpperCase())}</text>
   <rect x="72" y="440" width="240" height="58" rx="8" fill="#12122a" stroke="#fbbf24" stroke-opacity=".5"/>
   <text x="96" y="478" fill="#fbbf24" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="26" font-weight="700">$${escXml(String(p.value).replace(/\B(?=(\d{3})+(?!\d))/g, ','))} EST.</text>
-  <text x="72" y="580" fill="#62647a" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18" letter-spacing="4">KIA â€” SOFTWARE PORTFOLIO</text>
+  <text x="72" y="580" fill="#62647a" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18" letter-spacing="4">KIA — SOFTWARE PORTFOLIO</text>
 </svg>`;
   fs.writeFileSync(path.join(dest, 'cover.svg'), svg);
   return 'cover.svg';
@@ -308,7 +308,7 @@ function showcaseHtml(p, s) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${e(p.name)} â€” Showcase</title>
+<title>${e(p.name)} — Showcase</title>
 <style>
 :root{--bg:#06060e;--panel:#0c0c18;--panel2:#12122a;--border:#1c2033;--text:#f0ebdf;--muted:#9d9aa8;--faint:#62647a;--accent:#ef4435;--gold:#fbbf24;--c:${color}}
 *{box-sizing:border-box}
@@ -344,7 +344,7 @@ a.btn{text-decoration:none}
   <div class="eyebrow">${e(p.category)}</div>
   <h1>${e(p.name)}</h1>
   <p class="tag">${e(p.tagline)}</p>
-  <div class="badge mono">Server-side project Â· static showcase</div>
+  <div class="badge mono">Server-side project · static showcase</div>
   <div class="grid">
     <div class="card">
       <h2>About this project</h2>
@@ -357,7 +357,7 @@ a.btn{text-decoration:none}
       ${facts}
     </div>
   </div>
-  <div class="run mono"><b>RUN LOCALLY</b><br>git clone &lt;repo&gt; &amp;&amp; cd ${e(p.repo)}<br>see README for install (Docker / package manager)<br>this showcase is a static front â€” the service itself runs on a server.</div>
+  <div class="run mono"><b>RUN LOCALLY</b><br>git clone &lt;repo&gt; &amp;&amp; cd ${e(p.repo)}<br>see README for install (Docker / package manager)<br>this showcase is a static front — the service itself runs on a server.</div>
   <div class="cta">
     <a class="btn primary" href="https://github.com/KiaAgentX/portfolio/tree/main/projects/${e(p.folder)}" target="_blank" rel="noopener">View source</a>
     <a class="btn" href="../../projects/${e(p.id)}/">Back to project page</a>
@@ -395,7 +395,7 @@ ${hudHtml('.')}
 ${navHtml('.', true)}
 <main>
   <section class="hero"><div class="hero-bg"></div><div class="hero-grid"></div><div class="container hero-inner">
-    <div class="eyebrow">KIA Â· SOFTWARE PORTFOLIO Â· ${stats.projects} PROJECTS</div>
+    <div class="eyebrow">KIA · SOFTWARE PORTFOLIO · ${stats.projects} PROJECTS</div>
     <h1 aria-label="Engineering production software across AI, fintech and 3D.">
       <span class="w"><span style="--wi:0">Engineering</span></span>
       <span class="w"><span class="grad" style="--wi:1">production</span></span>
@@ -432,7 +432,7 @@ ${navHtml('.', true)}
   </section>
   <section class="capabilities"><div class="container">
     <div class="sec-head" id="capabilities"><span class="sec-num">01</span><h2>Capabilities</h2><span class="sec-line"></span></div>
-    <p class="manifesto char-reveal" id="manifesto">I turn ideas into shipped systems â€” agents that think, markets that move, worlds you can play, and Persian-first finance tools. Sixty products. Six hundred seventy thousand lines. One operator.</p>
+    <p class="manifesto char-reveal" id="manifesto">I turn ideas into shipped systems — agents that think, markets that move, worlds you can play, and Persian-first finance tools. Sixty products. Six hundred seventy thousand lines. One operator.</p>
     <div class="cap-grid" id="caps-grid"></div>
   </div></section>
   <section class="universe"><div class="container">
@@ -459,12 +459,12 @@ ${navHtml('.', true)}
   </div></section>
   <section class="skills-sec"><div class="container">
     <div class="sec-head" id="skills"><span class="sec-num">03</span><h2>Skills</h2><span class="sec-line"></span></div>
-    <p class="skills-note">Ten skill modules distilled from every project â€” full workflows, quality bars and pricing live in the
+    <p class="skills-note">Ten skill modules distilled from every project — full workflows, quality bars and pricing live in the
       <a href="https://github.com/KiaAgentX/skills" target="_blank" rel="noopener">KiaAgentX/skills</a> repo
       (start with <a href="https://github.com/KiaAgentX/skills/blob/main/SOUL.md" target="_blank" rel="noopener">SOUL.md</a>).</p>
     <div class="skill-grid" id="skills-grid"></div>
     <div class="skills-cta">
-      <a class="btn primary" href="https://github.com/KiaAgentX/skills" target="_blank" rel="noopener">Open skills repo â†’</a>
+      <a class="btn primary" href="https://github.com/KiaAgentX/skills" target="_blank" rel="noopener">Open skills repo →</a>
       <a class="btn" href="https://github.com/KiaAgentX/skills/blob/main/PRICING.md" target="_blank" rel="noopener">Pricing per module</a>
       <a class="btn" href="https://github.com/KiaAgentX/skills/blob/main/PROJECTS.md" target="_blank" rel="noopener">60 projects mapped</a>
     </div>
@@ -472,7 +472,7 @@ ${navHtml('.', true)}
   <section class="work"><div class="container">
     <div class="sec-head" id="projects"><span class="sec-num">04</span><h2>Selected Work</h2><span class="sec-line"></span></div>
     <div class="toolbar">
-      <div class="search"><input id="search" type="search" aria-label="Search projects" placeholder="Search projects, stacks, categoriesâ€¦" autocomplete="off"></div>
+      <div class="search"><input id="search" type="search" aria-label="Search projects" placeholder="Search projects, stacks, categories…" autocomplete="off"></div>
       <div class="sort"><select id="sort" aria-label="Sort projects">
         <option value="value">sort: value</option>
         <option value="loc">sort: lines of code</option>
@@ -486,11 +486,11 @@ ${navHtml('.', true)}
       <div class="stories" id="stories"></div>
     </section>
     <section class="docs-section" id="docs-section" style="display:none">
-      <div class="docs-head"><span class="sec-num">06</span><h2>Docs &amp; Strategy</h2><span>architecture Â· roadmap Â· company</span></div>
+      <div class="docs-head"><span class="sec-num">06</span><h2>Docs &amp; Strategy</h2><span>architecture · roadmap · company</span></div>
       <div class="grid" id="docs-grid" style="padding-bottom:0"></div>
     </section>
     <section class="roadmap-section" id="roadmap-section">
-      <div class="docs-head"><span class="sec-num">07</span><h2>Roadmap â€” Next 10</h2><span>observed patterns â†’ planned builds Â· est. ${money(pipelineValue)} pipeline</span></div>
+      <div class="docs-head"><span class="sec-num">07</span><h2>Roadmap — Next 10</h2><span>observed patterns → planned builds · est. ${money(pipelineValue)} pipeline</span></div>
       <div class="roadmap" id="roadmap"></div>
     </section>
   </div></section>
@@ -498,22 +498,22 @@ ${navHtml('.', true)}
     <div class="sec-head" id="contact"><span class="sec-num">08</span><h2>Contact</h2><span class="sec-line"></span></div>
     <div class="contact-grid">
       <a class="c-card" style="--cc:#229ed9" href="${esc(config.owner.telegram)}" target="_blank" rel="noopener">
-        <span class="c-kicker">Telegram Â· fastest reply</span>
+        <span class="c-kicker">Telegram · fastest reply</span>
         <span class="c-handle">@ImXforevr</span>
-        <span class="c-note">DMs open â€” best channel for projects, collabs and quick questions.</span>
-        <span class="c-go">Open Telegram â†’</span>
+        <span class="c-note">DMs open — best channel for projects, collabs and quick questions.</span>
+        <span class="c-go">Open Telegram →</span>
       </a>
       <a class="c-card" style="--cc:#e7e9ea" href="${esc(config.owner.x)}" target="_blank" rel="noopener">
-        <span class="c-kicker">X Â· building in public</span>
+        <span class="c-kicker">X · building in public</span>
         <span class="c-handle">@imxforever</span>
         <span class="c-note">Build logs, experiments and product drops as they ship.</span>
-        <span class="c-go">Follow on X â†’</span>
+        <span class="c-go">Follow on X →</span>
       </a>
       <a class="c-card" style="--cc:#a78bfa" href="${esc(config.owner.github)}" target="_blank" rel="noopener">
-        <span class="c-kicker">GitHub Â· the receipts</span>
+        <span class="c-kicker">GitHub · the receipts</span>
         <span class="c-handle">@KiaAgentX</span>
-        <span class="c-note">${stats.projects} repos Â· ${fmt(stats.loc)} lines Â· skills &amp; portfolio sources.</span>
-        <span class="c-go">Browse repositories â†’</span>
+        <span class="c-note">${stats.projects} repos · ${fmt(stats.loc)} lines · skills &amp; portfolio sources.</span>
+        <span class="c-go">Browse repositories →</span>
       </a>
     </div>
   </div></section>
@@ -523,21 +523,21 @@ ${navHtml('.', true)}
     <div class="foot-cta">
       <div>
         <h2>Have a project <span>in mind?</span></h2>
-        <p class="sub">Available for remote work worldwide Â· ${stats.projects} projects Â· ${money(stats.value)} shipped value</p>
+        <p class="sub">Available for remote work worldwide · ${stats.projects} projects · ${money(stats.value)} shipped value</p>
       </div>
-      <a class="btn primary btn-lg" href="${esc(config.owner.github)}" target="_blank" rel="noopener">Start a conversation â†’</a>
+      <a class="btn primary btn-lg" href="${esc(config.owner.github)}" target="_blank" rel="noopener">Start a conversation →</a>
     </div>
     <div class="row">
-      <div>Â© ${new Date().getFullYear()} ${esc(config.owner.name)} Â· ${esc(config.owner.location)}</div>
-      <div><a href="${esc(config.owner.github)}" target="_blank" rel="noopener">GitHub</a>${config.site.repoUrl ? ` Â· <a href="${esc(config.site.repoUrl)}" target="_blank" rel="noopener">Site source</a>` : ''}</div>
+      <div>© ${new Date().getFullYear()} ${esc(config.owner.name)} · ${esc(config.owner.location)}</div>
+      <div><a href="${esc(config.owner.github)}" target="_blank" rel="noopener">GitHub</a>${config.site.repoUrl ? ` · <a href="${esc(config.site.repoUrl)}" target="_blank" rel="noopener">Site source</a>` : ''}</div>
     </div>
   </div>
 </footer>
 <div class="palette" id="palette" hidden>
   <div class="palette-box">
-    <input id="palette-input" aria-label="Search projects" placeholder="Type to search ${stats.projects} projectsâ€¦" autocomplete="off" spellcheck="false">
+    <input id="palette-input" aria-label="Search projects" placeholder="Type to search ${stats.projects} projects…" autocomplete="off" spellcheck="false">
     <div class="palette-results" id="palette-results"></div>
-    <div class="palette-hint mono">â†‘ â†“ navigate Â· Enter open Â· Esc close</div>
+    <div class="palette-hint mono">↑ ↓ navigate · Enter open · Esc close</div>
   </div>
 </div>
 <script>window.__PROJECTS__ = ${safeJson(cards)};</script>
@@ -577,7 +577,7 @@ function buildProjectPage(p, ctx) {
         <iframe class="preview" data-defer="${base}/previews/${esc(p.id)}/${esc(ctx.preview.entry)}" title="${esc(p.name)} live preview" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
       </div>`
     : `<div class="no-preview">
-        <strong>${p.preview === 'none' ? 'Server-side project â€” no browser preview' : 'Live preview is being prepared'}</strong>
+        <strong>${p.preview === 'none' ? 'Server-side project — no browser preview' : 'Live preview is being prepared'}</strong>
         ${p.preview === 'none'
       ? 'This project runs as a backend service, bot or desktop workflow. Explore the full source code below, or run it locally with Docker.'
       : 'The static bundle for this project is generated by the portfolio build pipeline (npm run build:previews).'}
@@ -591,7 +591,7 @@ function buildProjectPage(p, ctx) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(p.name)} â€” ${esc(config.site.title)}</title>
+<title>${esc(p.name)} — ${esc(config.site.title)}</title>
 <meta name="description" content="${esc(p.tagline)}">
 ${FONTS}
 <link rel="icon" type="image/svg+xml" href="${base}/assets/favicon.svg">
@@ -607,8 +607,8 @@ ${hudHtml(base)}
 ${navHtml(base)}
 <main class="container">
   <div class="phead">
-    <a class="back" href="${base}/#projects">â† All projects</a>
-    ${(() => { const b = ctx.gallery.length ? ctx.gallery[0] : 'cover.svg'; return `<div class="p-banner"><img src="${b}" alt="${esc(p.name)} banner" loading="eager"><span class="b-label">${esc(p.category)} Â· ${esc(p.language)} Â· ${fmt(ctx.stats.loc)} LOC</span></div>`; })()}
+    <a class="back" href="${base}/#projects">← All projects</a>
+    ${(() => { const b = ctx.gallery.length ? ctx.gallery[0] : 'cover.svg'; return `<div class="p-banner"><img src="${b}" alt="${esc(p.name)} banner" loading="eager"><span class="b-label">${esc(p.category)} · ${esc(p.language)} · ${fmt(ctx.stats.loc)} LOC</span></div>`; })()}
     <h1>${esc(p.name)}</h1>
     <p class="tag">${esc(p.tagline)}</p>
     <div class="pmeta">
@@ -661,21 +661,21 @@ ${navHtml(base)}
         <div class="src-head">
           <span id="src-path">Select a file</span>
           <span class="grp">
-            <button class="btn ghost" id="src-prev">â€¹</button>
-            <button class="btn ghost" id="src-next">â€º</button>
+            <button class="btn ghost" id="src-prev">‹</button>
+            <button class="btn ghost" id="src-next">›</button>
             <button class="btn ghost" id="src-copy" type="button">copy</button>
             <a class="btn ghost" href="${esc(repo)}" target="_blank" rel="noopener">GitHub</a>
           </span>
         </div>
         <div class="src-code" id="src-code-wrap"><pre><code id="src-code"></code></pre></div>
-        <div class="src-status" id="src-status">Loading source filesâ€¦</div>
+        <div class="src-status" id="src-status">Loading source files…</div>
       </div>
     </div>
   </section>
 
   <nav class="pager">
-    ${prevP ? `<a href="../${encodeURIComponent(prevP.id)}/"><div class="lbl">â† Previous</div><div class="nm">${esc(prevP.name)}</div></a>` : '<span></span>'}
-    ${nextP ? `<a class="next" href="../${encodeURIComponent(nextP.id)}/"><div class="lbl">Next â†’</div><div class="nm">${esc(nextP.name)}</div></a>` : '<span></span>'}
+    ${prevP ? `<a href="../${encodeURIComponent(prevP.id)}/"><div class="lbl">← Previous</div><div class="nm">${esc(prevP.name)}</div></a>` : '<span></span>'}
+    ${nextP ? `<a class="next" href="../${encodeURIComponent(nextP.id)}/"><div class="lbl">Next →</div><div class="nm">${esc(nextP.name)}</div></a>` : '<span></span>'}
   </nav>
 </main>
 <script>window.__PROJECT__ = ${safeJson({ id: p.id, sourceAvailable: ctx.source.files.length > 0, repo })};</script>
@@ -759,7 +759,7 @@ const langs = Object.entries(langAgg).sort((a, b) => b[1] - a[1]).slice(0, 10).m
 /* capability cards derived from real category metrics */
 const CAP_DESC = {
   'AI & Agents': 'Agent runtimes, memory, tools, multi-channel bots, gateways and marketplaces.',
-  'Trading & Fintech': 'RL trading engines, backtesting, MT5 bridges and risk managers â€” paper-first.',
+  'Trading & Fintech': 'RL trading engines, backtesting, MT5 bridges and risk managers — paper-first.',
   'E-Commerce & Marketplaces': 'Telegram storefronts, wallet ledgers, referrals and launchpads.',
   'Games & 3D': 'Browser games, WebGL/WebGPU engines and desktop simulators.',
   'Business & Accounting': 'Persian RTL ledgers, audit suites and offline-first finance PWAs.',
@@ -781,6 +781,6 @@ fs.writeFileSync(path.join(DIST, 'data', 'projects.json'), JSON.stringify({ stat
 
 const distSize = walk(DIST).reduce((a, f) => a + fs.statSync(f).size, 0);
 console.log(`\nBuilt ${projects.length} pages -> dist/ (${(distSize / 1048576).toFixed(1)} MB)`);
-console.log(`Projects: ${stats.projects} Â· LOC: ${fmt(stats.loc)} Â· Est. value: ${money(stats.value)} Â· Live previews: ${stats.previews}`);
+console.log(`Projects: ${stats.projects} · LOC: ${fmt(stats.loc)} · Est. value: ${money(stats.value)} · Live previews: ${stats.previews}`);
 
 execFileSync(process.execPath, [path.join(HERE, 'redact-secrets.mjs'), '--apply'], { stdio: 'inherit' });

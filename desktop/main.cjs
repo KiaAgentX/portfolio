@@ -35,7 +35,9 @@ function createWindow() {
     icon: path.join(__dirname, "..", "src", "assets", "icon-512.png"),
     webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false },
   });
-  win.loadURL("app://bundle/index.html");
+  win.loadURL(fs.existsSync(path.join(DIST, "index.html"))
+    ? "app://bundle/index.html"
+    : "https://kiaagentx.github.io/portfolio/");
 }
 
 app.whenReady().then(() => {

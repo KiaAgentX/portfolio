@@ -1,4 +1,4 @@
-/* motion.js â€” cinematic scroll (GSAP + ScrollTrigger + Lenis) & mouse interactions.
+/* motion.js — cinematic scroll (GSAP + ScrollTrigger + Lenis) & mouse interactions.
    Everything is guarded: reduced-motion and missing libs fall back to CSS behavior. */
 (function () {
   "use strict";
@@ -62,7 +62,7 @@
 
     if (reduce) return; /* class added so tests see the layer; no movement for a11y */
 
-    /* phase 1 â€” hero (above the fold) */
+    /* phase 1 — hero (above the fold) */
     phase(function () {
     /* ---- cinematic hero exit (scrub) ---- */
     if (document.querySelector(".hero-inner")) {
@@ -96,7 +96,7 @@
     });
     });
 
-    /* phase 2 â€” content blocks */
+    /* phase 2 — content blocks */
     phase(function () {
     /* ---- card entrances (batched stagger) ---- */
     ["#grid .card", "#docs-grid .card", ".skill-card", ".rm-card", ".cap-card", ".c-card"].forEach(function (sel) {
@@ -135,7 +135,7 @@
     });
     });
 
-    /* phase 3 â€” data visualisations */
+    /* phase 3 — data visualisations */
     phase(function () {
     /* ---- capability / language bars grow on enter (scaleX = composited, no reflow) ---- */
     gsap.utils.toArray(".cap-bar i, .lb-fill").forEach(function (bar) {
@@ -164,7 +164,7 @@
     }
     });
 
-    /* phase 4 â€” deep-scroll effects */
+    /* phase 4 — deep-scroll effects */
     phase(function () {
     /* ---- showreel marquee: rows drift opposite with scroll ---- */
     if (document.getElementById("mq-row1")) {

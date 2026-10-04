@@ -10,3 +10,14 @@ gp-out.txt
 migrate.log
 import.log
 *.fail.txt
+release/
+el-err.log
+el-out.log
+upload-big.log
+release-upload.log
+pub-out.txt
+pub-err.txt
+pub-out2.txt
+pub-err2.txt
+pub-out3.txt
+pub-err3.txt

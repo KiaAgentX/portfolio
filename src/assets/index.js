@@ -71,7 +71,7 @@
       : `<div class="ph">${esc(p.name.slice(0, 2).toUpperCase())}</div>`;
     return `<article class="card feature" style="--cc:${color};--i:0">
       <div class="feature-body">
-        <div class="feature-kicker">â˜… TOP PROJECT â€” ${money(p.value)} EST.</div>
+        <div class="feature-kicker">★ TOP PROJECT — ${money(p.value)} EST.</div>
         <div class="card-top"><span class="cat">${esc(p.category)}</span><span class="loc">${fmt(p.loc)} LOC</span></div>
         <h3><a href="projects/${encodeURIComponent(p.id)}/">${esc(p.name)}</a></h3>
         <p class="tag">${esc(p.tagline)}</p>
@@ -79,7 +79,7 @@
           <span><b>${fmt(p.loc)}</b> lines</span>
           <span><b>${fmt(p.fileCount)}</b> files</span>
           <span><b>${esc(p.language)}</b></span>
-          <span>${p.stack.slice(0, 3).map(esc).join(" Â· ")}</span>
+          <span>${p.stack.slice(0, 3).map(esc).join(" · ")}</span>
         </div>
         <div class="feature-cta">${actions(p)}</div>
       </div>
@@ -122,10 +122,10 @@
     host.innerHTML = top.map((p, i) => `<article class="story${i % 2 ? " flip" : ""}">
       <div class="story-media"><img src="${p.thumb}" alt="${esc(p.name)}" loading="lazy"></div>
       <div class="story-body">
-        <span class="story-kicker">Flagship Â· ${money(p.value)} est.</span>
+        <span class="story-kicker">Flagship · ${money(p.value)} est.</span>
         <h3><a href="projects/${encodeURIComponent(p.id)}/">${esc(p.name)}</a></h3>
         <p>${esc(p.description)}</p>
-        <div class="story-facts"><span><b>${fmt(p.loc)}</b> LOC</span><span><b>${esc(p.language)}</b></span><span>${p.stack.slice(0, 3).map(esc).join(" Â· ")}</span></div>
+        <div class="story-facts"><span><b>${fmt(p.loc)}</b> LOC</span><span><b>${esc(p.language)}</b></span><span>${p.stack.slice(0, 3).map(esc).join(" · ")}</span></div>
         <a class="learn" href="projects/${encodeURIComponent(p.id)}/" aria-label="Learn more about ${esc(p.name)}">Learn more</a>
       </div>
     </article>`).join("");
@@ -147,7 +147,7 @@
 
     grid.innerHTML = mainList.length
       ? mainList.map(card).join("")
-      : `<div class="empty">No projects match â€œ${esc(state.q)}â€.</div>`;
+      : `<div class="empty">No projects match “${esc(state.q)}”.</div>`;
 
     if (!unified && docsList.length) {
       docsGrid.innerHTML = docsList.map((p, i) => card(p, i)).join("");
@@ -180,7 +180,7 @@
         </div>
         <h3>${esc(r.name)}</h3>
         <p class="tag">${esc(r.tagline)}</p>
-        <p class="signal">âŒ ${esc(r.signal)}</p>
+        <p class="signal">⌁ ${esc(r.signal)}</p>
         <div class="meta">${r.stack.slice(0, 5).map(s => `<span class="badge">${esc(s)}</span>`).join("")}</div>
         <div class="foot">
           <div class="value">${money(r.value)}<small>EST. VALUE</small></div>
@@ -246,7 +246,7 @@
     </article>`).join("");
   }
 
-  /* typewriter (Mainframe-inspired) â€” content exists in HTML for no-JS; we clear then type */
+  /* typewriter (Mainframe-inspired) — content exists in HTML for no-JS; we clear then type */
   function startTypewriter() {
     const el = document.getElementById("typewriter");
     const cur = document.getElementById("tw-cur");
@@ -282,11 +282,11 @@
     function feedback(ok) {
       if (ok) {
         btn.classList.add("copied");
-        btn.innerHTML = "Copied âœ“";
+        btn.innerHTML = "Copied ✓";
         if (window.KIA_SFX) window.KIA_SFX.blip();
       } else {
         btn.classList.add("copy-fail");
-        btn.innerHTML = "Copy failed â€” t.me/ImXforevr";
+        btn.innerHTML = "Copy failed — t.me/ImXforevr";
       }
       setTimeout(() => { btn.innerHTML = original; btn.classList.remove("copied", "copy-fail"); }, 1800);
     }
@@ -312,7 +312,7 @@
     });
   }
 
-  /* ðŸŽ² Surprise: open a random project when landing on #surprise */
+  /* 🎲 Surprise: open a random project when landing on #surprise */
   function bindSurprise() {
     if (location.hash !== "#surprise") return;
     const pool = P.filter(p => p.status !== "in-dev");
@@ -407,7 +407,7 @@
       sel = 0;
       results.innerHTML = list.length
         ? list.map((p, i) => `<div class="p-item${i === 0 ? " sel" : ""}" data-i="${i}"><span>${esc(p.name)}</span><span class="p-cat">${esc(p.category)}</span></div>`).join("")
-        : `<div class="palette-empty">No matches â€” try â€œtradingâ€, â€œthreeâ€, â€œpythonâ€â€¦</div>`;
+        : `<div class="palette-empty">No matches — try “trading”, “three”, “python”…</div>`;
     }
     function open() {
       palette.hidden = false; input.value = ""; draw(""); input.focus();
