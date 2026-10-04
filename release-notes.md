@@ -21,3 +21,13 @@ Download the `.exe` asset and run it â€” no installer, no admin rights needed.
 - Valuation: https://github.com/KiaAgentX/portfolio/blob/main/VALUATION.md
 - Live site: https://kiaagentx.github.io/portfolio/
 - Skills repo: https://github.com/KiaAgentX/skills
+
+## Desktop install (split download)
+
+The exe is split into 9 parts (20 MB each) so every piece survives unstable connections.
+
+1. Download `Kia-Portfolio-1.0.0-win-x64.exe.001` … `.009` **plus** `reassemble.bat` into one folder.
+2. Run `reassemble.bat` (double-click) — it rebuilds the exe and prints the expected SHA-256.
+3. Run `Kia-Portfolio-1.0.0-win-x64.exe` — portable, offline, no admin rights.
+
+Checksums: `SHA256.txt` · Details: `DESKTOP-README.txt`
