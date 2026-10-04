@@ -682,8 +682,6 @@ html.cursor-on input, html.cursor-on textarea { cursor: text; }
 html.motion-on .card, html.motion-on .rm-card { animation: none !important; }
 html.motion-on .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
 .magnetic { transition: transform .3s cubic-bezier(.2, .8, .2, 1); will-change: transform; }
-#grid .card, #docs-grid .card, .skill-card, .cap-card, .c-card, .rm-card { will-change: transform; }
-.hero-bg, .hero-grid, .hero h1, .hero .lead, .hero-cta, .eyebrow { will-change: transform; }
 
 @media (prefers-reduced-motion: reduce) {
   html.cursor-on, html.cursor-on * { cursor: auto !important; }
@@ -889,3 +887,28 @@ html.menu-open { overflow: hidden; }
   .mq-tile { width: 68vw; }
   #hero-pills { margin-bottom: 24px; }
 }
+
+/* ================= Bug-fix pass (9 criticals) ================= */
+
+/* B1: nav must sit ABOVE the mobile menu so the burger stays visible/closeable */
+.nav { z-index: 85; }
+.mobile-menu { z-index: 80; }
+
+/* B6: stop reserving compositor layers for ~80 cards (will-change removed above;
+   cursor + marquee rows keep theirs) */
+#grid .card, #docs-grid .card, .skill-card, .cap-card, .c-card, .rm-card,
+.hero-bg, .hero-grid, .hero h1, .hero-cta, .eyebrow { will-change: auto; }
+
+/* B7: HUD + toasts move to the top on mobile so they never cover tap targets */
+@media (max-width: 900px) {
+  #hud { bottom: auto; top: 72px; right: 8px; transform: scale(.85); transform-origin: top right; }
+  #toasts { top: 72px; bottom: auto; left: 10px; right: auto; align-items: flex-start; max-width: 60vw; }
+  .toast { min-width: 0; }
+}
+
+/* B4: honest copy failure state */
+.pill.copy-fail { border-color: var(--accent); color: var(--accent); background: rgba(239, 68, 53, .08); }
+
+/* B9: showreel DOM weight — contain painting + intrinsic sizing for lazy tiles */
+.showreel { contain: layout paint; }
+.mq-tile { content-visibility: auto; contain-intrinsic-size: 260px 167px; }

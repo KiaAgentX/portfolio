@@ -24,6 +24,7 @@
     });
     menu.addEventListener("click", function (e) {
       if (e.target.closest("a")) setOpen(false);
+      else if (e.target === menu) setOpen(false); /* backdrop tap closes */
     });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && menu.classList.contains("open")) setOpen(false);
