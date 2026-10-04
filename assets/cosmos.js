@@ -111,6 +111,11 @@
   var ctx = canvas && canvas.getContext ? canvas.getContext("2d") : null;
   var W = 0, H = 0, stars = [], dpr = 1;
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var mouseX = 0, mouseY = 0, tMouseX = 0, tMouseY = 0;
+  window.addEventListener("pointermove", function (e) {
+    tMouseX = (e.clientX / Math.max(1, window.innerWidth)) - 0.5;
+    tMouseY = (e.clientY / Math.max(1, window.innerHeight)) - 0.5;
+  }, { passive: true });
 
   function resize() {
     if (!canvas) return;
@@ -133,15 +138,17 @@
   }
 
   function drawStarfield(t, scrollPx) {
+    mouseX += (tMouseX - mouseX) * 0.05;
+    mouseY += (tMouseY - mouseY) * 0.05;
     ctx.fillStyle = "#06060e";
     ctx.fillRect(0, 0, W, H);
-    /* nebula glows drift with page progress */
+    /* nebula glows drift with page progress + mouse */
     var p = progress();
-    var g1 = ctx.createRadialGradient(W * (0.2 + 0.5 * p), H * 0.25, 40, W * (0.2 + 0.5 * p), H * 0.25, W * 0.55);
+    var g1 = ctx.createRadialGradient(W * (0.2 + 0.5 * p) + mouseX * 120, H * 0.25 + mouseY * 80, 40, W * (0.2 + 0.5 * p) + mouseX * 120, H * 0.25 + mouseY * 80, W * 0.55);
     g1.addColorStop(0, "rgba(167,139,250,0.10)");
     g1.addColorStop(1, "rgba(167,139,250,0)");
     ctx.fillStyle = g1; ctx.fillRect(0, 0, W, H);
-    var g2 = ctx.createRadialGradient(W * (0.85 - 0.55 * p), H * 0.75, 30, W * (0.85 - 0.55 * p), H * 0.75, W * 0.5);
+    var g2 = ctx.createRadialGradient(W * (0.85 - 0.55 * p) + mouseX * -90, H * 0.75 + mouseY * 60, 30, W * (0.85 - 0.55 * p) + mouseX * -90, H * 0.75 + mouseY * 60, W * 0.5);
     g2.addColorStop(0, "rgba(34,211,238,0.08)");
     g2.addColorStop(1, "rgba(34,211,238,0)");
     ctx.fillStyle = g2; ctx.fillRect(0, 0, W, H);
@@ -152,7 +159,7 @@
       var a = 0.35 + 0.65 * Math.abs(Math.sin(s.tw + t * 0.0012 * (0.4 + s.z)));
       ctx.globalAlpha = a * (0.4 + s.z * 0.6);
       ctx.beginPath();
-      ctx.arc(s.x, y, s.r, 0, 6.2832);
+      ctx.arc(s.x + mouseX * 40 * s.z, y + mouseY * 26 * s.z, s.r, 0, 6.2832);
       ctx.fillStyle = s.c;
       ctx.fill();
     }
@@ -172,7 +179,8 @@
     var r = Math.min(W, H) * 0.075;
     ctx.save();
     ctx.globalAlpha = vis * 0.92;
-    ctx.translate(sideX, y);
+    ctx.translate(sideX + mouseX * 70, y + mouseY * 46);
+    ctx.translate(Math.sin(performance.now() * 0.0006 + b.at * 9) * 6, Math.cos(performance.now() * 0.0005 + b.at * 7) * 5);
 
     if (b.kind === "moon") {
       ctx.fillStyle = "#cfd3dc";
