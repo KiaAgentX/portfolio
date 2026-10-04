@@ -1205,5 +1205,117 @@
       "fileCount": 103,
       "thumb": "projects/neon-apple/cover.svg"
     }
+  ],
+  "langs": [
+    {
+      "name": "Python",
+      "count": 741
+    },
+    {
+      "name": "JavaScript",
+      "count": 516
+    },
+    {
+      "name": "TypeScript",
+      "count": 399
+    },
+    {
+      "name": "HTML",
+      "count": 320
+    },
+    {
+      "name": "CSS",
+      "count": 48
+    },
+    {
+      "name": "SQL",
+      "count": 18
+    },
+    {
+      "name": "Shell",
+      "count": 14
+    },
+    {
+      "name": "C++",
+      "count": 9
+    },
+    {
+      "name": "PowerShell",
+      "count": 1
+    }
+  ],
+  "caps": [
+    {
+      "category": "AI & Agents",
+      "desc": "Agent runtimes, memory, tools, multi-channel bots, gateways and marketplaces.",
+      "count": 14,
+      "loc": 187025,
+      "value": 106500,
+      "color": "#a78bfa"
+    },
+    {
+      "category": "Games & 3D",
+      "desc": "Browser games, WebGL/WebGPU engines and desktop simulators.",
+      "count": 9,
+      "loc": 111507,
+      "value": 91500,
+      "color": "#22d3ee"
+    },
+    {
+      "category": "E-Commerce & Marketplaces",
+      "desc": "Telegram storefronts, wallet ledgers, referrals and launchpads.",
+      "count": 6,
+      "loc": 122570,
+      "value": 87000,
+      "color": "#f472b6"
+    },
+    {
+      "category": "Trading & Fintech",
+      "desc": "RL trading engines, backtesting, MT5 bridges and risk managers — paper-first.",
+      "count": 10,
+      "loc": 78903,
+      "value": 80500,
+      "color": "#fbbf24"
+    },
+    {
+      "category": "Business & Accounting",
+      "desc": "Persian RTL ledgers, audit suites and offline-first finance PWAs.",
+      "count": 2,
+      "loc": 91011,
+      "value": 31000,
+      "color": "#a9c4de"
+    },
+    {
+      "category": "Web & Brand Experiences",
+      "desc": "Cinematic scroll sites, interactive brand books and clones.",
+      "count": 6,
+      "loc": 15991,
+      "value": 27000,
+      "color": "#fb923c"
+    },
+    {
+      "category": "Developer Tools",
+      "desc": "Internal studios, valuation engines and prompt tooling.",
+      "count": 4,
+      "loc": 5990,
+      "value": 23500,
+      "color": "#ef4435"
+    },
+    {
+      "category": "Learning & Content",
+      "desc": "Interactive guides, academies and playable demo collections.",
+      "count": 6,
+      "loc": 56989,
+      "value": 20300,
+      "color": "#34d399"
+    },
+    {
+      "category": "Docs & Strategy",
+      "desc": "Architecture, roadmap and company documents.",
+      "count": 3,
+      "loc": 1282,
+      "value": 3200,
+      "color": "#c5c1b6"
+    }
   ]
 }
