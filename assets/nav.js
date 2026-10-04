@@ -16,7 +16,10 @@
           if (open) window.KIA_MOTION.lenis.stop(); else window.KIA_MOTION.lenis.start();
         }
       } catch (e) { }
-      if (window.KIA_SFX) window.KIA_SFX.blip();
+      if (window.KIA_SFX) {
+        if (window.KIA_SFX.whoosh) window.KIA_SFX.whoosh(open);
+        else window.KIA_SFX.blip();
+      }
     }
 
     burger.addEventListener("click", function () {

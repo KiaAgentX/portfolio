@@ -18,6 +18,7 @@
     $$(".panel").forEach(p => p.classList.toggle("active", p.id === "panel-" + name));
     if (name === "source") loadSource();
     if (name === "preview") { const f = $("iframe.preview"); if (f && f.dataset.defer) { f.src = f.dataset.defer; f.dataset.defer = ""; } }
+    if (window.KIA_SFX && window.KIA_SFX.whoosh) window.KIA_SFX.whoosh();
   }
   $$(".tab").forEach(t => t.addEventListener("click", () => { location.hash = t.dataset.tab; switchTab(t.dataset.tab); }));
 
