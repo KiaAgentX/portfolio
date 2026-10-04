@@ -16,14 +16,25 @@
 <link rel="stylesheet" href="../../assets/highlight.min.css">
 </head>
 <body>
+<canvas id="cosmos" aria-hidden="true"></canvas>
+<div id="hud">
+  <div class="hud-ring">
+    <svg width="64" height="64" viewBox="0 0 64 64">
+      <circle class="bg" cx="32" cy="32" r="26"></circle>
+      <circle class="arc" id="hud-arc" cx="32" cy="32" r="26"></circle>
+    </svg>
+    <span id="hud-pct">0%</span>
+  </div>
+  <div class="hud-meta"><span id="hud-found">0/7</span>DISCOVERED</div>
+  <button id="sound-toggle" type="button" aria-label="Toggle sound" title="Sound on/off">🔇</button>
+</div>
+<div id="toasts" aria-live="polite"></div>
 <header class="nav"><div class="container nav-inner">
     <a class="brand" href="../../"><span class="dot"></span>Kia</a>
     <nav class="nav-links">
       <a href="../../#projects">Work</a>
-      <a href="../../#roadmap-section">Roadmap</a>
-      <a href="https://github.com/KiaAgentX" target="_blank" rel="noopener">GitHub</a>
-      
-      <a class="nav-cta" href="../../#projects">Explore Work</a>
+      <a href="../../#skills">Skills</a>
+      <a class="nav-cta" href="../../#contact">Contact</a>
     </nav>
   </div><div class="nav-progress" id="nav-progress"></div></header>
 <main class="container">
@@ -106,6 +117,7 @@
   </nav>
 </main>
 <script>window.__PROJECT__ = {"id":"fly-gold-trader","sourceAvailable":true,"repo":"https://github.com/KiaAgentX/portfolio/tree/main/projects/fly-gold-trader-main"};</script>
+<script src="../../assets/cosmos.js"></script>
 <script src="../../assets/highlight.min.js"></script>
 <script src="../../assets/project.js"></script>
 </body>
