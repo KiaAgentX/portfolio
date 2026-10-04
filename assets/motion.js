@@ -151,6 +151,62 @@
       });
     }
 
+    /* ---- hero video fades out as you leave the hero ---- */
+    if (document.getElementById("hero-video")) {
+      gsap.to("#hero-video", {
+        opacity: 0, ease: "none",
+        scrollTrigger: { trigger: ".hero", start: "top top", end: "65% top", scrub: true }
+      });
+    }
+
+    /* ---- showreel marquee: rows drift opposite with scroll ---- */
+    if (document.getElementById("mq-row1")) {
+      gsap.fromTo("#mq-row1", { x: -520 }, {
+        x: 340, ease: "none",
+        scrollTrigger: { trigger: ".showreel", start: "top bottom", end: "bottom top", scrub: 0.6 }
+      });
+      gsap.fromTo("#mq-row2", { x: 340 }, {
+        x: -520, ease: "none",
+        scrollTrigger: { trigger: ".showreel", start: "top bottom", end: "bottom top", scrub: 0.6 }
+      });
+      gsap.from(".showreel", {
+        y: 60, opacity: 0, duration: 1, ease: "power3.out",
+        scrollTrigger: { trigger: ".showreel", start: "top 92%" }
+      });
+    }
+
+    /* ---- flagship stories: sticky stack with scale-down (desktop) ---- */
+    if (window.innerWidth >= 900) {
+      var stories = gsap.utils.toArray(".story");
+      stories.forEach(function (st, i) {
+        if (i === stories.length - 1) return;
+        gsap.to(st, {
+          scale: 0.95, transformOrigin: "top center", ease: "none",
+          scrollTrigger: { trigger: stories[i + 1], start: "top bottom", end: "top top+=140", scrub: true }
+        });
+      });
+    }
+
+    /* ---- manifesto: character-by-character scroll reveal ---- */
+    gsap.utils.toArray(".char-reveal").forEach(function (el) {
+      var text = el.textContent;
+      el.setAttribute("aria-label", text);
+      el.style.whiteSpace = "pre-wrap";
+      el.textContent = "";
+      var chars = [];
+      for (var i = 0; i < text.length; i++) {
+        var s = document.createElement("span");
+        s.className = "ch";
+        s.textContent = text.charAt(i);
+        el.appendChild(s);
+        chars.push(s);
+      }
+      gsap.fromTo(chars, { opacity: 0.14 }, {
+        opacity: 1, stagger: 1, ease: "none",
+        scrollTrigger: { trigger: el, start: "top 88%", end: "bottom 45%", scrub: true }
+      });
+    });
+
     /* refresh after assets/fonts settle */
     window.addEventListener("load", function () { ST.refresh(); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ST.refresh(); });
@@ -250,18 +306,60 @@
     });
   }
 
+  /* ================= hero video: mouse-X scrub (Mainframe-style) ================= */
+  function bindVideoScrub() {
+    var v = document.getElementById("hero-video");
+    if (!v || reduce) return;
+    var SENSITIVITY = 0.8;
+    var prevX = null;
+    var targetTime = 0;
+    var seeking = false;
+
+    function queueSeek(t) {
+      if (!v.duration || !isFinite(v.duration)) return;
+      targetTime = Math.max(0, Math.min(v.duration, t));
+      if (!seeking) {
+        seeking = true;
+        try { v.currentTime = targetTime; } catch (e) { seeking = false; }
+      }
+    }
+    v.addEventListener("seeked", function () {
+      seeking = false;
+      if (Math.abs(v.currentTime - targetTime) > 0.03) {
+        seeking = true;
+        try { v.currentTime = targetTime; } catch (e) { seeking = false; }
+      }
+    });
+    v.addEventListener("loadedmetadata", function () {
+      targetTime = v.currentTime || 0;
+      /* start paused at a dramatic frame */
+      try { v.currentTime = Math.min(1.2, (v.duration || 2) * 0.15); } catch (e) { }
+    });
+    v.addEventListener("error", function () { v.style.display = "none"; });
+
+    window.addEventListener("pointermove", function (e) {
+      if (prevX === null) { prevX = e.clientX; return; }
+      var delta = e.clientX - prevX;
+      prevX = e.clientX;
+      if (!v.duration || !isFinite(v.duration)) return;
+      queueSeek(targetTime + (delta / window.innerWidth) * SENSITIVITY * v.duration);
+    }, { passive: true });
+  }
+
   /* ================= bind interactions ================= */
   function bindAll() {
     if (!fine || reduce) return;
 
     createCursor();
 
+    bindVideoScrub();
+
     document.querySelectorAll(".nav-cta, .hero-cta .btn, .skills-cta .btn, .foot-cta .btn, .learn, .btn.primary").forEach(function (el) {
       bindMagnetic(el, 0.28);
     });
 
     var tilts = document.querySelectorAll(
-      "#grid .card:not(.feature), #docs-grid .card, .skill-card, .cap-card, .c-card, .rm-card"
+      "#grid .card:not(.feature), #docs-grid .card, .skill-card, .c-card, .rm-card"
     );
     tilts.forEach(function (el) { bindTilt(el, 9); });
 
