@@ -67,6 +67,15 @@ console.log('INDEX PAGE');
   check('contact section numbered 08', /sec-num[^>]*>08</.test(d.body.innerHTML));
   check('motion layer active (gsap+st)', d.documentElement.classList.contains('motion-on'));
   check('gsap + lenis + motion loaded', !!dom.window.gsap && !!dom.window.ScrollTrigger && !!dom.window.Lenis && !!dom.window.KIA_MOTION);
+  const mqTiles = d.querySelectorAll('#mq-row1 .mq-tile').length + d.querySelectorAll('#mq-row2 .mq-tile').length;
+  check('showreel marquee tiles >= 20', mqTiles >= 20, 'tiles=' + mqTiles);
+  check('typewriter present', !!d.querySelector('#typewriter[data-text]') && !!d.querySelector('#tw-cur'));
+  check('blurred intro label', !!d.querySelector('#blurb-intro'));
+  check('hero pills (incl copy telegram)', !!d.querySelector('#copy-telegram') && d.querySelectorAll('#hero-pills .pill').length >= 4);
+  check('hero video element', !!d.querySelector('#hero-video'));
+  check('burger menu', !!d.querySelector('#burger') && !!d.querySelector('#mobile-menu'));
+  check('manifesto char reveal', d.querySelectorAll('.char-reveal .ch').length > 60, 'ch=' + d.querySelectorAll('.char-reveal .ch').length);
+  check('cap rows numbered', d.querySelectorAll('#caps-grid .cap-num').length >= 8, 'nums=' + d.querySelectorAll('#caps-grid .cap-num').length);
   check('est. value present', /\$4[0-9]{2},[0-9]{3}/.test(d.querySelector('.spec .v.gold')?.textContent || ''));
 
   const input = d.querySelector('#search');

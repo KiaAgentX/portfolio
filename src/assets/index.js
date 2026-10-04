@@ -196,12 +196,31 @@
     const caps = window.__CAPS__ || [];
     const max = window.__CAPMAX__ || 1;
     host.innerHTML = caps.map((c, i) => `<article class="cap-card" style="--cc:${c.color};--i:${Math.min(i, 10)}">
-      <h3 class="cap-name">${esc(c.category)}</h3>
-      <p class="cap-desc">${esc(c.desc || "")}</p>
-      <div class="cap-stats"><span><b>${c.count}</b> projects</span><span><b>${fmt(c.loc)}</b> LOC</span></div>
-      <div class="cap-bar"><i style="width:${Math.round((c.value / max) * 100)}%"></i></div>
-      <div class="cap-val">${money(c.value)} shipped</div>
+      <span class="cap-num">${String(i + 1).padStart(2, "0")}</span>
+      <div class="cap-body">
+        <h3 class="cap-name">${esc(c.category)}</h3>
+        <p class="cap-desc">${esc(c.desc || "")}</p>
+      </div>
+      <div class="cap-side">
+        <div class="cap-stats"><span><b>${c.count}</b> projects</span><span><b>${fmt(c.loc)}</b> LOC</span></div>
+        <div class="cap-bar"><i style="width:${Math.round((c.value / max) * 100)}%"></i></div>
+        <div class="cap-val">${money(c.value)} shipped</div>
+      </div>
     </article>`).join("");
+  }
+
+  function renderShowreel() {
+    const r1 = document.getElementById("mq-row1");
+    const r2 = document.getElementById("mq-row2");
+    if (!r1 || !r2) return;
+    const thumbs = P.filter(p => p.thumb).map(p => ({ src: p.thumb, name: p.name }));
+    if (thumbs.length < 4) return;
+    const half = Math.ceil(thumbs.length / 2);
+    const rowA = thumbs.slice(0, half);
+    const rowB = thumbs.slice(half);
+    const tile = t => `<div class="mq-tile" title="${esc(t.name)}"><img src="${t.src}" alt="${esc(t.name)}" loading="lazy" decoding="async"></div>`;
+    r1.innerHTML = (rowA.map(tile).join("")).repeat(3);
+    r2.innerHTML = (rowB.map(tile).join("")).repeat(3);
   }
 
   function renderLangs() {
@@ -227,6 +246,53 @@
     </article>`).join("");
   }
 
+  /* typewriter (Mainframe-inspired) */
+  function startTypewriter() {
+    const el = document.getElementById("typewriter");
+    const cur = document.getElementById("tw-cur");
+    if (!el) return;
+    const text = el.getAttribute("data-text") || "";
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) { el.textContent = text; if (cur) cur.style.display = "none"; return; }
+    let i = 0;
+    setTimeout(function tick() {
+      const iv = setInterval(function () {
+        i++;
+        el.textContent = text.slice(0, i);
+        if (i >= text.length) {
+          clearInterval(iv);
+          if (cur) setTimeout(() => { if (cur) cur.style.display = "none"; }, 1400);
+        }
+      }, 38);
+    }, 600);
+  }
+
+  function revealPills() {
+    const pills = document.getElementById("hero-pills");
+    const blurb = document.getElementById("blurb-intro");
+    if (blurb) setTimeout(() => blurb.classList.add("sharp"), 1500);
+    if (pills) setTimeout(() => pills.classList.add("in"), 400);
+  }
+
+  function bindCopyTelegram() {
+    const btn = document.getElementById("copy-telegram");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      const url = "https://t.me/ImXforevr";
+      const done = () => {
+        const old = btn.innerHTML;
+        btn.classList.add("copied");
+        btn.innerHTML = "Copied ✓";
+        if (window.KIA_SFX) window.KIA_SFX.blip();
+        setTimeout(() => { btn.innerHTML = old; btn.classList.remove("copied"); }, 1600);
+      };
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, done);
+        else done();
+      } catch (e) { done(); }
+    });
+  }
+
   renderChips();
   render();
   renderRoadmap();
@@ -234,6 +300,10 @@
   renderCapabilities();
   renderLangs();
   renderSkills();
+  renderShowreel();
+  startTypewriter();
+  revealPills();
+  bindCopyTelegram();
 
   /* ---- animated counters (skipped where IntersectionObserver missing) ---- */
   try {

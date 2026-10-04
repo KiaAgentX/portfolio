@@ -152,10 +152,23 @@ function navHtml(base, withSearch) {
     <a class="brand" href="${base}/"><span class="dot"></span>${esc(config.owner.name)}</a>
     <nav class="nav-links">
       <a href="${base}/#projects">Work</a>
+      <a href="${base}/#capabilities">Capabilities</a>
       <a href="${base}/#skills">Skills</a>
       <a class="nav-cta" href="${base}/#contact">Contact</a>
     </nav>
-  </div><div class="nav-progress" id="nav-progress"></div></header>`;
+    <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div><div class="nav-progress" id="nav-progress"></div></header>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="${base}/#projects">Work</a>
+    <a href="${base}/#capabilities">Capabilities</a>
+    <a href="${base}/#universe">Data</a>
+    <a href="${base}/#skills">Skills</a>
+    <a href="${base}/#roadmap-section">Roadmap</a>
+    <a href="${esc(config.owner.github)}" target="_blank" rel="noopener">GitHub</a>
+    <a class="nav-cta" href="${base}/#contact">Contact</a>
+  </div>`;
 }
 
 function hudHtml(base) {
@@ -329,7 +342,7 @@ ${FONTS}
 ${hudHtml('.')}
 ${navHtml('.', true)}
 <main>
-  <section class="hero"><div class="hero-bg"></div><div class="hero-grid"></div><div class="container hero-inner">
+  <section class="hero"><div class="hero-video-wrap" aria-hidden="true"><video id="hero-video" class="hero-video" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260530_042513_df96a13b-6155-4f6e-8b93-c9dee66fba08.mp4" muted playsinline preload="auto"></video></div><div class="hero-bg"></div><div class="hero-grid"></div><div class="container hero-inner">
     <div class="eyebrow">KIA · SOFTWARE PORTFOLIO · ${stats.projects} PROJECTS</div>
     <h1 aria-label="Engineering production software across AI, fintech and 3D.">
       <span class="w"><span style="--wi:0">Engineering</span></span>
@@ -341,11 +354,16 @@ ${navHtml('.', true)}
       <span class="w"><span style="--wi:6">&amp;</span></span>
       <span class="w"><span style="--wi:7">3D.</span></span>
     </h1>
-    <p class="lead">${esc(config.site.description)}</p>
-    <div class="hero-cta">
-      <a class="btn primary btn-lg" href="#projects">▸ Explore ${stats.projects} projects</a>
-      <a class="btn btn-lg" href="${esc(config.owner.github)}" target="_blank" rel="noopener">GitHub ↗</a>
-      <button class="btn btn-lg" id="open-palette" type="button">⌕ Search <span style="opacity:.55">Ctrl K</span></button>
+    <p class="blurb-intro" id="blurb-intro">Hey there, meet Kia,<br>Engineer of agents, markets &amp; impossible interfaces</p>
+    <p class="typewriter"><span id="typewriter" data-text="Glad you stopped in. Sixty products deep. Now, what are we building?"></span><i class="tw-cur" id="tw-cur"></i></p>
+    <div class="hero-cta pills" id="hero-pills">
+      <a class="pill" href="#projects">See the work</a>
+      <a class="pill" href="#capabilities">Capabilities</a>
+      <a class="pill" href="https://github.com/KiaAgentX/skills" target="_blank" rel="noopener">Open skills repo</a>
+      <button class="pill" id="open-palette" type="button">Search <span class="kbd-hint">Ctrl K</span></button>
+      <button class="pill outline" id="copy-telegram" type="button">Reach us: <u>t.me/ImXforevr</u>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M8.5 1.5h-6A1 1 0 0 0 1.5 2.5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </button>
     </div>
     <div class="spec">
       <div class="cell"><span class="v green">${stats.projects}</span><span class="k">Projects shipped</span></div>
@@ -356,11 +374,16 @@ ${navHtml('.', true)}
     </div>
   </div></section>
   ${tickerHtml()}
+  <section class="showreel" aria-label="Project showreel" aria-hidden="false">
+    <div class="mq-row" id="mq-row1"></div>
+    <div class="mq-row" id="mq-row2"></div>
+  </section>
   <section class="capabilities"><div class="container">
     <div class="sec-head" id="capabilities"><span class="sec-num">01</span><h2>Capabilities</h2><span class="sec-line"></span></div>
-    <p class="skills-note">What I actually ship — derived from ${stats.projects} production codebases, not claims. Bars show shipped value per domain.</p>
+    <p class="manifesto char-reveal" id="manifesto">I turn ideas into shipped systems — agents that think, markets that move, worlds you can play, and Persian-first finance tools. Sixty products. Six hundred seventy thousand lines. One operator.</p>
     <div class="cap-grid" id="caps-grid"></div>
-
+  </div></section>
+  <section class="universe"><div class="container">
     <div class="sec-head" id="universe"><span class="sec-num">02</span><h2>Languages &amp; Data</h2><span class="sec-line"></span></div>
     <div class="universe-grid">
       <div class="panel-card">
@@ -381,7 +404,8 @@ ${navHtml('.', true)}
         </div>
       </div>
     </div>
-
+  </div></section>
+  <section class="skills-sec"><div class="container">
     <div class="sec-head" id="skills"><span class="sec-num">03</span><h2>Skills</h2><span class="sec-line"></span></div>
     <p class="skills-note">Ten skill modules distilled from every project — full workflows, quality bars and pricing live in the
       <a href="https://github.com/KiaAgentX/skills" target="_blank" rel="noopener">KiaAgentX/skills</a> repo
@@ -472,6 +496,7 @@ ${navHtml('.', true)}
 <script>window.__CAPMAX__ = ${capMax};</script>
 <script src="assets/cosmos.js"></script>
 <script src="assets/index.js"></script>
+<script src="assets/nav.js"></script>
 <script src="assets/gsap.min.js"></script>
 <script src="assets/ScrollTrigger.min.js"></script>
 <script src="assets/lenis.min.js"></script>
@@ -605,6 +630,7 @@ ${navHtml(base)}
 <script src="${base}/assets/cosmos.js"></script>
 <script src="${base}/assets/highlight.min.js"></script>
 <script src="${base}/assets/project.js"></script>
+<script src="${base}/assets/nav.js"></script>
 <script src="${base}/assets/gsap.min.js"></script>
 <script src="${base}/assets/ScrollTrigger.min.js"></script>
 <script src="${base}/assets/lenis.min.js"></script>
@@ -619,7 +645,7 @@ mkdirp(path.join(DIST, 'assets'));
 mkdirp(path.join(DIST, 'data', 'src'));
 mkdirp(path.join(DIST, 'projects'));
 
-for (const f of ['style.css', 'index.js', 'project.js', 'cosmos.js', 'motion.js', 'gsap.min.js', 'ScrollTrigger.min.js', 'lenis.min.js', 'highlight.min.js', 'highlight.min.css', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png']) {
+for (const f of ['style.css', 'index.js', 'project.js', 'cosmos.js', 'motion.js', 'nav.js', 'gsap.min.js', 'ScrollTrigger.min.js', 'lenis.min.js', 'highlight.min.js', 'highlight.min.css', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png']) {
   fs.copyFileSync(path.join(SRC, 'assets', f), path.join(DIST, 'assets', f));
 }
 /* service worker MUST live at site root so its scope covers every page */
