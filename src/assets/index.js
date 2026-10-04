@@ -157,9 +157,13 @@
   chips.addEventListener("click", e => {
     const c = e.target.closest(".chip"); if (!c) return;
     state.cat = c.dataset.c; renderChips(); render();
+    if (window.KIA_SFX) window.KIA_SFX.blip();
   });
   $("#search").addEventListener("input", e => { state.q = e.target.value; render(); });
-  $("#sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
+  $("#sort").addEventListener("change", e => {
+    state.sort = e.target.value; render();
+    if (window.KIA_SFX) window.KIA_SFX.blip();
+  });
 
   function renderRoadmap() {
     const R = window.__ROADMAP__ || [];
@@ -184,10 +188,50 @@
     }).join("");
   }
 
+  function renderCapabilities() {
+    const host = document.getElementById("caps-grid");
+    if (!host) return;
+    const caps = window.__CAPS__ || [];
+    const max = window.__CAPMAX__ || 1;
+    host.innerHTML = caps.map((c, i) => `<article class="cap-card" style="--cc:${c.color};--i:${Math.min(i, 10)}">
+      <h3 class="cap-name">${esc(c.category)}</h3>
+      <p class="cap-desc">${esc(c.desc || "")}</p>
+      <div class="cap-stats"><span><b>${c.count}</b> projects</span><span><b>${fmt(c.loc)}</b> LOC</span></div>
+      <div class="cap-bar"><i style="width:${Math.round((c.value / max) * 100)}%"></i></div>
+      <div class="cap-val">${money(c.value)} shipped</div>
+    </article>`).join("");
+  }
+
+  function renderLangs() {
+    const host = document.getElementById("langbars");
+    if (!host) return;
+    const L = window.__LANGS__ || [];
+    const max = Math.max.apply(null, L.map(l => l.count).concat([1]));
+    host.innerHTML = L.map(l => `<div class="langbar">
+      <span class="lb-name">${esc(l.name)}</span>
+      <span class="lb-track"><i class="lb-fill" style="width:${Math.round((l.count / max) * 100)}%"></i></span>
+      <span class="lb-n">${l.count}</span>
+    </div>`).join("");
+  }
+
+  function renderSkills() {
+    const host = document.getElementById("skills-grid");
+    if (!host) return;
+    const S = window.__SKILLS__ || [];
+    host.innerHTML = S.map((s, i) => `<article class="skill-card" style="--sc:${s.color};--i:${Math.min(i, 9)}">
+      <div class="skill-top"><span class="skill-name">${esc(s.name)}</span><span class="skill-n">${s.count} proj</span></div>
+      <p class="tag">${esc(s.tag)}</p>
+      <div class="skill-foot"><span class="skill-range">${esc(s.range)}</span><span class="skill-id">${esc(s.id)}</span></div>
+    </article>`).join("");
+  }
+
   renderChips();
   render();
   renderRoadmap();
   renderFlagships();
+  renderCapabilities();
+  renderLangs();
+  renderSkills();
 
   /* ---- animated counters (skipped where IntersectionObserver missing) ---- */
   try {
@@ -222,7 +266,7 @@
   /* ---- reveal on scroll ---- */
   try {
     if ("IntersectionObserver" in window && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
-      const els = Array.from(document.querySelectorAll(".sec-head, .docs-section, .roadmap-section, .spec, .foot-cta"));
+      const els = Array.from(document.querySelectorAll(".sec-head, .capabilities, .contact, .universe-grid, .skills-cta, .docs-section, .roadmap-section, .spec, .foot-cta"));
       els.forEach(el => el.classList.add("reveal"));
       const io = new IntersectionObserver(entries => {
         entries.forEach(x => { if (x.isIntersecting) { x.target.classList.add("in"); io.unobserve(x.target); } });

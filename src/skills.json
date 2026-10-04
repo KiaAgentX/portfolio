@@ -1,0 +1,12 @@
+[
+  { "id": "ai-agents", "name": "AI Agent Systems", "tag": "Runtimes, memory, tools, multi-agent orchestration, marketplaces", "range": "$4K – $35K", "count": 8, "color": "#a78bfa" },
+  { "id": "llm-orchestration", "name": "LLM Orchestration", "tag": "Multi-provider routing, three-layer fallback, OpenAI-compatible gateways, cost control", "range": "$4.5K – $18K", "count": 5, "color": "#22d3ee" },
+  { "id": "trading-quant", "name": "Trading & Quant", "tag": "RL engines, backtesting, Monte Carlo, MT5 bridges, risk managers (paper-first)", "range": "$6K – $22K", "count": 10, "color": "#fbbf24" },
+  { "id": "ecommerce-marketplace", "name": "Commerce & Marketplaces", "tag": "Telegram storefronts, wallet ledgers, referrals, digital delivery, launchpads", "range": "$6.5K – $18K", "count": 6, "color": "#f472b6" },
+  { "id": "web3d-gpu", "name": "3D, WebGL & WebGPU", "tag": "Browser games, custom GPU kernels, Three.js product UIs, desktop simulators", "range": "$4K – $30K", "count": 9, "color": "#60a5fa" },
+  { "id": "persian-rtl-accounting", "name": "Persian RTL Accounting", "tag": "Ledgers, audit suites, academies, offline-first Persian finance products", "range": "$6K – $35K", "count": 3, "color": "#c5c1b6" },
+  { "id": "brand-content", "name": "Brand & Content", "tag": "Cinematic scroll sites, interactive brand books, long-form interactive guides", "range": "$0.8K – $5K", "count": 11, "color": "#fb923c" },
+  { "id": "devtools-internal", "name": "Developer Tools", "tag": "Internal studios, valuation engines, prompt managers, mission-control dashboards", "range": "$2.5K – $9K", "count": 4, "color": "#ef4435" },
+  { "id": "infra-deploy", "name": "Infrastructure & CI", "tag": "Docker, PaaS pipelines, GitHub Actions gates, secret hygiene, resumable ops", "range": "$2K – $8K", "count": 1, "color": "#34d399" },
+  { "id": "product-strategy", "name": "Product Strategy", "tag": "The 8 Laws, staircase versioning, consolidation audits, architecture docs", "range": "$1K – $3K", "count": 3, "color": "#e4e4e7" }
+]

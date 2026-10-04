@@ -13,6 +13,7 @@ const config = JSON.parse(fs.readFileSync(path.join(SRC, 'config.json'), 'utf8')
 const projects = JSON.parse(fs.readFileSync(path.join(SRC, 'projects.json'), 'utf8'));
 const roadmap = JSON.parse(fs.readFileSync(path.join(SRC, 'roadmap.json'), 'utf8'));
 const pipelineValue = roadmap.reduce((a, r) => a + r.value, 0);
+const skills = JSON.parse(fs.readFileSync(path.join(SRC, 'skills.json'), 'utf8'));
 
 execFileSync(process.execPath, [path.join(HERE, 'scan.mjs'), ROOT, path.join(PORT, 'scan.json')], { stdio: 'inherit' });
 const scan = JSON.parse(fs.readFileSync(path.join(PORT, 'scan.json'), 'utf8'));
@@ -151,12 +152,26 @@ function navHtml(base, withSearch) {
     <a class="brand" href="${base}/"><span class="dot"></span>${esc(config.owner.name)}</a>
     <nav class="nav-links">
       <a href="${base}/#projects">Work</a>
-      <a href="${base}/#roadmap-section">Roadmap</a>
-      <a href="${esc(config.owner.github)}" target="_blank" rel="noopener">GitHub</a>
-      ${withSearch ? '<span class="nav-kbd" id="nav-search" role="button" tabindex="0">⌕ Ctrl K</span>' : ''}
-      <a class="nav-cta" href="${base}/#projects">Explore Work</a>
+      <a href="${base}/#skills">Skills</a>
+      <a class="nav-cta" href="${base}/#contact">Contact</a>
     </nav>
   </div><div class="nav-progress" id="nav-progress"></div></header>`;
+}
+
+function hudHtml(base) {
+  return `<canvas id="cosmos" aria-hidden="true"></canvas>
+<div id="hud">
+  <div class="hud-ring">
+    <svg width="64" height="64" viewBox="0 0 64 64">
+      <circle class="bg" cx="32" cy="32" r="26"></circle>
+      <circle class="arc" id="hud-arc" cx="32" cy="32" r="26"></circle>
+    </svg>
+    <span id="hud-pct">0%</span>
+  </div>
+  <div class="hud-meta"><span id="hud-found">0/7</span>DISCOVERED</div>
+  <button id="sound-toggle" type="button" aria-label="Toggle sound" title="Sound on/off">🔇</button>
+</div>
+<div id="toasts" aria-live="polite"></div>`;
 }
 
 const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -291,7 +306,7 @@ a.btn{text-decoration:none}
 </html>`;
 }
 
-function buildIndex(stats, cards) {
+function buildIndex(stats, cards, langs, caps, capMax) {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -310,9 +325,10 @@ ${FONTS}
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+${hudHtml('.')}
 ${navHtml('.', true)}
 <main>
-  <section class="hero"><div class="hero-bg"></div><div class="hero-grid"></div><canvas id="particles"></canvas><div class="container hero-inner">
+  <section class="hero"><div class="hero-bg"></div><div class="hero-grid"></div><div class="container hero-inner">
     <div class="eyebrow">KIA · SOFTWARE PORTFOLIO · ${stats.projects} PROJECTS</div>
     <h1 aria-label="Engineering production software across AI, fintech and 3D.">
       <span class="w"><span style="--wi:0">Engineering</span></span>
@@ -339,8 +355,45 @@ ${navHtml('.', true)}
     </div>
   </div></section>
   ${tickerHtml()}
+  <section class="capabilities"><div class="container">
+    <div class="sec-head" id="capabilities"><span class="sec-num">01</span><h2>Capabilities</h2><span class="sec-line"></span></div>
+    <p class="skills-note">What I actually ship — derived from ${stats.projects} production codebases, not claims. Bars show shipped value per domain.</p>
+    <div class="cap-grid" id="caps-grid"></div>
+
+    <div class="sec-head" id="universe"><span class="sec-num">02</span><h2>Languages &amp; Data</h2><span class="sec-line"></span></div>
+    <div class="universe-grid">
+      <div class="panel-card">
+        <h4>Languages by source files (all ${stats.projects} projects)</h4>
+        <div id="langbars"></div>
+      </div>
+      <div class="panel-card">
+        <h4>The data we hold</h4>
+        <div class="facts" id="data-facts">
+          <div class="fact"><div class="fv green">${stats.projects}</div><div class="fk">Projects shipped</div></div>
+          <div class="fact"><div class="fv cyan">${fmt(stats.loc)}</div><div class="fk">Lines of code</div></div>
+          <div class="fact"><div class="fv gold">${money(stats.value)}</div><div class="fk">Shipped value</div></div>
+          <div class="fact"><div class="fv">${money(pipelineValue)}</div><div class="fk">Roadmap pipeline</div></div>
+          <div class="fact"><div class="fv green">${stats.previews}</div><div class="fk">Live previews</div></div>
+          <div class="fact"><div class="fv cyan">10</div><div class="fk">Skill modules</div></div>
+          <div class="fact"><div class="fv gold">8</div><div class="fk">Operating laws</div></div>
+          <div class="fact"><div class="fv">${skills.length}</div><div class="fk">Priced modules</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-head" id="skills"><span class="sec-num">03</span><h2>Skills</h2><span class="sec-line"></span></div>
+    <p class="skills-note">Ten skill modules distilled from every project — full workflows, quality bars and pricing live in the
+      <a href="https://github.com/KiaAgentX/skills" target="_blank" rel="noopener">KiaAgentX/skills</a> repo
+      (start with <a href="https://github.com/KiaAgentX/skills/blob/main/SOUL.md" target="_blank" rel="noopener">SOUL.md</a>).</p>
+    <div class="skill-grid" id="skills-grid"></div>
+    <div class="skills-cta">
+      <a class="btn primary" href="https://github.com/KiaAgentX/skills" target="_blank" rel="noopener">Open skills repo →</a>
+      <a class="btn" href="https://github.com/KiaAgentX/skills/blob/main/PRICING.md" target="_blank" rel="noopener">Pricing per module</a>
+      <a class="btn" href="https://github.com/KiaAgentX/skills/blob/main/PROJECTS.md" target="_blank" rel="noopener">60 projects mapped</a>
+    </div>
+  </div></section>
   <section class="work"><div class="container">
-    <div class="sec-head" id="projects"><span class="sec-num">01</span><h2>Selected Work</h2><span class="sec-line"></span></div>
+    <div class="sec-head" id="projects"><span class="sec-num">04</span><h2>Selected Work</h2><span class="sec-line"></span></div>
     <div class="toolbar">
       <div class="search"><input id="search" type="search" placeholder="Search projects, stacks, categories…" autocomplete="off"></div>
       <div class="sort"><select id="sort">
@@ -352,17 +405,40 @@ ${navHtml('.', true)}
     <div class="chips" id="chips"></div>
     <div class="grid" id="grid"></div>
     <section class="flagships" id="flagships" style="display:none">
-      <div class="docs-head"><span class="sec-num">02</span><h2>Flagship Stories</h2><span>deeper dives into the biggest builds</span></div>
+      <div class="docs-head"><span class="sec-num">05</span><h2>Flagship Stories</h2><span>deeper dives into the biggest builds</span></div>
       <div class="stories" id="stories"></div>
     </section>
     <section class="docs-section" id="docs-section" style="display:none">
-      <div class="docs-head"><span class="sec-num">03</span><h2>Docs &amp; Strategy</h2><span>architecture · roadmap · company</span></div>
+      <div class="docs-head"><span class="sec-num">06</span><h2>Docs &amp; Strategy</h2><span>architecture · roadmap · company</span></div>
       <div class="grid" id="docs-grid" style="padding-bottom:0"></div>
     </section>
     <section class="roadmap-section" id="roadmap-section">
-      <div class="docs-head"><span class="sec-num">04</span><h2>Roadmap — Next 10</h2><span>observed patterns → planned builds · est. ${money(pipelineValue)} pipeline</span></div>
+      <div class="docs-head"><span class="sec-num">07</span><h2>Roadmap — Next 10</h2><span>observed patterns → planned builds · est. ${money(pipelineValue)} pipeline</span></div>
       <div class="roadmap" id="roadmap"></div>
     </section>
+  </div></section>
+  <section class="contact"><div class="container">
+    <div class="sec-head" id="contact"><span class="sec-num">08</span><h2>Contact</h2><span class="sec-line"></span></div>
+    <div class="contact-grid">
+      <a class="c-card" style="--cc:#229ed9" href="${esc(config.owner.telegram)}" target="_blank" rel="noopener">
+        <span class="c-kicker">Telegram · fastest reply</span>
+        <span class="c-handle">@ImXforevr</span>
+        <span class="c-note">DMs open — best channel for projects, collabs and quick questions.</span>
+        <span class="c-go">Open Telegram →</span>
+      </a>
+      <a class="c-card" style="--cc:#e7e9ea" href="${esc(config.owner.x)}" target="_blank" rel="noopener">
+        <span class="c-kicker">X · building in public</span>
+        <span class="c-handle">@imxforever</span>
+        <span class="c-note">Build logs, experiments and product drops as they ship.</span>
+        <span class="c-go">Follow on X →</span>
+      </a>
+      <a class="c-card" style="--cc:#a78bfa" href="${esc(config.owner.github)}" target="_blank" rel="noopener">
+        <span class="c-kicker">GitHub · the receipts</span>
+        <span class="c-handle">@KiaAgentX</span>
+        <span class="c-note">${stats.projects} repos · ${fmt(stats.loc)} lines · skills &amp; portfolio sources.</span>
+        <span class="c-go">Browse repositories →</span>
+      </a>
+    </div>
   </div></section>
 </main>
 <footer class="footer">
@@ -389,6 +465,11 @@ ${navHtml('.', true)}
 </div>
 <script>window.__PROJECTS__ = ${safeJson(cards)};</script>
 <script>window.__ROADMAP__ = ${safeJson(roadmap)};</script>
+<script>window.__SKILLS__ = ${safeJson(skills)};</script>
+<script>window.__LANGS__ = ${safeJson(langs)};</script>
+<script>window.__CAPS__ = ${safeJson(caps)};</script>
+<script>window.__CAPMAX__ = ${capMax};</script>
+<script src="assets/cosmos.js"></script>
 <script src="assets/index.js"></script>
 </body>
 </html>`;
@@ -439,6 +520,7 @@ ${FONTS}
 <link rel="stylesheet" href="${base}/assets/highlight.min.css">
 </head>
 <body>
+${hudHtml(base)}
 ${navHtml(base)}
 <main class="container">
   <div class="phead">
@@ -514,6 +596,7 @@ ${navHtml(base)}
   </nav>
 </main>
 <script>window.__PROJECT__ = ${safeJson({ id: p.id, sourceAvailable: ctx.source.files.length > 0, repo })};</script>
+<script src="${base}/assets/cosmos.js"></script>
 <script src="${base}/assets/highlight.min.js"></script>
 <script src="${base}/assets/project.js"></script>
 </body>
@@ -526,7 +609,7 @@ mkdirp(path.join(DIST, 'assets'));
 mkdirp(path.join(DIST, 'data', 'src'));
 mkdirp(path.join(DIST, 'projects'));
 
-for (const f of ['style.css', 'index.js', 'project.js', 'highlight.min.js', 'highlight.min.css', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png']) {
+for (const f of ['style.css', 'index.js', 'project.js', 'cosmos.js', 'highlight.min.js', 'highlight.min.css', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png']) {
   fs.copyFileSync(path.join(SRC, 'assets', f), path.join(DIST, 'assets', f));
 }
 /* service worker MUST live at site root so its scope covers every page */
@@ -573,8 +656,38 @@ for (const p of projects) {
 }
 
 const stats = { projects: projects.length, loc: totalLoc, value: totalValue, previews: previewCount };
-fs.writeFileSync(path.join(DIST, 'index.html'), buildIndex(stats, cards));
-fs.writeFileSync(path.join(DIST, 'data', 'projects.json'), JSON.stringify({ stats, projects: cards }, null, 2));
+
+/* aggregate language file-counts across every scanned project */
+const langAgg = {};
+for (const p of projects) {
+  const s = scanById[p.folder];
+  if (!s || !s.languages) continue;
+  for (const [k, v] of Object.entries(s.languages)) langAgg[k] = (langAgg[k] || 0) + v;
+}
+const langs = Object.entries(langAgg).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([name, count]) => ({ name, count }));
+
+/* capability cards derived from real category metrics */
+const CAP_DESC = {
+  'AI & Agents': 'Agent runtimes, memory, tools, multi-channel bots, gateways and marketplaces.',
+  'Trading & Fintech': 'RL trading engines, backtesting, MT5 bridges and risk managers — paper-first.',
+  'E-Commerce & Marketplaces': 'Telegram storefronts, wallet ledgers, referrals and launchpads.',
+  'Games & 3D': 'Browser games, WebGL/WebGPU engines and desktop simulators.',
+  'Business & Accounting': 'Persian RTL ledgers, audit suites and offline-first finance PWAs.',
+  'Developer Tools': 'Internal studios, valuation engines and prompt tooling.',
+  'Web & Brand Experiences': 'Cinematic scroll sites, interactive brand books and clones.',
+  'Learning & Content': 'Interactive guides, academies and playable demo collections.',
+  'Docs & Strategy': 'Architecture, roadmap and company documents.',
+};
+const capMap = {};
+for (const c of cards) {
+  if (!capMap[c.category]) capMap[c.category] = { category: c.category, desc: CAP_DESC[c.category] || '', count: 0, loc: 0, value: 0, color: CAT_COLORS[c.category] || '#62647a' };
+  capMap[c.category].count++; capMap[c.category].loc += c.loc; capMap[c.category].value += c.value;
+}
+const caps = Object.values(capMap).sort((a, b) => b.value - a.value);
+const capMax = Math.max(...caps.map(c => c.value), 1);
+
+fs.writeFileSync(path.join(DIST, 'index.html'), buildIndex(stats, cards, langs, caps, capMax));
+fs.writeFileSync(path.join(DIST, 'data', 'projects.json'), JSON.stringify({ stats, projects: cards, langs, caps }, null, 2));
 
 const distSize = walk(DIST).reduce((a, f) => a + fs.statSync(f).size, 0);
 console.log(`\nBuilt ${projects.length} pages -> dist/ (${(distSize / 1048576).toFixed(1)} MB)`);

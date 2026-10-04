@@ -57,6 +57,14 @@ console.log('INDEX PAGE');
   check('grid cards have images', covers >= 46, 'covers=' + covers);
   const noThumbs = (dom.window.__PROJECTS__ || []).filter(p => !p.thumb).length;
   check('every project has thumb', noThumbs === 0, 'missing=' + noThumbs);
+  check('capabilities cards >= 8', d.querySelectorAll('#caps-grid .cap-card').length >= 8, 'got ' + d.querySelectorAll('#caps-grid .cap-card').length);
+  check('language bars >= 6', d.querySelectorAll('#langbars .langbar').length >= 6, 'got ' + d.querySelectorAll('#langbars .langbar').length);
+  check('skills cards = 10', d.querySelectorAll('#skills-grid .skill-card').length === 10, 'got ' + d.querySelectorAll('#skills-grid .skill-card').length);
+  check('skills repo linked', /github\.com\/KiaAgentX\/skills/.test(d.body.innerHTML));
+  check('contact telegram', /t\.me\/ImXforevr/.test(d.body.innerHTML));
+  check('contact x.com', /x\.com\/imxforever/.test(d.body.innerHTML));
+  check('hud + cosmos present', !!d.querySelector('#hud') && !!d.querySelector('#cosmos'));
+  check('contact section numbered 08', /sec-num">08</.test(d.body.innerHTML));
   check('est. value present', /\$4[0-9]{2},[0-9]{3}/.test(d.querySelector('.spec .v.gold')?.textContent || ''));
 
   const input = d.querySelector('#search');
