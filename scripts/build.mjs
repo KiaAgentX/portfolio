@@ -304,6 +304,9 @@ function buildIndex(stats, cards) {
 <meta property="og:type" content="website">
 ${FONTS}
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="manifest" href="assets/manifest.webmanifest">
+<meta name="theme-color" content="#06060e">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -429,6 +432,9 @@ function buildProjectPage(p, ctx) {
 <meta name="description" content="${esc(p.tagline)}">
 ${FONTS}
 <link rel="icon" type="image/svg+xml" href="${base}/assets/favicon.svg">
+<link rel="manifest" href="${base}/assets/manifest.webmanifest">
+<meta name="theme-color" content="#06060e">
+<link rel="apple-touch-icon" href="${base}/assets/apple-touch-icon.png">
 <link rel="stylesheet" href="${base}/assets/style.css">
 <link rel="stylesheet" href="${base}/assets/highlight.min.css">
 </head>
@@ -520,9 +526,11 @@ mkdirp(path.join(DIST, 'assets'));
 mkdirp(path.join(DIST, 'data', 'src'));
 mkdirp(path.join(DIST, 'projects'));
 
-for (const f of ['style.css', 'index.js', 'project.js', 'highlight.min.js', 'highlight.min.css']) {
+for (const f of ['style.css', 'index.js', 'project.js', 'highlight.min.js', 'highlight.min.css', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png']) {
   fs.copyFileSync(path.join(SRC, 'assets', f), path.join(DIST, 'assets', f));
 }
+/* service worker MUST live at site root so its scope covers every page */
+fs.copyFileSync(path.join(SRC, 'assets', 'sw.js'), path.join(DIST, 'sw.js'));
 fs.writeFileSync(path.join(DIST, 'assets', 'favicon.svg'),
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#06060e"/><rect x="4" y="4" width="56" height="56" rx="9" fill="none" stroke="#ef4435" stroke-width="2"/><text x="32" y="42" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="800" font-size="30" fill="#f0ebdf">K</text></svg>`);
 /* GitHub Pages runs Jekyll which DROPS underscore dirs (_next/) unless this file exists */

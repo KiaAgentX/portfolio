@@ -301,6 +301,13 @@
     if (openBtn) openBtn.addEventListener("click", open);
   })();
 
+  /* PWA: register service worker (root scope) */
+  try {
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      navigator.serviceWorker.register("sw.js").catch(function () { });
+    }
+  } catch (e) { }
+
   /* ---- hero particles (KIA identity) ---- */
   try {
   (function particles() {

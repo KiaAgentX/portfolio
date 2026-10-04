@@ -44,7 +44,10 @@ function fixImagePaths(dir) {
       if (!TXT.has(path.extname(e.name).toLowerCase())) continue;
       let s;
       try { s = fs.readFileSync(p, 'utf8'); } catch { continue; }
-      const out = s.replace(/(^|[^.\w])\/images\//g, '$1./images/');
+      const out = s
+        .replace(/(^|[^.\w])\/images\//g, '$1./images/')
+        .replace(/(^|[^.\w])\/icons\//g, '$1./icons/')
+        .replace(/(^|[^.\w])\/manifest\.webmanifest/g, '$1./manifest.webmanifest');
       if (out !== s) { fs.writeFileSync(p, out); changed++; }
     }
   })(dir);

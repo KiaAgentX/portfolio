@@ -1,0 +1,19 @@
+export const dynamic = "force-static";
+
+import type { MetadataRoute } from "next";
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: "Neon Apple - Dark Apple.com Clone",
+    short_name: "Neon Apple",
+    description: "Full-stack dark-neon Apple.com clone built with Next.js 16, Prisma and Tailwind CSS 4.",
+    start_url: ".",
+    display: "standalone",
+    background_color: "#030308",
+    theme_color: "#030308",
+    icons: [
+      { src: "icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { src: "icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+  };
+}
