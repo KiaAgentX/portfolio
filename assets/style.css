@@ -7,7 +7,7 @@
   --border2: #2a3050;
   --text: #f0ebdf;
   --muted: #9d9aa8;
-  --faint: #62647a;
+  --faint: #8b8ea3;
   --accent: #ef4435;
   --accent-hover: #c93427;
   --gold: #fbbf24;
@@ -177,7 +177,7 @@ h1, h2, h3 { font-family: var(--disp); }
 }
 .search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(239, 68, 53, .15); }
 .search::before {
-  content: "⌕"; position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  content: "âŒ•"; position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
   color: var(--faint); font-size: 17px;
 }
 .sort select {
@@ -295,7 +295,7 @@ h1, h2, h3 { font-family: var(--disp); }
   display: inline-flex; align-items: center; gap: 6px; width: max-content;
 }
 .learn:hover { color: var(--gold); }
-.learn::after { content: "›"; transition: transform .2s; }
+.learn::after { content: "â€º"; transition: transform .2s; }
 .story:hover .learn::after { transform: translateX(4px); }
 @media (max-width: 900px) {
   .story { grid-template-columns: 1fr; }
@@ -442,7 +442,7 @@ h1, h2, h3 { font-family: var(--disp); }
   background: linear-gradient(180deg, var(--panel), var(--bg2));
   border: 1px solid var(--border); border-radius: var(--r); padding: 24px;
 }
-.ov-card h4 {
+.ov-card h2, .ov-card h4 {
   margin: 0 0 14px; font-size: 11px; text-transform: uppercase;
   letter-spacing: 1.5px; color: var(--faint); font-family: var(--mono);
 }
@@ -597,7 +597,7 @@ iframe.preview {
   background: linear-gradient(180deg, var(--panel), rgba(10,10,22,.75));
   border: 1px solid var(--border); border-radius: var(--r); padding: 22px;
 }
-.panel-card h4 { margin: 0 0 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--faint); font-family: var(--mono); }
+.panel-card h3, .panel-card h4 { margin: 0 0 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--faint); font-family: var(--mono); }
 .langbar { display: grid; grid-template-columns: 110px 1fr 54px; gap: 10px; align-items: center; margin-bottom: 9px; font-family: var(--mono); font-size: 12px; }
 .langbar .lb-name { color: var(--text); }
 .langbar .lb-track { height: 8px; background: var(--panel2); border-radius: 4px; overflow: hidden; }
@@ -909,6 +909,6 @@ html.menu-open { overflow: hidden; }
 /* B4: honest copy failure state */
 .pill.copy-fail { border-color: var(--accent); color: var(--accent); background: rgba(239, 68, 53, .08); }
 
-/* B9: showreel DOM weight � contain painting + intrinsic sizing for lazy tiles */
+/* B9: showreel DOM weight — contain painting + intrinsic sizing for lazy tiles */
 .showreel { contain: layout paint; }
 .mq-tile { content-visibility: auto; contain-intrinsic-size: 260px 167px; }

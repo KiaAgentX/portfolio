@@ -1202,7 +1202,7 @@
       "preview": "build",
       "previewReady": true,
       "loc": 8803,
-      "fileCount": 103,
+      "fileCount": 104,
       "thumb": "projects/neon-apple/cover.svg"
     }
   ],
@@ -1271,7 +1271,7 @@
     },
     {
       "category": "Trading & Fintech",
-      "desc": "RL trading engines, backtesting, MT5 bridges and risk managers — paper-first.",
+      "desc": "RL trading engines, backtesting, MT5 bridges and risk managers â€” paper-first.",
       "count": 10,
       "loc": 78903,
       "value": 80500,

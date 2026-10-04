@@ -124,11 +124,10 @@
       }
     });
 
-    /* ---- capability / language bars grow on enter ---- */
+    /* ---- capability / language bars grow on enter (scaleX = composited, no reflow) ---- */
     gsap.utils.toArray(".cap-bar i, .lb-fill").forEach(function (bar) {
-      var w = bar.style.width || "0%";
-      gsap.fromTo(bar, { width: "0%" }, {
-        width: w, duration: 1.2, ease: "power3.out",
+      gsap.fromTo(bar, { scaleX: 0 }, {
+        scaleX: 1, transformOrigin: "left center", duration: 1.2, ease: "power3.out",
         scrollTrigger: { trigger: bar, start: "top 95%" }
       });
     });
