@@ -11,7 +11,11 @@ const REMOTE = process.env.PUBLISH_REMOTE || 'https://github.com/KiaAgentX/portf
 const CHUNK = 9 * 1024 * 1024;
 
 function sh(cmd, args, cwd, allowFail = false) {
-  const r = spawnSync(cmd, args, { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const r = spawnSync(cmd, args, {
+    cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024,
+    /* never prompt: no GitHub account-picker dialogs, fail fast instead */
+    env: { ...process.env, GIT_TERMINAL_PROMPT: '0', GCM_INTERACTIVE: 'never' },
+  });
   if (r.status !== 0 && !allowFail) {
     console.error(`CMD FAIL: ${cmd} ${args.join(' ')}\n${(r.stderr || '').slice(0, 2000)}`);
     process.exit(1);
@@ -115,9 +119,9 @@ for (let i = 0; i < chunks.length; i++) {
   if (!ok) { failed++; console.log(`CHUNK ${i + 1} FAILED — re-run this script to resume`); break; }
 }
 
-/* final verification — path-based (CRLF-insensitive, unlike size compare) */
-const treeOut = sh('git', ['ls-tree', '-r', '--name-only', 'HEAD'], PORT).out;
-const treePaths = new Set(treeOut.split('\n').map(s => s.trim()).filter(Boolean));
+/* final verification — path-based (CRLF-insensitive) against the publish clone */
+const treeR = sh('git', ['-C', path.join(PORT, '.publish'), 'ls-tree', '-r', '--name-only', 'HEAD'], PORT);
+const treePaths = new Set((treeR.stdout || '').split('\n').map(s => s.trim()).filter(Boolean));
 const missing = files.filter(f => !treePaths.has(f.rel));
 if (failed === 0 && !missing.length) {
   console.log(`DONE: all ${files.length} files present on gh-pages (pushed ${pushed} chunks, skipped ${skipped})`);

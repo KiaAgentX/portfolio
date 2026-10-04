@@ -69,6 +69,86 @@
     o.connect(g); g.connect(master);
     o.start(t); o.stop(t + (dur || 0.25) + 0.05);
   }
+  var _noise = null;
+  function noiseBuffer() {
+    if (!AC) return null;
+    if (_noise) return _noise;
+    var len = Math.floor(AC.sampleRate * 0.6);
+    _noise = AC.createBuffer(1, len, AC.sampleRate);
+    var d = _noise.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    return _noise;
+  }
+
+  /* ===== the 5 sounds (all procedural) ===== */
+  /* 1) hover — soft sparkle when touching interactive elements */
+  function sndHover() {
+    if (!enabled || !ensureCtx()) return;
+    try {
+      var t = AC.currentTime;
+      var o = AC.createOscillator(), g = AC.createGain();
+      o.type = "triangle";
+      o.frequency.setValueAtTime(1760, t);
+      o.frequency.exponentialRampToValueAtTime(2350, t + 0.07);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.03, t + 0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.1);
+      o.connect(g); g.connect(master);
+      o.start(t); o.stop(t + 0.14);
+    } catch (e) { }
+  }
+  /* 2) click — crisp tick + micro noise snap */
+  function sndClick() {
+    if (!enabled || !ensureCtx()) return;
+    try {
+      var t = AC.currentTime;
+      var o = AC.createOscillator(), g = AC.createGain();
+      o.type = "square";
+      o.frequency.setValueAtTime(1320, t);
+      o.frequency.exponentialRampToValueAtTime(440, t + 0.06);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.05, t + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+      o.connect(g); g.connect(master);
+      o.start(t); o.stop(t + 0.12);
+      var s = AC.createBufferSource(); s.buffer = noiseBuffer();
+      var hp = AC.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 2200;
+      var ng = AC.createGain();
+      ng.gain.setValueAtTime(0.045, t);
+      ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+      s.connect(hp); hp.connect(ng); ng.connect(master);
+      s.start(t); s.stop(t + 0.06);
+    } catch (e) { }
+  }
+  /* 3) whoosh — filtered noise sweep (menu / palette / tabs) */
+  function sndWhoosh(up) {
+    if (!enabled || !ensureCtx()) return;
+    try {
+      var dur = 0.55, t = AC.currentTime;
+      var src = AC.createBufferSource(); src.buffer = noiseBuffer();
+      var bp = AC.createBiquadFilter(); bp.type = "bandpass"; bp.Q.value = 1.1;
+      bp.frequency.setValueAtTime(up === false ? 1900 : 420, t);
+      bp.frequency.exponentialRampToValueAtTime(up === false ? 420 : 2400, t + dur);
+      var g = AC.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.085, t + 0.12);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      src.connect(bp); bp.connect(g); g.connect(master);
+      src.start(t); src.stop(t + dur + 0.05);
+    } catch (e) { }
+  }
+  /* 4) discovery chime — rising triad (celestial discoveries) */
+  function sndChime() {
+    tone(523.25, 0.3, 0.07, "sine", 0);
+    tone(659.25, 0.3, 0.07, "sine", 0.11);
+    tone(783.99, 0.45, 0.08, "sine", 0.22);
+  }
+  /* 5) fanfare — mission-complete flourish */
+  function sndFanfare() {
+    [523, 659, 784, 1046].forEach(function (f, i) { tone(f, 0.5, 0.08, "triangle", i * 0.13); });
+    tone(130.81, 0.9, 0.06, "sine", 0.05); /* low root for weight */
+  }
+
   var SFX = {
     get enabled() { return enabled; },
     toggle: function () {
@@ -80,11 +160,38 @@
       if (b) b.textContent = enabled ? "🔊" : "🔇";
       return enabled;
     },
-    blip: function () { tone(740, 0.14, 0.05, "triangle"); },
-    discover: function () { tone(523.25, 0.3, 0.07, "sine", 0); tone(659.25, 0.3, 0.07, "sine", 0.11); tone(783.99, 0.45, 0.08, "sine", 0.22); },
-    complete: function () { [523, 659, 784, 1046].forEach(function (f, i) { tone(f, 0.5, 0.08, "triangle", i * 0.13); }); }
+    /* the 5 */
+    hover: sndHover,
+    click: sndClick,
+    whoosh: function (up) { sndWhoosh(up); },
+    chime: sndChime,
+    fanfare: sndFanfare,
+    /* backwards-compatible aliases used across the site */
+    blip: sndClick,
+    discover: sndChime,
+    complete: sndFanfare
   };
   window.KIA_SFX = SFX;
+
+  /* wire hover + click sounds (only when sound is enabled) */
+  var lastHover = 0;
+  document.addEventListener("pointerover", function (e) {
+    if (!enabled) return;
+    var t = e.target && e.target.closest ? e.target.closest("a, button, .chip, .pill, .card, .skill-card, .c-card, .rm-card, .tab") : null;
+    if (!t) return;
+    var now = (window.performance && performance.now()) || Date.now();
+    if (now - lastHover < 90) return;
+    lastHover = now;
+    sndHover();
+  }, { passive: true });
+  document.addEventListener("click", function (e) {
+    if (!enabled) return;
+    var el = e.target && e.target.closest;
+    if (!el) return;
+    if (e.target.closest("#mobile-menu a")) return; /* menu plays its own blip */
+    if (e.target.closest("#sound-toggle")) return;   /* no self-noise on toggle */
+    sndClick();
+  });
   try {
     if (localStorage.getItem("kia-sound") === "1") {
       /* cannot start audio without gesture — arm on first interaction */

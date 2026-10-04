@@ -409,8 +409,9 @@
     }
     function open() {
       palette.hidden = false; input.value = ""; draw(""); input.focus();
+      if (window.KIA_SFX && window.KIA_SFX.whoosh) window.KIA_SFX.whoosh();
     }
-    function close() { palette.hidden = true; }
+    function close() { palette.hidden = true; if (window.KIA_SFX && window.KIA_SFX.whoosh) window.KIA_SFX.whoosh(false); }
     function go(i) {
       const p = list[i]; if (!p) return;
       close();

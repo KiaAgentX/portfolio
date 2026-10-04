@@ -78,6 +78,8 @@ console.log('INDEX PAGE');
   check('cap rows numbered', d.querySelectorAll('#caps-grid .cap-num').length >= 8, 'nums=' + d.querySelectorAll('#caps-grid .cap-num').length);
   check('surprise random-project link', !!d.querySelector('a#surprise') && /#surprise/.test(d.querySelector('a#surprise').getAttribute('href')));
   check('noscript fallback for JS-only visuals', !!d.querySelector('noscript'));
+  const sfx = dom.window.KIA_SFX || {};
+  check('5-sound engine (hover/click/whoosh/chime/fanfare)', ['hover', 'click', 'whoosh', 'chime', 'fanfare'].every(k => typeof sfx[k] === 'function'));
   check('est. value present', /\$4[0-9]{2},[0-9]{3}/.test(d.querySelector('.spec .v.gold')?.textContent || ''));
 
   const input = d.querySelector('#search');
