@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GQR V2 Showcase — Kia — Software Portfolio</title>
+<title>GQR V2 Showcase â€” Kia — Software Portfolio</title>
 <meta name="description" content="In-browser trading showcase: RL simulator, indicators, backtester.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&family=Vazirmatn:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&family=Vazirmatn:wght@400;700&display=swap"></noscript>
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="manifest" href="../../assets/manifest.webmanifest">
 <meta name="theme-color" content="#06060e">
@@ -27,7 +28,7 @@
     <span id="hud-pct">0%</span>
   </div>
   <div class="hud-meta"><span id="hud-found">0/7</span>DISCOVERED</div>
-  <button id="sound-toggle" type="button" aria-label="Toggle sound" title="Sound on/off">🔇</button>
+  <button id="sound-toggle" type="button" aria-label="Toggle sound" title="Sound on/off">ðŸ”‡</button>
 </div>
 <div id="toasts" aria-live="polite"></div>
 <header class="nav"><div class="container nav-inner">
@@ -36,7 +37,7 @@
       <a href="../../#projects">Work</a>
       <a href="../../#capabilities">Capabilities</a>
       <a href="../../#skills">Skills</a>
-      <a href="../../#surprise" id="surprise" title="Open a random project">🎲 Surprise</a>
+      <a href="../../#surprise" id="surprise" title="Open a random project">ðŸŽ² Surprise</a>
       <a class="nav-cta" href="../../#contact">Contact</a>
     </nav>
     <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false">
@@ -49,14 +50,14 @@
     <a href="../../#universe">Data</a>
     <a href="../../#skills">Skills</a>
     <a href="../../#roadmap-section">Roadmap</a>
-    <a href="../../#surprise">🎲 Surprise</a>
+    <a href="../../#surprise">ðŸŽ² Surprise</a>
     <a href="https://github.com/KiaAgentX" target="_blank" rel="noopener">GitHub</a>
     <a class="nav-cta" href="../../#contact">Contact</a>
   </div>
 <main class="container">
   <div class="phead">
-    <a class="back" href="../../#projects">← All projects</a>
-    <div class="p-banner"><img src="gallery/shot-indicators.jpg" alt="GQR V2 Showcase banner" loading="eager"><span class="b-label">Trading &amp; Fintech · TypeScript · 4,053 LOC</span></div>
+    <a class="back" href="../../#projects">â† All projects</a>
+    <div class="p-banner"><img src="gallery/shot-indicators.jpg" alt="GQR V2 Showcase banner" loading="eager"><span class="b-label">Trading &amp; Fintech Â· TypeScript Â· 4,053 LOC</span></div>
     <h1>GQR V2 Showcase</h1>
     <p class="tag">In-browser trading showcase: RL simulator, indicators, backtester.</p>
     <div class="pmeta">
@@ -76,7 +77,7 @@
   <section class="panel" id="panel-overview">
     <div class="ov-grid">
       <div class="ov-card">
-        <h4>About this project</h4>
+        <h2>About this project</h2>
         <p>Front-end experience for the GQR trading engine: live RL agent simulator, 14 real TradingView indicators, Monte Carlo backtester and a codebase explorer — everything runs locally in the browser.</p>
         <div class="gallery"><img src="gallery/shot-indicators.jpg" alt="GQR V2 Showcase screenshot" loading="lazy"><img src="gallery/shot-arena.jpg" alt="GQR V2 Showcase screenshot" loading="lazy"><img src="gallery/shot-backtest.jpg" alt="GQR V2 Showcase screenshot" loading="lazy"></div>
         <div class="cta-row">
@@ -86,7 +87,7 @@
         </div>
       </div>
       <div class="ov-card">
-        <h4>Project facts</h4>
+        <h2>Project facts</h2>
         <div class="kv"><span class="k">Category</span><span class="v">Trading &amp; Fintech</span></div>
         <div class="kv"><span class="k">Primary language</span><span class="v">TypeScript</span></div>
         <div class="kv"><span class="k">Lines of code</span><span class="v">4,053</span></div>
@@ -94,7 +95,7 @@
         <div class="kv"><span class="k">Status</span><span class="v">stable</span></div>
         <div class="kv"><span class="k">Est. market value</span><span class="v gold">$6,000</span></div>
         <div class="kv"><span class="k">Source path</span><span class="v">projects/GQR-v2-main</span></div>
-        <h4 style="margin-top:18px">Stack</h4>
+        <h2 style="margin-top:18px">Stack</h2>
         <div class="stack-chips"><span class="badge">React</span><span class="badge">Vite</span><span class="badge">TypeScript</span><span class="badge">TradingView</span></div>
       </div>
     </div>
@@ -115,21 +116,21 @@
         <div class="src-head">
           <span id="src-path">Select a file</span>
           <span class="grp">
-            <button class="btn ghost" id="src-prev">‹</button>
-            <button class="btn ghost" id="src-next">›</button>
+            <button class="btn ghost" id="src-prev">â€¹</button>
+            <button class="btn ghost" id="src-next">â€º</button>
             <button class="btn ghost" id="src-copy" type="button">copy</button>
             <a class="btn ghost" href="https://github.com/KiaAgentX/portfolio/tree/main/projects/GQR-v2-main" target="_blank" rel="noopener">GitHub</a>
           </span>
         </div>
         <div class="src-code" id="src-code-wrap"><pre><code id="src-code"></code></pre></div>
-        <div class="src-status" id="src-status">Loading source files…</div>
+        <div class="src-status" id="src-status">Loading source filesâ€¦</div>
       </div>
     </div>
   </section>
 
   <nav class="pager">
-    <a href="../GQR-v1/"><div class="lbl">← Previous</div><div class="nm">GQR Institutional V1</div></a>
-    <a class="next" href="../GQR-v3/"><div class="lbl">Next →</div><div class="nm">GQR V3 Platform</div></a>
+    <a href="../GQR-v1/"><div class="lbl">â† Previous</div><div class="nm">GQR Institutional V1</div></a>
+    <a class="next" href="../GQR-v3/"><div class="lbl">Next â†’</div><div class="nm">GQR V3 Platform</div></a>
   </nav>
 </main>
 <script>window.__PROJECT__ = {"id":"GQR-v2","sourceAvailable":true,"repo":"https://github.com/KiaAgentX/portfolio/tree/main/projects/GQR-v2-main"};</script>
