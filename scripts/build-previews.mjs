@@ -33,6 +33,24 @@ function log(msg) {
   fs.appendFileSync(path.join(PORT, 'build-previews.log'), line + '\n');
 }
 
+/* rewrite absolute /images/ references to relative (preview lives on a subpath) */
+function fixImagePaths(dir) {
+  const TXT = new Set(['.html', '.txt', '.js', '.css', '.json', '.rsc']);
+  let changed = 0;
+  (function walk(d) {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) { walk(p); continue; }
+      if (!TXT.has(path.extname(e.name).toLowerCase())) continue;
+      let s;
+      try { s = fs.readFileSync(p, 'utf8'); } catch { continue; }
+      const out = s.replace(/(^|[^.\w])\/images\//g, '$1./images/');
+      if (out !== s) { fs.writeFileSync(p, out); changed++; }
+    }
+  })(dir);
+  return changed;
+}
+
 async function buildOne(p) {
   const tmp = path.join(TMP, p.id);
   fs.rmSync(tmp, { recursive: true, force: true });
@@ -59,6 +77,10 @@ async function buildOne(p) {
       if (!c.includes('assetPrefix')) {
         log(`${p.id}: injecting assetPrefix:"." into ${name}`);
         c = c.replace(/const nextConfig[^=]*=\s*\{/, m => m + '\n  assetPrefix: ".",');
+      }
+      if (!c.includes('images:')) {
+        log(`${p.id}: injecting images.unoptimized (static host has no image optimizer)`);
+        c = c.replace(/const nextConfig[^=]*=\s*\{/, m => m + '\n  images: { unoptimized: true },');
       }
       fs.writeFileSync(f, c);
     }
@@ -128,6 +150,11 @@ async function buildOne(p) {
     log(`${p.id}: no dist/index.html produced`);
     fs.rmSync(tmp, { recursive: true, force: true });
     return false;
+  }
+
+  if (isNeonApple) {
+    const n = fixImagePaths(dist);
+    log(`${p.id}: rewrote absolute /images/ paths in ${n} files`);
   }
 
   const dest = path.join(OUT, p.id);

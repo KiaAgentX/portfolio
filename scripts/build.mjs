@@ -525,6 +525,8 @@ for (const f of ['style.css', 'index.js', 'project.js', 'highlight.min.js', 'hig
 }
 fs.writeFileSync(path.join(DIST, 'assets', 'favicon.svg'),
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#06060e"/><rect x="4" y="4" width="56" height="56" rx="9" fill="none" stroke="#ef4435" stroke-width="2"/><text x="32" y="42" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="800" font-size="30" fill="#f0ebdf">K</text></svg>`);
+/* GitHub Pages runs Jekyll which DROPS underscore dirs (_next/) unless this file exists */
+fs.writeFileSync(path.join(DIST, '.nojekyll'), '');
 
 const cards = [];
 let totalLoc = 0, totalValue = 0, previewCount = 0;
